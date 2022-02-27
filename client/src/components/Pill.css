@@ -1,0 +1,23 @@
+.root {
+	border-radius: 1rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
+
+.info {
+	background-color: lightgoldenrodyellow;
+	color: darkgoldenrod;
+	border: 1px solid darkgoldenrod;
+}
+
+.danger {
+	background-color: lightpink;
+	color: darkred;
+	border: 1px solid darkred;
+}
+
+.success {
+	background-color: lightgreen;
+	color: darkgreen;
+	border: 1px solid darkgreen;
+}

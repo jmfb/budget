@@ -1,0 +1,27 @@
+.loading {
+	display: flex;
+	flex-direction: row;
+	margin-top: 5rem;
+	width: 100%;
+}
+
+.loading :global(.loading-icon) {
+	width: 5rem;
+	height: 5rem;
+	margin: auto;
+}
+
+.message {
+	margin-top: 2.5em;
+	margin-bottom: 0.5em;
+	padding: 0.5em;
+	display: block;
+	width: 100%;
+	text-align: center;
+	border-radius: 4px;
+	box-shadow: var(--box-shadow);
+	border-left: 2px solid transparent;
+	color: darken(lightblue, 25%);
+	background-color: lightblue;
+	border-left-color: navy;
+}

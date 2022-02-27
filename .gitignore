@@ -1,4 +1,7 @@
-bin
-obj
-node_modules
 .git
+.terraform*
+tfplan
+node_modules/
+dist/
+obj/
+bin/

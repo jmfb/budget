@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"allowUnreachableCode": false,
+		"alwaysStrict": true,
+		"baseUrl": ".",
+		"esModuleInterop": true,
+		"importHelpers": true,
+		"jsx": "preserve",
+		"lib": ["dom", "es6", "dom.iterable", "scripthost", "esnext"],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noErrorTruncation": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"paths": {
+			"~/*": [ "./src/*" ]
+		},
+		"sourceMap": true,
+		"strictNullChecks": false,
+		"target": "es6"
+	}
+}

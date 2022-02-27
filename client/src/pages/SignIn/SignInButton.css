@@ -1,0 +1,39 @@
+.root {
+	width: 191px;
+	height: 46px;
+	background-repeat: no-repeat;
+	transition-duration: 0.3s;
+	transition-property: background-image;
+}
+
+.root.dark {
+	background-image: url(/images/btn_google_signin_dark_normal_web.png);
+}
+
+.root.dark:hover {
+	background-image: url(/images/btn_google_signin_dark_focus_web.png);
+}
+
+.root.dark:active {
+	background-image: url(/images/btn_google_signin_dark_pressed_web.png);
+}
+
+.root.dark.disabled {
+	background-image: url(/images/btn_google_signin_dark_disabled_web.png);
+}
+
+.root.light {
+	background-image: url(/images/btn_google_signin_light_normal_web.png);
+}
+
+.root.light:hover {
+	background-image: url(/images/btn_google_signin_light_focus_web.png);
+}
+
+.root.light:active {
+	background-image: url(/images/btn_google_signin_light_pressed_web.png);
+}
+
+.root.light.disabled {
+	background-image: url(/images/btn_google_signin_light_disabled_web.png);
+}

@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Budget.Server": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "https://localbudget.buysse.link:6001;http://localbudget.buysse.link:6000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
