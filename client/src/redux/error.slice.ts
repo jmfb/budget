@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAuthenticationUrl, authenticate } from './auth.actions';
+import {
+	getBudget,
+	saveIncome,
+	saveExpense,
+	saveTransaction,
+	getWeeklyTransactions
+} from './budget.actions';
 import { IErrorReport } from '~/models';
 
 export interface IErrorState {
@@ -44,6 +51,21 @@ const slice = createSlice({
 		})
 		.addCase(authenticate.rejected, (state, action) => {
 			setErrorState(state, 'Authenticating', action.error.message);
+		})
+		.addCase(getBudget.rejected, (state, action) => {
+			setErrorState(state, 'Getting budget', action.error.message);
+		})
+		.addCase(saveIncome.rejected, (state, action) => {
+			setErrorState(state, 'Saving income', action.error.message);
+		})
+		.addCase(saveExpense.rejected, (state, action) => {
+			setErrorState(state, 'Saving expense', action.error.message);
+		})
+		.addCase(saveTransaction.rejected, (state, action) => {
+			setErrorState(state, 'Saving transaction', action.error.message);
+		})
+		.addCase(getWeeklyTransactions.rejected, (state, action) => {
+			setErrorState(state, 'Getting weekly transactions', action.error.message);
 		})
 });
 

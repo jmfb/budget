@@ -13,9 +13,6 @@ namespace Budget.Server.Services {
 		Task SaveTransactionAsync(Transaction transaction, CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Income>> LoadAllIncomesAsync(CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Expense>> LoadAllExpensesAsync(CancellationToken cancellationToken);
-		Task<IReadOnlyCollection<Transaction>> LoadTransactionsAsync(
-			string date,
-			CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Transaction>> LoadWeeklyTransactionsAsync(
 			string weekOf,
 			CancellationToken cancellationToken);

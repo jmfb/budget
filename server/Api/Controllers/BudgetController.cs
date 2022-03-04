@@ -16,9 +16,9 @@ namespace Budget.Server.Api.Controllers {
 			BudgetService = budgetService;
 		}
 
-		[HttpGet]
+		[HttpGet("week-of/{weekOf}")]
 		public async Task<BudgetResponse> GetBudgetAsync(
-			string weekOf,
+			[FromRoute] string weekOf,
 			CancellationToken cancellationToken
 		) {
 			var incomesTask = BudgetService.LoadAllIncomesAsync(cancellationToken);
@@ -63,11 +63,5 @@ namespace Budget.Server.Api.Controllers {
 			[FromRoute] string weekOf,
 			CancellationToken cancellationToken) =>
 			await BudgetService.LoadWeeklyTransactionsAsync(weekOf, cancellationToken);
-
-		[HttpGet("transactions/{date}")]
-		public async Task<IEnumerable<Transaction>> GetTransactionsAsync(
-			[FromRoute] string date,
-			CancellationToken cancellationToken) =>
-			await BudgetService.LoadTransactionsAsync(date, cancellationToken);
 	}
 }

@@ -44,13 +44,12 @@ interface ISendRequest extends IGetRequest {
 	body?: any;
 }
 
-export async function post<T>(request: ISendRequest) {
+export async function put(request: ISendRequest) {
 	const { endpoint, query, accessToken, body } = request;
 	const response = await fetch(formatUri(endpoint, query), {
-		method: 'POST',
+		method: 'PUT',
 		headers: getStandardHeaders(accessToken),
 		body: body ? JSON.stringify(body) : undefined
 	});
 	await checkStatus(response);
-	return await response.json() as T;
 }
