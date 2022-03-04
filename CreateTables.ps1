@@ -32,10 +32,10 @@ try {
 		--endpoint-url http://localhost:8000 `
 		--table-name "budget-transactions" `
 		--attribute-definitions `
-			AttributeName=Name,AttributeType=S `
+			AttributeName=Date,AttributeType=S `
 			AttributeName=Id,AttributeType=N `
 		--key-schema `
-			AttributeName=Name,KeyType=HASH `
+			AttributeName=Date,KeyType=HASH `
 			AttributeName=Id,KeyType=RANGE `
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 | Out-Null
 	if ($lastexitcode -ne 0) {

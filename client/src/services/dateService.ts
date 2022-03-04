@@ -4,7 +4,7 @@ export function getStartOfWeek(date: string) {
 	return toString(value);
 }
 
-export function getStartOfCurrentWeek(date: string) {
+export function getStartOfCurrentWeek() {
 	return getStartOfWeek(getToday());
 }
 
