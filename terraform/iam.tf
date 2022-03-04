@@ -38,7 +38,9 @@ data "aws_iam_policy_document" "policy" {
       "dynamodb:DeleteItem"
     ]
     resources = [
-      "*" # TODO: DynamoDB table arns
+      aws_dynamodb_table.incomes.arn,
+      aws_dynamodb_table.expenses.arn,
+      aws_dynamodb_table.transactions.arn
     ]
   }
 }
