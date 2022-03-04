@@ -57,7 +57,7 @@ export default function Home({
 
 	return (
 		<div>
-			<WeekView {...{weekOf, setWeekOf}} />
+			<WeekView {...{weekOf, weeklyTransactions, setWeekOf, getWeeklyTransactions}} />
 		</div>
 	);
 }
