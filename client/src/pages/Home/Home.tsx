@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageLoading } from '~/components';
+import WeekView from './WeekView';
 import {
 	IIncome,
 	IExpense,
@@ -55,6 +56,8 @@ export default function Home({
 	}
 
 	return (
-		<div>TODO</div>
+		<div>
+			<WeekView {...{weekOf, setWeekOf}} />
+		</div>
 	);
 }

@@ -1,0 +1,21 @@
+.daysOfWeek {
+	display: flex;
+	flex-direction: row;
+}
+
+.dayOfWeek {
+	width: 2rem;
+	text-align: center;
+}
+
+.past {
+	background-color: lightblue;
+}
+
+.today {
+	background-color: lightgreen;
+}
+
+.future {
+	background-color: lightgray;
+}

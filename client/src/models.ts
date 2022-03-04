@@ -62,3 +62,11 @@ export interface IWeeklyTransactions {
 }
 
 export type IWeeklyTransactionsByWeekOf = Record<string, IWeeklyTransactions>;
+
+export interface IDayOfWeek {
+	day: number;
+	weekday: string;
+	isPast: boolean;
+	isToday: boolean;
+	isFuture: boolean;
+}
