@@ -73,6 +73,7 @@ export default function EditIncomes({
 						/>
 				)}
 			</div>
+			<hr />
 			<div className={styles.buttons}>
 				<Button className={styles.addButton} onClick={handleAddClicked}>Add</Button>
 				<Button onClick={onClose}>Close</Button>

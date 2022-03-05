@@ -34,6 +34,7 @@ export default function IncomeEditor({
 				<CurrencyInput name='Amount' value={amount} onChange={setAmount} />
 				<NumberInput name='Weeks Interval' value={weeksInterval} onChange={setWeeksInterval} />
 			</div>
+			<hr />
 			<div className={styles.buttons}>
 				<Button
 					onClick={handleSaveClicked}

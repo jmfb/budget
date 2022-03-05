@@ -25,7 +25,7 @@ export async function deleteIncome(accessToken: string, name: string) {
 
 export async function saveExpense(accessToken: string, expense: IExpense) {
 	await put({
-		endpoint: '/api/budget/expense',
+		endpoint: '/api/budget/expenses',
 		accessToken,
 		body: expense
 	});

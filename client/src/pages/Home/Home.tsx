@@ -2,12 +2,15 @@ import React from 'react';
 import { PageLoading } from '~/components';
 import WeekView from './WeekView';
 import IncomeView from './IncomeView';
+import ExpenseView from './ExpenseView';
+import BudgetView from './BudgetView';
 import {
 	IIncome,
 	IExpense,
 	ITransaction,
 	IWeeklyTransactionsByWeekOf
 } from '~/models';
+import styles from './Home.css';
 
 export interface IHomeProps {
 	isLoadingBudget: boolean;
@@ -65,17 +68,39 @@ export default function Home({
 	return (
 		<div>
 			<WeekView {...{weekOf, weeklyTransactions, setWeekOf, getWeeklyTransactions}} />
-			<div>
-				<IncomeView
-					{...{
-						incomes,
-						isSavingIncome,
-						savingIncomeSuccess,
-						saveIncome,
-						deleteIncome,
-						clearIncomeSave
-					}}
-					/>
+			<div className={styles.budgetRow}>
+				<div className={styles.income}>
+					<IncomeView
+						{...{
+							incomes,
+							isSavingIncome,
+							savingIncomeSuccess,
+							saveIncome,
+							deleteIncome,
+							clearIncomeSave
+						}}
+						/>
+				</div>
+				<div className={styles.expenses}>
+					<ExpenseView
+						{...{
+							expenses,
+							isSavingExpense,
+							savingExpenseSuccess,
+							saveExpense,
+							deleteExpense,
+							clearExpenseSave
+						}}
+						/>
+				</div>
+				<div className={styles.weeklyBudget}>
+					<BudgetView
+						{...{
+							incomes,
+							expenses
+						}}
+						/>
+				</div>
 			</div>
 		</div>
 	);
