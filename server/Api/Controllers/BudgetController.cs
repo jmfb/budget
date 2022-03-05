@@ -40,12 +40,30 @@ namespace Budget.Server.Api.Controllers {
 			return Ok();
 		}
 
+		[HttpDelete("incomes/{name}")]
+		public async Task<IActionResult> DeleteIncomeAsync(
+			[FromRoute] string name,
+			CancellationToken cancellationToken
+		) {
+			await BudgetService.DeleteIncomeAsync(name, cancellationToken);
+			return Ok();
+		}
+
 		[HttpPut("expenses")]
 		public async Task<IActionResult> SaveExpenseAsync(
 			[FromBody] Expense expense,
 			CancellationToken cancellationToken
 		) {
 			await BudgetService.SaveExpenseAsync(expense, cancellationToken);
+			return Ok();
+		}
+
+		[HttpDelete("expenses/{name}")]
+		public async Task<IActionResult> DeleteExpenseAsync(
+			[FromRoute] string name,
+			CancellationToken cancellationToken
+		) {
+			await BudgetService.DeleteExpenseAsync(name, cancellationToken);
 			return Ok();
 		}
 
@@ -63,5 +81,15 @@ namespace Budget.Server.Api.Controllers {
 			[FromRoute] string weekOf,
 			CancellationToken cancellationToken) =>
 			await BudgetService.LoadWeeklyTransactionsAsync(weekOf, cancellationToken);
+
+		[HttpDelete("transactions/{date}/{id}")]
+		public async Task<IActionResult> DeleteIncomeAsync(
+			[FromRoute] string date,
+			[FromRoute] int id,
+			CancellationToken cancellationToken
+		) {
+			await BudgetService.DeleteTransactionAsync(date, id, cancellationToken);
+			return Ok();
+		}
 	}
 }

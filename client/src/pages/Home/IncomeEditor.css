@@ -1,0 +1,14 @@
+.inputs {
+	display: flex;
+	flex-direction: column;
+}
+
+.buttons {
+	display: flex;
+	flex-direction: row;
+}
+
+.saveButton {
+	margin-left: auto;
+	margin-right: 1rem;
+}

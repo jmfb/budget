@@ -13,9 +13,19 @@ export const saveIncome = createAsyncThunk('budget/saveIncome', async (income: I
 	await hub.saveIncome(accessToken, income);
 });
 
+export const deleteIncome = createAsyncThunk('budget/deleteIncome', async ({ name }: IIncome, { getState }) => {
+	const { auth: { accessToken } } = getState() as IState;
+	await hub.deleteIncome(accessToken, name);
+});
+
 export const saveExpense = createAsyncThunk('budget/saveExpense', async (expense: IExpense, { getState }) => {
 	const { auth: { accessToken } } = getState() as IState;
 	await hub.saveExpense(accessToken, expense);
+});
+
+export const deleteExpense = createAsyncThunk('budget/deleteExpense', async ({ name }: IExpense, { getState }) => {
+	const { auth: { accessToken } } = getState() as IState;
+	await hub.deleteExpense(accessToken, name);
 });
 
 export const saveTransaction = createAsyncThunk(
@@ -23,6 +33,13 @@ export const saveTransaction = createAsyncThunk(
 	async (transaction: ITransaction, { getState }) => {
 		const { auth: { accessToken } } = getState() as IState;
 		await hub.saveTransaction(accessToken, transaction);
+	});
+
+export const deleteTransaction = createAsyncThunk(
+	'budget/deleteTransaction',
+	async ({ date, id }: ITransaction, { getState }) => {
+		const { auth: { accessToken } } = getState() as IState;
+		await hub.deleteTransaction(accessToken, date, id);
 	});
 
 export const getWeeklyTransactions = createAsyncThunk(

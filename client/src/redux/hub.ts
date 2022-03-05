@@ -53,3 +53,13 @@ export async function put(request: ISendRequest) {
 	});
 	await checkStatus(response);
 }
+
+export async function del(request: ISendRequest) {
+	const { endpoint, query, accessToken, body } = request;
+	const response = await fetch(formatUri(endpoint, query), {
+		method: 'DELETE',
+		headers: getStandardHeaders(accessToken),
+		body: body ? JSON.stringify(body) : undefined
+	});
+	await checkStatus(response);
+}

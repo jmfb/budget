@@ -1,0 +1,12 @@
+.label {
+	font-size: 0.75rem;
+	margin-bottom: 1rem;
+	display: inline-grid;
+}
+
+.input {
+	margin-top: 0.25rem;
+	padding: 6px 8px;
+	border-radius: 4px;
+	border: 1px solid lightgray;
+}

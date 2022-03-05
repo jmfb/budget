@@ -10,10 +10,13 @@ export default function HomeContainer() {
 	const {
 		getBudget,
 		saveIncome,
+		deleteIncome,
 		clearIncomeSave,
 		saveExpense,
+		deleteExpense,
 		clearExpenseSave,
 		saveTransaction,
+		deleteTransaction,
 		clearTransactionSave,
 		getWeeklyTransactions
 	} = bindActionCreators(budgetSlice.actions, dispatch);
@@ -31,10 +34,13 @@ export default function HomeContainer() {
 				weekOf,
 				setWeekOf,
 				saveIncome,
+				deleteIncome,
 				clearIncomeSave,
 				saveExpense,
+				deleteExpense,
 				clearExpenseSave,
 				saveTransaction,
+				deleteTransaction,
 				clearTransactionSave,
 				getWeeklyTransactions
 			}}

@@ -3,8 +3,11 @@ import { IIncome, IExpense, IWeeklyTransactionsByWeekOf } from '~/models';
 import {
 	getBudget,
 	saveIncome,
+	deleteIncome,
 	saveExpense,
+	deleteExpense,
 	saveTransaction,
+	deleteTransaction,
 	getWeeklyTransactions
 } from './budget.actions';
 import { dateService } from '~/services';
@@ -89,6 +92,20 @@ const slice = createSlice({
 			state.savingIncomeSuccess = false;
 		})
 
+		.addCase(deleteIncome.pending, state => {
+			state.isSavingIncome = true;
+			state.savingIncomeSuccess = false;
+		})
+		.addCase(deleteIncome.fulfilled, (state, action) => {
+			state.isSavingIncome = false;
+			state.savingIncomeSuccess = true;
+			state.incomes = state.incomes.filter(income => income.name !== action.meta.arg.name);
+		})
+		.addCase(deleteIncome.rejected, state => {
+			state.isSavingIncome = false;
+			state.savingIncomeSuccess = false;
+		})
+
 		.addCase(saveExpense.pending, state => {
 			state.isSavingExpense = true;
 			state.savingExpenseSuccess = false;
@@ -104,6 +121,20 @@ const slice = createSlice({
 			}
 		})
 		.addCase(saveExpense.rejected, state => {
+			state.isSavingExpense = false;
+			state.savingExpenseSuccess = false;
+		})
+
+		.addCase(deleteExpense.pending, state => {
+			state.isSavingExpense = true;
+			state.savingExpenseSuccess = false;
+		})
+		.addCase(deleteExpense.fulfilled, (state, action) => {
+			state.isSavingExpense = false;
+			state.savingExpenseSuccess = true;
+			state.expenses = state.expenses.filter(expense => expense.name !== action.meta.arg.name);
+		})
+		.addCase(deleteExpense.rejected, state => {
 			state.isSavingExpense = false;
 			state.savingExpenseSuccess = false;
 		})
@@ -126,6 +157,24 @@ const slice = createSlice({
 			}
 		})
 		.addCase(saveTransaction.rejected, state => {
+			state.isSavingTransaction = false;
+			state.savingTransactionSuccess = false;
+		})
+
+		.addCase(deleteTransaction.pending, state => {
+			state.isSavingTransaction = true;
+			state.savingTransactionSuccess = false;
+		})
+		.addCase(deleteTransaction.fulfilled, (state, action) => {
+			state.isSavingTransaction = false;
+			state.savingTransactionSuccess = true;
+			const weeklyTransactions = state.weeklyTransactions[dateService.getStartOfWeek(action.meta.arg.date)];
+			weeklyTransactions.transactions = weeklyTransactions.transactions
+				.filter(transaction =>
+					transaction.date !== action.meta.arg.date ||
+					transaction.id !== action.meta.arg.id);
+		})
+		.addCase(deleteTransaction.rejected, state => {
 			state.isSavingTransaction = false;
 			state.savingTransactionSuccess = false;
 		})
@@ -153,8 +202,11 @@ export default {
 		...slice.actions,
 		getBudget,
 		saveIncome,
+		deleteIncome,
 		saveExpense,
+		deleteExpense,
 		saveTransaction,
+		deleteTransaction,
 		getWeeklyTransactions
 	}
 };

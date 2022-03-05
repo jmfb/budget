@@ -1,0 +1,17 @@
+.root {
+	margin: auto;
+	background-color: white;
+	border-radius: 8px;
+	padding: 1rem;
+	border: 1px solid lightgray;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(128, 128, 128, 0.75);
+	display: flex;
+}
