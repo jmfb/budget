@@ -37,7 +37,11 @@ module.exports = {
 		alias: {
 			'~': path.join(__dirname, 'src')
 		},
-		extensions: ['*', '.tsx', '.ts', '.jsx', '.js']
+		extensions: ['*', '.tsx', '.ts', '.jsx', '.js'],
+		fallback: {
+			'stream': require.resolve('stream-browserify'),
+			'buffer': require.resolve('buffer')
+		}
 	},
 	module: {
 		rules: [
@@ -84,7 +88,13 @@ module.exports = {
 				path: buildDir
 			})
 		],
-		...isAnalyze ? [new BundleAnalyzerPlugin()] : []
+		...isAnalyze ? [new BundleAnalyzerPlugin()] : [],
+		new webpack.ProvidePlugin({
+			Buffer: ['buffer', 'Buffer']
+		}),
+		new webpack.ProvidePlugin({
+			process: 'process/browser'
+		})
 	],
 	cache: isDebug,
 	stats: {

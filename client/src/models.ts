@@ -70,3 +70,15 @@ export interface IDayOfWeek {
 	isToday: boolean;
 	isFuture: boolean;
 }
+
+export interface IBankRecord {
+	date: string;
+	referenceNumber: string;
+	type: string;
+	description: string;
+	debit: number;
+	credit: number;
+	checkNumber: string;
+	balance: number;
+	rawText: string;
+}

@@ -4,6 +4,7 @@ import WeekView from './WeekView';
 import IncomeView from './IncomeView';
 import ExpenseView from './ExpenseView';
 import BudgetView from './BudgetView';
+import Uploader from './Uploader';
 import {
 	IIncome,
 	IExpense,
@@ -102,6 +103,16 @@ export default function Home({
 						/>
 				</div>
 			</div>
+			<Uploader
+				{...{
+					weeklyTransactions,
+					isSavingTransaction,
+					savingTransactionSuccess,
+					saveTransaction,
+					clearTransactionSave,
+					getWeeklyTransactions
+				}}
+				/>
 		</div>
 	);
 }
