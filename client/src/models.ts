@@ -82,3 +82,14 @@ export interface IBankRecord {
 	balance: number;
 	rawText: string;
 }
+
+export interface ICapitalOneRecord {
+	transactionDate: string;
+	postedDate: string;
+	cardNumber: string;
+	description: string;
+	category: string;
+	debit: number;
+	credit: number;
+	rawText: string;
+}

@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IIncome, IExpense, ITransaction } from '~/models';
 import IState from './IState';
 import * as hub from './budget.hub';
+import { budgetService, dateService } from '~/services';
 
 export const getBudget = createAsyncThunk('budget/getBudget', async (weekOf: string, { getState }) => {
 	const { auth: { accessToken } } = getState() as IState;
@@ -47,4 +48,45 @@ export const getWeeklyTransactions = createAsyncThunk(
 	async (weekOf: string, { getState }) => {
 		const { auth: { accessToken } } = getState() as IState;
 		return await hub.getWeeklyTransactions(accessToken, weekOf);
+	});
+
+export const mergeTransactions = createAsyncThunk(
+	'budget/mergeTransactions',
+	async (transactions: ITransaction[], { getState }) => {
+		const {
+			auth: { accessToken },
+			budget: { weeklyTransactions }
+		} = getState() as IState;
+		const copyOfWeeklyTransactions = { ...weeklyTransactions };
+		const weekOfs = budgetService.getDistinctWeekOfs(transactions);
+		for (const weekOf of weekOfs) {
+			if (copyOfWeeklyTransactions[weekOf] === undefined) {
+				copyOfWeeklyTransactions[weekOf] = {
+					weekOf,
+					isLoading: false,
+					transactions: await hub.getWeeklyTransactions(accessToken, weekOf)
+				};
+			}
+		}
+		for (const transaction of transactions) {
+			console.log(transaction);
+			const weekOf = dateService.getStartOfWeek(transaction.date);
+			const week = copyOfWeeklyTransactions[weekOf];
+			const dailyTransactions = week.transactions
+				.filter(({ date }) => date === transaction.date);
+			const existingTransaction = dailyTransactions
+				.find(({ source, rawText }) => source === transaction.source && rawText === transaction.rawText);
+			if (existingTransaction === undefined) {
+				const newTransaction = {
+					...transaction,
+					id: Math.max(0, ...dailyTransactions.map(({ id }) => id)) + 1
+					// TODO: Match to incomes/expenses
+				};
+				await hub.saveTransaction(accessToken, newTransaction);
+				week.transactions = [...week.transactions, newTransaction];
+			} else {
+				console.log('already uploaded');
+			}
+		}
+		return copyOfWeeklyTransactions;
 	});

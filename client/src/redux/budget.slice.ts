@@ -8,7 +8,8 @@ import {
 	deleteExpense,
 	saveTransaction,
 	deleteTransaction,
-	getWeeklyTransactions
+	getWeeklyTransactions,
+	mergeTransactions
 } from './budget.actions';
 import { dateService } from '~/services';
 
@@ -23,6 +24,7 @@ export interface IBudgetState {
 	savingExpenseSuccess: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
+	isMerging: boolean;
 }
 
 const initialState: IBudgetState = {
@@ -35,7 +37,8 @@ const initialState: IBudgetState = {
 	isSavingExpense: false,
 	savingExpenseSuccess: false,
 	isSavingTransaction: false,
-	savingTransactionSuccess: false
+	savingTransactionSuccess: false,
+	isMerging: false
 };
 
 const slice = createSlice({
@@ -194,6 +197,17 @@ const slice = createSlice({
 		.addCase(getWeeklyTransactions.rejected, (state, action) => {
 			delete state.weeklyTransactions[action.meta.arg];
 		})
+
+		.addCase(mergeTransactions.pending, state => {
+			state.isMerging = true;
+		})
+		.addCase(mergeTransactions.fulfilled, (state, action) => {
+			state.isMerging = false;
+			state.weeklyTransactions = action.payload;
+		})
+		.addCase(mergeTransactions.rejected, state => {
+			state.isMerging = false;
+		})
 });
 
 export default {
@@ -207,6 +221,7 @@ export default {
 		deleteExpense,
 		saveTransaction,
 		deleteTransaction,
-		getWeeklyTransactions
+		getWeeklyTransactions,
+		mergeTransactions
 	}
 };

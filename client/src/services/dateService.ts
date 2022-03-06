@@ -37,7 +37,14 @@ export function getDaysOfWeek(weekOf: string): IDayOfWeek[] {
 }
 
 export function getToday() {
-	return toString(new Date());
+	const today = new Date();
+	const englishFormat = new Intl.DateTimeFormat(undefined, {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit'
+	}).format(today);
+	const parts = englishFormat.split('/');
+	return `${parts[2]}-${parts[0]}-${parts[1]}`;
 }
 
 export function parse(date: string) {

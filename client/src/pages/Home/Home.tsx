@@ -24,6 +24,7 @@ export interface IHomeProps {
 	savingExpenseSuccess: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
+	isMerging: boolean;
 	weekOf: string;
 	setWeekOf(value: string): void;
 	saveIncome(income: IIncome): void;
@@ -36,6 +37,7 @@ export interface IHomeProps {
 	deleteTransaction(transaction: ITransaction): void;
 	clearTransactionSave(): void;
 	getWeeklyTransactions(weekOf: string): void;
+	mergeTransactions(transactions: ITransaction[]): void;
 }
 
 export default function Home({
@@ -49,6 +51,7 @@ export default function Home({
 	savingExpenseSuccess,
 	isSavingTransaction,
 	savingTransactionSuccess,
+	isMerging,
 	weekOf,
 	setWeekOf,
 	saveIncome,
@@ -60,7 +63,8 @@ export default function Home({
 	saveTransaction,
 	deleteTransaction,
 	clearTransactionSave,
-	getWeeklyTransactions
+	getWeeklyTransactions,
+	mergeTransactions
 }: IHomeProps) {
 	if (isLoadingBudget || incomes === null || expenses === null) {
 		return <PageLoading message='Loading budget...' />;
@@ -103,16 +107,7 @@ export default function Home({
 						/>
 				</div>
 			</div>
-			<Uploader
-				{...{
-					weeklyTransactions,
-					isSavingTransaction,
-					savingTransactionSuccess,
-					saveTransaction,
-					clearTransactionSave,
-					getWeeklyTransactions
-				}}
-				/>
+			<Uploader {...{isMerging, mergeTransactions}} />
 		</div>
 	);
 }

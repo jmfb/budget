@@ -1,33 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FileInput } from '~/components';
-import { IWeeklyTransactionsByWeekOf, ITransaction } from '~/models';
+import { ITransaction } from '~/models';
 import { budgetService } from '~/services';
 
 export interface IUploaderProps {
-	weeklyTransactions: IWeeklyTransactionsByWeekOf;
-	isSavingTransaction: boolean;
-	savingTransactionSuccess: boolean;
-	saveTransaction(transaction: ITransaction): void;
-	clearTransactionSave(): void;
-	getWeeklyTransactions(weekOf: string): void;
+	isMerging: boolean;
+	mergeTransactions(transactions: ITransaction[]): void;
 }
 
 export default function Uploader({
-	weeklyTransactions,
-	isSavingTransaction,
-	savingTransactionSuccess,
-	saveTransaction,
-	clearTransactionSave,
-	getWeeklyTransactions
+	isMerging,
+	mergeTransactions
 }: IUploaderProps) {
+	const [isMergingBank, setIsMergingBank] = useState(false);
+	const [isMergingCapitalOne, setIsMergingCapitalOne] = useState(false);
+
 	const handleUploadBank = async (file: File) => {
-		const records = await budgetService.parseBankCsv(file);
-		console.log(records);
+		setIsMergingBank(true);
+		mergeTransactions(await budgetService.parseBankCsv(file));
 	};
+
+	const handleUploadCapitalOne = async (file: File) => {
+		setIsMergingCapitalOne(true);
+		mergeTransactions(await budgetService.parseCapitalOneCsv(file));
+	};
+
+	useEffect(() => {
+		if (!isMerging) {
+			if (isMergingBank) {
+				setIsMergingBank(false);
+			}
+			if (isMergingCapitalOne) {
+				setIsMergingCapitalOne(false);
+			}
+		}
+	}, [isMerging, isMergingBank, isMergingCapitalOne]);
 
 	return (
 		<div>
-			<FileInput accept='*.csv' onClick={handleUploadBank}>Upload Bank Export</FileInput>
+			<FileInput
+				accept='*.csv'
+				isDisabled={isMerging}
+				isProcessing={isMergingBank}
+				onClick={handleUploadBank}>
+				Upload Bank Export
+			</FileInput>
+			<FileInput
+				accept='*.csv'
+				isDisabled={isMerging}
+				isProcessing={isMergingCapitalOne}
+				onClick={handleUploadCapitalOne}>
+				Upload Capital One Export
+			</FileInput>
 		</div>
 	);
 }
