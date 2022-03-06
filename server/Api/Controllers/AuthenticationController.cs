@@ -9,8 +9,8 @@ namespace Budget.Server.Api.Controllers {
 	public class AuthenticationController : Controller {
 		private IAuthenticationService AuthenticationService { get; }
 		private static string[] AuthorizedEmails { get; } = {
-			"jacob.buysse@gmail.com"
-			// TODO: Add Sarah once she makes an account
+			"jacob.buysse@gmail.com",
+			"sarah.beth.zierke@gmail.com"
 		};
 
 		public AuthenticationController(IAuthenticationService authenticationService) {
