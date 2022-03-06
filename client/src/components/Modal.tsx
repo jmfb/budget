@@ -17,6 +17,7 @@ export default function Modal({
 	return (
 		<ReactModal
 			isOpen
+			ariaHideApp={false}
 			onRequestClose={onClose}
 			className={cx(className, styles.root)}
 			overlayClassName={styles.overlay}>

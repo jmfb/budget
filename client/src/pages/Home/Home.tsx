@@ -118,6 +118,15 @@ export default function Home({
 			{isLoadingWeek ?
 				<PageLoading message='Loading transactions...' /> :
 				<Transactions
+					{...{
+						incomes,
+						expenses,
+						isSavingTransaction,
+						savingTransactionSuccess,
+						saveTransaction,
+						deleteTransaction,
+						clearTransactionSave
+					}}
 					transactions={week.transactions}
 					/>
 			}

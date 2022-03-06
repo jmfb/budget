@@ -1,0 +1,20 @@
+.root {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.text {
+	margin-right: 1rem;
+	display: flex;
+	flex-direction: row;
+}
+
+.pill {
+	margin-left: 1rem;
+}
+
+.editButton {
+	margin-left: auto;
+	margin-right: 1rem;
+}
