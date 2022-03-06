@@ -5,6 +5,7 @@ import IncomeView from './IncomeView';
 import ExpenseView from './ExpenseView';
 import BudgetView from './BudgetView';
 import Uploader from './Uploader';
+import Transactions from './Transactions';
 import {
 	IIncome,
 	IExpense,
@@ -70,6 +71,8 @@ export default function Home({
 		return <PageLoading message='Loading budget...' />;
 	}
 
+	const week = weeklyTransactions[weekOf];
+
 	return (
 		<div>
 			<WeekView {...{weekOf, weeklyTransactions, setWeekOf, getWeeklyTransactions}} />
@@ -108,6 +111,12 @@ export default function Home({
 				</div>
 			</div>
 			<Uploader {...{isMerging, mergeTransactions}} />
+			{(week === undefined || week.isLoading) ?
+				<PageLoading message='Loading transactions...' /> :
+				<Transactions
+					transactions={week.transactions}
+					/>
+			}
 		</div>
 	);
 }

@@ -112,7 +112,7 @@ export function convertBankRecordToTransaction(record: IBankRecord): ITransactio
 		id: 0,
 		source: TransactionSource.Bank,
 		rawText,
-		amount: type === 'CREDIT' ? -credit : debit,
+		amount: type === 'CREDIT' ? -credit : -debit,
 		originalCategory: '',
 		description,
 		category: '',

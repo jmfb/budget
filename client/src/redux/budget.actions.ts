@@ -69,7 +69,6 @@ export const mergeTransactions = createAsyncThunk(
 			}
 		}
 		for (const transaction of transactions) {
-			console.log(transaction);
 			const weekOf = dateService.getStartOfWeek(transaction.date);
 			const week = copyOfWeeklyTransactions[weekOf];
 			const dailyTransactions = week.transactions
@@ -84,8 +83,18 @@ export const mergeTransactions = createAsyncThunk(
 				};
 				await hub.saveTransaction(accessToken, newTransaction);
 				week.transactions = [...week.transactions, newTransaction];
-			} else {
-				console.log('already uploaded');
+			} else if (existingTransaction.amount !== transaction.amount) {
+				const updatedTransaction = {
+					...existingTransaction,
+					amount: transaction.amount
+				};
+				await hub.saveTransaction(accessToken, updatedTransaction);
+				const index = week.transactions.indexOf(existingTransaction);
+				week.transactions = [
+					...week.transactions.slice(0, index),
+					updatedTransaction,
+					...week.transactions.slice(index + 1)
+				];
 			}
 		}
 		return copyOfWeeklyTransactions;
