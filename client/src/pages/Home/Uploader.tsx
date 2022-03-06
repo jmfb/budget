@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FileInput } from '~/components';
 import { ITransaction } from '~/models';
 import { budgetService } from '~/services';
+import styles from './Uploader.css';
 
 export interface IUploaderProps {
 	isMerging: boolean;
@@ -37,21 +38,25 @@ export default function Uploader({
 	}, [isMerging, isMergingBank, isMergingCapitalOne]);
 
 	return (
-		<div>
-			<FileInput
-				accept='*.csv'
-				isDisabled={isMerging}
-				isProcessing={isMergingBank}
-				onClick={handleUploadBank}>
-				Upload Bank Export
-			</FileInput>
-			<FileInput
-				accept='*.csv'
-				isDisabled={isMerging}
-				isProcessing={isMergingCapitalOne}
-				onClick={handleUploadCapitalOne}>
-				Upload Capital One Export
-			</FileInput>
+		<div className={styles.root}>
+			<div className={styles.bankButton}>
+				<FileInput
+					accept='*.csv'
+					isDisabled={isMerging}
+					isProcessing={isMergingBank}
+					onClick={handleUploadBank}>
+					Upload Bank Export
+				</FileInput>
+			</div>
+			<div className={styles.capitalOneButton}>
+				<FileInput
+					accept='*.csv'
+					isDisabled={isMerging}
+					isProcessing={isMergingCapitalOne}
+					onClick={handleUploadCapitalOne}>
+					Upload Capital One Export
+				</FileInput>
+			</div>
 		</div>
 	);
 }

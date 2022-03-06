@@ -53,6 +53,35 @@ export function format(value: number) {
 	return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' }).format(value);
 }
 
+export function getTransactionAmount(transaction: ITransaction, incomes: IIncome[], expenses: IExpense[]) {
+	const income = incomes.find(income => income.name === transaction.incomeName);
+	const expense = expenses.find(expense => expense.name === transaction.expenseName);
+	if (transaction.amount > 0 || expense) {
+		return transaction.amount - (expense?.amount ?? 0);
+	}
+	return transaction.amount + (income?.amount ?? 0);
+}
+
+export function getTotalSpend(transactions: ITransaction[], incomes: IIncome[], expenses: IExpense[]) {
+	if (!transactions) {
+		return 0;
+	}
+	return transactions
+		.map(transaction => getTransactionAmount(transaction, incomes, expenses))
+		.filter(amount => amount > 0)
+		.reduce((total, amount) => total + amount, 0);
+}
+
+export function getExtraIncome(transactions: ITransaction[], incomes: IIncome[], expenses: IExpense[]) {
+	if (!transactions) {
+		return 0;
+	}
+	return transactions
+		.map(transaction => getTransactionAmount(transaction, incomes, expenses))
+		.filter(amount => amount < 0)
+		.reduce((total, amount) => total - amount, 0);
+}
+
 export function getDistinctWeekOfs(transactions: ITransaction[]) {
 	const weekOfs = transactions.map(transaction => dateService.getStartOfWeek(transaction.date));
 	return weekOfs.filter((weekOf, index) => weekOfs.indexOf(weekOf) === index);
@@ -76,12 +105,17 @@ export function parseCsv(file: File) {
 	});
 }
 
+export function isCapitalOneDebit(transaction: ITransaction) {
+	return transaction.amount > 0 && !!transaction.description.match(/^CAPITAL ONE .*$/i);
+}
+
 export async function parseBankCsv(file: File) {
 	const results = await parseCsv(file);
 	return results
 		.slice(1)
 		.map(parseBankRecord)
-		.map(convertBankRecordToTransaction);
+		.map(convertBankRecordToTransaction)
+		.filter(transaction => !isCapitalOneDebit(transaction));
 }
 
 export function parseBankRecord(record: string[]): IBankRecord {
@@ -122,12 +156,17 @@ export function convertBankRecordToTransaction(record: IBankRecord): ITransactio
 	};
 }
 
+export function isCapitalOneCredit(transaction: ITransaction) {
+	return transaction.amount < 0 && !!transaction.description.match(/^CAPITAL ONE .*$/i);
+}
+
 export async function parseCapitalOneCsv(file: File) {
 	const results = await parseCsv(file);
 	return results
 		.slice(1)
 		.map(parseCapitalOneRecord)
-		.map(convertCapitalOneRecordToTransaction);
+		.map(convertCapitalOneRecordToTransaction)
+		.filter(transaction => !isCapitalOneCredit(transaction));
 }
 
 export function parseCapitalOneRecord(record: string[]): ICapitalOneRecord {
@@ -157,7 +196,7 @@ export function convertCapitalOneRecordToTransaction(record: ICapitalOneRecord):
 		id: 0,
 		source: TransactionSource.CapitalOne,
 		rawText,
-		amount: debit === NaN ? -credit : debit,
+		amount: Number.isNaN(debit) ? -credit : debit,
 		originalCategory: category,
 		description,
 		category,

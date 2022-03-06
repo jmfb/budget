@@ -11,9 +11,10 @@
 }
 
 .expenses {
-	margin-right: 1rem;
+	margin-right: auto;
 }
 
 .weeklyBudget {
 	margin-right: auto;
+	margin-left: auto;
 }

@@ -72,6 +72,7 @@ export default function Home({
 	}
 
 	const week = weeklyTransactions[weekOf];
+	const isLoadingWeek = week === undefined || week.isLoading;
 
 	return (
 		<div>
@@ -101,17 +102,20 @@ export default function Home({
 						}}
 						/>
 				</div>
+			</div>
+			<div className={styles.budgetRow}>
 				<div className={styles.weeklyBudget}>
 					<BudgetView
 						{...{
 							incomes,
 							expenses
 						}}
+						transactions={week?.transactions}
 						/>
 				</div>
 			</div>
 			<Uploader {...{isMerging, mergeTransactions}} />
-			{(week === undefined || week.isLoading) ?
+			{isLoadingWeek ?
 				<PageLoading message='Loading transactions...' /> :
 				<Transactions
 					transactions={week.transactions}

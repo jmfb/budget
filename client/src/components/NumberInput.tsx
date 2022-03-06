@@ -13,7 +13,7 @@ function toString(value: number) {
 
 function parse(value: string) {
 	const result = Number.parseInt(value, 10);
-	return result === NaN ? 0 : result;
+	return Number.isNaN(result) ? 0 : result;
 }
 
 export default function NumberInput({
