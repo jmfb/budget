@@ -1,8 +1,6 @@
 import React from 'react';
 import { PageLoading } from '~/components';
 import WeekView from './WeekView';
-import IncomeView from './IncomeView';
-import ExpenseView from './ExpenseView';
 import BudgetView from './BudgetView';
 import Uploader from './Uploader';
 import Transactions from './Transactions';
@@ -19,21 +17,11 @@ export interface IHomeProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	weeklyTransactions: IWeeklyTransactionsByWeekOf;
-	isSavingIncome: boolean;
-	savingIncomeSuccess: boolean;
-	isSavingExpense: boolean;
-	savingExpenseSuccess: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
 	isMerging: boolean;
 	weekOf: string;
 	setWeekOf(value: string): void;
-	saveIncome(income: IIncome): void;
-	deleteIncome(income: IIncome): void;
-	clearIncomeSave(): void;
-	saveExpense(expense: IExpense): void;
-	deleteExpense(expense: IExpense): void;
-	clearExpenseSave(): void;
 	saveTransaction(transaction: ITransaction): void;
 	deleteTransaction(transaction: ITransaction): void;
 	clearTransactionSave(): void;
@@ -46,21 +34,11 @@ export default function Home({
 	incomes,
 	expenses,
 	weeklyTransactions,
-	isSavingIncome,
-	savingIncomeSuccess,
-	isSavingExpense,
-	savingExpenseSuccess,
 	isSavingTransaction,
 	savingTransactionSuccess,
 	isMerging,
 	weekOf,
 	setWeekOf,
-	saveIncome,
-	deleteIncome,
-	clearIncomeSave,
-	saveExpense,
-	deleteExpense,
-	clearExpenseSave,
 	saveTransaction,
 	deleteTransaction,
 	clearTransactionSave,
@@ -77,32 +55,6 @@ export default function Home({
 	return (
 		<div>
 			<WeekView {...{weekOf, weeklyTransactions, setWeekOf, getWeeklyTransactions}} />
-			<div className={styles.budgetRow}>
-				<div className={styles.income}>
-					<IncomeView
-						{...{
-							incomes,
-							isSavingIncome,
-							savingIncomeSuccess,
-							saveIncome,
-							deleteIncome,
-							clearIncomeSave
-						}}
-						/>
-				</div>
-				<div className={styles.expenses}>
-					<ExpenseView
-						{...{
-							expenses,
-							isSavingExpense,
-							savingExpenseSuccess,
-							saveExpense,
-							deleteExpense,
-							clearExpenseSave
-						}}
-						/>
-				</div>
-			</div>
 			<div className={styles.budgetRow}>
 				<div className={styles.weeklyBudget}>
 					<BudgetView

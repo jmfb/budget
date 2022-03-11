@@ -1,9 +1,13 @@
-.buttons {
+.header {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
+}
+
+.h2 {
+	margin: 0;
 }
 
 .addButton {
 	margin-left: auto;
-	margin-right: 1rem;
 }

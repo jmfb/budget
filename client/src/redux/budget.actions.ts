@@ -4,10 +4,19 @@ import IState from './IState';
 import * as hub from './budget.hub';
 import { budgetService, dateService } from '~/services';
 
-export const getBudget = createAsyncThunk('budget/getBudget', async (weekOf: string, { getState }) => {
-	const { auth: { accessToken } } = getState() as IState;
-	return await hub.getBudget(accessToken, weekOf);
-});
+export const getBudget = createAsyncThunk(
+	'budget/getBudget',
+	async (weekOf: string, { getState }) => {
+		const { auth: { accessToken } } = getState() as IState;
+		return await hub.getBudget(accessToken, weekOf);
+	}, {
+		condition: (weekOf: string, { getState }) => {
+			const { budget: { isLoadingBudget, incomes } } = getState() as IState;
+			if (isLoadingBudget || incomes !== null) {
+				return false;
+			}
+		}
+	});
 
 export const saveIncome = createAsyncThunk('budget/saveIncome', async (income: IIncome, { getState }) => {
 	const { auth: { accessToken } } = getState() as IState;

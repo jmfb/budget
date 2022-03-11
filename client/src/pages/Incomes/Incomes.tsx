@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Modal } from '~/components';
+import React, { useEffect, useState } from 'react';
+import { PageLoading, Button } from '~/components';
 import Income from './Income';
 import IncomeEditor from './IncomeEditor';
+import { budgetService } from '~/services';
 import { IIncome } from '~/models';
-import styles from './EditIncomes.css';
+import styles from './Incomes.css';
 
-export interface IEditIncomesProps {
+export interface IIncomesProps {
 	incomes: IIncome[];
 	isSavingIncome: boolean;
 	savingIncomeSuccess: boolean;
 	saveIncome(income: IIncome): void;
 	deleteIncome(income: IIncome): void;
 	clearIncomeSave(): void;
-	onClose(): void;
 }
 
-export default function EditIncomes({
+export default function Incomes({
 	incomes,
 	isSavingIncome,
 	savingIncomeSuccess,
 	saveIncome,
 	deleteIncome,
-	clearIncomeSave,
-	onClose
-}: IEditIncomesProps) {
+	clearIncomeSave
+}: IIncomesProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingIncome, setExistingIncome] = useState<IIncome>(null);
 	const [isSaving, setIsSaving] = useState(false);
@@ -56,9 +55,18 @@ export default function EditIncomes({
 		}
 	}, [isSavingIncome, isSaving, savingIncomeSuccess]);
 
+	if (incomes === null) {
+		return <PageLoading message='Loading incomes' />;
+	}
+
+	const weeklyIncomes = budgetService.getWeeklyIncomes(incomes);
 	return (
-		<Modal {...{onClose}}>
-			<h2>Incomes</h2>
+		<div>
+			<div className={styles.header}>
+				<h2 className={styles.h2}>Incomes</h2>
+				<Button className={styles.addButton} onClick={handleAddClicked}>Add</Button>
+			</div>
+			<h3>{budgetService.format(weeklyIncomes)} every week</h3>
 			<div>
 				{incomes.map(income =>
 					<Income
@@ -73,11 +81,6 @@ export default function EditIncomes({
 						/>
 				)}
 			</div>
-			<hr />
-			<div className={styles.buttons}>
-				<Button className={styles.addButton} onClick={handleAddClicked}>Add</Button>
-				<Button onClick={onClose}>Close</Button>
-			</div>
 			{showEditor &&
 				<IncomeEditor
 					{...{
@@ -88,6 +91,6 @@ export default function EditIncomes({
 					onCancel={closeEditor}
 					/>
 			}
-		</Modal>
+		</div>
 	);
 }
