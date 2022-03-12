@@ -1,20 +1,34 @@
 .root {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+	margin-bottom: 0.5rem;
+	cursor: pointer;
+	box-shadow: var(--box-shadow);
+	border-radius: 4px;
+	padding: 0.5rem 0.75rem;
 }
 
-.text {
-	margin-right: 1rem;
+.root:hover {
+	box-shadow: var(--box-shadow-active);
+	background-color: lightblue;
+}
+
+.row {
 	display: flex;
 	flex-direction: row;
+	margin-bottom: 0.5rem;
+}
+
+.amount {
+}
+
+.note {
+	margin-left: 1rem;
+	font-style: italic;
+}
+
+.description {
+	font-size: 0.75rem;
 }
 
 .pill {
-	margin-left: 1rem;
-}
-
-.editButton {
 	margin-left: auto;
-	margin-right: 1rem;
 }

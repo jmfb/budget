@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Pill } from '~/components';
+import { Pill } from '~/components';
 import { ITransaction } from '~/models';
 import { budgetService } from '~/services';
 import styles from './Transaction.css';
@@ -22,14 +22,14 @@ export default function Transaction({
 		incomeName
 	} = transaction;
 	return (
-		<div className={styles.root}>
-			<span className={styles.text}>
-				{budgetService.format(amount)} - {description}
-				{category &&
-					<Pill className={styles.pill} type='info'>{category}</Pill>
-				}
+		<div className={styles.root} onClick={onEdit}>
+			<div className={styles.row}>
+				<span className={styles.amount}>{budgetService.format(amount)}</span>
 				{note &&
-					<Pill className={styles.pill} type='info'>{note}</Pill>
+					<span className={styles.note}>{note}</span>
+				}
+				{!incomeName && !expenseName && category &&
+					<Pill className={styles.pill} type='info'>{category}</Pill>
 				}
 				{incomeName &&
 					<Pill className={styles.pill} type='success'>{incomeName}</Pill>
@@ -37,8 +37,10 @@ export default function Transaction({
 				{expenseName &&
 					<Pill className={styles.pill} type='danger'>{expenseName}</Pill>
 				}
-			</span>
-			<Button className={styles.editButton} onClick={onEdit}>Edit</Button>
+			</div>
+			<div className={styles.description}>
+				{description}
+			</div>
 		</div>
 	);
 }
