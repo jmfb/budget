@@ -63,10 +63,10 @@ export default function Incomes({
 	return (
 		<div>
 			<div className={styles.header}>
-				<h2 className={styles.h2}>Incomes</h2>
+				<h2 className={styles.heading}>Incomes</h2>
+				<h3 className={styles.heading}>{budgetService.format(weeklyIncomes)} every week</h3>
 				<Button className={styles.addButton} onClick={handleAddClicked}>Add</Button>
 			</div>
-			<h3>{budgetService.format(weeklyIncomes)} every week</h3>
 			<div>
 				{incomes.map(income =>
 					<Income

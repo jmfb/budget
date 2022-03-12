@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PageLoading, Button } from '~/components';
-import Expense from './Expense';
+import Category from './Category';
 import ExpenseEditor from './ExpenseEditor';
 import { budgetService } from '~/services';
 import { IExpense } from '~/models';
@@ -31,7 +31,7 @@ export default function Expenses({
 		setShowEditor(true);
 	};
 
-	const createEditClickedHandler = (expense: IExpense) => () => {
+	const handleEditExpense = (expense: IExpense) => {
 		setShowEditor(true);
 		setExistingExpense(expense);
 	};
@@ -73,27 +73,23 @@ export default function Expenses({
 	return (
 		<div>
 			<div className={styles.header}>
-				<h2 className={styles.h2}>Expenses</h2>
+				<h2 className={styles.heading}>Expenses</h2>
+				<h3 className={styles.heading}>{budgetService.format(weeklyExpenses)} every week</h3>
 				<Button className={styles.addButton} onClick={handleAddClicked}>Add</Button>
 			</div>
-			<h3>{budgetService.format(weeklyExpenses)} every week</h3>
 			<div>
 				{Object.keys(expensesByCategory).sort((a, b) => a.localeCompare(b)).map(category =>
-					<div key={category}>
-						<h3>{category}</h3>
-						{expensesByCategory[category].map(expense =>
-							<Expense
-								key={expense.name}
-								{...{
-									expense,
-									isSavingExpense,
-									deleteExpense,
-									clearExpenseSave
-								}}
-								onEdit={createEditClickedHandler(expense)}
-								/>
-						)}
-					</div>
+					<Category
+						key={category}
+						{...{
+							category,
+							isSavingExpense,
+							deleteExpense,
+							clearExpenseSave
+						}}
+						expenses={expensesByCategory[category]}
+						onEditExpense={handleEditExpense}
+						/>
 				)}
 			</div>
 			{showEditor &&
