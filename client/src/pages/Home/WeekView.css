@@ -1,21 +1,23 @@
 .root {
 	display: flex;
 	flex-direction: row;
-	align-items: center;
+	align-items: end;
 }
 
 .previous {
 	margin-left: auto;
 	margin-right: 1rem;
 	margin-top: 12px;
-	width: 5rem;
 }
 
 .next {
 	margin-left: 1rem;
 	margin-right: auto;
 	margin-top: 12px;
-	width: 5rem;
+}
+
+.weekRange {
+	text-align: center;
 }
 
 .daysOfWeek {
@@ -29,13 +31,13 @@
 }
 
 .past {
-	background-color: lightblue;
+	background-color: #dbeef5;
 }
 
 .today {
-	background-color: lightgreen;
+	background-color: #b2e0f1;
 }
 
 .future {
-	background-color: lightgray;
+	background-color: white;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '~/components';
+import { Button, ChevronLeftIcon, ChevronRightIcon } from '~/components';
 import { dateService } from '~/services';
 import { IWeeklyTransactionsByWeekOf } from '~/models';
 import cx from 'classnames';
@@ -35,9 +35,15 @@ export default function WeekView({
 
 	return (
 		<div className={styles.root}>
-			<Button onClick={handlePreviousClicked} className={styles.previous}>Previous</Button>
+			<Button
+				onClick={handlePreviousClicked}
+				className={styles.previous}>
+				<ChevronLeftIcon />
+			</Button>
 			<span>
-				<div>Week of {dateService.format(weekOf)} to {dateService.format(endOfWeek)}</div>
+				<div className={styles.weekRange}>
+					{dateService.format(weekOf)} to {dateService.format(endOfWeek)}
+				</div>
 				<div className={styles.daysOfWeek}>
 					{daysOfWeek.map(dayOfWeek =>
 						<div
@@ -65,7 +71,12 @@ export default function WeekView({
 					)}
 				</div>
 			</span>
-			<Button onClick={handleNextClicked} isDisabled={isCurrentWeek} className={styles.next}>Next</Button>
+			<Button
+				onClick={handleNextClicked}
+				isDisabled={isCurrentWeek}
+				className={styles.next}>
+				<ChevronRightIcon />
+			</Button>
 		</div>
 	);
 }

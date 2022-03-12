@@ -9,7 +9,6 @@ import {
 	ITransaction,
 	IWeeklyTransactionsByWeekOf
 } from '~/models';
-import styles from './Home.css';
 
 export interface IHomeProps {
 	isLoadingBudget: boolean;
@@ -49,32 +48,39 @@ export default function Home({
 
 	return (
 		<div>
-			<WeekView {...{weekOf, weeklyTransactions, setWeekOf, getWeeklyTransactions}} />
-			<div className={styles.budgetRow}>
-				<div className={styles.weeklyBudget}>
+			<WeekView
+				{...{
+					weekOf,
+					weeklyTransactions,
+					setWeekOf,
+					getWeeklyTransactions
+				}}
+				/>
+			{isLoadingWeek &&
+				<PageLoading message='Loading transactions...' />
+			}
+			{!isLoadingWeek &&
+				<>
 					<BudgetView
 						{...{
 							incomes,
 							expenses
 						}}
-						transactions={week?.transactions}
+						transactions={week.transactions}
 						/>
-				</div>
-			</div>
-			{isLoadingWeek ?
-				<PageLoading message='Loading transactions...' /> :
-				<Transactions
-					{...{
-						incomes,
-						expenses,
-						isSavingTransaction,
-						savingTransactionSuccess,
-						saveTransaction,
-						deleteTransaction,
-						clearTransactionSave
-					}}
-					transactions={week.transactions}
-					/>
+					<Transactions
+						{...{
+							incomes,
+							expenses,
+							isSavingTransaction,
+							savingTransactionSuccess,
+							saveTransaction,
+							deleteTransaction,
+							clearTransactionSave
+						}}
+						transactions={week.transactions}
+						/>
+				</>
 			}
 		</div>
 	);
