@@ -2,7 +2,6 @@ import React from 'react';
 import { PageLoading } from '~/components';
 import WeekView from './WeekView';
 import BudgetView from './BudgetView';
-import Uploader from './Uploader';
 import Transactions from './Transactions';
 import {
 	IIncome,
@@ -19,14 +18,12 @@ export interface IHomeProps {
 	weeklyTransactions: IWeeklyTransactionsByWeekOf;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
-	isMerging: boolean;
 	weekOf: string;
 	setWeekOf(value: string): void;
 	saveTransaction(transaction: ITransaction): void;
 	deleteTransaction(transaction: ITransaction): void;
 	clearTransactionSave(): void;
 	getWeeklyTransactions(weekOf: string): void;
-	mergeTransactions(transactions: ITransaction[]): void;
 }
 
 export default function Home({
@@ -36,14 +33,12 @@ export default function Home({
 	weeklyTransactions,
 	isSavingTransaction,
 	savingTransactionSuccess,
-	isMerging,
 	weekOf,
 	setWeekOf,
 	saveTransaction,
 	deleteTransaction,
 	clearTransactionSave,
-	getWeeklyTransactions,
-	mergeTransactions
+	getWeeklyTransactions
 }: IHomeProps) {
 	if (isLoadingBudget || incomes === null || expenses === null) {
 		return <PageLoading message='Loading budget...' />;
@@ -66,7 +61,6 @@ export default function Home({
 						/>
 				</div>
 			</div>
-			<Uploader {...{isMerging, mergeTransactions}} />
 			{isLoadingWeek ?
 				<PageLoading message='Loading transactions...' /> :
 				<Transactions

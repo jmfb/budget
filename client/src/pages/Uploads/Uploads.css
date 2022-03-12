@@ -1,0 +1,33 @@
+.uploadButtons {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.bankButton {
+	margin-right: 1rem;
+	margin-bottom: 1rem;
+}
+
+.capitalOneButton {
+	margin-bottom: 1rem;
+}
+
+.preview {
+	overflow-x: scroll;
+	border: 1px solid lightgray;
+}
+
+.mergeRow {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.mergeLabel {
+	margin-left: 1rem;
+}
+
+.progress {
+	margin-left: 1rem;
+}

@@ -5,7 +5,7 @@ import { Expenses } from '~/pages';
 import { useAppSelector, budgetSlice } from '~/redux';
 import { dateService } from '~/services';
 
-export default function HomeContainer() {
+export default function ExpensesContainer() {
 	const dispatch = useDispatch();
 	const {
 		getBudget,

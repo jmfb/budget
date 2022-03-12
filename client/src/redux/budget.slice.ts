@@ -9,7 +9,9 @@ import {
 	saveTransaction,
 	deleteTransaction,
 	getWeeklyTransactions,
-	mergeTransactions
+	getAllText,
+	parseCsv,
+	mergeTransaction
 } from './budget.actions';
 import { dateService } from '~/services';
 
@@ -24,7 +26,14 @@ export interface IBudgetState {
 	savingExpenseSuccess: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
-	isMerging: boolean;
+	isMergingTransaction: boolean;
+	mergingTransactionSuccess: boolean;
+	isReadingFile: boolean;
+	readingFileSuccess: boolean;
+	fileText: string;
+	isParsingCsv: boolean;
+	parsingCsvSuccess: boolean;
+	csvRecords: string[][];
 }
 
 const initialState: IBudgetState = {
@@ -38,7 +47,14 @@ const initialState: IBudgetState = {
 	savingExpenseSuccess: false,
 	isSavingTransaction: false,
 	savingTransactionSuccess: false,
-	isMerging: false
+	isMergingTransaction: false,
+	mergingTransactionSuccess: false,
+	isReadingFile: false,
+	readingFileSuccess: false,
+	fileText: null,
+	isParsingCsv: false,
+	parsingCsvSuccess: false,
+	csvRecords: null
 };
 
 const slice = createSlice({
@@ -56,6 +72,16 @@ const slice = createSlice({
 		clearTransactionSave(state) {
 			state.isSavingTransaction = false;
 			state.savingTransactionSuccess = false;
+		},
+		clearUpload(state) {
+			state.isReadingFile = false;
+			state.readingFileSuccess = false;
+			state.fileText = null;
+			state.isParsingCsv = false;
+			state.parsingCsvSuccess = false;
+			state.csvRecords = null;
+			state.isMergingTransaction = false;
+			state.mergingTransactionSuccess = false;
 		}
 	},
 	extraReducers: builder => builder
@@ -198,15 +224,48 @@ const slice = createSlice({
 			delete state.weeklyTransactions[action.meta.arg];
 		})
 
-		.addCase(mergeTransactions.pending, state => {
-			state.isMerging = true;
+		.addCase(getAllText.pending, state => {
+			state.isReadingFile = true;
+			state.readingFileSuccess = false;
+			state.fileText = null;
 		})
-		.addCase(mergeTransactions.fulfilled, (state, action) => {
-			state.isMerging = false;
+		.addCase(getAllText.fulfilled, (state, action) => {
+			state.isReadingFile = false;
+			state.readingFileSuccess = true;
+			state.fileText = action.payload;
+		})
+		.addCase(getAllText.rejected, state => {
+			state.isReadingFile = false;
+			state.readingFileSuccess = false;
+		})
+
+		.addCase(parseCsv.pending, state => {
+			state.isParsingCsv = true;
+			state.parsingCsvSuccess = false;
+			state.csvRecords = null;
+		})
+		.addCase(parseCsv.fulfilled, (state, action) => {
+			state.isParsingCsv = false;
+			state.parsingCsvSuccess = true;
+			state.csvRecords = action.payload;
+		})
+		.addCase(parseCsv.rejected, state => {
+			state.isParsingCsv = false;
+			state.parsingCsvSuccess = false;
+		})
+
+		.addCase(mergeTransaction.pending, state => {
+			state.isMergingTransaction = true;
+			state.mergingTransactionSuccess = false;
+		})
+		.addCase(mergeTransaction.fulfilled, (state, action) => {
+			state.isMergingTransaction = false;
+			state.mergingTransactionSuccess = true;
 			state.weeklyTransactions = action.payload;
 		})
-		.addCase(mergeTransactions.rejected, state => {
-			state.isMerging = false;
+		.addCase(mergeTransaction.rejected, state => {
+			state.isMergingTransaction = false;
+			state.mergingTransactionSuccess = false;
 		})
 });
 
@@ -222,6 +281,8 @@ export default {
 		saveTransaction,
 		deleteTransaction,
 		getWeeklyTransactions,
-		mergeTransactions
+		getAllText,
+		parseCsv,
+		mergeTransaction
 	}
 };

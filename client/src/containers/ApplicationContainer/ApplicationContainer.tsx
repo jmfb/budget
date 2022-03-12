@@ -13,6 +13,8 @@ const asyncIncomesContainer = lazy(() =>
 	import(/* webpackChunkName: 'IncomesContainer' */ '~/containers/IncomesContainer'));
 const asyncExpensesContainer = lazy(() =>
 	import(/* webpackChunkName: 'ExpensesContainer' */ '~/containers/ExpensesContainer'));
+const asyncUploadsContainer = lazy(() =>
+	import(/* webpackChunkName: 'UploadsContainer' */ '~/containers/UploadsContainer'));
 const asyncSignOutContainer = lazy(() =>
 	import(/* webpackChunkName: 'SignOutContainer' */ '~/containers/SignOutContainer'));
 
@@ -58,6 +60,7 @@ export default function ApplicationContainer() {
 						<Route exact path='/' component={asyncHomeContainer} />
 						<Route path='/incomes' component={asyncIncomesContainer} />
 						<Route path='/expenses' component={asyncExpensesContainer} />
+						<Route path='/uploads' component={asyncUploadsContainer} />
 						<Route path='/sign-out' component={asyncSignOutContainer} />
 						<Route>
 							<Redirect to='/' />

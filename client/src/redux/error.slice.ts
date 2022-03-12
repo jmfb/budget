@@ -5,7 +5,10 @@ import {
 	saveIncome,
 	saveExpense,
 	saveTransaction,
-	getWeeklyTransactions
+	getWeeklyTransactions,
+	getAllText,
+	parseCsv,
+	mergeTransaction
 } from './budget.actions';
 import { IErrorReport } from '~/models';
 
@@ -66,6 +69,15 @@ const slice = createSlice({
 		})
 		.addCase(getWeeklyTransactions.rejected, (state, action) => {
 			setErrorState(state, 'Getting weekly transactions', action.error.message);
+		})
+		.addCase(getAllText.rejected, (state, action) => {
+			setErrorState(state, 'Reading file', action.error.message);
+		})
+		.addCase(parseCsv.rejected, (state, action) => {
+			setErrorState(state, 'Parsing csv records', action.error.message);
+		})
+		.addCase(mergeTransaction.rejected, (state, action) => {
+			setErrorState(state, 'Merging transaction', action.error.message);
 		})
 });
 

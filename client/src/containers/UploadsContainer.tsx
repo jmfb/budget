@@ -1,0 +1,42 @@
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { useDispatch } from 'react-redux';
+import { Uploads } from '~/pages';
+import { useAppSelector, budgetSlice } from '~/redux';
+
+export default function UploadsContainer() {
+	const dispatch = useDispatch();
+	const {
+		getAllText,
+		parseCsv,
+		mergeTransaction,
+		clearUpload
+	} = bindActionCreators(budgetSlice.actions, dispatch);
+	const isReadingFile = useAppSelector(state => state.budget.isReadingFile);
+	const readingFileSuccess = useAppSelector(state => state.budget.readingFileSuccess);
+	const fileText = useAppSelector(state => state.budget.fileText);
+	const isParsingCsv = useAppSelector(state => state.budget.isParsingCsv);
+	const parsingCsvSuccess = useAppSelector(state => state.budget.parsingCsvSuccess);
+	const csvRecords = useAppSelector(state => state.budget.csvRecords);
+	const isMergingTransaction = useAppSelector(state => state.budget.isMergingTransaction);
+	const mergingTransactionSuccess = useAppSelector(state => state.budget.mergingTransactionSuccess);
+
+	return (
+		<Uploads
+			{...{
+				isReadingFile,
+				readingFileSuccess,
+				fileText,
+				isParsingCsv,
+				parsingCsvSuccess,
+				csvRecords,
+				isMergingTransaction,
+				mergingTransactionSuccess,
+				getAllText,
+				parseCsv,
+				mergeTransaction,
+				clearUpload
+			}}
+			/>
+	);
+}

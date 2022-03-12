@@ -2,7 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IIncome, IExpense, ITransaction } from '~/models';
 import IState from './IState';
 import * as hub from './budget.hub';
-import { budgetService, dateService } from '~/services';
+import { dateService } from '~/services';
+import { parse } from 'csv-parse';
 
 export const getBudget = createAsyncThunk(
 	'budget/getBudget',
@@ -59,52 +60,86 @@ export const getWeeklyTransactions = createAsyncThunk(
 		return await hub.getWeeklyTransactions(accessToken, weekOf);
 	});
 
-export const mergeTransactions = createAsyncThunk(
-	'budget/mergeTransactions',
-	async (transactions: ITransaction[], { getState }) => {
+export const getAllText = createAsyncThunk(
+	'budget/getAllText',
+	async (file: File) => {
+		return await new Promise<string>((resolve, reject) => {
+			try {
+				const reader = new FileReader();
+				reader.onload = async event => {
+					try {
+						const { target: { result } } = event;
+						resolve((<string>result).trim());
+					} catch (error) {
+						reject(error);
+					}
+				};
+				reader.readAsText(file);
+			} catch (error) {
+				reject(error);
+			}
+		});
+	});
+
+export const parseCsv = createAsyncThunk(
+	'budget/parseCsv',
+	async (fileText: string) => {
+		const parser = parse();
+		parser.write(fileText);
+		parser.end();
+		const results = [] as string[][];
+		for await (const record of parser) {
+			results.push(record);
+		}
+		return results.slice(1);
+	});
+
+export const mergeTransaction = createAsyncThunk(
+	'budget/mergeTransaction',
+	async (transaction: ITransaction, { getState }) => {
 		const {
 			auth: { accessToken },
 			budget: { weeklyTransactions }
 		} = getState() as IState;
 		const copyOfWeeklyTransactions = { ...weeklyTransactions };
-		const weekOfs = budgetService.getDistinctWeekOfs(transactions);
-		for (const weekOf of weekOfs) {
-			if (copyOfWeeklyTransactions[weekOf] === undefined) {
-				copyOfWeeklyTransactions[weekOf] = {
-					weekOf,
-					isLoading: false,
-					transactions: await hub.getWeeklyTransactions(accessToken, weekOf)
-				};
-			}
+		const weekOf = dateService.getStartOfWeek(transaction.date);
+		if (copyOfWeeklyTransactions[weekOf] === undefined) {
+			copyOfWeeklyTransactions[weekOf] = {
+				weekOf,
+				isLoading: false,
+				transactions: await hub.getWeeklyTransactions(accessToken, weekOf)
+			};
 		}
-		for (const transaction of transactions) {
-			const weekOf = dateService.getStartOfWeek(transaction.date);
-			const week = copyOfWeeklyTransactions[weekOf];
-			const dailyTransactions = week.transactions
-				.filter(({ date }) => date === transaction.date);
-			const existingTransaction = dailyTransactions
-				.find(({ source, rawText }) => source === transaction.source && rawText === transaction.rawText);
-			if (existingTransaction === undefined) {
-				const newTransaction = {
-					...transaction,
-					id: Math.max(0, ...dailyTransactions.map(({ id }) => id)) + 1
-					// TODO: Match to incomes/expenses
-				};
-				await hub.saveTransaction(accessToken, newTransaction);
-				week.transactions = [...week.transactions, newTransaction];
-			} else if (existingTransaction.amount !== transaction.amount) {
-				const updatedTransaction = {
-					...existingTransaction,
-					amount: transaction.amount
-				};
-				await hub.saveTransaction(accessToken, updatedTransaction);
-				const index = week.transactions.indexOf(existingTransaction);
-				week.transactions = [
+		const week = copyOfWeeklyTransactions[weekOf];
+		const dailyTransactions = week.transactions
+			.filter(({ date }) => date === transaction.date);
+		const existingTransaction = dailyTransactions
+			.find(({ source, rawText }) => source === transaction.source && rawText === transaction.rawText);
+		if (existingTransaction === undefined) {
+			const newTransaction = {
+				...transaction,
+				id: Math.max(0, ...dailyTransactions.map(({ id }) => id)) + 1
+			};
+			await hub.saveTransaction(accessToken, newTransaction);
+			copyOfWeeklyTransactions[weekOf] = {
+				...week,
+				transactions: [...week.transactions, newTransaction]
+			};
+		} else if (existingTransaction.amount !== transaction.amount) {
+			const updatedTransaction = {
+				...existingTransaction,
+				amount: transaction.amount
+			};
+			await hub.saveTransaction(accessToken, updatedTransaction);
+			const index = week.transactions.indexOf(existingTransaction);
+			copyOfWeeklyTransactions[weekOf] = {
+				...week,
+				transactions: [
 					...week.transactions.slice(0, index),
 					updatedTransaction,
 					...week.transactions.slice(index + 1)
-				];
-			}
+				]
+			};
 		}
 		return copyOfWeeklyTransactions;
 	});

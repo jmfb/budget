@@ -6,7 +6,6 @@ import {
 	ITransaction,
 	TransactionSource
 } from '~/models';
-import { parse } from 'csv-parse';
 import * as dateService from './dateService';
 
 const weeksPerYear = 52;
@@ -87,35 +86,12 @@ export function getDistinctWeekOfs(transactions: ITransaction[]) {
 	return weekOfs.filter((weekOf, index) => weekOfs.indexOf(weekOf) === index);
 }
 
-export function parseCsv(file: File) {
-	return new Promise<string[][]>(resolve => {
-		const reader = new FileReader();
-		reader.onload = async event => {
-			const parser = parse();
-			const { result } = event.target;
-			parser.write((<string>result).trim());
-			parser.end();
-			const results = [] as string[][];
-			for await (const record of parser) {
-				results.push(record);
-			}
-			resolve(results);
-		};
-		reader.readAsText(file);
-	});
-}
-
 export function isCapitalOneDebit(transaction: ITransaction) {
 	return transaction.amount > 0 && !!transaction.description.match(/^CAPITAL ONE .*$/i);
 }
 
-export async function parseBankCsv(file: File) {
-	const results = await parseCsv(file);
-	return results
-		.slice(1)
-		.map(parseBankRecord)
-		.map(convertBankRecordToTransaction)
-		.filter(transaction => !isCapitalOneDebit(transaction));
+export function isCapitalOneCredit(transaction: ITransaction) {
+	return transaction.amount < 0 && !!transaction.description.match(/^CAPITAL ONE .*$/i);
 }
 
 export function parseBankRecord(record: string[]): IBankRecord {
@@ -128,6 +104,19 @@ export function parseBankRecord(record: string[]): IBankRecord {
 		credit: Number.parseFloat(record[5]),
 		checkNumber: record[6],
 		balance: Number.parseFloat(record[7]),
+		rawText: record.join(',')
+	};
+}
+
+export function parseCapitalOneRecord(record: string[]): ICapitalOneRecord {
+	return {
+		transactionDate: record[0],
+		postedDate: record[1],
+		cardNumber: record[2],
+		description: record[3],
+		category: record[4],
+		debit: Number.parseFloat(record[5]),
+		credit: Number.parseFloat(record[6]),
 		rawText: record.join(',')
 	};
 }
@@ -153,32 +142,6 @@ export function convertBankRecordToTransaction(record: IBankRecord): ITransactio
 		note: '',
 		expenseName: '',
 		incomeName: ''
-	};
-}
-
-export function isCapitalOneCredit(transaction: ITransaction) {
-	return transaction.amount < 0 && !!transaction.description.match(/^CAPITAL ONE .*$/i);
-}
-
-export async function parseCapitalOneCsv(file: File) {
-	const results = await parseCsv(file);
-	return results
-		.slice(1)
-		.map(parseCapitalOneRecord)
-		.map(convertCapitalOneRecordToTransaction)
-		.filter(transaction => !isCapitalOneCredit(transaction));
-}
-
-export function parseCapitalOneRecord(record: string[]): ICapitalOneRecord {
-	return {
-		transactionDate: record[0],
-		postedDate: record[1],
-		cardNumber: record[2],
-		description: record[3],
-		category: record[4],
-		debit: Number.parseFloat(record[5]),
-		credit: Number.parseFloat(record[6]),
-		rawText: record.join(',')
 	};
 }
 
