@@ -1,0 +1,56 @@
+.row {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.overBox {
+	flex: 1 0 0;
+	border-right: 1px solid black;
+	display: flex;
+	flex-direction: row;
+}
+
+.underBox {
+	flex: 1 0 0;
+	display: flex;
+	flex-direction: row;
+}
+
+.notOver {
+	flex-shrink: 0;
+	flex-basis: 0;
+}
+
+.over {
+	flex-shrink: 0;
+	flex-basis: 0;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	background-color: red;
+	border-radius: 8px 0 0 8px;
+}
+
+.under {
+	flex-shrink: 0;
+	flex-basis: 0;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	background-color: green;
+	border-radius: 0 8px 8px 0;
+}
+
+.notUnder {
+	flex-shrink: 0;
+	flex-basis: 0;
+}
+
+.underLabel {
+	margin-left: 0.5rem;
+	margin-right: auto;
+}
+
+.overLabel {
+	margin-left: auto;
+	margin-right: 0.5rem;
+}

@@ -9,6 +9,8 @@ import { useInterval } from '~/hooks';
 
 const asyncHomeContainer = lazy(() =>
 	import(/* webpackChunkName: 'HomeContainer' */ '~/containers/HomeContainer'));
+const asyncStatisticsContainer = lazy(() =>
+	import(/* webpackChunkName: 'StatisticsContainer' */ '~/containers/StatisticsContainer'));
 const asyncIncomesContainer = lazy(() =>
 	import(/* webpackChunkName: 'IncomesContainer' */ '~/containers/IncomesContainer'));
 const asyncExpensesContainer = lazy(() =>
@@ -58,6 +60,7 @@ export default function ApplicationContainer() {
 				<section>
 					<Switch>
 						<Route exact path='/' component={asyncHomeContainer} />
+						<Route path='/statistics' component={asyncStatisticsContainer} />
 						<Route path='/incomes' component={asyncIncomesContainer} />
 						<Route path='/expenses' component={asyncExpensesContainer} />
 						<Route path='/uploads' component={asyncUploadsContainer} />

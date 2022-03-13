@@ -1,0 +1,26 @@
+.h2 {
+	margin-top: 0;
+}
+
+.graph {
+	border: 1px solid lightgray;
+	background-color: white;
+}
+
+.row {
+	margin-top: 0.5rem;
+}
+
+.net {
+	font-weight: bold;
+}
+
+.gain {
+	margin-left: 0.5rem;
+	color: darkgreen;
+}
+
+.loss {
+	margin-left: 0.5rem;
+	color: darkred;
+}

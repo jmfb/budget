@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Transaction from './Transaction';
 import TransactionEditor from './TransactionEditor';
 import { ITransaction, IIncome, IExpense } from '~/models';
+import styles from './Transactions.css';
 
 export interface ITransactionsProps {
 	transactions: ITransaction[];
@@ -63,7 +64,7 @@ export default function Transactions({
 	}, [isSaving, isSavingTransaction, savingTransactionSuccess]);
 
 	return (
-		<div>
+		<div className={styles.root}>
 			{Object.keys(transactionsByDate).sort((a, b) => -a.localeCompare(b)).map(date =>
 				<div key={date}>
 					<h3>{date}</h3>

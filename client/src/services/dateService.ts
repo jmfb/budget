@@ -20,6 +20,16 @@ export function getStartOfCurrentWeek() {
 	return getStartOfWeek(getToday());
 }
 
+export function getStartOfLastXWeeks(count: number) {
+	let weekOf = getStartOfCurrentWeek();
+	const result = [weekOf];
+	while (--count > 0) {
+		weekOf = addDays(weekOf, -7);
+		result.push(weekOf);
+	}
+	return result;
+}
+
 const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 export function getDaysOfWeek(weekOf: string): IDayOfWeek[] {
