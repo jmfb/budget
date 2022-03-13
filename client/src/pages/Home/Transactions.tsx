@@ -70,7 +70,11 @@ export default function Transactions({
 					{transactionsByDate[date].map(transaction =>
 						<Transaction
 							key={transaction.id}
-							{...{transaction}}
+							{...{
+								transaction,
+								incomes,
+								expenses
+							}}
 							onEdit={createEditClickedHandler(transaction)}
 							/>
 					)}

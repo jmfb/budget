@@ -1,6 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import { IIncome } from '~/models';
+import { budgetService } from '~/services';
 import styles from './IncomeSelect.css';
 
 export interface IIncomeSelectProps {
@@ -16,7 +17,7 @@ export default function IncomeSelect({
 }: IIncomeSelectProps) {
 	const options = incomes.map(income => ({
 		value: income,
-		label: income.name
+		label: `${income.name} - ${budgetService.format(income.amount)}`
 	}));
 	const selectedOption = options.find(option => option.value.name === incomeName) ?? null;
 

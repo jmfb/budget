@@ -1,16 +1,20 @@
 import React from 'react';
 import { Pill } from '~/components';
-import { ITransaction } from '~/models';
+import { ITransaction, IIncome, IExpense } from '~/models';
 import { budgetService } from '~/services';
 import styles from './Transaction.css';
 
 export interface ITransactionProps {
 	transaction: ITransaction;
+	incomes: IIncome[];
+	expenses: IExpense[];
 	onEdit(): void;
 }
 
 export default function Transaction({
 	transaction,
+	incomes,
+	expenses,
 	onEdit
 }: ITransactionProps) {
 	const {
@@ -21,10 +25,17 @@ export default function Transaction({
 		expenseName,
 		incomeName
 	} = transaction;
+	const discrepancy = budgetService.getDiscrepancy(transaction, incomes, expenses);
 	return (
 		<div className={styles.root} onClick={onEdit}>
 			<div className={styles.row}>
 				<span className={styles.amount}>{budgetService.format(amount)}</span>
+				{discrepancy < 0 &&
+					<span className={styles.negativeDiscrepancy}>+{budgetService.format(-discrepancy)}</span>
+				}
+				{discrepancy > 0 &&
+					<span className={styles.positiveDiscrepancy}>-{budgetService.format(discrepancy)}</span>
+				}
 				{note &&
 					<span className={styles.note}>{note}</span>
 				}

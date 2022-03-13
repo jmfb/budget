@@ -81,9 +81,20 @@ export function getExtraIncome(transactions: ITransaction[], incomes: IIncome[],
 		.reduce((total, amount) => total - amount, 0);
 }
 
-export function getDistinctWeekOfs(transactions: ITransaction[]) {
-	const weekOfs = transactions.map(transaction => dateService.getStartOfWeek(transaction.date));
-	return weekOfs.filter((weekOf, index) => weekOfs.indexOf(weekOf) === index);
+export function getDiscrepancy(
+	transaction: ITransaction,
+	incomes: IIncome[],
+	expenses: IExpense[]
+) {
+	const income = incomes.find(income => income.name === transaction.incomeName);
+	if (income) {
+		return income.amount + transaction.amount;
+	}
+	const expense = expenses.find(expense => expense.name === transaction.expenseName);
+	if (expense) {
+		return transaction.amount - expense.amount;
+	}
+	return 0;
 }
 
 export function isCapitalOneDebit(transaction: ITransaction) {
