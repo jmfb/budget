@@ -88,6 +88,7 @@ export default function Home({
 							expenses
 						}}
 						pendingItems={includePendingItems ? pendingItems : []}
+						yearlyExpenseTotals={week.yearlyExpenseTotals}
 						transactions={week.transactions}
 						/>
 					<Transactions
@@ -111,6 +112,7 @@ export default function Home({
 							clearPendingItemSave
 						}}
 						transactions={week.transactions}
+						yearlyExpenseTotals={week.yearlyExpenseTotals}
 						/>
 				</>
 			}

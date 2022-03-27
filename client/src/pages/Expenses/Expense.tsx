@@ -20,8 +20,10 @@ export default function Expense({
 	onEdit
 }: IExpenseProps) {
 	const [isDeleting, setIsDeleting] = useState(false);
-	const { name, amount, monthsInterval } = expense;
-	const interval = monthsInterval === 1 ? 'every month' : `every ${monthsInterval} months`;
+	const { name, amount, monthsInterval, isDistributed } = expense;
+	const interval = isDistributed ?
+		monthsInterval === 1 ? 'over a month' : `over ${monthsInterval} months` :
+		monthsInterval === 1 ? 'every month' : `every ${monthsInterval} months`;
 
 	useEffect(() => {
 		if (!isSavingExpense && isDeleting) {

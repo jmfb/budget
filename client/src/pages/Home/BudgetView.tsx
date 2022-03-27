@@ -1,6 +1,6 @@
 import React from 'react';
 import { budgetService } from '~/services';
-import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
+import { IIncome, IExpense, ITransaction, IPendingItem, IExpenseTotals } from '~/models';
 import styles from './BudgetView.css';
 
 export interface IBudgetViewProps {
@@ -8,16 +8,18 @@ export interface IBudgetViewProps {
 	expenses: IExpense[];
 	transactions: ITransaction[];
 	pendingItems: IPendingItem[];
+	yearlyExpenseTotals: IExpenseTotals;
 }
 
 export default function BudgetView({
 	incomes,
 	expenses,
 	transactions,
-	pendingItems
+	pendingItems,
+	yearlyExpenseTotals
 }: IBudgetViewProps) {
 	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
-	const totalSpend = budgetService.getTotalSpend(transactions, pendingItems, incomes, expenses);
+	const totalSpend = budgetService.getTotalSpend(transactions, pendingItems, incomes, expenses, yearlyExpenseTotals);
 	const extraIncome = budgetService.getExtraIncome(transactions, incomes, expenses);
 	const remainingBudget = weeklyBudget - totalSpend;
 	return (

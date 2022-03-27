@@ -119,10 +119,12 @@ export const mergeTransaction = createAsyncThunk(
 		const copyOfWeeklyTransactions = { ...weeklyTransactions };
 		const weekOf = dateService.getStartOfWeek(transaction.date);
 		if (copyOfWeeklyTransactions[weekOf] === undefined) {
+			const response = await hub.getWeeklyTransactions(accessToken, weekOf);
 			copyOfWeeklyTransactions[weekOf] = {
 				weekOf,
 				isLoading: false,
-				transactions: await hub.getWeeklyTransactions(accessToken, weekOf)
+				transactions: response.weeklyTransactions,
+				yearlyExpenseTotals: response.yearlyExpenseTotals
 			};
 		}
 		const week = copyOfWeeklyTransactions[weekOf];

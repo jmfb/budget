@@ -28,6 +28,7 @@ export interface IExpense {
 	amount: number;
 	category: string;
 	monthsInterval: number;
+	isDistributed: boolean;
 }
 
 export enum TransactionSource {
@@ -55,17 +56,26 @@ export interface IPendingItem {
 	amount: number;
 }
 
+export type IExpenseTotals = Record<string, number>;
+
 export interface IBudgetResponse {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	weeklyTransactions: ITransaction[];
+	yearlyExpenseTotals: IExpenseTotals;
 	pendingItems: IPendingItem[];
+}
+
+export interface IWeeklyTransactionsResponse {
+	weeklyTransactions: ITransaction[];
+	yearlyExpenseTotals: IExpenseTotals;
 }
 
 export interface IWeeklyTransactions {
 	weekOf: string;
 	isLoading: boolean;
 	transactions: ITransaction[];
+	yearlyExpenseTotals: IExpenseTotals;
 }
 
 export type IWeeklyTransactionsByWeekOf = Record<string, IWeeklyTransactions>;

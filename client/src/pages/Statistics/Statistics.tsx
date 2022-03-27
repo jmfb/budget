@@ -27,9 +27,21 @@ export default function Statistics({
 		return <PageLoading message='Loading transactions' />;
 	}
 
+	const getWeekExpenseTotal = (expenseName: string) => {
+		return weeks[0].transactions
+			.filter(transaction => transaction.expenseName === expenseName)
+			.reduce((total, transaction) => total + transaction.amount, 0);
+	};
+
+	const { yearlyExpenseTotals } = weeks[0];
 	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
 	const totalSpends = weeks.map((week, index) =>
-		budgetService.getTotalSpend(week.transactions, index === 0 ? pendingItems : [], incomes, expenses));
+		budgetService.getTotalSpend(
+			week.transactions,
+			index === 0 ? pendingItems : [],
+			incomes,
+			expenses,
+			week.yearlyExpenseTotals));
 	const extraIncomes = weeks.map(week => budgetService.getExtraIncome(week.transactions, incomes, expenses));
 	const totalExtraIncome = extraIncomes.reduce((total, extraIncome) => total + extraIncome, 0);
 	const remainingBudgets = totalSpends.map(totalSpend => weeklyBudget - totalSpend);
@@ -40,7 +52,7 @@ export default function Statistics({
 
 	return (
 		<div>
-			<h2 className={styles.h2}>Last 12 Weeks</h2>
+			<h2 className={styles.h2}>Last {weeks.length} Weeks</h2>
 			<div className={styles.graph}>
 				{remainingBudgets.map((remainingBudget, index) =>
 					<Week
@@ -84,6 +96,22 @@ export default function Statistics({
 						</div>
 					}
 				</>
+			}
+			{expenses
+				.filter(expense => expense.isDistributed)
+				.map(expense => ({
+					expense,
+					total: yearlyExpenseTotals[expense.name] ?? 0 + getWeekExpenseTotal(expense.name)
+				}))
+				.filter(item => item.total < item.expense.amount)
+				.map(item =>
+					<div key={item.expense.name} className={styles.row}>
+						Remaining {item.expense.name} Budget
+						<span className={cx(styles.net, styles.gain)}>
+							{budgetService.format(item.expense.amount - item.total)}
+						</span>
+					</div>
+				)
 			}
 		</div>
 	);

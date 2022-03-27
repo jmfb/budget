@@ -25,11 +25,13 @@ namespace Budget.Server.Api.Controllers {
 			var expensesTask = BudgetService.LoadAllExpensesAsync(cancellationToken);
 			var weeklyTransactionsTask = BudgetService.LoadWeeklyTransactionsAsync(weekOf, cancellationToken);
 			var pendingItemsTask = BudgetService.LoadAllPendingItemsAsync(cancellationToken);
+			var yearlyExpenseTotalsTask = BudgetService.GetYearlyExpenseTotals(weekOf, cancellationToken);
 			return new BudgetResponse {
 				Incomes = await incomesTask,
 				Expenses = await expensesTask,
 				WeeklyTransactions = await weeklyTransactionsTask,
-				PendingItems = await pendingItemsTask
+				PendingItems = await pendingItemsTask,
+				YearlyExpenseTotals = await yearlyExpenseTotalsTask
 			};
 		}
 
@@ -97,10 +99,17 @@ namespace Budget.Server.Api.Controllers {
 		}
 
 		[HttpGet("transactions/week-of/{weekOf}")]
-		public async Task<IEnumerable<Transaction>> GetWeeklyTransactionsAsync(
+		public async Task<WeeklyTransactionsResponse> GetWeeklyTransactionsAsync(
 			[FromRoute] string weekOf,
-			CancellationToken cancellationToken) =>
-			await BudgetService.LoadWeeklyTransactionsAsync(weekOf, cancellationToken);
+			CancellationToken cancellationToken
+		) {
+			var transactionsTask = BudgetService.LoadWeeklyTransactionsAsync(weekOf, cancellationToken);
+			var yearlyExpenseTotalsTask = BudgetService.GetYearlyExpenseTotals(weekOf, cancellationToken);
+			return new WeeklyTransactionsResponse {
+				WeeklyTransactions = await transactionsTask,
+				YearlyExpenseTotals = await yearlyExpenseTotalsTask
+			};
+		}
 
 		[HttpDelete("transactions/{date}/{id}")]
 		public async Task<IActionResult> DeleteIncomeAsync(

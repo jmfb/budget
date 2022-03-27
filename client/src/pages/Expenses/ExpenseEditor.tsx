@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Input, CurrencyInput, NumberInput } from '~/components';
+import { Modal, Button, Input, CurrencyInput, NumberInput, Checkbox } from '~/components';
 import { IExpense } from '~/models';
 import styles from './ExpenseEditor.css';
 
@@ -20,10 +20,23 @@ export default function ExpenseEditor({
 	const [amount, setAmount] = useState(existingExpense?.amount ?? 0);
 	const [monthsInterval, setMonthsInterval] = useState(existingExpense?.monthsInterval ?? 1);
 	const [category, setCategory] = useState(existingExpense?.category ?? '');
+	const [isDistributed, setIsDistributed] = useState(existingExpense?.isDistributed ?? false);
+
+	const handleIsDistributedChanged = (value: boolean) => {
+		if (value) {
+			setMonthsInterval(12);
+		}
+		setIsDistributed(value);
+	};
 
 	const handleSaveClicked = () => {
-		onSave({ name, amount, monthsInterval, category });
+		onSave({ name, amount, monthsInterval, category, isDistributed });
 	};
+
+	const isValidName = !!name;
+	const isValidAmount = amount > 0;
+	const isValidInterval = !isDistributed || monthsInterval === 12;
+	const isValid = isValidName && isValidAmount && isValidInterval;
 
 	return (
 		<Modal onClose={onCancel}>
@@ -33,14 +46,21 @@ export default function ExpenseEditor({
 					<Input name='Name' value={name} onChange={setName} />
 				}
 				<CurrencyInput name='Amount' value={amount} onChange={setAmount} />
-				<NumberInput name='Months Interval' value={monthsInterval} onChange={setMonthsInterval} />
+				<Checkbox
+					name='Is Distributed Over Entire Year?'
+					value={isDistributed}
+					onChange={handleIsDistributedChanged}
+					/>
+				{!isDistributed &&
+					<NumberInput name='Months Interval' value={monthsInterval} onChange={setMonthsInterval} />
+				}
 				<Input name='Category' value={category} onChange={setCategory} />
 			</div>
 			<hr />
 			<div className={styles.buttons}>
 				<Button
 					onClick={handleSaveClicked}
-					isDisabled={isSavingExpense}
+					isDisabled={!isValid || isSavingExpense}
 					isProcessing={isSavingExpense}
 					className={styles.saveButton}>
 					Save

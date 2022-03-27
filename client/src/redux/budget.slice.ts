@@ -116,7 +116,8 @@ const slice = createSlice({
 			state.weeklyTransactions[action.meta.arg] = {
 				isLoading: false,
 				weekOf: action.meta.arg,
-				transactions: action.payload.weeklyTransactions
+				transactions: action.payload.weeklyTransactions,
+				yearlyExpenseTotals: action.payload.yearlyExpenseTotals
 			};
 		})
 		.addCase(getBudget.rejected, state => {
@@ -266,13 +267,15 @@ const slice = createSlice({
 			state.weeklyTransactions[action.meta.arg] = {
 				isLoading: true,
 				weekOf: action.meta.arg,
-				transactions: null
+				transactions: null,
+				yearlyExpenseTotals: null
 			};
 		})
 		.addCase(getWeeklyTransactions.fulfilled, (state, action) => {
 			const weeklyTransactions = state.weeklyTransactions[action.meta.arg];
 			weeklyTransactions.isLoading = false;
-			weeklyTransactions.transactions = action.payload;
+			weeklyTransactions.transactions = action.payload.weeklyTransactions;
+			weeklyTransactions.yearlyExpenseTotals = action.payload.yearlyExpenseTotals;
 		})
 		.addCase(getWeeklyTransactions.rejected, (state, action) => {
 			delete state.weeklyTransactions[action.meta.arg];

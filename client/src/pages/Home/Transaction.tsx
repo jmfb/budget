@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pill } from '~/components';
-import { ITransaction, IIncome, IExpense } from '~/models';
+import { ITransaction, IIncome, IExpense, IExpenseTotals } from '~/models';
 import { budgetService } from '~/services';
 import styles from './Transaction.css';
 
@@ -8,6 +8,8 @@ export interface ITransactionProps {
 	transaction: ITransaction;
 	incomes: IIncome[];
 	expenses: IExpense[];
+	yearlyExpenseTotals: IExpenseTotals;
+	weekExpenseTotals: IExpenseTotals;
 	onEdit(): void;
 }
 
@@ -15,6 +17,8 @@ export default function Transaction({
 	transaction,
 	incomes,
 	expenses,
+	yearlyExpenseTotals,
+	weekExpenseTotals,
 	onEdit
 }: ITransactionProps) {
 	const {
@@ -25,7 +29,12 @@ export default function Transaction({
 		expenseName,
 		incomeName
 	} = transaction;
-	const discrepancy = budgetService.getDiscrepancy(transaction, incomes, expenses);
+	const discrepancy = budgetService.getDiscrepancy(
+		transaction,
+		incomes,
+		expenses,
+		yearlyExpenseTotals,
+		weekExpenseTotals);
 	return (
 		<div className={styles.root} onClick={onEdit}>
 			<div className={styles.row}>

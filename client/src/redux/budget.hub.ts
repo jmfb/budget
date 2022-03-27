@@ -1,5 +1,12 @@
 import { get, put, del } from './hub';
-import { IIncome, IExpense, IPendingItem, ITransaction, IBudgetResponse } from '~/models';
+import {
+	IIncome,
+	IExpense,
+	IPendingItem,
+	ITransaction,
+	IBudgetResponse,
+	IWeeklyTransactionsResponse
+} from '~/models';
 
 export async function getBudget(accessToken: string, weekOf: string) {
 	return await get<IBudgetResponse>({
@@ -69,7 +76,7 @@ export async function deleteTransaction(accessToken: string, date: string, id: n
 }
 
 export async function getWeeklyTransactions(accessToken: string, weekOf: string) {
-	return await get<ITransaction[]>({
+	return await get<IWeeklyTransactionsResponse>({
 		endpoint: `/api/budget/transactions/week-of/${weekOf}`,
 		accessToken
 	});

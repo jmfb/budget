@@ -5,7 +5,8 @@ import {
 	ICapitalOneRecord,
 	ITransaction,
 	IPendingItem,
-	TransactionSource
+	TransactionSource,
+	IExpenseTotals
 } from '~/models';
 import * as dateService from './dateService';
 
@@ -57,10 +58,30 @@ export function format(value: number) {
 	return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' }).format(value);
 }
 
-export function getTransactionAmount(transaction: ITransaction, incomes: IIncome[], expenses: IExpense[]) {
+export function getTransactionAmount(
+	transaction: ITransaction,
+	incomes: IIncome[],
+	expenses: IExpense[],
+	yearlyExpenseTotals: IExpenseTotals,
+	weekExpesneTotals: IExpenseTotals
+) {
 	const income = incomes.find(income => income.name === transaction.incomeName);
 	const expense = expenses.find(expense => expense.name === transaction.expenseName);
+	const yearlyExpenseTotal = yearlyExpenseTotals[transaction.expenseName] ?? 0;
+	const weekExpenseTotal = weekExpesneTotals[transaction.expenseName] ?? 0;
+	const expenseTotal = yearlyExpenseTotal + weekExpenseTotal;
+	const expenseTotalWithAmount = expenseTotal + transaction.amount;
+
 	if (transaction.amount > 0 || expense) {
+		if (expense?.isDistributed) {
+			if (expenseTotal > expense.amount) {
+				return transaction.amount;
+			}
+			if (expenseTotalWithAmount > expense.amount) {
+				return expenseTotalWithAmount - expense.amount;
+			}
+			return 0;
+		}
 		return transaction.amount - (expense?.amount ?? 0);
 	}
 	return transaction.amount + (income?.amount ?? 0);
@@ -70,15 +91,24 @@ export function getTotalSpend(
 	transactions: ITransaction[],
 	pendingItems: IPendingItem[],
 	incomes: IIncome[],
-	expenses: IExpense[]
+	expenses: IExpense[],
+	yearlyExpenseTotals: IExpenseTotals
 ) {
 	if (!transactions) {
 		return 0;
 	}
-	return getTotalPendingSpend(pendingItems) + transactions
-		.map(transaction => getTransactionAmount(transaction, incomes, expenses))
-		.filter(amount => amount > 0)
-		.reduce((total, amount) => total + amount, 0);
+	const pendingTotal = getTotalPendingSpend(pendingItems);
+	const weekExpenseTotal: IExpenseTotals = {};
+	let transactionTotal = 0;
+	for (const transaction of transactions) {
+		const amount = getTransactionAmount(transaction, incomes, expenses, yearlyExpenseTotals, weekExpenseTotal);
+		if (amount > 0) {
+			transactionTotal += amount;
+		}
+		const currentWeekTotal = weekExpenseTotal[transaction.expenseName] ?? 0;
+		weekExpenseTotal[transaction.expenseName] = currentWeekTotal + transaction.amount;
+	}
+	return pendingTotal + transactionTotal;
 }
 
 export function getExtraIncome(transactions: ITransaction[], incomes: IIncome[], expenses: IExpense[]) {
@@ -86,7 +116,7 @@ export function getExtraIncome(transactions: ITransaction[], incomes: IIncome[],
 		return 0;
 	}
 	return transactions
-		.map(transaction => getTransactionAmount(transaction, incomes, expenses))
+		.map(transaction => getTransactionAmount(transaction, incomes, expenses, {}, {}))
 		.filter(amount => amount < 0)
 		.reduce((total, amount) => total - amount, 0);
 }
@@ -94,7 +124,9 @@ export function getExtraIncome(transactions: ITransaction[], incomes: IIncome[],
 export function getDiscrepancy(
 	transaction: ITransaction,
 	incomes: IIncome[],
-	expenses: IExpense[]
+	expenses: IExpense[],
+	yearlyExpenseTotals: IExpenseTotals,
+	weekExpesneTotals: IExpenseTotals
 ) {
 	const income = incomes.find(income => income.name === transaction.incomeName);
 	if (income) {
@@ -102,6 +134,19 @@ export function getDiscrepancy(
 	}
 	const expense = expenses.find(expense => expense.name === transaction.expenseName);
 	if (expense) {
+		if (expense.isDistributed) {
+			const yearlyExpenseTotal = yearlyExpenseTotals[expense.name] ?? 0;
+			const weekExpenseTotal = weekExpesneTotals[expense.name] ?? 0;
+			const expenseTotal = yearlyExpenseTotal + weekExpenseTotal;
+			const expenseTotalWithAmount = expenseTotal + transaction.amount;
+			if (expenseTotal > expense.amount) {
+				return transaction.amount;
+			}
+			if (expenseTotalWithAmount > expense.amount) {
+				return expenseTotalWithAmount - expense.amount;
+			}
+			return 0;
+		}
 		return transaction.amount - expense.amount;
 	}
 	return 0;

@@ -14,5 +14,8 @@ namespace Budget.Server.Models {
 
 		[DynamoDBProperty]
 		public int MonthsInterval { get; set; }
+
+		[DynamoDBProperty]
+		public bool IsDistributed { get; set; }
 	}
 }

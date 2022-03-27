@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Budget.Server.Models;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 
 namespace Budget.Server.Services {
 	public interface IBudgetService {
@@ -21,6 +22,9 @@ namespace Budget.Server.Services {
 		Task<IReadOnlyCollection<PendingItem>> LoadAllPendingItemsAsync(CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Transaction>> LoadWeeklyTransactionsAsync(
 			string weekOf,
+			CancellationToken cancellationToken);
+		Task<IReadOnlyDictionary<string, decimal>> GetYearlyExpenseTotals(
+			string priorToWeekOf,
 			CancellationToken cancellationToken);
 	}
 
@@ -89,5 +93,30 @@ namespace Budget.Server.Services {
 					.OrderBy(transaction => transaction.Date)
 					.ThenBy(transaction => transaction.Id)
 					.ToList();
+
+		public async Task<IReadOnlyDictionary<string, decimal>> GetYearlyExpenseTotals(
+			string priorToWeekOf,
+			CancellationToken cancellationToken
+		) {
+			var date = DateTime.Parse(priorToWeekOf);
+			if (date.Month == 1 && date.Day == 1) {
+				return new Dictionary<string, decimal>();
+			}
+
+			var endOfPriorWeek = date.AddDays(-1).ToString("yyyy-MM-dd");
+			var startOfYear = new DateTime(date.Year, 1, 1).ToString("yyyy-MM-dd");
+
+			var transactions = await Context
+				.ScanAsync<Transaction>(new[] {
+					new ScanCondition("Date", ScanOperator.Between, startOfYear, endOfPriorWeek)
+				})
+				.GetRemainingAsync();
+			return transactions
+				.Where(transaction => !string.IsNullOrWhiteSpace(transaction.ExpenseName))
+				.GroupBy(transaction => transaction.ExpenseName)
+				.ToDictionary(
+					grouping => grouping.Key,
+					grouping => grouping.Select(transaction => transaction.Amount).Sum());
+		}
 	}
 }

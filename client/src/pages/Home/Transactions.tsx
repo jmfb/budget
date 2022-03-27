@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PendingItems from './PendingItems';
 import Transaction from './Transaction';
 import TransactionEditor from './TransactionEditor';
-import { ITransaction, IIncome, IExpense, IPendingItem } from '~/models';
+import { ITransaction, IIncome, IExpense, IPendingItem, IExpenseTotals } from '~/models';
 import styles from './Transactions.css';
 
 export interface ITransactionsProps {
@@ -10,6 +10,7 @@ export interface ITransactionsProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	pendingItems: IPendingItem[];
+	yearlyExpenseTotals: IExpenseTotals;
 	includePendingItems: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
@@ -31,6 +32,7 @@ export default function Transactions({
 	incomes,
 	expenses,
 	pendingItems,
+	yearlyExpenseTotals,
 	includePendingItems,
 	isSavingTransaction,
 	savingTransactionSuccess,
@@ -59,6 +61,22 @@ export default function Transactions({
 		}
 		return map;
 	}, {} as Record<string, ITransaction[]>);
+
+	const getWeekExpenseTotals = (transaction: ITransaction): IExpenseTotals => {
+		if (!transaction.expenseName) {
+			return {};
+		}
+		const total = transactions
+			.filter(other =>
+				other.expenseName === transaction.expenseName &&
+				(other.date < transaction.date ||
+				other.date === transaction.date && other.amount < transaction.amount ||
+				other.date === transaction.date && other.amount === transaction.amount && other.id < transaction.id))
+			.reduce((total, other) => total + other.amount, 0);
+		return {
+			[transaction.expenseName]: total
+		};
+	};
 
 	const createEditClickedHandler = (transaction: ITransaction) => () => {
 		setShowEditor(true);
@@ -110,8 +128,10 @@ export default function Transactions({
 								{...{
 									transaction,
 									incomes,
-									expenses
+									expenses,
+									yearlyExpenseTotals
 								}}
+								weekExpenseTotals={getWeekExpenseTotals(transaction)}
 								onEdit={createEditClickedHandler(transaction)}
 								/>
 						)
