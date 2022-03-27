@@ -74,7 +74,9 @@ export default function Transactions({
 			{Object.keys(transactionsByDate).sort((a, b) => -a.localeCompare(b)).map(date =>
 				<div key={date}>
 					<h3>{date}</h3>
-					{transactionsByDate[date].map(transaction =>
+					{transactionsByDate[date]
+						.sort((a, b) => a.amount - b.amount)
+						.map(transaction =>
 						<Transaction
 							key={transaction.id}
 							{...{
