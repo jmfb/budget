@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Input } from '~/components';
 import CategorySelect from './CategorySelect';
 import IncomeSelect from './IncomeSelect';
 import ExpenseSelect from './ExpenseSelect';
+import ConfirmDelete from './ConfirmDelete';
 import { ITransaction, IIncome, IExpense } from '~/models';
 import { budgetService } from '~/services';
 import styles from './TransactionEditor.css';
@@ -12,6 +13,10 @@ export interface ITransactionEditorProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	isSavingTransaction: boolean;
+	isDeletingTransaction: boolean;
+	deletingTransactionSuccess: boolean;
+	deleteTransaction(transaction: ITransaction): void;
+	clearTransactionDelete(): void;
 	onSave(updatedTransaction: ITransaction): void;
 	onCancel(): void;
 }
@@ -21,6 +26,10 @@ export default function TransactionEditor({
 	incomes,
 	expenses,
 	isSavingTransaction,
+	isDeletingTransaction,
+	deletingTransactionSuccess,
+	deleteTransaction,
+	clearTransactionDelete,
 	onSave,
 	onCancel
 }: ITransactionEditorProps) {
@@ -28,6 +37,8 @@ export default function TransactionEditor({
 	const [note, setNote] = useState(transaction.note ?? '');
 	const [expenseName, setExpenseName] = useState(transaction.expenseName ?? '');
 	const [incomeName, setIncomeName] = useState(transaction.incomeName ?? '');
+	const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 
 	const handleSaveClicked = () => {
 		onSave({
@@ -39,11 +50,36 @@ export default function TransactionEditor({
 		});
 	};
 
+	const handleDeleteClicked = () => {
+		setIsConfirmingDelete(true);
+	};
+
+	const handleDeleteConfirmationCanceled = () => {
+		setIsConfirmingDelete(false);
+	};
+
+	const handleDeleteConfirmationConfirmed = () => {
+		setIsDeleting(true);
+		deleteTransaction(transaction);
+	};
+
+	useEffect(() => {
+		if (isDeleting && !isDeletingTransaction) {
+			setIsDeleting(false);
+			if (deletingTransactionSuccess) {
+				onCancel();
+			}
+			clearTransactionDelete();
+		}
+	}, [isDeleting, isDeletingTransaction, deletingTransactionSuccess]);
+
 	const {
 		amount,
 		description,
 		date
 	} = transaction;
+
+	const isModificationInProgress = isSavingTransaction || isDeleting;
 
 	return (
 		<Modal onClose={onCancel}>
@@ -71,14 +107,31 @@ export default function TransactionEditor({
 			<hr />
 			<div className={styles.buttons}>
 				<Button
+					onClick={handleDeleteClicked}
+					isDisabled={isModificationInProgress}
+					isProcessing={isDeleting}
+					className={styles.deleteButton}>
+					Delete
+				</Button>
+				<Button
 					onClick={handleSaveClicked}
-					isDisabled={isSavingTransaction}
+					isDisabled={isModificationInProgress}
 					isProcessing={isSavingTransaction}
 					className={styles.saveButton}>
 					Save
 				</Button>
-				<Button onClick={onCancel} isDisabled={isSavingTransaction}>Cancel</Button>
+				<Button
+					onClick={onCancel}
+					isDisabled={isModificationInProgress}>
+					Cancel
+				</Button>
 			</div>
+			{isConfirmingDelete &&
+				<ConfirmDelete
+					onConfirmDelete={handleDeleteConfirmationConfirmed}
+					onCancel={handleDeleteConfirmationCanceled}
+					/>
+			}
 		</Modal>
 	);
 }

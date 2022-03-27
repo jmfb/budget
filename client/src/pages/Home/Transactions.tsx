@@ -10,9 +10,12 @@ export interface ITransactionsProps {
 	expenses: IExpense[];
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
+	isDeletingTransaction: boolean;
+	deletingTransactionSuccess: boolean;
 	saveTransaction(transaction: ITransaction): void;
 	deleteTransaction(transaction: ITransaction): void;
 	clearTransactionSave(): void;
+	clearTransactionDelete(): void;
 }
 
 export default function Transactions({
@@ -21,9 +24,12 @@ export default function Transactions({
 	expenses,
 	isSavingTransaction,
 	savingTransactionSuccess,
+	isDeletingTransaction,
+	deletingTransactionSuccess,
 	saveTransaction,
 	deleteTransaction,
-	clearTransactionSave
+	clearTransactionSave,
+	clearTransactionDelete
 }: ITransactionsProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingTransaction, setExistingTransaction] = useState<ITransaction>(null);
@@ -86,7 +92,11 @@ export default function Transactions({
 					{...{
 						incomes,
 						expenses,
-						isSavingTransaction
+						isSavingTransaction,
+						isDeletingTransaction,
+						deletingTransactionSuccess,
+						deleteTransaction,
+						clearTransactionDelete
 					}}
 					transaction={existingTransaction}
 					onSave={handleSaveClicked}

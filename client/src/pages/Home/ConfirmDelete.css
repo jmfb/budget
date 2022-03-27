@@ -1,0 +1,8 @@
+.buttons {
+	display: flex;
+	flex-direction: row;
+}
+
+.cancelButton {
+	margin-left: auto;
+}

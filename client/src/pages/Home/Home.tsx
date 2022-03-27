@@ -17,11 +17,14 @@ export interface IHomeProps {
 	weeklyTransactions: IWeeklyTransactionsByWeekOf;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
+	isDeletingTransaction: boolean;
+	deletingTransactionSuccess: boolean;
 	weekOf: string;
 	setWeekOf(value: string): void;
 	saveTransaction(transaction: ITransaction): void;
 	deleteTransaction(transaction: ITransaction): void;
 	clearTransactionSave(): void;
+	clearTransactionDelete(): void;
 	getWeeklyTransactions(weekOf: string): void;
 }
 
@@ -32,11 +35,14 @@ export default function Home({
 	weeklyTransactions,
 	isSavingTransaction,
 	savingTransactionSuccess,
+	isDeletingTransaction,
+	deletingTransactionSuccess,
 	weekOf,
 	setWeekOf,
 	saveTransaction,
 	deleteTransaction,
 	clearTransactionSave,
+	clearTransactionDelete,
 	getWeeklyTransactions
 }: IHomeProps) {
 	if (isLoadingBudget || incomes === null || expenses === null) {
@@ -74,9 +80,12 @@ export default function Home({
 							expenses,
 							isSavingTransaction,
 							savingTransactionSuccess,
+							isDeletingTransaction,
+							deletingTransactionSuccess,
 							saveTransaction,
 							deleteTransaction,
-							clearTransactionSave
+							clearTransactionSave,
+							clearTransactionDelete
 						}}
 						transactions={week.transactions}
 						/>

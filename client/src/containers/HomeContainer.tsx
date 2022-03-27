@@ -12,6 +12,7 @@ export default function HomeContainer() {
 		saveTransaction,
 		deleteTransaction,
 		clearTransactionSave,
+		clearTransactionDelete,
 		getWeeklyTransactions
 	} = bindActionCreators(budgetSlice.actions, dispatch);
 	const isLoadingBudget = useAppSelector(state => state.budget.isLoadingBudget);
@@ -20,6 +21,8 @@ export default function HomeContainer() {
 	const weeklyTransactions = useAppSelector(state => state.budget.weeklyTransactions);
 	const isSavingTransaction = useAppSelector(state => state.budget.isSavingTransaction);
 	const savingTransactionSuccess = useAppSelector(state => state.budget.savingTransactionSuccess);
+	const isDeletingTransaction = useAppSelector(state => state.budget.isDeletingTransaction);
+	const deletingTransactionSuccess = useAppSelector(state => state.budget.deletingTransactionSuccess);
 	const [weekOf, setWeekOf] = useState(dateService.getStartOfCurrentWeek());
 
 	useEffect(() => {
@@ -35,11 +38,14 @@ export default function HomeContainer() {
 				weeklyTransactions,
 				isSavingTransaction,
 				savingTransactionSuccess,
+				isDeletingTransaction,
+				deletingTransactionSuccess,
 				weekOf,
 				setWeekOf,
 				saveTransaction,
 				deleteTransaction,
 				clearTransactionSave,
+				clearTransactionDelete,
 				getWeeklyTransactions
 			}}
 			/>

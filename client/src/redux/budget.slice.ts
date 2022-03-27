@@ -26,6 +26,8 @@ export interface IBudgetState {
 	savingExpenseSuccess: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
+	isDeletingTransaction: boolean;
+	deletingTransactionSuccess: boolean;
 	isMergingTransaction: boolean;
 	mergingTransactionSuccess: boolean;
 	isReadingFile: boolean;
@@ -47,6 +49,8 @@ const initialState: IBudgetState = {
 	savingExpenseSuccess: false,
 	isSavingTransaction: false,
 	savingTransactionSuccess: false,
+	isDeletingTransaction: false,
+	deletingTransactionSuccess: false,
 	isMergingTransaction: false,
 	mergingTransactionSuccess: false,
 	isReadingFile: false,
@@ -72,6 +76,10 @@ const slice = createSlice({
 		clearTransactionSave(state) {
 			state.isSavingTransaction = false;
 			state.savingTransactionSuccess = false;
+		},
+		clearTransactionDelete(state) {
+			state.isDeletingTransaction = false;
+			state.deletingTransactionSuccess = false;
 		},
 		clearUpload(state) {
 			state.isReadingFile = false;
@@ -191,12 +199,12 @@ const slice = createSlice({
 		})
 
 		.addCase(deleteTransaction.pending, state => {
-			state.isSavingTransaction = true;
-			state.savingTransactionSuccess = false;
+			state.isDeletingTransaction = true;
+			state.deletingTransactionSuccess = false;
 		})
 		.addCase(deleteTransaction.fulfilled, (state, action) => {
-			state.isSavingTransaction = false;
-			state.savingTransactionSuccess = true;
+			state.isDeletingTransaction = false;
+			state.deletingTransactionSuccess = true;
 			const weeklyTransactions = state.weeklyTransactions[dateService.getStartOfWeek(action.meta.arg.date)];
 			weeklyTransactions.transactions = weeklyTransactions.transactions
 				.filter(transaction =>
@@ -204,8 +212,8 @@ const slice = createSlice({
 					transaction.id !== action.meta.arg.id);
 		})
 		.addCase(deleteTransaction.rejected, state => {
-			state.isSavingTransaction = false;
-			state.savingTransactionSuccess = false;
+			state.isDeletingTransaction = false;
+			state.deletingTransactionSuccess = false;
 		})
 
 		.addCase(getWeeklyTransactions.pending, (state, action) => {
