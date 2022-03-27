@@ -1,35 +1,50 @@
 import React, { useState, useEffect } from 'react';
+import PendingItems from './PendingItems';
 import Transaction from './Transaction';
 import TransactionEditor from './TransactionEditor';
-import { ITransaction, IIncome, IExpense } from '~/models';
+import { ITransaction, IIncome, IExpense, IPendingItem } from '~/models';
 import styles from './Transactions.css';
 
 export interface ITransactionsProps {
 	transactions: ITransaction[];
 	incomes: IIncome[];
 	expenses: IExpense[];
+	pendingItems: IPendingItem[];
+	includePendingItems: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
 	isDeletingTransaction: boolean;
 	deletingTransactionSuccess: boolean;
+	isSavingPendingItem: boolean;
+	savingPendingItemSuccess: boolean;
 	saveTransaction(transaction: ITransaction): void;
 	deleteTransaction(transaction: ITransaction): void;
+	savePendingItem(pendingItem: IPendingItem): void;
+	deletePendingItem(pendingItem: IPendingItem): void;
 	clearTransactionSave(): void;
 	clearTransactionDelete(): void;
+	clearPendingItemSave(): void;
 }
 
 export default function Transactions({
 	transactions,
 	incomes,
 	expenses,
+	pendingItems,
+	includePendingItems,
 	isSavingTransaction,
 	savingTransactionSuccess,
 	isDeletingTransaction,
+	isSavingPendingItem,
+	savingPendingItemSuccess,
 	deletingTransactionSuccess,
 	saveTransaction,
 	deleteTransaction,
+	savePendingItem,
+	deletePendingItem,
 	clearTransactionSave,
-	clearTransactionDelete
+	clearTransactionDelete,
+	clearPendingItemSave
 }: ITransactionsProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingTransaction, setExistingTransaction] = useState<ITransaction>(null);
@@ -71,6 +86,18 @@ export default function Transactions({
 
 	return (
 		<div className={styles.root}>
+			{includePendingItems &&
+				<PendingItems
+					{...{
+						pendingItems,
+						isSavingPendingItem,
+						savingPendingItemSuccess,
+						savePendingItem,
+						deletePendingItem,
+						clearPendingItemSave
+					}}
+					/>
+			}
 			{Object.keys(transactionsByDate).sort((a, b) => -a.localeCompare(b)).map(date =>
 				<div key={date}>
 					<h3>{date}</h3>

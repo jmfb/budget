@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageLoading } from '~/components';
 import Week from './Week';
-import { IIncome, IExpense, IWeeklyTransactions } from '~/models';
+import { IIncome, IExpense, IWeeklyTransactions, IPendingItem } from '~/models';
 import { budgetService } from '~/services';
 import cx from 'classnames';
 import styles from './Statistics.css';
@@ -9,12 +9,14 @@ import styles from './Statistics.css';
 export interface IStatisticsProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
+	pendingItems: IPendingItem[];
 	weeks: IWeeklyTransactions[];
 }
 
 export default function Statistics({
 	incomes,
 	expenses,
+	pendingItems,
 	weeks
 }: IStatisticsProps) {
 	const isLoading =
@@ -26,7 +28,8 @@ export default function Statistics({
 	}
 
 	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
-	const totalSpends = weeks.map(week => budgetService.getTotalSpend(week.transactions, incomes, expenses));
+	const totalSpends = weeks.map((week, index) =>
+		budgetService.getTotalSpend(week.transactions, index === 0 ? pendingItems : [], incomes, expenses));
 	const extraIncomes = weeks.map(week => budgetService.getExtraIncome(week.transactions, incomes, expenses));
 	const totalExtraIncome = extraIncomes.reduce((total, extraIncome) => total + extraIncome, 0);
 	const remainingBudgets = totalSpends.map(totalSpend => weeklyBudget - totalSpend);

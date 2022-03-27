@@ -1,0 +1,25 @@
+.root {
+	margin-bottom: 0.5rem;
+	cursor: pointer;
+	box-shadow: var(--box-shadow);
+	border-radius: 4px;
+	padding: 0.5rem 0.75rem;
+}
+
+.root:hover {
+	box-shadow: var(--box-shadow-active);
+	background-color: lightblue;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+}
+
+.amount {
+}
+
+.name {
+	margin-left: auto;
+	font-style: italic;
+}

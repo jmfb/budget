@@ -49,10 +49,17 @@ export interface ITransaction {
 	incomeName: string;
 }
 
+export interface IPendingItem {
+	id: number;
+	name: string;
+	amount: number;
+}
+
 export interface IBudgetResponse {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	weeklyTransactions: ITransaction[];
+	pendingItems: IPendingItem[];
 }
 
 export interface IWeeklyTransactions {

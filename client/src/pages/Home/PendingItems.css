@@ -1,0 +1,23 @@
+.header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.amount {
+	margin-left: 1rem;
+}
+
+.addButton {
+	margin-left: auto;
+}
+
+.addIcon {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-top: -2px;
+}
+
+.none {
+	font-style: italic;
+}

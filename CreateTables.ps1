@@ -42,6 +42,19 @@ try {
 		exit $lastexitcode
 	}
 
+	Write-Host "[$(Get-Date)] Creating budget-pending-items table..."
+	& aws dynamodb create-table `
+		--endpoint-url http://localhost:8000 `
+		--table-name "budget-pending-items" `
+		--attribute-definitions `
+			AttributeName=Id,AttributeType=N `
+		--key-schema `
+			AttributeName=Id,KeyType=HASH `
+		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 | Out-Null
+	if ($lastexitcode -ne 0) {
+		exit $lastexitcode
+	}
+
 	exit 0
 } catch {
 	Write-Host $_ -BackgroundColor Red

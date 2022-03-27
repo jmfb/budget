@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IIncome, IExpense, IWeeklyTransactionsByWeekOf } from '~/models';
+import { IIncome, IExpense, IPendingItem, IWeeklyTransactionsByWeekOf } from '~/models';
 import {
 	getBudget,
 	saveIncome,
 	deleteIncome,
 	saveExpense,
 	deleteExpense,
+	savePendingItem,
+	deletePendingItem,
 	saveTransaction,
 	deleteTransaction,
 	getWeeklyTransactions,
@@ -19,11 +21,14 @@ export interface IBudgetState {
 	isLoadingBudget: boolean;
 	incomes: IIncome[];
 	expenses: IExpense[];
+	pendingItems: IPendingItem[];
 	weeklyTransactions: IWeeklyTransactionsByWeekOf;
 	isSavingIncome: boolean;
 	savingIncomeSuccess: boolean;
 	isSavingExpense: boolean;
 	savingExpenseSuccess: boolean;
+	isSavingPendingItem: boolean;
+	savingPendingItemSuccess: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
 	isDeletingTransaction: boolean;
@@ -42,11 +47,14 @@ const initialState: IBudgetState = {
 	isLoadingBudget: false,
 	incomes: null,
 	expenses: null,
+	pendingItems: null,
 	weeklyTransactions: {},
 	isSavingIncome: false,
 	savingIncomeSuccess: false,
 	isSavingExpense: false,
 	savingExpenseSuccess: false,
+	isSavingPendingItem: false,
+	savingPendingItemSuccess: false,
 	isSavingTransaction: false,
 	savingTransactionSuccess: false,
 	isDeletingTransaction: false,
@@ -72,6 +80,10 @@ const slice = createSlice({
 		clearExpenseSave(state) {
 			state.isSavingExpense = false;
 			state.savingExpenseSuccess = false;
+		},
+		clearPendingItemSave(state) {
+			state.isSavingPendingItem = false;
+			state.savingPendingItemSuccess = false;
 		},
 		clearTransactionSave(state) {
 			state.isSavingTransaction = false;
@@ -100,6 +112,7 @@ const slice = createSlice({
 			state.isLoadingBudget = false;
 			state.incomes = action.payload.incomes;
 			state.expenses = action.payload.expenses;
+			state.pendingItems = action.payload.pendingItems;
 			state.weeklyTransactions[action.meta.arg] = {
 				isLoading: false,
 				weekOf: action.meta.arg,
@@ -174,6 +187,39 @@ const slice = createSlice({
 		.addCase(deleteExpense.rejected, state => {
 			state.isSavingExpense = false;
 			state.savingExpenseSuccess = false;
+		})
+
+		.addCase(savePendingItem.pending, state => {
+			state.isSavingPendingItem = true;
+			state.savingPendingItemSuccess = false;
+		})
+		.addCase(savePendingItem.fulfilled, (state, action) => {
+			state.isSavingPendingItem = false;
+			state.savingPendingItemSuccess = true;
+			const index = state.pendingItems.findIndex(pendingItem => pendingItem.id === action.meta.arg.id);
+			if (index === -1) {
+				state.pendingItems.push(action.meta.arg);
+			} else {
+				state.pendingItems[index] = action.meta.arg;
+			}
+		})
+		.addCase(savePendingItem.rejected, state => {
+			state.isSavingPendingItem = false;
+			state.savingPendingItemSuccess = false;
+		})
+
+		.addCase(deletePendingItem.pending, state => {
+			state.isSavingPendingItem = true;
+			state.savingPendingItemSuccess = false;
+		})
+		.addCase(deletePendingItem.fulfilled, (state, action) => {
+			state.isSavingPendingItem = false;
+			state.savingPendingItemSuccess = true;
+			state.pendingItems = state.pendingItems.filter(pendingItem => pendingItem.id !== action.meta.arg.id);
+		})
+		.addCase(deletePendingItem.rejected, state => {
+			state.isSavingPendingItem = false;
+			state.savingPendingItemSuccess = false;
 		})
 
 		.addCase(saveTransaction.pending, state => {
@@ -269,7 +315,8 @@ const slice = createSlice({
 		.addCase(mergeTransaction.fulfilled, (state, action) => {
 			state.isMergingTransaction = false;
 			state.mergingTransactionSuccess = true;
-			state.weeklyTransactions = action.payload;
+			state.pendingItems = action.payload.pendingItems;
+			state.weeklyTransactions = action.payload.weeklyTransactions;
 		})
 		.addCase(mergeTransaction.rejected, state => {
 			state.isMergingTransaction = false;
@@ -286,6 +333,8 @@ export default {
 		deleteIncome,
 		saveExpense,
 		deleteExpense,
+		savePendingItem,
+		deletePendingItem,
 		saveTransaction,
 		deleteTransaction,
 		getWeeklyTransactions,

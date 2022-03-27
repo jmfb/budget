@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IIncome, IExpense, ITransaction } from '~/models';
+import { IIncome, IExpense, IPendingItem, ITransaction } from '~/models';
 import IState from './IState';
 import * as hub from './budget.hub';
 import { dateService } from '~/services';
@@ -38,6 +38,20 @@ export const deleteExpense = createAsyncThunk('budget/deleteExpense', async ({ n
 	const { auth: { accessToken } } = getState() as IState;
 	await hub.deleteExpense(accessToken, name);
 });
+
+export const savePendingItem = createAsyncThunk(
+	'budget/savePendingItem',
+	async (pendingItem: IPendingItem, { getState }) => {
+		const { auth: { accessToken } } = getState() as IState;
+		await hub.savePendingItem(accessToken, pendingItem);
+	});
+
+export const deletePendingItem = createAsyncThunk(
+	'budget/deletePendingItem',
+	async ({ id }: IPendingItem, { getState }) => {
+		const { auth: { accessToken } } = getState() as IState;
+		await hub.deletePendingItem(accessToken, id);
+	});
 
 export const saveTransaction = createAsyncThunk(
 	'budget/saveTransaction',
@@ -99,8 +113,9 @@ export const mergeTransaction = createAsyncThunk(
 	async (transaction: ITransaction, { getState }) => {
 		const {
 			auth: { accessToken },
-			budget: { weeklyTransactions }
+			budget: { weeklyTransactions, pendingItems }
 		} = getState() as IState;
+		const remainingPendingItems = [...pendingItems];
 		const copyOfWeeklyTransactions = { ...weeklyTransactions };
 		const weekOf = dateService.getStartOfWeek(transaction.date);
 		if (copyOfWeeklyTransactions[weekOf] === undefined) {
@@ -126,6 +141,13 @@ export const mergeTransaction = createAsyncThunk(
 				...week,
 				transactions: [...week.transactions, newTransaction]
 			};
+
+			const matchingPendingItem = pendingItems.find(pendingItem => pendingItem.amount === newTransaction.amount);
+			if (matchingPendingItem) {
+				await hub.deletePendingItem(accessToken, matchingPendingItem.id);
+				const indexOfPendingItem = pendingItems.indexOf(matchingPendingItem);
+				remainingPendingItems.splice(indexOfPendingItem, 1);
+			}
 		} else if (existingTransaction.amount !== transaction.amount) {
 			const updatedTransaction = {
 				...existingTransaction,
@@ -142,5 +164,8 @@ export const mergeTransaction = createAsyncThunk(
 				]
 			};
 		}
-		return copyOfWeeklyTransactions;
+		return {
+			weeklyTransactions: copyOfWeeklyTransactions,
+			pendingItems: remainingPendingItems
+		};
 	});

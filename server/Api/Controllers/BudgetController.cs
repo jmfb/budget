@@ -24,10 +24,12 @@ namespace Budget.Server.Api.Controllers {
 			var incomesTask = BudgetService.LoadAllIncomesAsync(cancellationToken);
 			var expensesTask = BudgetService.LoadAllExpensesAsync(cancellationToken);
 			var weeklyTransactionsTask = BudgetService.LoadWeeklyTransactionsAsync(weekOf, cancellationToken);
+			var pendingItemsTask = BudgetService.LoadAllPendingItemsAsync(cancellationToken);
 			return new BudgetResponse {
 				Incomes = await incomesTask,
 				Expenses = await expensesTask,
-				WeeklyTransactions = await weeklyTransactionsTask
+				WeeklyTransactions = await weeklyTransactionsTask,
+				PendingItems = await pendingItemsTask
 			};
 		}
 
@@ -64,6 +66,24 @@ namespace Budget.Server.Api.Controllers {
 			CancellationToken cancellationToken
 		) {
 			await BudgetService.DeleteExpenseAsync(name, cancellationToken);
+			return Ok();
+		}
+
+		[HttpPut("pending-items")]
+		public async Task<IActionResult> SavePendingItemAsync(
+			[FromBody] PendingItem pendingItem,
+			CancellationToken cancellationToken
+		) {
+			await BudgetService.SavePendingItemAsync(pendingItem, cancellationToken);
+			return Ok();
+		}
+
+		[HttpDelete("pending-items/{id}")]
+		public async Task<IActionResult> DeletePendingItemAsync(
+			[FromRoute] int id,
+			CancellationToken cancellationToken
+		) {
+			await BudgetService.DeletePendingItemAsync(id, cancellationToken);
 			return Ok();
 		}
 

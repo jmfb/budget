@@ -20,6 +20,10 @@ export function getStartOfCurrentWeek() {
 	return getStartOfWeek(getToday());
 }
 
+export function getStartOfLastWeek() {
+	return addDays(getStartOfCurrentWeek(), -7);
+}
+
 export function getStartOfLastXWeeks(count: number) {
 	let weekOf = getStartOfCurrentWeek();
 	const result = [weekOf];

@@ -1,5 +1,5 @@
 import { get, put, del } from './hub';
-import { IIncome, IExpense, ITransaction, IBudgetResponse } from '~/models';
+import { IIncome, IExpense, IPendingItem, ITransaction, IBudgetResponse } from '~/models';
 
 export async function getBudget(accessToken: string, weekOf: string) {
 	return await get<IBudgetResponse>({
@@ -34,6 +34,21 @@ export async function saveExpense(accessToken: string, expense: IExpense) {
 export async function deleteExpense(accessToken: string, name: string) {
 	await del({
 		endpoint: `/api/budget/expenses/${encodeURIComponent(name)}`,
+		accessToken
+	});
+}
+
+export async function savePendingItem(accessToken: string, pendingItem: IPendingItem) {
+	await put({
+		endpoint: '/api/budget/pending-items',
+		accessToken,
+		body: pendingItem
+	});
+}
+
+export async function deletePendingItem(accessToken: string, id: number) {
+	await del({
+		endpoint: `/api/budget/pending-items/${id}`,
 		accessToken
 	});
 }

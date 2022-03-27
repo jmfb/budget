@@ -6,5 +6,6 @@ namespace Budget.Server.Api.Models {
 		public IEnumerable<Income> Incomes { get; set; }
 		public IEnumerable<Expense> Expenses { get; set; }
 		public IEnumerable<Transaction> WeeklyTransactions { get; set; }
+		public IEnumerable<PendingItem> PendingItems { get; set; }
 	}
 }

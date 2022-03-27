@@ -4,6 +4,7 @@ import {
 	IBankRecord,
 	ICapitalOneRecord,
 	ITransaction,
+	IPendingItem,
 	TransactionSource
 } from '~/models';
 import * as dateService from './dateService';
@@ -44,6 +45,10 @@ export function getMonthlyExpense(expense: IExpense) {
 	return round(expense.amount / expense.monthsInterval);
 }
 
+export function getTotalPendingSpend(pendingItems: IPendingItem[]) {
+	return pendingItems.reduce((total, item) => total + item.amount, 0);
+}
+
 export function round(value: number) {
 	return Math.round((value + Number.EPSILON) * 100) / 100;
 }
@@ -61,11 +66,16 @@ export function getTransactionAmount(transaction: ITransaction, incomes: IIncome
 	return transaction.amount + (income?.amount ?? 0);
 }
 
-export function getTotalSpend(transactions: ITransaction[], incomes: IIncome[], expenses: IExpense[]) {
+export function getTotalSpend(
+	transactions: ITransaction[],
+	pendingItems: IPendingItem[],
+	incomes: IIncome[],
+	expenses: IExpense[]
+) {
 	if (!transactions) {
 		return 0;
 	}
-	return transactions
+	return getTotalPendingSpend(pendingItems) + transactions
 		.map(transaction => getTransactionAmount(transaction, incomes, expenses))
 		.filter(amount => amount > 0)
 		.reduce((total, amount) => total + amount, 0);
