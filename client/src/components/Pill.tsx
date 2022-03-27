@@ -3,7 +3,7 @@ import cx from 'classnames';
 import styles from './Pill.css';
 
 export interface IPillProps {
-	type: 'info' | 'danger' | 'success';
+	type: 'info' | 'danger' | 'success' | 'new';
 	className?: string;
 	children?: React.ReactNode;
 }

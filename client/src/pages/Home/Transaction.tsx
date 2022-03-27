@@ -39,6 +39,9 @@ export default function Transaction({
 				{note &&
 					<span className={styles.note}>{note}</span>
 				}
+				{!incomeName && !expenseName && !category &&
+					<Pill className={styles.pill} type='new'>New!</Pill>
+				}
 				{!incomeName && !expenseName && category &&
 					<Pill className={styles.pill} type='info'>{category}</Pill>
 				}

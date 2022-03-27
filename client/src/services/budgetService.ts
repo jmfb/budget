@@ -173,7 +173,7 @@ export function convertCapitalOneRecordToTransaction(record: ICapitalOneRecord):
 		amount: Number.isNaN(debit) ? -credit : debit,
 		originalCategory: category,
 		description,
-		category,
+		category: '',
 		note: '',
 		expenseName: '',
 		incomeName: ''
