@@ -75,18 +75,20 @@ export default function Transactions({
 				<div key={date}>
 					<h3>{date}</h3>
 					{transactionsByDate[date]
+						.sort((a, b) => a.id - b.id)
 						.sort((a, b) => a.amount - b.amount)
 						.map(transaction =>
-						<Transaction
-							key={transaction.id}
-							{...{
-								transaction,
-								incomes,
-								expenses
-							}}
-							onEdit={createEditClickedHandler(transaction)}
-							/>
-					)}
+							<Transaction
+								key={transaction.id}
+								{...{
+									transaction,
+									incomes,
+									expenses
+								}}
+								onEdit={createEditClickedHandler(transaction)}
+								/>
+						)
+					}
 				</div>
 			)}
 			{showEditor &&

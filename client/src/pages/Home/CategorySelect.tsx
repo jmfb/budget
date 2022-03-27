@@ -27,7 +27,8 @@ export default function CategorySelect({
 		'Liquor',
 		'Entertainment',
 		'Pets',
-		'Taxes'
+		'Taxes',
+		'Cash'
 	]
 		.sort((a, b) => a.localeCompare(b))
 		.map(categoryName => ({ value: categoryName, label: categoryName }));
