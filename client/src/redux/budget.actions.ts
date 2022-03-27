@@ -113,8 +113,9 @@ export const mergeTransaction = createAsyncThunk(
 		const week = copyOfWeeklyTransactions[weekOf];
 		const dailyTransactions = week.transactions
 			.filter(({ date }) => date === transaction.date);
-		const existingTransaction = dailyTransactions
-			.find(({ source, rawText }) => source === transaction.source && rawText === transaction.rawText);
+		const existingTransaction = dailyTransactions.find(({ source, rawText }) =>
+			source === transaction.source &&
+			rawText.trim().toLowerCase() === transaction.rawText.trim().toLowerCase());
 		if (existingTransaction === undefined) {
 			const newTransaction = {
 				...transaction,
