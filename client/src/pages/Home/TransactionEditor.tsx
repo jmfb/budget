@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Input } from '~/components';
+import CategorySelect from './CategorySelect';
 import IncomeSelect from './IncomeSelect';
 import ExpenseSelect from './ExpenseSelect';
 import { ITransaction, IIncome, IExpense } from '~/models';
@@ -49,7 +50,10 @@ export default function TransactionEditor({
 			<h3>{description}</h3>
 			<div className={styles.inputs}>
 				<div className={styles.amount}>{budgetService.format(amount)} on {date}</div>
-				<Input name='Category' value={category} onChange={setCategory} />
+				<CategorySelect
+					{...{category}}
+					onChange={setCategory}
+					/>
 				<Input name='Note' value={note} onChange={setNote} />
 				{!expenseName &&
 					<IncomeSelect
