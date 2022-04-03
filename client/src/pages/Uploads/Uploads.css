@@ -31,3 +31,13 @@
 .progress {
 	margin-left: 1rem;
 }
+
+.logsHeader {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.clearButton {
+	margin-left: auto;
+}

@@ -115,6 +115,9 @@ export const mergeTransaction = createAsyncThunk(
 			auth: { accessToken },
 			budget: { weeklyTransactions, pendingItems }
 		} = getState() as IState;
+		const logs = [];
+		logs.push('='.repeat(60));
+		logs.push(JSON.stringify(transaction, null, 4));
 		const remainingPendingItems = [...pendingItems];
 		const copyOfWeeklyTransactions = { ...weeklyTransactions };
 		const weekOf = dateService.getStartOfWeek(transaction.date);
@@ -134,6 +137,8 @@ export const mergeTransaction = createAsyncThunk(
 			source === transaction.source &&
 			rawText.trim().toLowerCase() === transaction.rawText.trim().toLowerCase());
 		if (existingTransaction === undefined) {
+			logs.push('No matching transaction found for date');
+			logs.push(JSON.stringify(dailyTransactions, null, 4));
 			const newTransaction = {
 				...transaction,
 				id: Math.max(0, ...dailyTransactions.map(({ id }) => id)) + 1
@@ -146,11 +151,15 @@ export const mergeTransaction = createAsyncThunk(
 
 			const matchingPendingItem = pendingItems.find(pendingItem => pendingItem.amount === newTransaction.amount);
 			if (matchingPendingItem) {
+				logs.push('Found matching pending item');
+				logs.push(JSON.stringify(matchingPendingItem, null, 4));
 				await hub.deletePendingItem(accessToken, matchingPendingItem.id);
 				const indexOfPendingItem = pendingItems.indexOf(matchingPendingItem);
 				remainingPendingItems.splice(indexOfPendingItem, 1);
 			}
 		} else if (existingTransaction.amount !== transaction.amount) {
+			logs.push('Updating existing transaction amount');
+			logs.push(JSON.stringify(existingTransaction, null, 4));
 			const updatedTransaction = {
 				...existingTransaction,
 				amount: transaction.amount
@@ -165,9 +174,12 @@ export const mergeTransaction = createAsyncThunk(
 					...week.transactions.slice(index + 1)
 				]
 			};
+		} else {
+			logs.push('Skipping transaction');
 		}
 		return {
 			weeklyTransactions: copyOfWeeklyTransactions,
-			pendingItems: remainingPendingItems
+			pendingItems: remainingPendingItems,
+			logs: logs.join('\n')
 		};
 	});

@@ -13,10 +13,13 @@ export interface IUploadsProps {
 	csvRecords: string[][];
 	isMergingTransaction: boolean;
 	mergingTransactionSuccess: boolean;
+	logs: string;
+	isLoading: boolean;
 	getAllText(file: File): void;
 	parseCsv(fileText: string): void;
 	mergeTransaction(transaction: ITransaction): void;
 	clearUpload(): void;
+	clearLogs(): void;
 }
 
 export default function Uploads({
@@ -28,10 +31,13 @@ export default function Uploads({
 	csvRecords,
 	isMergingTransaction,
 	mergingTransactionSuccess,
+	logs,
+	isLoading,
 	getAllText,
 	parseCsv,
 	mergeTransaction,
-	clearUpload
+	clearUpload,
+	clearLogs
 }: IUploadsProps) {
 	const [isMergingBank, setIsMergingBank] = useState(false);
 	const [isMergingCapitalOne, setIsMergingCapitalOne] = useState(false);
@@ -64,6 +70,8 @@ export default function Uploads({
 			setUploadIndex(0);
 		}
 	};
+
+	const handleClearClicked = () => clearLogs();
 
 	const isMerging = isMergingBank || isMergingCapitalOne;
 
@@ -143,7 +151,7 @@ export default function Uploads({
 				<>
 					<div className={styles.mergeRow}>
 						<Button
-							isDisabled={!parsingCsvSuccess || isUploading}
+							isDisabled={isLoading || !parsingCsvSuccess || isUploading}
 							isProcessing={isUploading}
 							onClick={handleMergeClicked}>
 							Merge Transactions
@@ -159,12 +167,28 @@ export default function Uploads({
 								/>
 						}
 					</div>
-					{readingFileSuccess &&
+					{!isUploading && readingFileSuccess &&
 						<pre className={styles.preview}>
 							{fileText}
 						</pre>
 					}
 				</>
+			}
+			{logs &&
+				<div>
+					<div className={styles.logsHeader}>
+						<h3>Logs</h3>
+						<Button
+							onClick={handleClearClicked}
+							isDisabled={isUploading}
+							className={styles.clearButton}>
+							Clear
+						</Button>
+					</div>
+					<pre className={styles.preview}>
+						{logs}
+					</pre>
+				</div>
 			}
 		</div>
 	);

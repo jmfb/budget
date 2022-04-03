@@ -41,6 +41,7 @@ export interface IBudgetState {
 	isParsingCsv: boolean;
 	parsingCsvSuccess: boolean;
 	csvRecords: string[][];
+	logs: string;
 }
 
 const initialState: IBudgetState = {
@@ -66,7 +67,8 @@ const initialState: IBudgetState = {
 	fileText: null,
 	isParsingCsv: false,
 	parsingCsvSuccess: false,
-	csvRecords: null
+	csvRecords: null,
+	logs: ''
 };
 
 const slice = createSlice({
@@ -102,6 +104,9 @@ const slice = createSlice({
 			state.csvRecords = null;
 			state.isMergingTransaction = false;
 			state.mergingTransactionSuccess = false;
+		},
+		clearLogs(state) {
+			state.logs = '';
 		}
 	},
 	extraReducers: builder => builder
@@ -320,6 +325,7 @@ const slice = createSlice({
 			state.mergingTransactionSuccess = true;
 			state.pendingItems = action.payload.pendingItems;
 			state.weeklyTransactions = action.payload.weeklyTransactions;
+			state.logs += action.payload.logs + '\n';
 		})
 		.addCase(mergeTransaction.rejected, state => {
 			state.isMergingTransaction = false;
