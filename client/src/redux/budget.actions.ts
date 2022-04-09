@@ -133,9 +133,11 @@ export const mergeTransaction = createAsyncThunk(
 		const week = copyOfWeeklyTransactions[weekOf];
 		const dailyTransactions = week.transactions
 			.filter(({ date }) => date === transaction.date);
-		const existingTransaction = dailyTransactions.find(({ source, rawText }) =>
+		const existingTransaction = dailyTransactions.find(({ source, amount, description }) =>
 			source === transaction.source &&
-			rawText.trim().toLowerCase() === transaction.rawText.trim().toLowerCase());
+			amount > transaction.amount - 0.01 &&
+			amount < transaction.amount + 0.01 &&
+			description.trim().toLowerCase() === transaction.description.trim().toLowerCase());
 		if (existingTransaction === undefined) {
 			logs.push('No matching transaction found for date');
 			logs.push(JSON.stringify(dailyTransactions, null, 4));
@@ -157,23 +159,6 @@ export const mergeTransaction = createAsyncThunk(
 				const indexOfPendingItem = pendingItems.indexOf(matchingPendingItem);
 				remainingPendingItems.splice(indexOfPendingItem, 1);
 			}
-		} else if (existingTransaction.amount !== transaction.amount) {
-			logs.push('Updating existing transaction amount');
-			logs.push(JSON.stringify(existingTransaction, null, 4));
-			const updatedTransaction = {
-				...existingTransaction,
-				amount: transaction.amount
-			};
-			await hub.saveTransaction(accessToken, updatedTransaction);
-			const index = week.transactions.indexOf(existingTransaction);
-			copyOfWeeklyTransactions[weekOf] = {
-				...week,
-				transactions: [
-					...week.transactions.slice(0, index),
-					updatedTransaction,
-					...week.transactions.slice(index + 1)
-				]
-			};
 		} else {
 			logs.push('Skipping transaction');
 		}
