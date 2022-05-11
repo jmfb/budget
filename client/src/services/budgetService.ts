@@ -234,3 +234,24 @@ export function convertCapitalOneRecordToTransaction(record: ICapitalOneRecord):
 		incomeName: ''
 	};
 }
+
+function isSameAmount(first: number, second: number) {
+	const epsilon = 0.01;
+	const lowerBound = second - epsilon;
+	const upperBound = second + epsilon;
+	return first > lowerBound && first < upperBound;
+}
+
+function getFundamentalDescription(value: string) {
+	return value.toLowerCase().replace(/\s/g, '');
+}
+
+function isSameDescription(first: string, second: string) {
+	return getFundamentalDescription(first) === getFundamentalDescription(second);
+}
+
+export function isSameTransaction(first: ITransaction, second: ITransaction) {
+	return first.source === second.source &&
+		isSameAmount(first.amount, second.amount) &&
+		isSameDescription(first.description, second.description);
+}

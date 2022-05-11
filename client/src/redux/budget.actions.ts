@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IIncome, IExpense, IPendingItem, ITransaction } from '~/models';
 import IState from './IState';
 import * as hub from './budget.hub';
-import { dateService } from '~/services';
+import { dateService, budgetService } from '~/services';
 import { parse } from 'csv-parse';
 
 export const getBudget = createAsyncThunk(
@@ -133,11 +133,8 @@ export const mergeTransaction = createAsyncThunk(
 		const week = copyOfWeeklyTransactions[weekOf];
 		const dailyTransactions = week.transactions
 			.filter(({ date }) => date === transaction.date);
-		const existingTransaction = dailyTransactions.find(({ source, amount, description }) =>
-			source === transaction.source &&
-			amount > transaction.amount - 0.01 &&
-			amount < transaction.amount + 0.01 &&
-			description.trim().toLowerCase() === transaction.description.trim().toLowerCase());
+		const existingTransaction = dailyTransactions
+			.find(second => budgetService.isSameTransaction(transaction, second));
 		if (existingTransaction === undefined) {
 			logs.push('No matching transaction found for date');
 			logs.push(JSON.stringify(dailyTransactions, null, 4));
