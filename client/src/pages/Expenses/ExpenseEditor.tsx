@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Input, CurrencyInput, NumberInput, Checkbox } from '~/components';
+import { Modal, Button, Input, CurrencyInput, NumberInput, Checkbox, CategorySelect } from '~/components';
 import { IExpense } from '~/models';
 import styles from './ExpenseEditor.css';
 
@@ -36,7 +36,8 @@ export default function ExpenseEditor({
 	const isValidName = !!name;
 	const isValidAmount = amount > 0;
 	const isValidInterval = !isDistributed || monthsInterval === 12;
-	const isValid = isValidName && isValidAmount && isValidInterval;
+	const isValidCategory = !!category;
+	const isValid = isValidName && isValidAmount && isValidInterval && isValidCategory;
 
 	return (
 		<Modal onClose={onCancel}>
@@ -54,7 +55,10 @@ export default function ExpenseEditor({
 				{!isDistributed &&
 					<NumberInput name='Months Interval' value={monthsInterval} onChange={setMonthsInterval} />
 				}
-				<Input name='Category' value={category} onChange={setCategory} />
+				<CategorySelect
+					{...{category}}
+					onChange={setCategory}
+					/>
 			</div>
 			<hr />
 			<div className={styles.buttons}>
