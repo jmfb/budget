@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Input } from '~/components';
-import CategorySelect from './CategorySelect';
+import { Modal, Button, Input, CategorySelect } from '~/components';
 import IncomeSelect from './IncomeSelect';
 import ExpenseSelect from './ExpenseSelect';
 import ConfirmDelete from './ConfirmDelete';

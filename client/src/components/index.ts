@@ -9,4 +9,5 @@ export { default as CurrencyInput } from './CurrencyInput';
 export { default as NumberInput } from './NumberInput';
 export { default as FileInput } from './FileInput';
 export { default as Checkbox } from './Checkbox';
+export { default as CategorySelect } from './CategorySelect';
 export * from './Icon';
