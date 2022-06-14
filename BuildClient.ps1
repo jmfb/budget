@@ -21,6 +21,12 @@ try {
 		exit $lastexitcode
 	}
 
+	Write-Host "[$(Get-Date)] Verifying prettier configuration."
+	& yarn run prettier-ci
+	if ($lastexitcode -ne 0) {
+		exit $lastexitcode
+	}
+
 	Write-Host "[$(Get-Date)] Successfully built client."
 	exit 0
 } catch {
