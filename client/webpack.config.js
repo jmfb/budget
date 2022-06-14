@@ -23,7 +23,7 @@ const buildDir = path.resolve(__dirname, '../server/wwwroot/dist');
 module.exports = {
 	mode: isDebug ? 'development' : 'production',
 	entry: {
-		bundle: ['whatwg-fetch', './src/index.tsx']
+		bundle: ['./src/index.tsx']
 	},
 	output: {
 		publicPath: '/dist/',
