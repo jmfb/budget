@@ -39,10 +39,10 @@ export default function CurrencyInput({
 
 	return (
 		<Input
-			{...{name}}
+			{...{ name }}
 			value={textValue}
 			onChange={handleTextChanged}
 			onBlur={handleBlurred}
-			/>
+		/>
 	);
 }

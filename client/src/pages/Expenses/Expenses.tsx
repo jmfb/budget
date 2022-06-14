@@ -74,25 +74,33 @@ export default function Expenses({
 		<div>
 			<div className={styles.header}>
 				<h2 className={styles.heading}>Expenses</h2>
-				<h3 className={styles.heading}>{budgetService.format(weeklyExpenses)} every week</h3>
-				<Button className={styles.addButton} onClick={handleAddClicked}>Add</Button>
+				<h3 className={styles.heading}>
+					{budgetService.format(weeklyExpenses)} every week
+				</h3>
+				<Button
+					className={styles.addButton}
+					onClick={handleAddClicked}>
+					Add
+				</Button>
 			</div>
 			<div>
-				{Object.keys(expensesByCategory).sort((a, b) => a.localeCompare(b)).map(category =>
-					<Category
-						key={category}
-						{...{
-							category,
-							isSavingExpense,
-							deleteExpense,
-							clearExpenseSave
-						}}
-						expenses={expensesByCategory[category]}
-						onEditExpense={handleEditExpense}
+				{Object.keys(expensesByCategory)
+					.sort((a, b) => a.localeCompare(b))
+					.map(category => (
+						<Category
+							key={category}
+							{...{
+								category,
+								isSavingExpense,
+								deleteExpense,
+								clearExpenseSave
+							}}
+							expenses={expensesByCategory[category]}
+							onEditExpense={handleEditExpense}
 						/>
-				)}
+					))}
 			</div>
-			{showEditor &&
+			{showEditor && (
 				<ExpenseEditor
 					{...{
 						existingExpense,
@@ -100,8 +108,8 @@ export default function Expenses({
 					}}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
-					/>
-			}
+				/>
+			)}
 		</div>
 	);
 }

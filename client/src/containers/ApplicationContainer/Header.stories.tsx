@@ -9,10 +9,11 @@ export default {
 	component: Header
 } as Meta;
 
-const Template: Story<IHeaderProps> = props =>
+const Template: Story<IHeaderProps> = props => (
 	<BrowserRouter>
 		<Header {...props} />
-	</BrowserRouter>;
+	</BrowserRouter>
+);
 
 export const Default = Template.bind({});
 Default.args = {};

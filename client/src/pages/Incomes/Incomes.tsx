@@ -64,11 +64,17 @@ export default function Incomes({
 		<div>
 			<div className={styles.header}>
 				<h2 className={styles.heading}>Incomes</h2>
-				<h3 className={styles.heading}>{budgetService.format(weeklyIncomes)} every week</h3>
-				<Button className={styles.addButton} onClick={handleAddClicked}>Add</Button>
+				<h3 className={styles.heading}>
+					{budgetService.format(weeklyIncomes)} every week
+				</h3>
+				<Button
+					className={styles.addButton}
+					onClick={handleAddClicked}>
+					Add
+				</Button>
 			</div>
 			<div>
-				{incomes.map(income =>
+				{incomes.map(income => (
 					<Income
 						key={income.name}
 						{...{
@@ -78,10 +84,10 @@ export default function Incomes({
 							clearIncomeSave
 						}}
 						onEdit={createEditClickedHandler(income)}
-						/>
-				)}
+					/>
+				))}
 			</div>
-			{showEditor &&
+			{showEditor && (
 				<IncomeEditor
 					{...{
 						existingIncome,
@@ -89,8 +95,8 @@ export default function Incomes({
 					}}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
-					/>
-			}
+				/>
+			)}
 		</div>
 	);
 }

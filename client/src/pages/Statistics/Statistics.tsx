@@ -41,11 +41,23 @@ export default function Statistics({
 			index === 0 ? pendingItems : [],
 			incomes,
 			expenses,
-			week.yearlyExpenseTotals));
-	const extraIncomes = weeks.map(week => budgetService.getExtraIncome(week.transactions, incomes, expenses));
-	const totalExtraIncome = extraIncomes.reduce((total, extraIncome) => total + extraIncome, 0);
-	const remainingBudgets = totalSpends.map(totalSpend => weeklyBudget - totalSpend);
-	const totalRemainingBudget = remainingBudgets.reduce((total, remainingBudget) => total + remainingBudget, 0);
+			week.yearlyExpenseTotals
+		)
+	);
+	const extraIncomes = weeks.map(week =>
+		budgetService.getExtraIncome(week.transactions, incomes, expenses)
+	);
+	const totalExtraIncome = extraIncomes.reduce(
+		(total, extraIncome) => total + extraIncome,
+		0
+	);
+	const remainingBudgets = totalSpends.map(
+		totalSpend => weeklyBudget - totalSpend
+	);
+	const totalRemainingBudget = remainingBudgets.reduce(
+		(total, remainingBudget) => total + remainingBudget,
+		0
+	);
 	const maxUnderBudget = Math.max(0, ...remainingBudgets);
 	const maxOverBudget = Math.min(0, ...remainingBudgets);
 	const netResult = totalRemainingBudget + totalExtraIncome;
@@ -54,7 +66,7 @@ export default function Statistics({
 		<div>
 			<h2 className={styles.h2}>Last {weeks.length} Weeks</h2>
 			<div className={styles.graph}>
-				{remainingBudgets.map((remainingBudget, index) =>
+				{remainingBudgets.map((remainingBudget, index) => (
 					<Week
 						key={index}
 						{...{
@@ -62,57 +74,72 @@ export default function Statistics({
 							maxUnderBudget,
 							maxOverBudget
 						}}
-						/>
-				)}
+					/>
+				))}
 			</div>
-			{totalRemainingBudget >= 0 &&
+			{totalRemainingBudget >= 0 && (
 				<div className={styles.row}>
 					Total Under
-					<span className={styles.gain}>{budgetService.format(totalRemainingBudget)}</span>
+					<span className={styles.gain}>
+						{budgetService.format(totalRemainingBudget)}
+					</span>
 				</div>
-			}
-			{totalRemainingBudget < 0 &&
+			)}
+			{totalRemainingBudget < 0 && (
 				<div className={styles.row}>
 					Total Over
-					<span className={styles.loss}>{budgetService.format(-totalRemainingBudget)}</span>
+					<span className={styles.loss}>
+						{budgetService.format(-totalRemainingBudget)}
+					</span>
 				</div>
-			}
-			{totalExtraIncome > 0 &&
+			)}
+			{totalExtraIncome > 0 && (
 				<>
 					<div className={styles.row}>
 						Total Extra Income
-						<span className={styles.gain}>{budgetService.format(totalExtraIncome)}</span>
+						<span className={styles.gain}>
+							{budgetService.format(totalExtraIncome)}
+						</span>
 					</div>
-					{netResult >= 0 &&
+					{netResult >= 0 && (
 						<div className={styles.row}>
 							Net Gain
-							<span className={cx(styles.net, styles.gain)}>{budgetService.format(netResult)}</span>
+							<span className={cx(styles.net, styles.gain)}>
+								{budgetService.format(netResult)}
+							</span>
 						</div>
-					}
-					{netResult < 0 &&
+					)}
+					{netResult < 0 && (
 						<div className={styles.row}>
 							Net Loss
-							<span className={cx(styles.net, styles.loss)}>{budgetService.format(-netResult)}</span>
+							<span className={cx(styles.net, styles.loss)}>
+								{budgetService.format(-netResult)}
+							</span>
 						</div>
-					}
+					)}
 				</>
-			}
+			)}
 			{expenses
 				.filter(expense => expense.isDistributed)
 				.map(expense => ({
 					expense,
-					total: yearlyExpenseTotals[expense.name] ?? 0 + getWeekExpenseTotal(expense.name)
+					total:
+						yearlyExpenseTotals[expense.name] ??
+						0 + getWeekExpenseTotal(expense.name)
 				}))
 				.filter(item => item.total < item.expense.amount)
-				.map(item =>
-					<div key={item.expense.name} className={styles.row}>
+				.map(item => (
+					<div
+						key={item.expense.name}
+						className={styles.row}>
 						Remaining {item.expense.name} Budget
 						<span className={cx(styles.net, styles.gain)}>
-							{budgetService.format(item.expense.amount - item.total)}
+							{budgetService.format(
+								item.expense.amount - item.total
+							)}
 						</span>
 					</div>
-				)
-			}
+				))}
 		</div>
 	);
 }

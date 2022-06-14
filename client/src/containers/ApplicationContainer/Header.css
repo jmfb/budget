@@ -17,8 +17,7 @@
 	padding: 0 0.5em;
 	text-align: center;
 	border-bottom: 2px solid transparent;
-	transition:
-		color var(--timing-reactive) linear,
+	transition: color var(--timing-reactive) linear,
 		background-color var(--timing-reactive) linear,
 		border-bottom-color var(--timing-reactive) linear;
 }

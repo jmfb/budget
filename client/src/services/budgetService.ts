@@ -27,7 +27,10 @@ export function getWeeklyIncomes(incomes: IIncome[]) {
 }
 
 export function getTotalMonthlyIncomes(incomes: IIncome[]) {
-	return incomes.reduce((total, income) => total + getMonthlyIncome(income), 0);
+	return incomes.reduce(
+		(total, income) => total + getMonthlyIncome(income),
+		0
+	);
 }
 
 export function getMonthlyIncome(income: IIncome) {
@@ -39,7 +42,10 @@ export function getWeeklyExpenses(expenses: IExpense[]) {
 }
 
 export function getTotalMonthlyExpenses(expenses: IExpense[]) {
-	return expenses.reduce((total, expense) => total + getMonthlyExpense(expense), 0);
+	return expenses.reduce(
+		(total, expense) => total + getMonthlyExpense(expense),
+		0
+	);
 }
 
 export function getMonthlyExpense(expense: IExpense) {
@@ -55,7 +61,10 @@ export function round(value: number) {
 }
 
 export function format(value: number) {
-	return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' }).format(value);
+	return new Intl.NumberFormat(undefined, {
+		style: 'currency',
+		currency: 'USD'
+	}).format(value);
 }
 
 export function getTransactionAmount(
@@ -65,9 +74,14 @@ export function getTransactionAmount(
 	yearlyExpenseTotals: IExpenseTotals,
 	weekExpesneTotals: IExpenseTotals
 ) {
-	const income = incomes.find(income => income.name === transaction.incomeName);
-	const expense = expenses.find(expense => expense.name === transaction.expenseName);
-	const yearlyExpenseTotal = yearlyExpenseTotals[transaction.expenseName] ?? 0;
+	const income = incomes.find(
+		income => income.name === transaction.incomeName
+	);
+	const expense = expenses.find(
+		expense => expense.name === transaction.expenseName
+	);
+	const yearlyExpenseTotal =
+		yearlyExpenseTotals[transaction.expenseName] ?? 0;
 	const weekExpenseTotal = weekExpesneTotals[transaction.expenseName] ?? 0;
 	const expenseTotal = yearlyExpenseTotal + weekExpenseTotal;
 	const expenseTotalWithAmount = expenseTotal + transaction.amount;
@@ -101,22 +115,35 @@ export function getTotalSpend(
 	const weekExpenseTotal: IExpenseTotals = {};
 	let transactionTotal = 0;
 	for (const transaction of transactions) {
-		const amount = getTransactionAmount(transaction, incomes, expenses, yearlyExpenseTotals, weekExpenseTotal);
+		const amount = getTransactionAmount(
+			transaction,
+			incomes,
+			expenses,
+			yearlyExpenseTotals,
+			weekExpenseTotal
+		);
 		if (amount > 0) {
 			transactionTotal += amount;
 		}
 		const currentWeekTotal = weekExpenseTotal[transaction.expenseName] ?? 0;
-		weekExpenseTotal[transaction.expenseName] = currentWeekTotal + transaction.amount;
+		weekExpenseTotal[transaction.expenseName] =
+			currentWeekTotal + transaction.amount;
 	}
 	return pendingTotal + transactionTotal;
 }
 
-export function getExtraIncome(transactions: ITransaction[], incomes: IIncome[], expenses: IExpense[]) {
+export function getExtraIncome(
+	transactions: ITransaction[],
+	incomes: IIncome[],
+	expenses: IExpense[]
+) {
 	if (!transactions) {
 		return 0;
 	}
 	return transactions
-		.map(transaction => getTransactionAmount(transaction, incomes, expenses, {}, {}))
+		.map(transaction =>
+			getTransactionAmount(transaction, incomes, expenses, {}, {})
+		)
 		.filter(amount => amount < 0)
 		.reduce((total, amount) => total - amount, 0);
 }
@@ -128,11 +155,15 @@ export function getDiscrepancy(
 	yearlyExpenseTotals: IExpenseTotals,
 	weekExpesneTotals: IExpenseTotals
 ) {
-	const income = incomes.find(income => income.name === transaction.incomeName);
+	const income = incomes.find(
+		income => income.name === transaction.incomeName
+	);
 	if (income) {
 		return income.amount + transaction.amount;
 	}
-	const expense = expenses.find(expense => expense.name === transaction.expenseName);
+	const expense = expenses.find(
+		expense => expense.name === transaction.expenseName
+	);
 	if (expense) {
 		if (expense.isDistributed) {
 			const yearlyExpenseTotal = yearlyExpenseTotals[expense.name] ?? 0;
@@ -153,11 +184,17 @@ export function getDiscrepancy(
 }
 
 export function isCapitalOneDebit(transaction: ITransaction) {
-	return transaction.amount > 0 && !!transaction.description.match(/^CAPITAL ONE .*$/i);
+	return (
+		transaction.amount > 0 &&
+		!!transaction.description.match(/^CAPITAL ONE .*$/i)
+	);
 }
 
 export function isCapitalOneCredit(transaction: ITransaction) {
-	return transaction.amount < 0 && !!transaction.description.match(/^CAPITAL ONE .*$/i);
+	return (
+		transaction.amount < 0 &&
+		!!transaction.description.match(/^CAPITAL ONE .*$/i)
+	);
 }
 
 export function parseBankRecord(record: string[]): IBankRecord {
@@ -187,15 +224,10 @@ export function parseCapitalOneRecord(record: string[]): ICapitalOneRecord {
 	};
 }
 
-export function convertBankRecordToTransaction(record: IBankRecord): ITransaction {
-	const {
-		date,
-		type,
-		description,
-		debit,
-		credit,
-		rawText
-	} = record;
+export function convertBankRecordToTransaction(
+	record: IBankRecord
+): ITransaction {
+	const { date, type, description, debit, credit, rawText } = record;
 	return {
 		date,
 		id: 0,
@@ -211,15 +243,11 @@ export function convertBankRecordToTransaction(record: IBankRecord): ITransactio
 	};
 }
 
-export function convertCapitalOneRecordToTransaction(record: ICapitalOneRecord): ITransaction {
-	const {
-		transactionDate,
-		description,
-		category,
-		debit,
-		credit,
-		rawText
-	} = record;
+export function convertCapitalOneRecordToTransaction(
+	record: ICapitalOneRecord
+): ITransaction {
+	const { transactionDate, description, category, debit, credit, rawText } =
+		record;
 	return {
 		date: transactionDate,
 		id: 0,
@@ -247,11 +275,15 @@ function getFundamentalDescription(value: string) {
 }
 
 function isSameDescription(first: string, second: string) {
-	return getFundamentalDescription(first) === getFundamentalDescription(second);
+	return (
+		getFundamentalDescription(first) === getFundamentalDescription(second)
+	);
 }
 
 export function isSameTransaction(first: ITransaction, second: ITransaction) {
-	return first.source === second.source &&
+	return (
+		first.source === second.source &&
 		isSameAmount(first.amount, second.amount) &&
-		isSameDescription(first.description, second.description);
+		isSameDescription(first.description, second.description)
+	);
 }

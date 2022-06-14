@@ -8,8 +8,7 @@ export default {
 	component: SignIn
 } as Meta;
 
-const Template: Story<ISignInProps> = props =>
-	<SignIn {...props} />;
+const Template: Story<ISignInProps> = props => <SignIn {...props} />;
 
 export const Default = Template.bind({});
 

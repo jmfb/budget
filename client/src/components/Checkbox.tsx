@@ -7,11 +7,7 @@ export interface ICheckboxProps {
 	onChange(value: boolean): void;
 }
 
-export default function Checkbox({
-	name,
-	value,
-	onChange
-}: ICheckboxProps) {
+export default function Checkbox({ name, value, onChange }: ICheckboxProps) {
 	const handleChanged = (event: React.FormEvent<HTMLInputElement>) => {
 		onChange(event.currentTarget.checked);
 	};
@@ -23,7 +19,7 @@ export default function Checkbox({
 				type='checkbox'
 				checked={value}
 				onChange={handleChanged}
-				/>
+			/>
 			{name}
 		</label>
 	);

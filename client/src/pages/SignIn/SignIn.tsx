@@ -7,10 +7,7 @@ export interface ISignInProps {
 	onClickSignIn(): void;
 }
 
-export default function SignIn({
-	isSigningIn,
-	onClickSignIn
-}: ISignInProps) {
+export default function SignIn({ isSigningIn, onClickSignIn }: ISignInProps) {
 	return (
 		<main>
 			<section>
@@ -21,10 +18,10 @@ export default function SignIn({
 					type='dark'
 					isDisabled={isSigningIn}
 					onClick={onClickSignIn}
-					/>
-				{isSigningIn &&
+				/>
+				{isSigningIn && (
 					<PageLoading message='Redirecting to Google sign-in page...' />
-				}
+				)}
 			</section>
 		</main>
 	);

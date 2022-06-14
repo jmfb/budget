@@ -7,29 +7,65 @@ import NewerVersionPrompt from './NewerVersionPrompt';
 import { useAppSelector, authSlice, diagnosticsSlice } from '~/redux';
 import { useInterval } from '~/hooks';
 
-const asyncHomeContainer = lazy(() =>
-	import(/* webpackChunkName: 'HomeContainer' */ '~/containers/HomeContainer'));
-const asyncStatisticsContainer = lazy(() =>
-	import(/* webpackChunkName: 'StatisticsContainer' */ '~/containers/StatisticsContainer'));
-const asyncIncomesContainer = lazy(() =>
-	import(/* webpackChunkName: 'IncomesContainer' */ '~/containers/IncomesContainer'));
-const asyncExpensesContainer = lazy(() =>
-	import(/* webpackChunkName: 'ExpensesContainer' */ '~/containers/ExpensesContainer'));
-const asyncUploadsContainer = lazy(() =>
-	import(/* webpackChunkName: 'UploadsContainer' */ '~/containers/UploadsContainer'));
-const asyncSignOutContainer = lazy(() =>
-	import(/* webpackChunkName: 'SignOutContainer' */ '~/containers/SignOutContainer'));
+const asyncHomeContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HomeContainer' */ '~/containers/HomeContainer'
+		)
+);
+const asyncStatisticsContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'StatisticsContainer' */ '~/containers/StatisticsContainer'
+		)
+);
+const asyncIncomesContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'IncomesContainer' */ '~/containers/IncomesContainer'
+		)
+);
+const asyncExpensesContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'ExpensesContainer' */ '~/containers/ExpensesContainer'
+		)
+);
+const asyncUploadsContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'UploadsContainer' */ '~/containers/UploadsContainer'
+		)
+);
+const asyncSignOutContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SignOutContainer' */ '~/containers/SignOutContainer'
+		)
+);
 
 export default function ApplicationContainer() {
 	const dispatch = useDispatch();
-	const { readLocalStorage } = bindActionCreators(authSlice.actions, dispatch);
-	const { heartbeat } = bindActionCreators(diagnosticsSlice.actions, dispatch);
+	const { readLocalStorage } = bindActionCreators(
+		authSlice.actions,
+		dispatch
+	);
+	const { heartbeat } = bindActionCreators(
+		diagnosticsSlice.actions,
+		dispatch
+	);
 	const history = useHistory();
-	const redirectToSignIn = useAppSelector(state => state.auth.redirectToSignIn);
+	const redirectToSignIn = useAppSelector(
+		state => state.auth.redirectToSignIn
+	);
 	const url = useAppSelector(state => state.auth.url);
 	const email = useAppSelector(state => state.auth.email);
-	const bundleVersion = useAppSelector(state => state.diagnostics.bundleVersion);
-	const serverBundleVersion = useAppSelector(state => state.diagnostics.serverBundleVersion);
+	const bundleVersion = useAppSelector(
+		state => state.diagnostics.bundleVersion
+	);
+	const serverBundleVersion = useAppSelector(
+		state => state.diagnostics.serverBundleVersion
+	);
 
 	useEffect(() => {
 		readLocalStorage();
@@ -44,9 +80,7 @@ export default function ApplicationContainer() {
 	};
 
 	if (redirectToSignIn && url === undefined) {
-		return (
-			<Redirect to='/sign-in' />
-		);
+		return <Redirect to='/sign-in' />;
 	}
 
 	if (email === undefined) {
@@ -59,12 +93,31 @@ export default function ApplicationContainer() {
 			<main>
 				<section>
 					<Switch>
-						<Route exact path='/' component={asyncHomeContainer} />
-						<Route path='/statistics' component={asyncStatisticsContainer} />
-						<Route path='/incomes' component={asyncIncomesContainer} />
-						<Route path='/expenses' component={asyncExpensesContainer} />
-						<Route path='/uploads' component={asyncUploadsContainer} />
-						<Route path='/sign-out' component={asyncSignOutContainer} />
+						<Route
+							exact
+							path='/'
+							component={asyncHomeContainer}
+						/>
+						<Route
+							path='/statistics'
+							component={asyncStatisticsContainer}
+						/>
+						<Route
+							path='/incomes'
+							component={asyncIncomesContainer}
+						/>
+						<Route
+							path='/expenses'
+							component={asyncExpensesContainer}
+						/>
+						<Route
+							path='/uploads'
+							component={asyncUploadsContainer}
+						/>
+						<Route
+							path='/sign-out'
+							component={asyncSignOutContainer}
+						/>
 						<Route>
 							<Redirect to='/' />
 						</Route>
@@ -75,7 +128,7 @@ export default function ApplicationContainer() {
 							serverBundleVersion
 						}}
 						onClickRefresh={handleRefreshClicked}
-						/>
+					/>
 				</section>
 			</main>
 		</>

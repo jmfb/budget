@@ -8,8 +8,7 @@ export default {
 	component: PageLoading
 } as Meta;
 
-const Template: Story<IPageLoadingProps> = props =>
-	<PageLoading {...props} />;
+const Template: Story<IPageLoadingProps> = props => <PageLoading {...props} />;
 
 export const Default = Template.bind({});
 

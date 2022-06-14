@@ -19,9 +19,10 @@ export default function ExpenseSelect({
 		value: expense,
 		label: `${expense.name} - ${budgetService.format(expense.amount)}`
 	}));
-	const selectedOption = options.find(option => option.value.name === expenseName) ?? null;
+	const selectedOption =
+		options.find(option => option.value.name === expenseName) ?? null;
 
-	const handleChange = (option: { value: IExpense; }) => {
+	const handleChange = (option: { value: IExpense }) => {
 		onChange(option?.value.name ?? '');
 	};
 
@@ -31,10 +32,10 @@ export default function ExpenseSelect({
 			<Select
 				isClearable
 				placeholder='Select expense...'
-				{...{options}}
+				{...{ options }}
 				value={selectedOption}
 				onChange={handleChange}
-				/>
+			/>
 		</label>
 	);
 }

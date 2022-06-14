@@ -8,11 +8,7 @@ export interface IPillProps {
 	children?: React.ReactNode;
 }
 
-export default function Pill({
-	type,
-	className,
-	children
-}: IPillProps) {
+export default function Pill({ type, className, children }: IPillProps) {
 	return (
 		<div className={cx(styles.root, styles[type], className)}>
 			{children}

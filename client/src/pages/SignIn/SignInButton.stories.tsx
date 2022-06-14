@@ -8,8 +8,9 @@ export default {
 	component: SignInButton
 } as Meta;
 
-const Template: Story<ISignInButtonProps> = props =>
-	<SignInButton {...props} />;
+const Template: Story<ISignInButtonProps> = props => (
+	<SignInButton {...props} />
+);
 
 export const Light = Template.bind({});
 Light.args = {

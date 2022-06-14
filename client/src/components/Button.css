@@ -7,8 +7,7 @@
 	color: white;
 	border-radius: 4px;
 	cursor: pointer;
-	transition:
-		background-color var(--timing-reactive) linear,
+	transition: background-color var(--timing-reactive) linear,
 		box-shadow var(--timing-reactive) linear;
 }
 

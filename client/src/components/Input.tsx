@@ -31,7 +31,7 @@ export default function Input({
 				className={styles.input}
 				type={type ?? 'text'}
 				onChange={handleChanged}
-				/>
+			/>
 		</label>
 	);
 }

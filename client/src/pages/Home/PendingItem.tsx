@@ -14,9 +14,13 @@ export default function PendingItem({
 }: IPendingItemProps) {
 	const { name, amount } = pendingItem;
 	return (
-		<div className={styles.root} onClick={onEdit}>
+		<div
+			className={styles.root}
+			onClick={onEdit}>
 			<div className={styles.row}>
-				<span className={styles.amount}>{budgetService.format(amount)}</span>
+				<span className={styles.amount}>
+					{budgetService.format(amount)}
+				</span>
 				<span className={styles.name}>{name}</span>
 			</div>
 		</div>

@@ -14,7 +14,7 @@
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
 		"paths": {
-			"~/*": [ "./src/*" ]
+			"~/*": ["./src/*"]
 		},
 		"sourceMap": true,
 		"strictNullChecks": false,

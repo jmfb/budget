@@ -11,16 +11,14 @@ export default function AuthenticationContainer() {
 	const { authenticate } = bindActionCreators(authSlice.actions, dispatch);
 	const location = useLocation();
 	const email = useAppSelector(state => state.auth.email);
-	const { code } = queryString.parse(location.search) as { code: string; };
+	const { code } = queryString.parse(location.search) as { code: string };
 
 	useEffect(() => {
 		authenticate(code);
 	}, [code]);
 
 	if (email !== undefined || !code) {
-		return (
-			<Redirect to='/' />
-		);
+		return <Redirect to='/' />;
 	}
 
 	return (

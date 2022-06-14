@@ -21,7 +21,8 @@ export default function Income({
 }: IIncomeProps) {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const { name, amount, weeksInterval } = income;
-	const interval = weeksInterval === 1 ? 'every week' : `every ${weeksInterval} weeks`;
+	const interval =
+		weeksInterval === 1 ? 'every week' : `every ${weeksInterval} weeks`;
 
 	useEffect(() => {
 		if (!isSavingIncome && isDeleting) {
@@ -40,7 +41,11 @@ export default function Income({
 			<span className={styles.text}>
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
-			<Button className={styles.editButton} onClick={onEdit}>Edit</Button>
+			<Button
+				className={styles.editButton}
+				onClick={onEdit}>
+				Edit
+			</Button>
 			<Button
 				onClick={handleDeleteClicked}
 				isProcessing={isDeleting}

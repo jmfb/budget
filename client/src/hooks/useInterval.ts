@@ -10,7 +10,10 @@ export default function useInterval(callback: Action, timeout: number) {
 	}, [callback]);
 
 	useEffect(() => {
-		const intervalId = window.setInterval(() => callbackRef.current(), timeout);
+		const intervalId = window.setInterval(
+			() => callbackRef.current(),
+			timeout
+		);
 		return () => window.clearInterval(intervalId);
 	}, [timeout]);
 }

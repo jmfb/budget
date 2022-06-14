@@ -34,7 +34,9 @@ export default function TransactionEditor({
 }: ITransactionEditorProps) {
 	const [category, setCategory] = useState(transaction.category ?? '');
 	const [note, setNote] = useState(transaction.note ?? '');
-	const [expenseName, setExpenseName] = useState(transaction.expenseName ?? '');
+	const [expenseName, setExpenseName] = useState(
+		transaction.expenseName ?? ''
+	);
 	const [incomeName, setIncomeName] = useState(transaction.incomeName ?? '');
 	const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
@@ -72,11 +74,7 @@ export default function TransactionEditor({
 		}
 	}, [isDeleting, isDeletingTransaction, deletingTransactionSuccess]);
 
-	const {
-		amount,
-		description,
-		date
-	} = transaction;
+	const { amount, description, date } = transaction;
 
 	const isModificationInProgress = isSavingTransaction || isDeleting;
 
@@ -84,24 +82,30 @@ export default function TransactionEditor({
 		<Modal onClose={onCancel}>
 			<h3>{description}</h3>
 			<div className={styles.inputs}>
-				<div className={styles.amount}>{budgetService.format(amount)} on {date}</div>
+				<div className={styles.amount}>
+					{budgetService.format(amount)} on {date}
+				</div>
 				<CategorySelect
-					{...{category}}
+					{...{ category }}
 					onChange={setCategory}
-					/>
-				<Input name='Note' value={note} onChange={setNote} />
-				{!expenseName &&
+				/>
+				<Input
+					name='Note'
+					value={note}
+					onChange={setNote}
+				/>
+				{!expenseName && (
 					<IncomeSelect
-						{...{incomes, incomeName}}
+						{...{ incomes, incomeName }}
 						onChange={setIncomeName}
-						/>
-				}
-				{!incomeName &&
+					/>
+				)}
+				{!incomeName && (
 					<ExpenseSelect
-						{...{expenses, expenseName}}
+						{...{ expenses, expenseName }}
 						onChange={setExpenseName}
-						/>
-				}
+					/>
+				)}
 			</div>
 			<hr />
 			<div className={styles.buttons}>
@@ -125,12 +129,12 @@ export default function TransactionEditor({
 					Cancel
 				</Button>
 			</div>
-			{isConfirmingDelete &&
+			{isConfirmingDelete && (
 				<ConfirmDelete
 					onConfirmDelete={handleDeleteConfirmationConfirmed}
 					onCancel={handleDeleteConfirmationCanceled}
-					/>
-			}
+				/>
+			)}
 		</Modal>
 	);
 }

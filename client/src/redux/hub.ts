@@ -13,16 +13,14 @@ function getStandardHeaders(accessToken?: string) {
 	return {
 		Accept: 'application/json',
 		'Content-Type': 'application/json',
-		...accessToken === undefined ?
-			{} :
-			{ Authorization: `Bearer ${accessToken}` }
+		...(accessToken === undefined
+			? {}
+			: { Authorization: `Bearer ${accessToken}` })
 	};
 }
 
 function formatUri(endpoint: string, query?: any) {
-	return query ?
-		`${endpoint}?${queryString.stringify(query)}` :
-		endpoint;
+	return query ? `${endpoint}?${queryString.stringify(query)}` : endpoint;
 }
 
 interface IGetRequest {
@@ -37,7 +35,7 @@ export async function get<T>(request: IGetRequest) {
 		headers: getStandardHeaders(accessToken)
 	});
 	await checkStatus(response);
-	return await response.json() as T;
+	return (await response.json()) as T;
 }
 
 interface ISendRequest extends IGetRequest {

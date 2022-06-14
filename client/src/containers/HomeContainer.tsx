@@ -18,17 +18,33 @@ export default function HomeContainer() {
 		clearPendingItemSave,
 		getWeeklyTransactions
 	} = bindActionCreators(budgetSlice.actions, dispatch);
-	const isLoadingBudget = useAppSelector(state => state.budget.isLoadingBudget);
+	const isLoadingBudget = useAppSelector(
+		state => state.budget.isLoadingBudget
+	);
 	const incomes = useAppSelector(state => state.budget.incomes);
 	const expenses = useAppSelector(state => state.budget.expenses);
 	const pendingItems = useAppSelector(state => state.budget.pendingItems);
-	const weeklyTransactions = useAppSelector(state => state.budget.weeklyTransactions);
-	const isSavingTransaction = useAppSelector(state => state.budget.isSavingTransaction);
-	const savingTransactionSuccess = useAppSelector(state => state.budget.savingTransactionSuccess);
-	const isDeletingTransaction = useAppSelector(state => state.budget.isDeletingTransaction);
-	const deletingTransactionSuccess = useAppSelector(state => state.budget.deletingTransactionSuccess);
-	const isSavingPendingItem = useAppSelector(state => state.budget.isSavingPendingItem);
-	const savingPendingItemSuccess = useAppSelector(state => state.budget.savingPendingItemSuccess);
+	const weeklyTransactions = useAppSelector(
+		state => state.budget.weeklyTransactions
+	);
+	const isSavingTransaction = useAppSelector(
+		state => state.budget.isSavingTransaction
+	);
+	const savingTransactionSuccess = useAppSelector(
+		state => state.budget.savingTransactionSuccess
+	);
+	const isDeletingTransaction = useAppSelector(
+		state => state.budget.isDeletingTransaction
+	);
+	const deletingTransactionSuccess = useAppSelector(
+		state => state.budget.deletingTransactionSuccess
+	);
+	const isSavingPendingItem = useAppSelector(
+		state => state.budget.isSavingPendingItem
+	);
+	const savingPendingItemSuccess = useAppSelector(
+		state => state.budget.savingPendingItemSuccess
+	);
 	const [weekOf, setWeekOf] = useState(dateService.getStartOfCurrentWeek());
 
 	useEffect(() => {
@@ -60,6 +76,6 @@ export default function HomeContainer() {
 				clearPendingItemSave,
 				getWeeklyTransactions
 			}}
-			/>
+		/>
 	);
 }

@@ -30,6 +30,6 @@ export default function SignInButton({
 				className
 			)}
 			onClick={handleClicked}
-			/>
+		/>
 	);
 }

@@ -21,9 +21,13 @@ export default function Expense({
 }: IExpenseProps) {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const { name, amount, monthsInterval, isDistributed } = expense;
-	const interval = isDistributed ?
-		monthsInterval === 1 ? 'over a month' : `over ${monthsInterval} months` :
-		monthsInterval === 1 ? 'every month' : `every ${monthsInterval} months`;
+	const interval = isDistributed
+		? monthsInterval === 1
+			? 'over a month'
+			: `over ${monthsInterval} months`
+		: monthsInterval === 1
+		? 'every month'
+		: `every ${monthsInterval} months`;
 
 	useEffect(() => {
 		if (!isSavingExpense && isDeleting) {
@@ -42,7 +46,11 @@ export default function Expense({
 			<span className={styles.text}>
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
-			<Button className={styles.editButton} onClick={onEdit}>Edit</Button>
+			<Button
+				className={styles.editButton}
+				onClick={onEdit}>
+				Edit
+			</Button>
 			<Button
 				onClick={handleDeleteClicked}
 				isProcessing={isDeleting}

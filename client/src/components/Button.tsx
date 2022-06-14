@@ -22,13 +22,13 @@ export default function Button({
 }: IButtonProps) {
 	return (
 		<button
-			{...{onClick, autoFocus}}
+			{...{ onClick, autoFocus }}
 			className={cx(styles.button, styles.primary, className)}
 			disabled={isDisabled}>
-			<div className={cx({ [styles.processing]: isProcessing })}>{children}</div>
-			{isProcessing &&
-				<LoadingIcon />
-			}
+			<div className={cx({ [styles.processing]: isProcessing })}>
+				{children}
+			</div>
+			{isProcessing && <LoadingIcon />}
 		</button>
 	);
 }

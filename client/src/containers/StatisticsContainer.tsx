@@ -7,11 +7,13 @@ import { useAppSelector, budgetSlice } from '~/redux';
 
 export default function StatisticsContainer() {
 	const dispatch = useDispatch();
-	const {
-		getBudget,
-		getWeeklyTransactions
-	} = bindActionCreators(budgetSlice.actions, dispatch);
-	const weeklyTransactions = useAppSelector(state => state.budget.weeklyTransactions);
+	const { getBudget, getWeeklyTransactions } = bindActionCreators(
+		budgetSlice.actions,
+		dispatch
+	);
+	const weeklyTransactions = useAppSelector(
+		state => state.budget.weeklyTransactions
+	);
 	const incomes = useAppSelector(state => state.budget.incomes);
 	const expenses = useAppSelector(state => state.budget.expenses);
 	const pendingItems = useAppSelector(state => state.budget.pendingItems);
@@ -35,6 +37,6 @@ export default function StatisticsContainer() {
 				pendingItems,
 				weeks
 			}}
-			/>
+		/>
 	);
 }

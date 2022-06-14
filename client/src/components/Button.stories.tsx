@@ -8,10 +8,9 @@ export default {
 	component: Button
 } as Meta;
 
-const Template: Story<IButtonProps> = props =>
-	<Button {...props}>
-		Example
-	</Button>;
+const Template: Story<IButtonProps> = props => (
+	<Button {...props}>Example</Button>
+);
 
 export const Default = Template.bind({});
 

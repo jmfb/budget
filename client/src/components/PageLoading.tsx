@@ -6,14 +6,10 @@ export interface IPageLoadingProps {
 	message?: string;
 }
 
-export default function PageLoading({
-	message
-}: IPageLoadingProps) {
+export default function PageLoading({ message }: IPageLoadingProps) {
 	return (
 		<>
-			{message &&
-				<div className={styles.message}>{message}</div>
-			}
+			{message && <div className={styles.message}>{message}</div>}
 			<div className={styles.loading}>
 				<LoadingIcon />
 			</div>

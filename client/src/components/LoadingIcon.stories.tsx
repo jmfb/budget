@@ -8,7 +8,6 @@ export default {
 	component: LoadingIcon
 } as Meta;
 
-const Template: Story = () =>
-	<LoadingIcon />;
+const Template: Story = () => <LoadingIcon />;
 
 export const Default = Template.bind({});

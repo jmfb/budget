@@ -7,15 +7,13 @@ import { dateService } from '~/services';
 
 export default function IncomesContainer() {
 	const dispatch = useDispatch();
-	const {
-		getBudget,
-		saveIncome,
-		deleteIncome,
-		clearIncomeSave
-	} = bindActionCreators(budgetSlice.actions, dispatch);
+	const { getBudget, saveIncome, deleteIncome, clearIncomeSave } =
+		bindActionCreators(budgetSlice.actions, dispatch);
 	const incomes = useAppSelector(state => state.budget.incomes);
 	const isSavingIncome = useAppSelector(state => state.budget.isSavingIncome);
-	const savingIncomeSuccess = useAppSelector(state => state.budget.savingIncomeSuccess);
+	const savingIncomeSuccess = useAppSelector(
+		state => state.budget.savingIncomeSuccess
+	);
 
 	useEffect(() => {
 		getBudget(dateService.getStartOfCurrentWeek());
@@ -31,6 +29,6 @@ export default function IncomesContainer() {
 				deleteIncome,
 				clearIncomeSave
 			}}
-			/>
+		/>
 	);
 }

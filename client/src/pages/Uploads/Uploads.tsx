@@ -94,15 +94,22 @@ export default function Uploads({
 				const csvRecord = csvRecords[uploadIndex];
 				if (isMergingBank) {
 					const bankRecord = budgetService.parseBankRecord(csvRecord);
-					const transaction = budgetService.convertBankRecordToTransaction(bankRecord);
+					const transaction =
+						budgetService.convertBankRecordToTransaction(
+							bankRecord
+						);
 					if (budgetService.isCapitalOneDebit(transaction)) {
 						setUploadIndex(uploadIndex + 1);
 					} else {
 						mergeTransaction(transaction);
 					}
 				} else if (isMergingCapitalOne) {
-					const capitalOneRecord = budgetService.parseCapitalOneRecord(csvRecord);
-					const transaction = budgetService.convertCapitalOneRecordToTransaction(capitalOneRecord);
+					const capitalOneRecord =
+						budgetService.parseCapitalOneRecord(csvRecord);
+					const transaction =
+						budgetService.convertCapitalOneRecordToTransaction(
+							capitalOneRecord
+						);
 					if (budgetService.isCapitalOneCredit(transaction)) {
 						setUploadIndex(uploadIndex + 1);
 					} else {
@@ -123,7 +130,7 @@ export default function Uploads({
 
 	return (
 		<div>
-			{!isMerging &&
+			{!isMerging && (
 				<div className={styles.uploadButtons}>
 					<div className={styles.bankButton}>
 						<FileInput
@@ -140,41 +147,39 @@ export default function Uploads({
 						</FileInput>
 					</div>
 				</div>
-			}
-			{isReadingFile &&
-				<PageLoading message='Loading export file' />
-			}
-			{isParsingCsv &&
-				<PageLoading message='Parsing csv records' />
-			}
-			{isMerging &&
+			)}
+			{isReadingFile && <PageLoading message='Loading export file' />}
+			{isParsingCsv && <PageLoading message='Parsing csv records' />}
+			{isMerging && (
 				<>
 					<div className={styles.mergeRow}>
 						<Button
-							isDisabled={isLoading || !parsingCsvSuccess || isUploading}
+							isDisabled={
+								isLoading || !parsingCsvSuccess || isUploading
+							}
 							isProcessing={isUploading}
 							onClick={handleMergeClicked}>
 							Merge Transactions
 						</Button>
-						{parsingCsvSuccess && !isUploading &&
-							<div className={styles.mergeLabel}>{csvRecords.length} transactions to import</div>
-						}
-						{isUploading &&
+						{parsingCsvSuccess && !isUploading && (
+							<div className={styles.mergeLabel}>
+								{csvRecords.length} transactions to import
+							</div>
+						)}
+						{isUploading && (
 							<progress
 								className={styles.progress}
 								max={csvRecords.length}
 								value={uploadIndex}
-								/>
-						}
+							/>
+						)}
 					</div>
-					{!isUploading && readingFileSuccess &&
-						<pre className={styles.preview}>
-							{fileText}
-						</pre>
-					}
+					{!isUploading && readingFileSuccess && (
+						<pre className={styles.preview}>{fileText}</pre>
+					)}
 				</>
-			}
-			{logs &&
+			)}
+			{logs && (
 				<div>
 					<div className={styles.logsHeader}>
 						<h3>Logs</h3>
@@ -185,11 +190,9 @@ export default function Uploads({
 							Clear
 						</Button>
 					</div>
-					<pre className={styles.preview}>
-						{logs}
-					</pre>
+					<pre className={styles.preview}>{logs}</pre>
 				</div>
-			}
+			)}
 		</div>
 	);
 }

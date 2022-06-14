@@ -26,8 +26,10 @@ export default function PendingItems({
 }: IPendingItemsProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
-	const [existingPendingItem, setExistingPendingItem] = useState<IPendingItem>(null);
-	const nextPendingItemId = Math.max(0, ...pendingItems.map(item => item.id)) + 1;
+	const [existingPendingItem, setExistingPendingItem] =
+		useState<IPendingItem>(null);
+	const nextPendingItemId =
+		Math.max(0, ...pendingItems.map(item => item.id)) + 1;
 
 	const createEditClickedHandler = (pendingItem: IPendingItem) => () => {
 		setIsEditing(true);
@@ -65,9 +67,11 @@ export default function PendingItems({
 		<div>
 			<div className={styles.header}>
 				<h3>Pending Transactions</h3>
-				{pendingItems.length !== 0 &&
-					<span className={styles.amount}>{budgetService.format(totalAmount)}</span>
-				}
+				{pendingItems.length !== 0 && (
+					<span className={styles.amount}>
+						{budgetService.format(totalAmount)}
+					</span>
+				)}
 				<Button
 					className={styles.addButton}
 					onClick={handleAddPendingItem}>
@@ -76,18 +80,19 @@ export default function PendingItems({
 			</div>
 			{[...pendingItems]
 				.sort((a, b) => a.amount - b.amount)
-				.map(pendingItem =>
+				.map(pendingItem => (
 					<PendingItem
 						key={pendingItem.id}
-						{...{pendingItem}}
+						{...{ pendingItem }}
 						onEdit={createEditClickedHandler(pendingItem)}
-						/>
-				)
-			}
-			{pendingItems.length === 0 &&
-				<div className={styles.none}>There are no pending transactions.</div>
-			}
-			{isEditing &&
+					/>
+				))}
+			{pendingItems.length === 0 && (
+				<div className={styles.none}>
+					There are no pending transactions.
+				</div>
+			)}
+			{isEditing && (
 				<PendingItemEditor
 					{...{
 						nextPendingItemId,
@@ -99,8 +104,8 @@ export default function PendingItems({
 					}}
 					onSave={handleSaveClicked}
 					onCancel={handleCancelClicked}
-					/>
-			}
+				/>
+			)}
 		</div>
 	);
 }

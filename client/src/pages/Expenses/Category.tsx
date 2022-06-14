@@ -32,20 +32,24 @@ export default function Category({
 		<Card className={styles.category}>
 			<div className={styles.header}>
 				<h3 className={styles.heading}>{category}</h3>
-				<h4 className={styles.heading}>{budgetService.format(weeklyExpenses)} every week</h4>
+				<h4 className={styles.heading}>
+					{budgetService.format(weeklyExpenses)} every week
+				</h4>
 			</div>
-			{[...expenses].sort((a, b) => a.name.localeCompare(b.name)).map(expense =>
-				<Expense
-					key={expense.name}
-					{...{
-						expense,
-						isSavingExpense,
-						deleteExpense,
-						clearExpenseSave
-					}}
-					onEdit={createEditClickedHandler(expense)}
+			{[...expenses]
+				.sort((a, b) => a.name.localeCompare(b.name))
+				.map(expense => (
+					<Expense
+						key={expense.name}
+						{...{
+							expense,
+							isSavingExpense,
+							deleteExpense,
+							clearExpenseSave
+						}}
+						onEdit={createEditClickedHandler(expense)}
 					/>
-			)}
+				))}
 		</Card>
 	);
 }

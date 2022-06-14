@@ -18,7 +18,9 @@ export default function IncomeEditor({
 }: IIncomeEditorProps) {
 	const [name, setName] = useState(existingIncome?.name ?? '');
 	const [amount, setAmount] = useState(existingIncome?.amount ?? 0);
-	const [weeksInterval, setWeeksInterval] = useState(existingIncome?.weeksInterval ?? 1);
+	const [weeksInterval, setWeeksInterval] = useState(
+		existingIncome?.weeksInterval ?? 1
+	);
 
 	const handleSaveClicked = () => {
 		onSave({ name, amount, weeksInterval });
@@ -28,11 +30,23 @@ export default function IncomeEditor({
 		<Modal onClose={onCancel}>
 			<h3>{existingIncome ? name : 'New Income'}</h3>
 			<div className={styles.inputs}>
-				{!existingIncome &&
-					<Input name='Name' value={name} onChange={setName} />
-				}
-				<CurrencyInput name='Amount' value={amount} onChange={setAmount} />
-				<NumberInput name='Weeks Interval' value={weeksInterval} onChange={setWeeksInterval} />
+				{!existingIncome && (
+					<Input
+						name='Name'
+						value={name}
+						onChange={setName}
+					/>
+				)}
+				<CurrencyInput
+					name='Amount'
+					value={amount}
+					onChange={setAmount}
+				/>
+				<NumberInput
+					name='Weeks Interval'
+					value={weeksInterval}
+					onChange={setWeeksInterval}
+				/>
 			</div>
 			<hr />
 			<div className={styles.buttons}>
@@ -43,7 +57,11 @@ export default function IncomeEditor({
 					className={styles.saveButton}>
 					Save
 				</Button>
-				<Button onClick={onCancel} isDisabled={isSavingIncome}>Cancel</Button>
+				<Button
+					onClick={onCancel}
+					isDisabled={isSavingIncome}>
+					Cancel
+				</Button>
 			</div>
 		</Modal>
 	);

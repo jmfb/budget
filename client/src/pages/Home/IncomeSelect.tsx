@@ -19,9 +19,10 @@ export default function IncomeSelect({
 		value: income,
 		label: `${income.name} - ${budgetService.format(income.amount)}`
 	}));
-	const selectedOption = options.find(option => option.value.name === incomeName) ?? null;
+	const selectedOption =
+		options.find(option => option.value.name === incomeName) ?? null;
 
-	const handleChange = (option: { value: IIncome; }) => {
+	const handleChange = (option: { value: IIncome }) => {
 		onChange(option?.value.name ?? '');
 	};
 
@@ -31,10 +32,10 @@ export default function IncomeSelect({
 			<Select
 				isClearable
 				placeholder='Select income...'
-				{...{options}}
+				{...{ options }}
 				value={selectedOption}
 				onChange={handleChange}
-				/>
+			/>
 		</label>
 	);
 }

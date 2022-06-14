@@ -76,11 +76,9 @@ export default function Home({
 					setWeekOf,
 					getWeeklyTransactions
 				}}
-				/>
-			{isLoadingWeek &&
-				<PageLoading message='Loading transactions...' />
-			}
-			{!isLoadingWeek &&
+			/>
+			{isLoadingWeek && <PageLoading message='Loading transactions...' />}
+			{!isLoadingWeek && (
 				<>
 					<BudgetView
 						{...{
@@ -90,7 +88,7 @@ export default function Home({
 						pendingItems={includePendingItems ? pendingItems : []}
 						yearlyExpenseTotals={week.yearlyExpenseTotals}
 						transactions={week.transactions}
-						/>
+					/>
 					<Transactions
 						{...{
 							incomes,
@@ -113,9 +111,9 @@ export default function Home({
 						}}
 						transactions={week.transactions}
 						yearlyExpenseTotals={week.yearlyExpenseTotals}
-						/>
+					/>
 				</>
-			}
+			)}
 		</div>
 	);
 }

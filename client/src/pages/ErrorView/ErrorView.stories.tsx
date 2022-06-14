@@ -8,8 +8,7 @@ export default {
 	component: ErrorView
 } as Meta;
 
-const Template: Story<IErrorViewProps> = props =>
-	<ErrorView {...props} />;
+const Template: Story<IErrorViewProps> = props => <ErrorView {...props} />;
 
 export const Default = Template.bind({});
 Default.args = {
@@ -21,7 +20,8 @@ export const WithContext = Template.bind({});
 WithContext.args = {
 	action: 'Example Action',
 	message: 'This is an error message',
-	context: 'This is some context about the error\n' +
+	context:
+		'This is some context about the error\n' +
 		'That can be multiple lines\n' +
 		'And is usually a fixed width.'
 };

@@ -9,11 +9,12 @@ export default {
 	component: Card
 } as Meta;
 
-const Template: Story<ICardProps> = props =>
+const Template: Story<ICardProps> = props => (
 	<Card {...props}>
 		<h2>Example</h2>
 		<div>This is a card</div>
 		<Button onClick={() => console.log('click')}>OK</Button>
-	</Card>;
+	</Card>
+);
 
 export const Default = Template.bind({});

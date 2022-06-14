@@ -9,11 +9,7 @@ export interface IModalProps {
 	onClose(): void;
 }
 
-export default function Modal({
-	children,
-	className,
-	onClose
-}: IModalProps) {
+export default function Modal({ children, className, onClose }: IModalProps) {
 	return (
 		<ReactModal
 			isOpen

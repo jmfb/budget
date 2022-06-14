@@ -52,14 +52,26 @@ export default function PendingItemEditor({
 
 	return (
 		<Modal onClose={onCancel}>
-			<h3>{existingPendingItem ? 'Edit Pending Transaction' : 'New Pending Transaction'}</h3>
+			<h3>
+				{existingPendingItem
+					? 'Edit Pending Transaction'
+					: 'New Pending Transaction'}
+			</h3>
 			<div className={styles.inputs}>
-				<Input name='Name' value={name} onChange={setName} />
-				<CurrencyInput name='Amount' value={amount} onChange={setAmount} />
+				<Input
+					name='Name'
+					value={name}
+					onChange={setName}
+				/>
+				<CurrencyInput
+					name='Amount'
+					value={amount}
+					onChange={setAmount}
+				/>
 			</div>
 			<hr />
 			<div className={styles.buttons}>
-				{existingPendingItem &&
+				{existingPendingItem && (
 					<Button
 						onClick={handleDeleteClicked}
 						isDisabled={isModificationInProgress}
@@ -67,7 +79,7 @@ export default function PendingItemEditor({
 						className={styles.deleteButton}>
 						Delete
 					</Button>
-				}
+				)}
 				<Button
 					onClick={handleSaveClicked}
 					isDisabled={isModificationInProgress}

@@ -1,11 +1,11 @@
 const autoprefixer = require('autoprefixer');
 
-const isProduction = process.argv[process.argv.indexOf('--node-env') + 1] === 'production';
+const nodeEnvIndex = process.argv.indexOf('--node-env');
+const nodeEnvValue = process.argv[nodeEnvIndex + 1];
+const isProduction = nodeEnvValue === 'production';
 const isDebug = !isProduction;
 
 module.exports = {
 	sourceMap: isDebug,
-	plugins: [
-		autoprefixer()
-	]
+	plugins: [autoprefixer()]
 };

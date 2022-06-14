@@ -26,12 +26,12 @@ export default function FileInput({
 	return (
 		<label>
 			<input
-				{...{accept}}
+				{...{ accept }}
 				className={styles.input}
 				type='file'
 				disabled={isDisabled}
 				onChange={handleInputChanged}
-				/>
+			/>
 			<div
 				className={cx(
 					buttonStyles.button,
@@ -40,9 +40,7 @@ export default function FileInput({
 					{ [buttonStyles.processing]: isProcessing }
 				)}>
 				{children}
-				{isProcessing &&
-					<LoadingIcon />
-				}
+				{isProcessing && <LoadingIcon />}
 			</div>
 		</label>
 	);

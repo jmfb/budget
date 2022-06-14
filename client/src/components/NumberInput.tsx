@@ -37,11 +37,11 @@ export default function NumberInput({
 
 	return (
 		<Input
-			{...{name}}
+			{...{ name }}
 			type='number'
 			value={textValue}
 			onChange={handleTextChanged}
 			onBlur={handleBlurred}
-			/>
+		/>
 	);
 }

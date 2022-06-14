@@ -70,5 +70,7 @@ export function toString(date: Date) {
 }
 
 export function format(date: string) {
-	return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(parse(date));
+	return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(
+		parse(date)
+	);
 }

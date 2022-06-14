@@ -19,7 +19,11 @@ export default function ConfirmDelete({
 			<hr />
 			<div className={styles.buttons}>
 				<Button onClick={onConfirmDelete}>Delete</Button>
-				<Button onClick={onCancel} className={styles.cancelButton}>Cancel</Button>
+				<Button
+					onClick={onCancel}
+					className={styles.cancelButton}>
+					Cancel
+				</Button>
 			</div>
 		</Modal>
 	);

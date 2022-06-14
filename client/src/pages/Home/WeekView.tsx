@@ -42,10 +42,11 @@ export default function WeekView({
 			</Button>
 			<span>
 				<div className={styles.weekRange}>
-					{dateService.format(weekOf)} to {dateService.format(endOfWeek)}
+					{dateService.format(weekOf)} to{' '}
+					{dateService.format(endOfWeek)}
 				</div>
 				<div className={styles.daysOfWeek}>
-					{daysOfWeek.map(dayOfWeek =>
+					{daysOfWeek.map(dayOfWeek => (
 						<div
 							key={dayOfWeek.day}
 							className={cx(styles.dayOfWeek, {
@@ -55,10 +56,10 @@ export default function WeekView({
 							})}>
 							<strong>{dayOfWeek.weekday}</strong>
 						</div>
-					)}
+					))}
 				</div>
 				<div className={styles.daysOfWeek}>
-					{daysOfWeek.map(dayOfWeek =>
+					{daysOfWeek.map(dayOfWeek => (
 						<div
 							key={dayOfWeek.day}
 							className={cx(styles.dayOfWeek, {
@@ -68,7 +69,7 @@ export default function WeekView({
 							})}>
 							{dayOfWeek.day}
 						</div>
-					)}
+					))}
 				</div>
 			</span>
 			<Button

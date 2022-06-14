@@ -8,29 +8,48 @@ import { createStore } from '~/redux';
 import './index.css';
 
 function start() {
-	const asyncSignInContainer = lazy(() =>
-		import(/* webpackChunkName: 'SignInContainer' */ '~/containers/SignInContainer'));
-	const asyncAuthenticateContainer = lazy(() =>
-		import(/* webpackChunkName: 'AuthenticateContainer' */ '~/containers/AuthenticateContainer'));
-	const asyncApplicationContainer = lazy(() =>
-		import(/* webpackChunkName: 'ApplicationContainer' */ '~/containers/ApplicationContainer'));
+	const asyncSignInContainer = lazy(
+		() =>
+			import(
+				/* webpackChunkName: 'SignInContainer' */ '~/containers/SignInContainer'
+			)
+	);
+	const asyncAuthenticateContainer = lazy(
+		() =>
+			import(
+				/* webpackChunkName: 'AuthenticateContainer' */ '~/containers/AuthenticateContainer'
+			)
+	);
+	const asyncApplicationContainer = lazy(
+		() =>
+			import(
+				/* webpackChunkName: 'ApplicationContainer' */ '~/containers/ApplicationContainer'
+			)
+	);
 
 	const store = createStore();
 	const rootContainer = document.getElementById('root');
-	const rootElement =
-		<Provider {...{store}}>
+	const rootElement = (
+		<Provider {...{ store }}>
 			<BrowserRouter>
 				<ErrorBoundary>
 					<Suspense fallback={<PageLoading />}>
 						<Switch>
-							<Route path='/sign-in' component={asyncSignInContainer} />
-							<Route path='/authenticate' component={asyncAuthenticateContainer} />
+							<Route
+								path='/sign-in'
+								component={asyncSignInContainer}
+							/>
+							<Route
+								path='/authenticate'
+								component={asyncAuthenticateContainer}
+							/>
 							<Route component={asyncApplicationContainer} />
 						</Switch>
 					</Suspense>
 				</ErrorBoundary>
 			</BrowserRouter>
-		</Provider>;
+		</Provider>
+	);
 	render(rootElement, rootContainer);
 }
 

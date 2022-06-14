@@ -8,71 +8,112 @@ import { parse } from 'csv-parse';
 export const getBudget = createAsyncThunk(
 	'budget/getBudget',
 	async (weekOf: string, { getState }) => {
-		const { auth: { accessToken } } = getState() as IState;
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
 		return await hub.getBudget(accessToken, weekOf);
-	}, {
+	},
+	{
 		condition: (weekOf: string, { getState }) => {
-			const { budget: { isLoadingBudget, incomes } } = getState() as IState;
+			const {
+				budget: { isLoadingBudget, incomes }
+			} = getState() as IState;
 			if (isLoadingBudget || incomes !== null) {
 				return false;
 			}
 		}
-	});
+	}
+);
 
-export const saveIncome = createAsyncThunk('budget/saveIncome', async (income: IIncome, { getState }) => {
-	const { auth: { accessToken } } = getState() as IState;
-	await hub.saveIncome(accessToken, income);
-});
+export const saveIncome = createAsyncThunk(
+	'budget/saveIncome',
+	async (income: IIncome, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		await hub.saveIncome(accessToken, income);
+	}
+);
 
-export const deleteIncome = createAsyncThunk('budget/deleteIncome', async ({ name }: IIncome, { getState }) => {
-	const { auth: { accessToken } } = getState() as IState;
-	await hub.deleteIncome(accessToken, name);
-});
+export const deleteIncome = createAsyncThunk(
+	'budget/deleteIncome',
+	async ({ name }: IIncome, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		await hub.deleteIncome(accessToken, name);
+	}
+);
 
-export const saveExpense = createAsyncThunk('budget/saveExpense', async (expense: IExpense, { getState }) => {
-	const { auth: { accessToken } } = getState() as IState;
-	await hub.saveExpense(accessToken, expense);
-});
+export const saveExpense = createAsyncThunk(
+	'budget/saveExpense',
+	async (expense: IExpense, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		await hub.saveExpense(accessToken, expense);
+	}
+);
 
-export const deleteExpense = createAsyncThunk('budget/deleteExpense', async ({ name }: IExpense, { getState }) => {
-	const { auth: { accessToken } } = getState() as IState;
-	await hub.deleteExpense(accessToken, name);
-});
+export const deleteExpense = createAsyncThunk(
+	'budget/deleteExpense',
+	async ({ name }: IExpense, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		await hub.deleteExpense(accessToken, name);
+	}
+);
 
 export const savePendingItem = createAsyncThunk(
 	'budget/savePendingItem',
 	async (pendingItem: IPendingItem, { getState }) => {
-		const { auth: { accessToken } } = getState() as IState;
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
 		await hub.savePendingItem(accessToken, pendingItem);
-	});
+	}
+);
 
 export const deletePendingItem = createAsyncThunk(
 	'budget/deletePendingItem',
 	async ({ id }: IPendingItem, { getState }) => {
-		const { auth: { accessToken } } = getState() as IState;
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
 		await hub.deletePendingItem(accessToken, id);
-	});
+	}
+);
 
 export const saveTransaction = createAsyncThunk(
 	'budget/saveTransaction',
 	async (transaction: ITransaction, { getState }) => {
-		const { auth: { accessToken } } = getState() as IState;
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
 		await hub.saveTransaction(accessToken, transaction);
-	});
+	}
+);
 
 export const deleteTransaction = createAsyncThunk(
 	'budget/deleteTransaction',
 	async ({ date, id }: ITransaction, { getState }) => {
-		const { auth: { accessToken } } = getState() as IState;
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
 		await hub.deleteTransaction(accessToken, date, id);
-	});
+	}
+);
 
 export const getWeeklyTransactions = createAsyncThunk(
 	'budget/getWeeklyTransactions',
 	async (weekOf: string, { getState }) => {
-		const { auth: { accessToken } } = getState() as IState;
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
 		return await hub.getWeeklyTransactions(accessToken, weekOf);
-	});
+	}
+);
 
 export const getAllText = createAsyncThunk(
 	'budget/getAllText',
@@ -82,7 +123,9 @@ export const getAllText = createAsyncThunk(
 				const reader = new FileReader();
 				reader.onload = async event => {
 					try {
-						const { target: { result } } = event;
+						const {
+							target: { result }
+						} = event;
 						resolve((<string>result).trim());
 					} catch (error) {
 						reject(error);
@@ -93,7 +136,8 @@ export const getAllText = createAsyncThunk(
 				reject(error);
 			}
 		});
-	});
+	}
+);
 
 export const parseCsv = createAsyncThunk(
 	'budget/parseCsv',
@@ -106,7 +150,8 @@ export const parseCsv = createAsyncThunk(
 			results.push(record);
 		}
 		return results.slice(1);
-	});
+	}
+);
 
 export const mergeTransaction = createAsyncThunk(
 	'budget/mergeTransaction',
@@ -122,7 +167,10 @@ export const mergeTransaction = createAsyncThunk(
 		const copyOfWeeklyTransactions = { ...weeklyTransactions };
 		const weekOf = dateService.getStartOfWeek(transaction.date);
 		if (copyOfWeeklyTransactions[weekOf] === undefined) {
-			const response = await hub.getWeeklyTransactions(accessToken, weekOf);
+			const response = await hub.getWeeklyTransactions(
+				accessToken,
+				weekOf
+			);
 			copyOfWeeklyTransactions[weekOf] = {
 				weekOf,
 				isLoading: false,
@@ -131,10 +179,12 @@ export const mergeTransaction = createAsyncThunk(
 			};
 		}
 		const week = copyOfWeeklyTransactions[weekOf];
-		const dailyTransactions = week.transactions
-			.filter(({ date }) => date === transaction.date);
-		const existingTransaction = dailyTransactions
-			.find(second => budgetService.isSameTransaction(transaction, second));
+		const dailyTransactions = week.transactions.filter(
+			({ date }) => date === transaction.date
+		);
+		const existingTransaction = dailyTransactions.find(second =>
+			budgetService.isSameTransaction(transaction, second)
+		);
 		if (existingTransaction === undefined) {
 			logs.push('No matching transaction found for date');
 			logs.push(JSON.stringify(dailyTransactions, null, 4));
@@ -148,12 +198,18 @@ export const mergeTransaction = createAsyncThunk(
 				transactions: [...week.transactions, newTransaction]
 			};
 
-			const matchingPendingItem = pendingItems.find(pendingItem => pendingItem.amount === newTransaction.amount);
+			const matchingPendingItem = pendingItems.find(
+				pendingItem => pendingItem.amount === newTransaction.amount
+			);
 			if (matchingPendingItem) {
 				logs.push('Found matching pending item');
 				logs.push(JSON.stringify(matchingPendingItem, null, 4));
-				await hub.deletePendingItem(accessToken, matchingPendingItem.id);
-				const indexOfPendingItem = pendingItems.indexOf(matchingPendingItem);
+				await hub.deletePendingItem(
+					accessToken,
+					matchingPendingItem.id
+				);
+				const indexOfPendingItem =
+					pendingItems.indexOf(matchingPendingItem);
 				remainingPendingItems.splice(indexOfPendingItem, 1);
 			}
 		} else {
@@ -164,4 +220,5 @@ export const mergeTransaction = createAsyncThunk(
 			pendingItems: remainingPendingItems,
 			logs: logs.join('\n')
 		};
-	});
+	}
+);

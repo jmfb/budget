@@ -20,8 +20,7 @@ interface IErrorBoundaryDispatchProps {
 	reportError(errorReport: IErrorReport): void;
 }
 
-type IErrorBoundaryProps =
-	IErrorBoundaryOwnProps &
+type IErrorBoundaryProps = IErrorBoundaryOwnProps &
 	IErrorBoundaryStateProps &
 	IErrorBoundaryDispatchProps;
 
@@ -30,7 +29,9 @@ interface IErrorBoundaryState {
 }
 
 function mapStateToProps(state: IState): IErrorBoundaryStateProps {
-	const { error: { showError, action, context, message} } = state;
+	const {
+		error: { showError, action, context, message }
+	} = state;
 	return {
 		showError,
 		action,
@@ -43,7 +44,10 @@ const mapDispatchToProps: IErrorBoundaryDispatchProps = {
 	...errorSlice.actions
 };
 
-class ErrorBoundary extends React.PureComponent<IErrorBoundaryProps, IErrorBoundaryState> {
+class ErrorBoundary extends React.PureComponent<
+	IErrorBoundaryProps,
+	IErrorBoundaryState
+> {
 	constructor(props: IErrorBoundaryProps) {
 		super(props);
 		this.state = {
@@ -78,7 +82,7 @@ class ErrorBoundary extends React.PureComponent<IErrorBoundaryProps, IErrorBound
 						message
 					}}
 					onClickDismiss={this.handleDismissClicked}
-					/>
+				/>
 			);
 		}
 		return children;
@@ -93,7 +97,7 @@ class ErrorBoundary extends React.PureComponent<IErrorBoundaryProps, IErrorBound
 	};
 }
 
-export default connect<
-	IErrorBoundaryStateProps,
-	IErrorBoundaryDispatchProps
->(mapStateToProps, mapDispatchToProps)(ErrorBoundary);
+export default connect<IErrorBoundaryStateProps, IErrorBoundaryDispatchProps>(
+	mapStateToProps,
+	mapDispatchToProps
+)(ErrorBoundary);

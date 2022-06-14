@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PendingItems from './PendingItems';
 import Transaction from './Transaction';
 import TransactionEditor from './TransactionEditor';
-import { ITransaction, IIncome, IExpense, IPendingItem, IExpenseTotals } from '~/models';
+import {
+	ITransaction,
+	IIncome,
+	IExpense,
+	IPendingItem,
+	IExpenseTotals
+} from '~/models';
 import styles from './Transactions.css';
 
 export interface ITransactionsProps {
@@ -49,7 +55,8 @@ export default function Transactions({
 	clearPendingItemSave
 }: ITransactionsProps) {
 	const [showEditor, setShowEditor] = useState(false);
-	const [existingTransaction, setExistingTransaction] = useState<ITransaction>(null);
+	const [existingTransaction, setExistingTransaction] =
+		useState<ITransaction>(null);
 	const [isSaving, setIsSaving] = useState(false);
 
 	const transactionsByDate = transactions.reduce((map, transaction) => {
@@ -62,16 +69,23 @@ export default function Transactions({
 		return map;
 	}, {} as Record<string, ITransaction[]>);
 
-	const getWeekExpenseTotals = (transaction: ITransaction): IExpenseTotals => {
+	const getWeekExpenseTotals = (
+		transaction: ITransaction
+	): IExpenseTotals => {
 		if (!transaction.expenseName) {
 			return {};
 		}
 		const total = transactions
-			.filter(other =>
-				other.expenseName === transaction.expenseName &&
-				(other.date < transaction.date ||
-				other.date === transaction.date && other.amount < transaction.amount ||
-				other.date === transaction.date && other.amount === transaction.amount && other.id < transaction.id))
+			.filter(
+				other =>
+					other.expenseName === transaction.expenseName &&
+					(other.date < transaction.date ||
+						(other.date === transaction.date &&
+							other.amount < transaction.amount) ||
+						(other.date === transaction.date &&
+							other.amount === transaction.amount &&
+							other.id < transaction.id))
+			)
 			.reduce((total, other) => total + other.amount, 0);
 		return {
 			[transaction.expenseName]: total
@@ -104,7 +118,7 @@ export default function Transactions({
 
 	return (
 		<div className={styles.root}>
-			{includePendingItems &&
+			{includePendingItems && (
 				<PendingItems
 					{...{
 						pendingItems,
@@ -114,31 +128,36 @@ export default function Transactions({
 						deletePendingItem,
 						clearPendingItemSave
 					}}
-					/>
-			}
-			{Object.keys(transactionsByDate).sort((a, b) => -a.localeCompare(b)).map(date =>
-				<div key={date}>
-					<h3>{date}</h3>
-					{transactionsByDate[date]
-						.sort((a, b) => a.id - b.id)
-						.sort((a, b) => a.amount - b.amount)
-						.map(transaction =>
-							<Transaction
-								key={transaction.id}
-								{...{
-									transaction,
-									incomes,
-									expenses,
-									yearlyExpenseTotals
-								}}
-								weekExpenseTotals={getWeekExpenseTotals(transaction)}
-								onEdit={createEditClickedHandler(transaction)}
-								/>
-						)
-					}
-				</div>
+				/>
 			)}
-			{showEditor &&
+			{Object.keys(transactionsByDate)
+				.sort((a, b) => -a.localeCompare(b))
+				.map(date => (
+					<div key={date}>
+						<h3>{date}</h3>
+						{transactionsByDate[date]
+							.sort((a, b) => a.id - b.id)
+							.sort((a, b) => a.amount - b.amount)
+							.map(transaction => (
+								<Transaction
+									key={transaction.id}
+									{...{
+										transaction,
+										incomes,
+										expenses,
+										yearlyExpenseTotals
+									}}
+									weekExpenseTotals={getWeekExpenseTotals(
+										transaction
+									)}
+									onEdit={createEditClickedHandler(
+										transaction
+									)}
+								/>
+							))}
+					</div>
+				))}
+			{showEditor && (
 				<TransactionEditor
 					{...{
 						incomes,
@@ -152,8 +171,8 @@ export default function Transactions({
 					transaction={existingTransaction}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
-					/>
-			}
+				/>
+			)}
 		</div>
 	);
 }

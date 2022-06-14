@@ -38,7 +38,7 @@ export default function CategorySelect({
 		options.push(selectedOption);
 	}
 
-	const handleChange = (option: { value: string; }) => {
+	const handleChange = (option: { value: string }) => {
 		onChange(option?.value ?? '');
 	};
 
@@ -48,10 +48,10 @@ export default function CategorySelect({
 			<Creatable
 				isClearable
 				placeholder='Select category...'
-				{...{options}}
+				{...{ options }}
 				value={selectedOption}
 				onChange={handleChange}
-				/>
+			/>
 		</label>
 	);
 }

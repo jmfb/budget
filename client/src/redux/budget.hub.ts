@@ -45,7 +45,10 @@ export async function deleteExpense(accessToken: string, name: string) {
 	});
 }
 
-export async function savePendingItem(accessToken: string, pendingItem: IPendingItem) {
+export async function savePendingItem(
+	accessToken: string,
+	pendingItem: IPendingItem
+) {
 	await put({
 		endpoint: '/api/budget/pending-items',
 		accessToken,
@@ -60,7 +63,10 @@ export async function deletePendingItem(accessToken: string, id: number) {
 	});
 }
 
-export async function saveTransaction(accessToken: string, transaction: ITransaction) {
+export async function saveTransaction(
+	accessToken: string,
+	transaction: ITransaction
+) {
 	await put({
 		endpoint: '/api/budget/transactions',
 		accessToken,
@@ -68,14 +74,21 @@ export async function saveTransaction(accessToken: string, transaction: ITransac
 	});
 }
 
-export async function deleteTransaction(accessToken: string, date: string, id: number) {
+export async function deleteTransaction(
+	accessToken: string,
+	date: string,
+	id: number
+) {
 	await del({
 		endpoint: `/api/budget/transactions/${date}/${id}`,
 		accessToken
 	});
 }
 
-export async function getWeeklyTransactions(accessToken: string, weekOf: string) {
+export async function getWeeklyTransactions(
+	accessToken: string,
+	weekOf: string
+) {
 	return await get<IWeeklyTransactionsResponse>({
 		endpoint: `/api/budget/transactions/week-of/${weekOf}`,
 		accessToken

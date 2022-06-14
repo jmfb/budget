@@ -8,12 +8,11 @@ export default {
 	component: Pill
 } as Meta;
 
-const Template: Story<IPillProps> = props =>
+const Template: Story<IPillProps> = props => (
 	<span style={{ display: 'inline-block' }}>
-		<Pill {...props}>
-			Example
-		</Pill>
-	</span>;
+		<Pill {...props}>Example</Pill>
+	</span>
+);
 
 export const Info = Template.bind({});
 Info.args = {

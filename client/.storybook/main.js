@@ -2,9 +2,7 @@ const postcss = require('postcss');
 const path = require('path');
 
 module.exports = {
-	stories: [
-		'../src/**/*.stories.tsx'
-	],
+	stories: ['../src/**/*.stories.tsx'],
 	addons: [
 		'@storybook/addon-links',
 		'@storybook/addon-essentials',
@@ -28,7 +26,7 @@ module.exports = {
 				'~': path.join(__dirname, '../src')
 			},
 			extensions: ['*', '.tsx', '.ts', '.jsx', '.js']
-		}
+		};
 		return config;
 	}
 };

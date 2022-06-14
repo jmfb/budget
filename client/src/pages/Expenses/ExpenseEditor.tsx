@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Modal, Button, Input, CurrencyInput, NumberInput, Checkbox, CategorySelect } from '~/components';
+import {
+	Modal,
+	Button,
+	Input,
+	CurrencyInput,
+	NumberInput,
+	Checkbox,
+	CategorySelect
+} from '~/components';
 import { IExpense } from '~/models';
 import styles from './ExpenseEditor.css';
 
@@ -18,9 +26,13 @@ export default function ExpenseEditor({
 }: IExpenseEditorProps) {
 	const [name, setName] = useState(existingExpense?.name ?? '');
 	const [amount, setAmount] = useState(existingExpense?.amount ?? 0);
-	const [monthsInterval, setMonthsInterval] = useState(existingExpense?.monthsInterval ?? 1);
+	const [monthsInterval, setMonthsInterval] = useState(
+		existingExpense?.monthsInterval ?? 1
+	);
 	const [category, setCategory] = useState(existingExpense?.category ?? '');
-	const [isDistributed, setIsDistributed] = useState(existingExpense?.isDistributed ?? false);
+	const [isDistributed, setIsDistributed] = useState(
+		existingExpense?.isDistributed ?? false
+	);
 
 	const handleIsDistributedChanged = (value: boolean) => {
 		if (value) {
@@ -37,28 +49,41 @@ export default function ExpenseEditor({
 	const isValidAmount = amount > 0;
 	const isValidInterval = !isDistributed || monthsInterval === 12;
 	const isValidCategory = !!category;
-	const isValid = isValidName && isValidAmount && isValidInterval && isValidCategory;
+	const isValid =
+		isValidName && isValidAmount && isValidInterval && isValidCategory;
 
 	return (
 		<Modal onClose={onCancel}>
 			<h3>{existingExpense ? name : 'New Expense'}</h3>
 			<div className={styles.inputs}>
-				{!existingExpense &&
-					<Input name='Name' value={name} onChange={setName} />
-				}
-				<CurrencyInput name='Amount' value={amount} onChange={setAmount} />
+				{!existingExpense && (
+					<Input
+						name='Name'
+						value={name}
+						onChange={setName}
+					/>
+				)}
+				<CurrencyInput
+					name='Amount'
+					value={amount}
+					onChange={setAmount}
+				/>
 				<Checkbox
 					name='Is Distributed Over Entire Year?'
 					value={isDistributed}
 					onChange={handleIsDistributedChanged}
+				/>
+				{!isDistributed && (
+					<NumberInput
+						name='Months Interval'
+						value={monthsInterval}
+						onChange={setMonthsInterval}
 					/>
-				{!isDistributed &&
-					<NumberInput name='Months Interval' value={monthsInterval} onChange={setMonthsInterval} />
-				}
+				)}
 				<CategorySelect
-					{...{category}}
+					{...{ category }}
 					onChange={setCategory}
-					/>
+				/>
 			</div>
 			<hr />
 			<div className={styles.buttons}>
@@ -69,7 +94,11 @@ export default function ExpenseEditor({
 					className={styles.saveButton}>
 					Save
 				</Button>
-				<Button onClick={onCancel} isDisabled={isSavingExpense}>Cancel</Button>
+				<Button
+					onClick={onCancel}
+					isDisabled={isSavingExpense}>
+					Cancel
+				</Button>
 			</div>
 		</Modal>
 	);
