@@ -6,7 +6,7 @@ module.exports = {
 			'@babel/preset-env',
 			{
 				modules: isTest ? 'commonjs' : 'auto',
-				targets: 'last 2 versions, >0.5% in US, not dead, ie 11',
+				targets: 'last 2 versions, >0.5% in US, not dead, not ie 11',
 				useBuiltIns: false,
 				loose: false
 			}
