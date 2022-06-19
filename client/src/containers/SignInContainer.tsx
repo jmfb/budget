@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { SignIn } from '~/pages';
 import { useAppSelector, authSlice } from '~/redux';
@@ -23,7 +23,7 @@ export default function SignInContainer() {
 	};
 
 	if (url !== undefined) {
-		return <Redirect to={url} />;
+		return <Navigate to={url} />;
 	}
 
 	return (

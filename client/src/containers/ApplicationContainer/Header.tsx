@@ -10,36 +10,47 @@ export default function Header({}: IHeaderProps) {
 			<nav className={styles.links}>
 				<div className={styles.left}>
 					<NavLink
-						exact
 						to='/'
-						activeClassName={styles.active}>
+						className={props =>
+							props.isActive ? styles.active : ''
+						}>
 						Home
 					</NavLink>
 					<NavLink
 						to='/statistics'
-						activeClassName={styles.active}>
+						className={props =>
+							props.isActive ? styles.active : ''
+						}>
 						Stats
 					</NavLink>
 					<NavLink
 						to='/incomes'
-						activeClassName={styles.active}>
+						className={props =>
+							props.isActive ? styles.active : ''
+						}>
 						Income
 					</NavLink>
 					<NavLink
 						to='/expenses'
-						activeClassName={styles.active}>
+						className={props =>
+							props.isActive ? styles.active : ''
+						}>
 						Expense
 					</NavLink>
 					<NavLink
 						to='/uploads'
-						activeClassName={styles.active}>
+						className={props =>
+							props.isActive ? styles.active : ''
+						}>
 						Upload
 					</NavLink>
 				</div>
 				<div className={styles.right}>
 					<NavLink
 						to='/sign-out'
-						activeClassName={styles.active}>
+						className={props =>
+							props.isActive ? styles.active : ''
+						}>
 						Sign Out
 					</NavLink>
 				</div>

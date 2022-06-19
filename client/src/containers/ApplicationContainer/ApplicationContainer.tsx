@@ -1,43 +1,49 @@
 import React, { lazy, useEffect } from 'react';
 import { bindActionCreators } from 'redux';
-import { Redirect, Switch, Route, useHistory } from 'react-router-dom';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Header from './Header';
 import NewerVersionPrompt from './NewerVersionPrompt';
 import { useAppSelector, authSlice, diagnosticsSlice } from '~/redux';
 import { useInterval } from '~/hooks';
 
-const asyncHomeContainer = lazy(
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncHomeContainer = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'HomeContainer' */ '~/containers/HomeContainer'
 		)
 );
-const asyncStatisticsContainer = lazy(
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncStatisticsContainer = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'StatisticsContainer' */ '~/containers/StatisticsContainer'
 		)
 );
-const asyncIncomesContainer = lazy(
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncIncomesContainer = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'IncomesContainer' */ '~/containers/IncomesContainer'
 		)
 );
-const asyncExpensesContainer = lazy(
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncExpensesContainer = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'ExpensesContainer' */ '~/containers/ExpensesContainer'
 		)
 );
-const asyncUploadsContainer = lazy(
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncUploadsContainer = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'UploadsContainer' */ '~/containers/UploadsContainer'
 		)
 );
-const asyncSignOutContainer = lazy(
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncSignOutContainer = lazy(
 	() =>
 		import(
 			/* webpackChunkName: 'SignOutContainer' */ '~/containers/SignOutContainer'
@@ -54,7 +60,6 @@ export default function ApplicationContainer() {
 		diagnosticsSlice.actions,
 		dispatch
 	);
-	const history = useHistory();
 	const redirectToSignIn = useAppSelector(
 		state => state.auth.redirectToSignIn
 	);
@@ -76,11 +81,11 @@ export default function ApplicationContainer() {
 	}, 60_000);
 
 	const handleRefreshClicked = () => {
-		history.go(0);
+		window.location.reload();
 	};
 
 	if (redirectToSignIn && url === undefined) {
-		return <Redirect to='/sign-in' />;
+		return <Navigate to='/sign-in' />;
 	}
 
 	if (email === undefined) {
@@ -92,36 +97,36 @@ export default function ApplicationContainer() {
 			<Header />
 			<main>
 				<section>
-					<Switch>
+					<Routes>
 						<Route
-							exact
 							path='/'
-							component={asyncHomeContainer}
+							element={<AsyncHomeContainer />}
 						/>
 						<Route
 							path='/statistics'
-							component={asyncStatisticsContainer}
+							element={<AsyncStatisticsContainer />}
 						/>
 						<Route
 							path='/incomes'
-							component={asyncIncomesContainer}
+							element={<AsyncIncomesContainer />}
 						/>
 						<Route
 							path='/expenses'
-							component={asyncExpensesContainer}
+							element={<AsyncExpensesContainer />}
 						/>
 						<Route
 							path='/uploads'
-							component={asyncUploadsContainer}
+							element={<AsyncUploadsContainer />}
 						/>
 						<Route
 							path='/sign-out'
-							component={asyncSignOutContainer}
+							element={<AsyncSignOutContainer />}
 						/>
-						<Route>
-							<Redirect to='/' />
-						</Route>
-					</Switch>
+						<Route
+							path='*'
+							element={<Navigate to='/' />}
+						/>
+					</Routes>
 					<NewerVersionPrompt
 						{...{
 							bundleVersion,

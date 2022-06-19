@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { render } from 'react-dom';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PageLoading } from '~/components';
 import ErrorBoundary from '~/containers/ErrorBoundary';
@@ -8,19 +8,22 @@ import { createStore } from '~/redux';
 import './index.css';
 
 function start() {
-	const asyncSignInContainer = lazy(
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const AsyncSignInContainer = lazy(
 		() =>
 			import(
 				/* webpackChunkName: 'SignInContainer' */ '~/containers/SignInContainer'
 			)
 	);
-	const asyncAuthenticateContainer = lazy(
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const AsyncAuthenticateContainer = lazy(
 		() =>
 			import(
 				/* webpackChunkName: 'AuthenticateContainer' */ '~/containers/AuthenticateContainer'
 			)
 	);
-	const asyncApplicationContainer = lazy(
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	const AsyncApplicationContainer = lazy(
 		() =>
 			import(
 				/* webpackChunkName: 'ApplicationContainer' */ '~/containers/ApplicationContainer'
@@ -34,17 +37,20 @@ function start() {
 			<BrowserRouter>
 				<ErrorBoundary>
 					<Suspense fallback={<PageLoading />}>
-						<Switch>
+						<Routes>
 							<Route
 								path='/sign-in'
-								component={asyncSignInContainer}
+								element={<AsyncSignInContainer />}
 							/>
 							<Route
 								path='/authenticate'
-								component={asyncAuthenticateContainer}
+								element={<AsyncAuthenticateContainer />}
 							/>
-							<Route component={asyncApplicationContainer} />
-						</Switch>
+							<Route
+								path='*'
+								element={<AsyncApplicationContainer />}
+							/>
+						</Routes>
 					</Suspense>
 				</ErrorBoundary>
 			</BrowserRouter>

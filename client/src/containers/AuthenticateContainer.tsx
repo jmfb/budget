@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
-import { Redirect, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { PageLoading } from '~/components';
 import { useAppSelector, authSlice } from '~/redux';
@@ -18,7 +18,7 @@ export default function AuthenticationContainer() {
 	}, [code]);
 
 	if (email !== undefined || !code) {
-		return <Redirect to='/' />;
+		return <Navigate to='/' />;
 	}
 
 	return (
