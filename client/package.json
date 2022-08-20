@@ -84,5 +84,6 @@
 		"react-router-dom": "^6.3.0",
 		"react-select": "^5.2.2",
 		"stream-browserify": "^3.0.0"
-	}
+	},
+	"packageManager": "yarn@3.2.2"
 }
