@@ -27,7 +27,7 @@ try {
 	}
 
 	Write-Host "[$(Get-Date)] Logging docker in to ECR repository..."
-	$password | & docker login --username AWS --password-stdin $repository
+	& docker login $repository --username AWS --password $password
 	if ($lastexitcode -ne 0) {
 		exit $lastexitcode
 	}
