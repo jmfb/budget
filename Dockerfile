@@ -10,7 +10,7 @@ RUN dotnet publish \
 	-p:PublishReadyToRun=true \
 	-p:Version=$version
 
-FROM public.ecr.aws/lambda/dotnet:6.0
+FROM public.ecr.aws/lambda/dotnet:6
 WORKDIR /var/task
 COPY --from=build /app/publish .
 CMD ["Budget.Server::Budget.Server.LambdaEntryPoint::FunctionHandlerAsync"]
