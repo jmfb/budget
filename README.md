@@ -4,12 +4,12 @@ Cooperative app for tracking weekly expenses against a budget.
 
 ## Prerequisites
 
-* Download [terraform 0.15.1](https://releases.hashicorp.com/terraform/0.15.1/terraform_0.15.1_windows_amd64.zip) and alias to terraform_0.15.1
+* Download [terraform 1.2.7](https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_windows_amd64.zip) and alias to terraform_1.2.7
 * `choco install awscli` (min version 2.1.29)
 * `choco install dotnet` (min version 5.0.4)
 * `choco install dotnet-sdk` (min version 5.0.201)
 * `choco install nodejs` (min version 16.0.0)
-* `choco install yarn` (min version 1.22.5)
+* `npm install -g yarn` (using modern version)
 * [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
 
 ## AWS Bootstrapping
