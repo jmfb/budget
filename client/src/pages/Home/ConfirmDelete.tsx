@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button } from '~/components';
+import { Modal, Button, Buttons } from '~/components';
 
 export interface IConfirmDeleteProps {
 	onConfirmDelete(): void;
@@ -15,7 +15,7 @@ export default function ConfirmDelete({
 			onClose={onCancel}
 			title='Confirm Delete'
 			buttons={
-				<>
+				<Buttons>
 					<Button
 						variant='default'
 						onClick={onCancel}>
@@ -26,7 +26,7 @@ export default function ConfirmDelete({
 						onClick={onConfirmDelete}>
 						Delete
 					</Button>
-				</>
+				</Buttons>
 			}>
 			<div>Are you sure you want to delete this transaction?</div>
 			<div>This action cannot be undone.</div>

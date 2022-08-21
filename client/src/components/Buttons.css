@@ -1,0 +1,8 @@
+.root {
+	display: flex;
+	flex-direction: row;
+}
+
+.root > *:not(:first-child) {
+	margin-left: 1rem;
+}

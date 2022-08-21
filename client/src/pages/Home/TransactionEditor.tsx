@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Input, CategorySelect } from '~/components';
+import { Modal, Button, Buttons, Input, CategorySelect } from '~/components';
 import IncomeSelect from './IncomeSelect';
 import ExpenseSelect from './ExpenseSelect';
 import ConfirmDelete from './ConfirmDelete';
@@ -91,7 +91,7 @@ export default function TransactionEditor({
 				</Button>
 			}
 			buttons={
-				<>
+				<Buttons>
 					<Button
 						variant='default'
 						onClick={onCancel}
@@ -105,7 +105,7 @@ export default function TransactionEditor({
 						isProcessing={isSavingTransaction}>
 						Save
 					</Button>
-				</>
+				</Buttons>
 			}>
 			<div>
 				{budgetService.format(amount)} on {date}

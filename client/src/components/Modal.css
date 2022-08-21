@@ -52,10 +52,4 @@
 
 .primaryButtons {
 	margin-left: auto;
-	display: flex;
-	flex-direction: row;
-}
-
-.primaryButtons > *:not(:first-child) {
-	margin-left: 1rem;
 }

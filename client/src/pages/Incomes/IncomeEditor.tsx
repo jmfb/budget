@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Modal, Button, Input, CurrencyInput, NumberInput } from '~/components';
+import {
+	Modal,
+	Button,
+	Buttons,
+	Input,
+	CurrencyInput,
+	NumberInput
+} from '~/components';
 import { IIncome } from '~/models';
 
 export interface IIncomeEditorProps {
@@ -30,7 +37,7 @@ export default function IncomeEditor({
 			onClose={onCancel}
 			title={existingIncome ? name : 'New Income'}
 			buttons={
-				<>
+				<Buttons>
 					<Button
 						variant='default'
 						onClick={onCancel}
@@ -44,7 +51,7 @@ export default function IncomeEditor({
 						isProcessing={isSavingIncome}>
 						Save
 					</Button>
-				</>
+				</Buttons>
 			}>
 			{!existingIncome && (
 				<Input

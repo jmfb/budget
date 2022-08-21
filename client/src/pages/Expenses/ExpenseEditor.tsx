@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
 	Modal,
 	Button,
+	Buttons,
 	Input,
 	CurrencyInput,
 	NumberInput,
@@ -56,7 +57,7 @@ export default function ExpenseEditor({
 			onClose={onCancel}
 			title={existingExpense ? name : 'New Expense'}
 			buttons={
-				<>
+				<Buttons>
 					<Button
 						variant='default'
 						onClick={onCancel}
@@ -70,7 +71,7 @@ export default function ExpenseEditor({
 						isProcessing={isSavingExpense}>
 						Save
 					</Button>
-				</>
+				</Buttons>
 			}>
 			{!existingExpense && (
 				<Input

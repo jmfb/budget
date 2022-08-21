@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Input, CurrencyInput } from '~/components';
+import { Modal, Button, Buttons, Input, CurrencyInput } from '~/components';
 import { IPendingItem } from '~/models';
 
 export interface IPendingItemEditorProps {
@@ -69,7 +69,7 @@ export default function PendingItemEditor({
 				)
 			}
 			buttons={
-				<>
+				<Buttons>
 					<Button
 						variant='default'
 						onClick={onCancel}
@@ -83,7 +83,7 @@ export default function PendingItemEditor({
 						isProcessing={isSavingPendingItem}>
 						Save
 					</Button>
-				</>
+				</Buttons>
 			}>
 			<Input
 				name='Name'
