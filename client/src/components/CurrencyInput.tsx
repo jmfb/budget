@@ -23,7 +23,9 @@ export default function CurrencyInput({
 	value,
 	onChange
 }: ICurrencyInputProps) {
-	const [textValue, setTextValue] = useState(toString(value));
+	const [textValue, setTextValue] = useState(
+		value === 0 ? '' : toString(value)
+	);
 
 	const handleTextChanged = (newTextValue: string) => {
 		setTextValue(newTextValue);
@@ -41,6 +43,7 @@ export default function CurrencyInput({
 		<Input
 			{...{ name }}
 			value={textValue}
+			placeholder='0.00'
 			onChange={handleTextChanged}
 			onBlur={handleBlurred}
 		/>
