@@ -6,6 +6,7 @@ import Header from './Header';
 import NewerVersionPrompt from './NewerVersionPrompt';
 import { useAppSelector, authSlice, diagnosticsSlice } from '~/redux';
 import { useInterval } from '~/hooks';
+import styles from './ApplicationContainer.css';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncHomeContainer = lazy(
@@ -95,7 +96,7 @@ export default function ApplicationContainer() {
 	return (
 		<>
 			<Header />
-			<main>
+			<main className={styles.main}>
 				<section>
 					<Routes>
 						<Route

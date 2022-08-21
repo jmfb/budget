@@ -3,6 +3,8 @@
 	color: white;
 	box-shadow: 0 1px 7px -3px var(--color-secondary);
 	border-bottom: 1px solid var(--color-secondary);
+	position: fixed;
+	width: 100%;
 }
 
 .links {
