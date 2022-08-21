@@ -39,6 +39,8 @@ export default function TransactionEditor({
 	const [incomeName, setIncomeName] = useState(transaction.incomeName ?? '');
 	const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
+	const [isAddingExpense, setIsAddingExpense] = useState(false);
+	const [isAddingIncome, setIsAddingIncome] = useState(false);
 
 	const handleSaveClicked = () => {
 		onSave({
@@ -63,6 +65,19 @@ export default function TransactionEditor({
 		deleteTransaction(transaction);
 	};
 
+	const handleExpenseNameChanged = (newExpenseName: string) => {
+		setExpenseName(newExpenseName);
+		setIsAddingExpense(false);
+	};
+
+	const handleIncomeNameChanged = (newIncomeName: string) => {
+		setIncomeName(newIncomeName);
+		setIsAddingIncome(false);
+	};
+
+	const handleAddExpenseClicked = () => setIsAddingExpense(true);
+	const handleAddIncomeClicked = () => setIsAddingIncome(true);
+
 	useEffect(() => {
 		if (isDeleting && !isDeletingTransaction) {
 			setIsDeleting(false);
@@ -76,6 +91,8 @@ export default function TransactionEditor({
 	const { amount, description, date } = transaction;
 
 	const isModificationInProgress = isSavingTransaction || isDeleting;
+	const showIncomeSelect = !!incomeName || isAddingIncome;
+	const showExpenseSelect = !!expenseName || isAddingExpense;
 
 	return (
 		<Modal
@@ -120,16 +137,30 @@ export default function TransactionEditor({
 				value={note}
 				onChange={setNote}
 			/>
-			{!expenseName && (
+			{!showExpenseSelect && !showIncomeSelect && (
+				<Buttons>
+					<Button
+						variant='default'
+						onClick={handleAddExpenseClicked}>
+						Expense
+					</Button>
+					<Button
+						variant='default'
+						onClick={handleAddIncomeClicked}>
+						Income
+					</Button>
+				</Buttons>
+			)}
+			{showIncomeSelect && (
 				<IncomeSelect
 					{...{ incomes, incomeName }}
-					onChange={setIncomeName}
+					onChange={handleIncomeNameChanged}
 				/>
 			)}
-			{!incomeName && (
+			{showExpenseSelect && (
 				<ExpenseSelect
 					{...{ expenses, expenseName }}
-					onChange={setExpenseName}
+					onChange={handleExpenseNameChanged}
 				/>
 			)}
 			{isConfirmingDelete && (
