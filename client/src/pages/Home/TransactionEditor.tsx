@@ -114,11 +114,11 @@ export default function TransactionEditor({
 				</div>
 				<CategorySelect
 					{...{ category }}
+					autoFocus
 					onChange={setCategory}
 				/>
 				<Input
 					name='Note'
-					autoFocus
 					value={note}
 					onChange={setNote}
 				/>

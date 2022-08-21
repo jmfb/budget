@@ -4,11 +4,13 @@ import styles from './CategorySelect.css';
 
 export interface ICategorySelectProps {
 	category: string;
+	autoFocus?: boolean;
 	onChange(category: string): void;
 }
 
 export default function CategorySelect({
 	category,
+	autoFocus,
 	onChange
 }: ICategorySelectProps) {
 	const options = [
@@ -48,7 +50,7 @@ export default function CategorySelect({
 			<Creatable
 				isClearable
 				placeholder='Select category...'
-				{...{ options }}
+				{...{ options, autoFocus }}
 				value={selectedOption}
 				onChange={handleChange}
 			/>
