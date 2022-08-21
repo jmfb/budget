@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import ReactModal from 'react-modal';
-import cx from 'classnames';
 import styles from './Modal.css';
 
 export interface IModalProps {
-	children?: React.ReactNode;
-	className?: string;
+	title: ReactNode;
+	children: ReactNode;
+	deleteButton?: ReactNode;
+	buttons: ReactNode;
 	onClose(): void;
 }
 
-export default function Modal({ children, className, onClose }: IModalProps) {
+export default function Modal({
+	title,
+	children,
+	deleteButton,
+	buttons,
+	onClose
+}: IModalProps) {
 	return (
 		<ReactModal
 			isOpen
 			ariaHideApp={false}
 			onRequestClose={onClose}
-			className={cx(className, styles.root)}
+			className={styles.root}
 			overlayClassName={styles.overlay}>
-			{children}
+			{title && <div className={styles.title}>{title}</div>}
+			<div className={styles.body}>{children}</div>
+			<div className={styles.buttons}>
+				{deleteButton && (
+					<div className={styles.deleteButton}>{deleteButton}</div>
+				)}
+				<div className={styles.primaryButtons}>{buttons}</div>
+			</div>
 		</ReactModal>
 	);
 }

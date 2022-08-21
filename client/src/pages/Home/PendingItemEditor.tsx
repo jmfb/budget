@@ -51,12 +51,41 @@ export default function PendingItemEditor({
 	const isModificationInProgress = isSavingPendingItem || isDeleting;
 
 	return (
-		<Modal onClose={onCancel}>
-			<h3>
-				{existingPendingItem
+		<Modal
+			onClose={onCancel}
+			title={
+				existingPendingItem
 					? 'Edit Pending Transaction'
-					: 'New Pending Transaction'}
-			</h3>
+					: 'New Pending Transaction'
+			}
+			deleteButton={
+				existingPendingItem && (
+					<Button
+						variant='danger'
+						onClick={handleDeleteClicked}
+						isDisabled={isModificationInProgress}
+						isProcessing={isDeleting}>
+						Delete
+					</Button>
+				)
+			}
+			buttons={
+				<>
+					<Button
+						variant='default'
+						onClick={onCancel}
+						isDisabled={isModificationInProgress}>
+						Cancel
+					</Button>
+					<Button
+						variant='primary'
+						onClick={handleSaveClicked}
+						isDisabled={isModificationInProgress}
+						isProcessing={isSavingPendingItem}>
+						Save
+					</Button>
+				</>
+			}>
 			<div className={styles.inputs}>
 				<Input
 					name='Name'
@@ -69,33 +98,6 @@ export default function PendingItemEditor({
 					value={amount}
 					onChange={setAmount}
 				/>
-			</div>
-			<hr />
-			<div className={styles.buttons}>
-				{existingPendingItem && (
-					<Button
-						variant='danger'
-						onClick={handleDeleteClicked}
-						isDisabled={isModificationInProgress}
-						isProcessing={isDeleting}
-						className={styles.deleteButton}>
-						Delete
-					</Button>
-				)}
-				<Button
-					variant='default'
-					onClick={onCancel}
-					isDisabled={isModificationInProgress}
-					className={styles.cancelButton}>
-					Cancel
-				</Button>
-				<Button
-					variant='primary'
-					onClick={handleSaveClicked}
-					isDisabled={isModificationInProgress}
-					isProcessing={isSavingPendingItem}>
-					Save
-				</Button>
 			</div>
 		</Modal>
 	);

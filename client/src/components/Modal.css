@@ -1,8 +1,7 @@
 .root {
 	margin: auto;
-	background-color: white;
+	background-color: #f7f5f5;
 	border-radius: 8px;
-	padding: 1rem;
 	border: 1px solid lightgray;
 }
 
@@ -14,4 +13,42 @@
 	bottom: 0;
 	background-color: rgba(128, 128, 128, 0.75);
 	display: flex;
+}
+
+.title {
+	font-size: 1.25rem;
+	font-weight: bold;
+	padding: 0.5rem 1rem;
+	margin-bottom: 0.5rem;
+	background-color: #e5e0e0;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+
+.body {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.buttons {
+	display: flex;
+	flex-direction: row;
+	background-color: #e5e0e0;
+	padding: 1rem;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.deleteButton {
+	margin-right: 5rem;
+}
+
+.primaryButtons {
+	margin-left: auto;
+	display: flex;
+	flex-direction: row;
+}
+
+.primaryButtons > *:not(:first-child) {
+	margin-left: 1rem;
 }

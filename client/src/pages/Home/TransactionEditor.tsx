@@ -79,8 +79,35 @@ export default function TransactionEditor({
 	const isModificationInProgress = isSavingTransaction || isDeleting;
 
 	return (
-		<Modal onClose={onCancel}>
-			<h3>{description}</h3>
+		<Modal
+			onClose={onCancel}
+			title={description}
+			deleteButton={
+				<Button
+					variant='danger'
+					onClick={handleDeleteClicked}
+					isDisabled={isModificationInProgress}
+					isProcessing={isDeleting}>
+					Delete
+				</Button>
+			}
+			buttons={
+				<>
+					<Button
+						variant='default'
+						onClick={onCancel}
+						isDisabled={isModificationInProgress}>
+						Cancel
+					</Button>
+					<Button
+						variant='primary'
+						onClick={handleSaveClicked}
+						isDisabled={isModificationInProgress}
+						isProcessing={isSavingTransaction}>
+						Save
+					</Button>
+				</>
+			}>
 			<div className={styles.inputs}>
 				<div className={styles.amount}>
 					{budgetService.format(amount)} on {date}
@@ -107,31 +134,6 @@ export default function TransactionEditor({
 						onChange={setExpenseName}
 					/>
 				)}
-			</div>
-			<hr />
-			<div className={styles.buttons}>
-				<Button
-					variant='danger'
-					onClick={handleDeleteClicked}
-					isDisabled={isModificationInProgress}
-					isProcessing={isDeleting}
-					className={styles.deleteButton}>
-					Delete
-				</Button>
-				<Button
-					variant='default'
-					onClick={onCancel}
-					isDisabled={isModificationInProgress}
-					className={styles.cancelButton}>
-					Cancel
-				</Button>
-				<Button
-					variant='primary'
-					onClick={handleSaveClicked}
-					isDisabled={isModificationInProgress}
-					isProcessing={isSavingTransaction}>
-					Save
-				</Button>
 			</div>
 			{isConfirmingDelete && (
 				<ConfirmDelete

@@ -2,17 +2,3 @@
 	display: flex;
 	flex-direction: column;
 }
-
-.buttons {
-	display: flex;
-	flex-direction: row;
-}
-
-.deleteButton {
-	margin-right: 5rem;
-}
-
-.cancelButton {
-	margin-left: auto;
-	margin-right: 1rem;
-}

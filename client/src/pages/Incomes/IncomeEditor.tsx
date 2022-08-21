@@ -27,8 +27,26 @@ export default function IncomeEditor({
 	};
 
 	return (
-		<Modal onClose={onCancel}>
-			<h3>{existingIncome ? name : 'New Income'}</h3>
+		<Modal
+			onClose={onCancel}
+			title={existingIncome ? name : 'New Income'}
+			buttons={
+				<>
+					<Button
+						variant='default'
+						onClick={onCancel}
+						isDisabled={isSavingIncome}>
+						Cancel
+					</Button>
+					<Button
+						variant='primary'
+						onClick={handleSaveClicked}
+						isDisabled={isSavingIncome}
+						isProcessing={isSavingIncome}>
+						Save
+					</Button>
+				</>
+			}>
 			<div className={styles.inputs}>
 				{!existingIncome && (
 					<Input
@@ -49,23 +67,6 @@ export default function IncomeEditor({
 					value={weeksInterval}
 					onChange={setWeeksInterval}
 				/>
-			</div>
-			<hr />
-			<div className={styles.buttons}>
-				<Button
-					variant='default'
-					onClick={onCancel}
-					isDisabled={isSavingIncome}
-					className={styles.cancelButton}>
-					Cancel
-				</Button>
-				<Button
-					variant='primary'
-					onClick={handleSaveClicked}
-					isDisabled={isSavingIncome}
-					isProcessing={isSavingIncome}>
-					Save
-				</Button>
 			</div>
 		</Modal>
 	);

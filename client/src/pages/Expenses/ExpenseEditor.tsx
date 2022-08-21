@@ -53,8 +53,26 @@ export default function ExpenseEditor({
 		isValidName && isValidAmount && isValidInterval && isValidCategory;
 
 	return (
-		<Modal onClose={onCancel}>
-			<h3>{existingExpense ? name : 'New Expense'}</h3>
+		<Modal
+			onClose={onCancel}
+			title={existingExpense ? name : 'New Expense'}
+			buttons={
+				<>
+					<Button
+						variant='default'
+						onClick={onCancel}
+						isDisabled={isSavingExpense}>
+						Cancel
+					</Button>
+					<Button
+						variant='primary'
+						onClick={handleSaveClicked}
+						isDisabled={!isValid || isSavingExpense}
+						isProcessing={isSavingExpense}>
+						Save
+					</Button>
+				</>
+			}>
 			<div className={styles.inputs}>
 				{!existingExpense && (
 					<Input
@@ -86,23 +104,6 @@ export default function ExpenseEditor({
 					{...{ category }}
 					onChange={setCategory}
 				/>
-			</div>
-			<hr />
-			<div className={styles.buttons}>
-				<Button
-					variant='default'
-					onClick={onCancel}
-					isDisabled={isSavingExpense}
-					className={styles.cancelButton}>
-					Cancel
-				</Button>
-				<Button
-					variant='primary'
-					onClick={handleSaveClicked}
-					isDisabled={!isValid || isSavingExpense}
-					isProcessing={isSavingExpense}>
-					Save
-				</Button>
 			</div>
 		</Modal>
 	);

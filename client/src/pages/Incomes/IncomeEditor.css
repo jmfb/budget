@@ -2,13 +2,3 @@
 	display: flex;
 	flex-direction: column;
 }
-
-.buttons {
-	display: flex;
-	flex-direction: row;
-}
-
-.cancelButton {
-	margin-left: auto;
-	margin-right: 1rem;
-}
