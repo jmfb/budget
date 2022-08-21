@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Input, CurrencyInput } from '~/components';
 import { IPendingItem } from '~/models';
-import styles from './PendingItemEditor.css';
 
 export interface IPendingItemEditorProps {
 	nextPendingItemId: number;
@@ -86,19 +85,17 @@ export default function PendingItemEditor({
 					</Button>
 				</>
 			}>
-			<div className={styles.inputs}>
-				<Input
-					name='Name'
-					autoFocus
-					value={name}
-					onChange={setName}
-				/>
-				<CurrencyInput
-					name='Amount'
-					value={amount}
-					onChange={setAmount}
-				/>
-			</div>
+			<Input
+				name='Name'
+				autoFocus
+				value={name}
+				onChange={setName}
+			/>
+			<CurrencyInput
+				name='Amount'
+				value={amount}
+				onChange={setAmount}
+			/>
 		</Modal>
 	);
 }

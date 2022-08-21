@@ -9,7 +9,6 @@ import {
 	CategorySelect
 } from '~/components';
 import { IExpense } from '~/models';
-import styles from './ExpenseEditor.css';
 
 export interface IExpenseEditorProps {
 	existingExpense: IExpense;
@@ -73,38 +72,36 @@ export default function ExpenseEditor({
 					</Button>
 				</>
 			}>
-			<div className={styles.inputs}>
-				{!existingExpense && (
-					<Input
-						name='Name'
-						autoFocus
-						value={name}
-						onChange={setName}
-					/>
-				)}
-				<CurrencyInput
-					name='Amount'
-					autoFocus={!!existingExpense}
-					value={amount}
-					onChange={setAmount}
+			{!existingExpense && (
+				<Input
+					name='Name'
+					autoFocus
+					value={name}
+					onChange={setName}
 				/>
-				<Checkbox
-					name='Is Distributed Over Entire Year?'
-					value={isDistributed}
-					onChange={handleIsDistributedChanged}
+			)}
+			<CurrencyInput
+				name='Amount'
+				autoFocus={!!existingExpense}
+				value={amount}
+				onChange={setAmount}
+			/>
+			<Checkbox
+				name='Is Distributed Over Entire Year?'
+				value={isDistributed}
+				onChange={handleIsDistributedChanged}
+			/>
+			{!isDistributed && (
+				<NumberInput
+					name='Months Interval'
+					value={monthsInterval}
+					onChange={setMonthsInterval}
 				/>
-				{!isDistributed && (
-					<NumberInput
-						name='Months Interval'
-						value={monthsInterval}
-						onChange={setMonthsInterval}
-					/>
-				)}
-				<CategorySelect
-					{...{ category }}
-					onChange={setCategory}
-				/>
-			</div>
+			)}
+			<CategorySelect
+				{...{ category }}
+				onChange={setCategory}
+			/>
 		</Modal>
 	);
 }

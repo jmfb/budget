@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button, Input, CurrencyInput, NumberInput } from '~/components';
 import { IIncome } from '~/models';
-import styles from './IncomeEditor.css';
 
 export interface IIncomeEditorProps {
 	existingIncome: IIncome;
@@ -47,27 +46,25 @@ export default function IncomeEditor({
 					</Button>
 				</>
 			}>
-			<div className={styles.inputs}>
-				{!existingIncome && (
-					<Input
-						name='Name'
-						autoFocus
-						value={name}
-						onChange={setName}
-					/>
-				)}
-				<CurrencyInput
-					name='Amount'
-					autoFocus={!!existingIncome}
-					value={amount}
-					onChange={setAmount}
+			{!existingIncome && (
+				<Input
+					name='Name'
+					autoFocus
+					value={name}
+					onChange={setName}
 				/>
-				<NumberInput
-					name='Weeks Interval'
-					value={weeksInterval}
-					onChange={setWeeksInterval}
-				/>
-			</div>
+			)}
+			<CurrencyInput
+				name='Amount'
+				autoFocus={!!existingIncome}
+				value={amount}
+				onChange={setAmount}
+			/>
+			<NumberInput
+				name='Weeks Interval'
+				value={weeksInterval}
+				onChange={setWeeksInterval}
+			/>
 		</Modal>
 	);
 }

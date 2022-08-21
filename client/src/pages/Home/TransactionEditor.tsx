@@ -5,7 +5,6 @@ import ExpenseSelect from './ExpenseSelect';
 import ConfirmDelete from './ConfirmDelete';
 import { ITransaction, IIncome, IExpense } from '~/models';
 import { budgetService } from '~/services';
-import styles from './TransactionEditor.css';
 
 export interface ITransactionEditorProps {
 	transaction: ITransaction;
@@ -108,33 +107,31 @@ export default function TransactionEditor({
 					</Button>
 				</>
 			}>
-			<div className={styles.inputs}>
-				<div className={styles.amount}>
-					{budgetService.format(amount)} on {date}
-				</div>
-				<CategorySelect
-					{...{ category }}
-					autoFocus
-					onChange={setCategory}
-				/>
-				<Input
-					name='Note'
-					value={note}
-					onChange={setNote}
-				/>
-				{!expenseName && (
-					<IncomeSelect
-						{...{ incomes, incomeName }}
-						onChange={setIncomeName}
-					/>
-				)}
-				{!incomeName && (
-					<ExpenseSelect
-						{...{ expenses, expenseName }}
-						onChange={setExpenseName}
-					/>
-				)}
+			<div>
+				{budgetService.format(amount)} on {date}
 			</div>
+			<CategorySelect
+				{...{ category }}
+				autoFocus
+				onChange={setCategory}
+			/>
+			<Input
+				name='Note'
+				value={note}
+				onChange={setNote}
+			/>
+			{!expenseName && (
+				<IncomeSelect
+					{...{ incomes, incomeName }}
+					onChange={setIncomeName}
+				/>
+			)}
+			{!incomeName && (
+				<ExpenseSelect
+					{...{ expenses, expenseName }}
+					onChange={setExpenseName}
+				/>
+			)}
 			{isConfirmingDelete && (
 				<ConfirmDelete
 					onConfirmDelete={handleDeleteConfirmationConfirmed}

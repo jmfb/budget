@@ -28,6 +28,12 @@
 .body {
 	padding-left: 1rem;
 	padding-right: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.body > *:not(:first-child) {
+	margin-top: 0.5rem;
 }
 
 .buttons {
@@ -35,6 +41,7 @@
 	flex-direction: row;
 	background-color: #e5e0e0;
 	padding: 1rem;
+	margin-top: 1rem;
 	border-bottom-left-radius: 8px;
 	border-bottom-right-radius: 8px;
 }
