@@ -6,9 +6,17 @@
 	border: 1px solid lightgray;
 }
 
+.date {
+	font-weight: bold;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
 .onlyShowNewItems {
 	display: flex;
 	flex-direction: row;
+	margin-top: 0.5rem;
+	margin-bottom: -2rem;
 }
 
 .onlyShowNewItems > *:first-child {

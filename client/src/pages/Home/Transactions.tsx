@@ -154,7 +154,7 @@ export default function Transactions({
 				.sort((a, b) => -a.localeCompare(b))
 				.map(date => (
 					<div key={date}>
-						<h3>{date}</h3>
+						<div className={styles.date}>{date}</div>
 						{transactionsByDate[date]
 							.sort((a, b) => a.id - b.id)
 							.sort((a, b) => a.amount - b.amount)
