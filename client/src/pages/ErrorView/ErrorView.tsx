@@ -27,6 +27,7 @@ export default function ErrorView({
 					</div>
 					<div className={styles.actions}>
 						<Button
+							variant='primary'
 							className={styles.action}
 							onClick={onClickDismiss}>
 							Dismiss

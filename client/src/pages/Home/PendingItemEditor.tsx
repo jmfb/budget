@@ -74,6 +74,7 @@ export default function PendingItemEditor({
 			<div className={styles.buttons}>
 				{existingPendingItem && (
 					<Button
+						variant='danger'
 						onClick={handleDeleteClicked}
 						isDisabled={isModificationInProgress}
 						isProcessing={isDeleting}
@@ -82,16 +83,18 @@ export default function PendingItemEditor({
 					</Button>
 				)}
 				<Button
-					onClick={handleSaveClicked}
+					variant='default'
+					onClick={onCancel}
 					isDisabled={isModificationInProgress}
-					isProcessing={isSavingPendingItem}
-					className={styles.saveButton}>
-					Save
+					className={styles.cancelButton}>
+					Cancel
 				</Button>
 				<Button
-					onClick={onCancel}
-					isDisabled={isModificationInProgress}>
-					Cancel
+					variant='primary'
+					onClick={handleSaveClicked}
+					isDisabled={isModificationInProgress}
+					isProcessing={isSavingPendingItem}>
+					Save
 				</Button>
 			</div>
 		</Modal>

@@ -18,11 +18,16 @@ export default function ConfirmDelete({
 			<div>This action cannot be undone.</div>
 			<hr />
 			<div className={styles.buttons}>
-				<Button onClick={onConfirmDelete}>Delete</Button>
 				<Button
-					onClick={onCancel}
-					className={styles.cancelButton}>
+					variant='default'
+					onClick={onCancel}>
 					Cancel
+				</Button>
+				<Button
+					variant='danger'
+					className={styles.deleteButton}
+					onClick={onConfirmDelete}>
+					Delete
 				</Button>
 			</div>
 		</Modal>

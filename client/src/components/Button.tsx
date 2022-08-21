@@ -3,8 +3,11 @@ import LoadingIcon from './LoadingIcon';
 import cx from 'classnames';
 import styles from './Button.css';
 
+export type ButtonVariant = 'primary' | 'default' | 'danger';
+
 export interface IButtonProps {
 	className?: string;
+	variant: ButtonVariant;
 	onClick?(): void;
 	children?: React.ReactNode;
 	isDisabled?: boolean;
@@ -14,6 +17,7 @@ export interface IButtonProps {
 
 export default function Button({
 	className,
+	variant,
 	onClick,
 	children,
 	isDisabled,
@@ -23,7 +27,11 @@ export default function Button({
 	return (
 		<button
 			{...{ onClick, autoFocus }}
-			className={cx(styles.button, styles.primary, className)}
+			className={cx(
+				styles.button,
+				styles[variant ?? 'default'],
+				className
+			)}
 			disabled={isDisabled}>
 			<div className={cx({ [styles.processing]: isProcessing })}>
 				{children}

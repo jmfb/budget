@@ -1,11 +1,13 @@
 import React from 'react';
 import LoadingIcon from './LoadingIcon';
+import { ButtonVariant } from './Button';
 import cx from 'classnames';
 import styles from './FileInput.css';
 import buttonStyles from './Button.css';
 
 export interface IFileInputProps {
 	accept: string;
+	variant?: ButtonVariant;
 	children?: React.ReactNode;
 	isDisabled?: boolean;
 	isProcessing?: boolean;
@@ -14,6 +16,7 @@ export interface IFileInputProps {
 
 export default function FileInput({
 	accept,
+	variant,
 	children,
 	isDisabled,
 	isProcessing,
@@ -35,7 +38,7 @@ export default function FileInput({
 			<div
 				className={cx(
 					buttonStyles.button,
-					buttonStyles.primary,
+					buttonStyles[variant ?? 'default'],
 					styles.button,
 					{ [buttonStyles.processing]: isProcessing }
 				)}>

@@ -134,6 +134,7 @@ export default function Uploads({
 				<div className={styles.uploadButtons}>
 					<div className={styles.bankButton}>
 						<FileInput
+							variant='default'
 							accept='*.csv'
 							onClick={handleUploadBank}>
 							Upload Bank Export
@@ -141,6 +142,7 @@ export default function Uploads({
 					</div>
 					<div className={styles.capitalOneButton}>
 						<FileInput
+							variant='default'
 							accept='*.csv'
 							onClick={handleUploadCapitalOne}>
 							Upload Capital One Export
@@ -154,6 +156,7 @@ export default function Uploads({
 				<>
 					<div className={styles.mergeRow}>
 						<Button
+							variant='primary'
 							isDisabled={
 								isLoading || !parsingCsvSuccess || isUploading
 							}
@@ -184,6 +187,7 @@ export default function Uploads({
 					<div className={styles.logsHeader}>
 						<h3>Logs</h3>
 						<Button
+							variant='primary'
 							onClick={handleClearClicked}
 							isDisabled={isUploading}
 							className={styles.clearButton}>

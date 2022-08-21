@@ -42,11 +42,13 @@ export default function Income({
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
 			<Button
+				variant='default'
 				className={styles.editButton}
 				onClick={onEdit}>
 				Edit
 			</Button>
 			<Button
+				variant='danger'
 				onClick={handleDeleteClicked}
 				isProcessing={isDeleting}
 				isDisabled={isSavingIncome}>

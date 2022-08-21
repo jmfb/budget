@@ -53,16 +53,18 @@ export default function IncomeEditor({
 			<hr />
 			<div className={styles.buttons}>
 				<Button
-					onClick={handleSaveClicked}
+					variant='default'
+					onClick={onCancel}
 					isDisabled={isSavingIncome}
-					isProcessing={isSavingIncome}
-					className={styles.saveButton}>
-					Save
+					className={styles.cancelButton}>
+					Cancel
 				</Button>
 				<Button
-					onClick={onCancel}
-					isDisabled={isSavingIncome}>
-					Cancel
+					variant='primary'
+					onClick={handleSaveClicked}
+					isDisabled={isSavingIncome}
+					isProcessing={isSavingIncome}>
+					Save
 				</Button>
 			</div>
 		</Modal>

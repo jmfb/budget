@@ -68,6 +68,7 @@ export default function Incomes({
 					{budgetService.format(weeklyIncomes)} every week
 				</h3>
 				<Button
+					variant='primary'
 					className={styles.addButton}
 					onClick={handleAddClicked}>
 					Add

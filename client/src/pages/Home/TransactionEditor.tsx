@@ -111,6 +111,7 @@ export default function TransactionEditor({
 			<hr />
 			<div className={styles.buttons}>
 				<Button
+					variant='danger'
 					onClick={handleDeleteClicked}
 					isDisabled={isModificationInProgress}
 					isProcessing={isDeleting}
@@ -118,16 +119,18 @@ export default function TransactionEditor({
 					Delete
 				</Button>
 				<Button
-					onClick={handleSaveClicked}
+					variant='default'
+					onClick={onCancel}
 					isDisabled={isModificationInProgress}
-					isProcessing={isSavingTransaction}
-					className={styles.saveButton}>
-					Save
+					className={styles.cancelButton}>
+					Cancel
 				</Button>
 				<Button
-					onClick={onCancel}
-					isDisabled={isModificationInProgress}>
-					Cancel
+					variant='primary'
+					onClick={handleSaveClicked}
+					isDisabled={isModificationInProgress}
+					isProcessing={isSavingTransaction}>
+					Save
 				</Button>
 			</div>
 			{isConfirmingDelete && (

@@ -90,16 +90,18 @@ export default function ExpenseEditor({
 			<hr />
 			<div className={styles.buttons}>
 				<Button
-					onClick={handleSaveClicked}
-					isDisabled={!isValid || isSavingExpense}
-					isProcessing={isSavingExpense}
-					className={styles.saveButton}>
-					Save
+					variant='default'
+					onClick={onCancel}
+					isDisabled={isSavingExpense}
+					className={styles.cancelButton}>
+					Cancel
 				</Button>
 				<Button
-					onClick={onCancel}
-					isDisabled={isSavingExpense}>
-					Cancel
+					variant='primary'
+					onClick={handleSaveClicked}
+					isDisabled={!isValid || isSavingExpense}
+					isProcessing={isSavingExpense}>
+					Save
 				</Button>
 			</div>
 		</Modal>

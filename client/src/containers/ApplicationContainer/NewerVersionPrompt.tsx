@@ -34,6 +34,7 @@ export default function NewerVersionPrompt({
 				</div>
 			</div>
 			<Button
+				variant='primary'
 				isDisabled={isRefreshing}
 				isProcessing={isRefreshing}
 				className={styles.refresh}

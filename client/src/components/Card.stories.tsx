@@ -13,7 +13,11 @@ const Template: Story<ICardProps> = props => (
 	<Card {...props}>
 		<h2>Example</h2>
 		<div>This is a card</div>
-		<Button onClick={() => console.log('click')}>OK</Button>
+		<Button
+			variant='primary'
+			onClick={() => console.log('click')}>
+			OK
+		</Button>
 	</Card>
 );
 

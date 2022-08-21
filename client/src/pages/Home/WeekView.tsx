@@ -36,6 +36,7 @@ export default function WeekView({
 	return (
 		<div className={styles.root}>
 			<Button
+				variant='default'
 				onClick={handlePreviousClicked}
 				className={styles.previous}>
 				<ChevronLeftIcon />
@@ -73,6 +74,7 @@ export default function WeekView({
 				</div>
 			</span>
 			<Button
+				variant='default'
 				onClick={handleNextClicked}
 				isDisabled={isCurrentWeek}
 				className={styles.next}>

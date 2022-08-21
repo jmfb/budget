@@ -74,6 +74,7 @@ export default function PendingItems({
 				)}
 				<Button
 					className={styles.addButton}
+					variant='primary'
 					onClick={handleAddPendingItem}>
 					<MdAdd className={styles.addIcon} />
 				</Button>

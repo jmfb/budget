@@ -78,6 +78,7 @@ export default function Expenses({
 					{budgetService.format(weeklyExpenses)} every week
 				</h3>
 				<Button
+					variant='primary'
 					className={styles.addButton}
 					onClick={handleAddClicked}>
 					Add
