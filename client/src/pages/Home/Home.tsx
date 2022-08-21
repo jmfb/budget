@@ -13,6 +13,7 @@ import {
 import { dateService } from '~/services';
 
 export interface IHomeProps {
+	onlyShowNewItems: boolean;
 	isLoadingBudget: boolean;
 	incomes: IIncome[];
 	expenses: IExpense[];
@@ -26,6 +27,7 @@ export interface IHomeProps {
 	savingPendingItemSuccess: boolean;
 	weekOf: string;
 	setWeekOf(value: string): void;
+	setOnlyShowNewItems(value: boolean): void;
 	saveTransaction(transaction: ITransaction): void;
 	deleteTransaction(transaction: ITransaction): void;
 	savePendingItem(pendingItem: IPendingItem): void;
@@ -37,6 +39,7 @@ export interface IHomeProps {
 }
 
 export default function Home({
+	onlyShowNewItems,
 	isLoadingBudget,
 	incomes,
 	expenses,
@@ -50,6 +53,7 @@ export default function Home({
 	savingPendingItemSuccess,
 	weekOf,
 	setWeekOf,
+	setOnlyShowNewItems,
 	saveTransaction,
 	deleteTransaction,
 	savePendingItem,
@@ -91,6 +95,7 @@ export default function Home({
 					/>
 					<Transactions
 						{...{
+							onlyShowNewItems,
 							incomes,
 							expenses,
 							pendingItems,
@@ -101,6 +106,7 @@ export default function Home({
 							deletingTransactionSuccess,
 							isSavingPendingItem,
 							savingPendingItemSuccess,
+							setOnlyShowNewItems,
 							saveTransaction,
 							deleteTransaction,
 							savePendingItem,

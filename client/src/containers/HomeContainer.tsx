@@ -11,6 +11,7 @@ export default function HomeContainer() {
 		getBudget,
 		saveTransaction,
 		deleteTransaction,
+		setOnlyShowNewItems,
 		savePendingItem,
 		deletePendingItem,
 		clearTransactionSave,
@@ -18,6 +19,9 @@ export default function HomeContainer() {
 		clearPendingItemSave,
 		getWeeklyTransactions
 	} = bindActionCreators(budgetSlice.actions, dispatch);
+	const onlyShowNewItems = useAppSelector(
+		state => state.budget.onlyShowNewItems
+	);
 	const isLoadingBudget = useAppSelector(
 		state => state.budget.isLoadingBudget
 	);
@@ -54,6 +58,7 @@ export default function HomeContainer() {
 	return (
 		<Home
 			{...{
+				onlyShowNewItems,
 				isLoadingBudget,
 				incomes,
 				expenses,
@@ -67,6 +72,7 @@ export default function HomeContainer() {
 				savingPendingItemSuccess,
 				weekOf,
 				setWeekOf,
+				setOnlyShowNewItems,
 				saveTransaction,
 				deleteTransaction,
 				savePendingItem,

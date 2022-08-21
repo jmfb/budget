@@ -11,4 +11,5 @@ export { default as FileInput } from './FileInput';
 export { default as Checkbox } from './Checkbox';
 export { default as CategorySelect } from './CategorySelect';
 export { default as Buttons } from './Buttons';
+export { default as Switch } from './Switch';
 export * from './Icon';

@@ -5,3 +5,12 @@
 	padding-right: 8px;
 	border: 1px solid lightgray;
 }
+
+.onlyShowNewItems {
+	display: flex;
+	flex-direction: row;
+}
+
+.onlyShowNewItems > *:first-child {
+	margin-left: auto;
+}

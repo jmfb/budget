@@ -5405,6 +5405,7 @@ __metadata:
     react-redux: ^8.0.2
     react-router-dom: ^6.3.0
     react-select: ^5.2.2
+    react-switch: ^7.0.0
     sb: ^6.5.9
     stream-browserify: ^3.0.0
     terser-webpack-plugin: ^5.3.3
@@ -13178,6 +13179,18 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: c8c0ecd75704098ef1010fba4df68bcc5e7d76ffcd6d3bac40bc3017758a9c035a887fa82ead9105dc719c14e04c4164d8b7a8e8fa61d0ed39e4bdf48ee3bf1c
+  languageName: node
+  linkType: hard
+
+"react-switch@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "react-switch@npm:7.0.0"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 1a3caa9a0271dad3acad9fb4c613583e738a8abf8ef67372fc829dfe3e837a23a7a1c1cd29c327ace526039c068a97538ea5659c25bd5bd6d94cc5f804ea843d
   languageName: node
   linkType: hard
 

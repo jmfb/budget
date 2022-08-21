@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
 	IIncome,
 	IExpense,
@@ -23,6 +23,7 @@ import {
 import { dateService } from '~/services';
 
 export interface IBudgetState {
+	onlyShowNewItems: boolean;
 	isLoadingBudget: boolean;
 	incomes: IIncome[];
 	expenses: IExpense[];
@@ -50,6 +51,7 @@ export interface IBudgetState {
 }
 
 const initialState: IBudgetState = {
+	onlyShowNewItems: false,
 	isLoadingBudget: false,
 	incomes: null,
 	expenses: null,
@@ -80,6 +82,9 @@ const slice = createSlice({
 	name: 'budget',
 	initialState,
 	reducers: {
+		setOnlyShowNewItems(state, action: PayloadAction<boolean>) {
+			state.onlyShowNewItems = action.payload;
+		},
 		clearIncomeSave(state) {
 			state.isSavingIncome = false;
 			state.savingIncomeSuccess = false;

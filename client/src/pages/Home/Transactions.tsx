@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Switch } from '~/components';
 import PendingItems from './PendingItems';
 import Transaction from './Transaction';
 import TransactionEditor from './TransactionEditor';
@@ -12,6 +13,7 @@ import {
 import styles from './Transactions.css';
 
 export interface ITransactionsProps {
+	onlyShowNewItems: boolean;
 	transactions: ITransaction[];
 	incomes: IIncome[];
 	expenses: IExpense[];
@@ -24,6 +26,7 @@ export interface ITransactionsProps {
 	deletingTransactionSuccess: boolean;
 	isSavingPendingItem: boolean;
 	savingPendingItemSuccess: boolean;
+	setOnlyShowNewItems(value: boolean): void;
 	saveTransaction(transaction: ITransaction): void;
 	deleteTransaction(transaction: ITransaction): void;
 	savePendingItem(pendingItem: IPendingItem): void;
@@ -34,6 +37,7 @@ export interface ITransactionsProps {
 }
 
 export default function Transactions({
+	onlyShowNewItems,
 	transactions,
 	incomes,
 	expenses,
@@ -46,6 +50,7 @@ export default function Transactions({
 	isSavingPendingItem,
 	savingPendingItemSuccess,
 	deletingTransactionSuccess,
+	setOnlyShowNewItems,
 	saveTransaction,
 	deleteTransaction,
 	savePendingItem,
@@ -59,15 +64,23 @@ export default function Transactions({
 		useState<ITransaction>(null);
 	const [isSaving, setIsSaving] = useState(false);
 
-	const transactionsByDate = transactions.reduce((map, transaction) => {
-		const grouping = map[transaction.date];
-		if (grouping === undefined) {
-			map[transaction.date] = [transaction];
-		} else {
-			grouping.push(transaction);
-		}
-		return map;
-	}, {} as Record<string, ITransaction[]>);
+	const transactionsByDate = transactions
+		.filter(
+			transaction =>
+				!onlyShowNewItems ||
+				(!transaction.expenseName &&
+					!transaction.incomeName &&
+					!transaction.category)
+		)
+		.reduce((map, transaction) => {
+			const grouping = map[transaction.date];
+			if (grouping === undefined) {
+				map[transaction.date] = [transaction];
+			} else {
+				grouping.push(transaction);
+			}
+			return map;
+		}, {} as Record<string, ITransaction[]>);
 
 	const getWeekExpenseTotals = (
 		transaction: ITransaction
@@ -130,6 +143,13 @@ export default function Transactions({
 					}}
 				/>
 			)}
+			<div className={styles.onlyShowNewItems}>
+				<Switch
+					checked={onlyShowNewItems}
+					onChange={setOnlyShowNewItems}>
+					Only show new items
+				</Switch>
+			</div>
 			{Object.keys(transactionsByDate)
 				.sort((a, b) => -a.localeCompare(b))
 				.map(date => (
