@@ -69,7 +69,7 @@ export default function Home({
 
 	const week = weeklyTransactions[weekOf];
 	const isLoadingWeek = week === undefined || week.isLoading;
-	const includePendingItems = weekOf >= dateService.getStartOfLastWeek();
+	const includePendingItems = weekOf > dateService.getStartOfLastWeek();
 
 	return (
 		<div>
