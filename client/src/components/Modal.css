@@ -19,6 +19,7 @@
 	bottom: 0;
 	background-color: rgba(128, 128, 128, 0.75);
 	display: flex;
+	z-index: 30;
 }
 
 .title {
