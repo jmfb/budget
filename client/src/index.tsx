@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PageLoading } from '~/components';
@@ -56,7 +56,7 @@ function start() {
 			</BrowserRouter>
 		</Provider>
 	);
-	render(rootElement, rootContainer);
+	createRoot(rootContainer).render(rootElement);
 }
 
 start();
