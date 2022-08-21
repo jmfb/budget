@@ -91,6 +91,7 @@ export default function TransactionEditor({
 				/>
 				<Input
 					name='Note'
+					autoFocus
 					value={note}
 					onChange={setNote}
 				/>

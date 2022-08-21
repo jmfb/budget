@@ -59,12 +59,14 @@ export default function ExpenseEditor({
 				{!existingExpense && (
 					<Input
 						name='Name'
+						autoFocus
 						value={name}
 						onChange={setName}
 					/>
 				)}
 				<CurrencyInput
 					name='Amount'
+					autoFocus={!!existingExpense}
 					value={amount}
 					onChange={setAmount}
 				/>

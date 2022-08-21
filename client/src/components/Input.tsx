@@ -6,6 +6,7 @@ export interface IInputProps {
 	value: string;
 	type?: 'text' | 'number';
 	placeholder?: string;
+	autoFocus?: boolean;
 	onChange(value: string): void;
 	onBlur?(): void;
 }
@@ -15,6 +16,7 @@ export default function Input({
 	value,
 	type,
 	placeholder,
+	autoFocus,
 	onChange,
 	onBlur
 }: IInputProps) {
@@ -29,6 +31,7 @@ export default function Input({
 				{...{
 					value,
 					placeholder,
+					autoFocus,
 					onBlur
 				}}
 				className={styles.input}

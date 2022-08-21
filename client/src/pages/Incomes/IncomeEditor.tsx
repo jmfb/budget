@@ -33,12 +33,14 @@ export default function IncomeEditor({
 				{!existingIncome && (
 					<Input
 						name='Name'
+						autoFocus
 						value={name}
 						onChange={setName}
 					/>
 				)}
 				<CurrencyInput
 					name='Amount'
+					autoFocus={!!existingIncome}
 					value={amount}
 					onChange={setAmount}
 				/>

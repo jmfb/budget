@@ -5,6 +5,7 @@ import { budgetService } from '~/services';
 export interface ICurrencyInputProps {
 	name: string;
 	value: number;
+	autoFocus?: boolean;
 	onChange(value: number): void;
 }
 
@@ -21,6 +22,7 @@ function parse(value: string) {
 export default function CurrencyInput({
 	name,
 	value,
+	autoFocus,
 	onChange
 }: ICurrencyInputProps) {
 	const [textValue, setTextValue] = useState(
@@ -41,7 +43,7 @@ export default function CurrencyInput({
 
 	return (
 		<Input
-			{...{ name }}
+			{...{ name, autoFocus }}
 			value={textValue}
 			placeholder='0.00'
 			onChange={handleTextChanged}

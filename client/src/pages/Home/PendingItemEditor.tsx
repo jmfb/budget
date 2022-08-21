@@ -60,6 +60,7 @@ export default function PendingItemEditor({
 			<div className={styles.inputs}>
 				<Input
 					name='Name'
+					autoFocus
 					value={name}
 					onChange={setName}
 				/>
