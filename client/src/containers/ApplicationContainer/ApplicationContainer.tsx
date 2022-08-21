@@ -6,6 +6,7 @@ import Header from './Header';
 import NewerVersionPrompt from './NewerVersionPrompt';
 import { useAppSelector, authSlice, diagnosticsSlice } from '~/redux';
 import { useInterval } from '~/hooks';
+import cx from 'classnames';
 import styles from './ApplicationContainer.css';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -96,7 +97,7 @@ export default function ApplicationContainer() {
 	return (
 		<>
 			<Header />
-			<main className={styles.main}>
+			<main className={cx('responsive', styles.main)}>
 				<section>
 					<Routes>
 						<Route

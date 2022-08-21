@@ -9,7 +9,7 @@ export interface ISignInProps {
 
 export default function SignIn({ isSigningIn, onClickSignIn }: ISignInProps) {
 	return (
-		<main>
+		<main className='responsive'>
 			<section>
 				<h1>Budget</h1>
 				<h2>Weekly Budget Tracking</h2>

@@ -31,26 +31,20 @@ body {
 	margin: 0;
 }
 
-header > *,
-main > *,
-footer > * {
+:global(.responsive) > * {
 	width: 100%;
 	margin: 0 auto;
 	padding: 0;
 }
 
 @media (min-width: 45rem) {
-	header > *,
-	main > *,
-	footer > * {
+	:global(.responsive) > * {
 		width: 45rem;
 	}
 }
 
 @media (min-width: 60rem) {
-	header > *,
-	main > *,
-	footer > * {
+	:global(.responsive) > * {
 		width: 60rem;
 	}
 }

@@ -1,0 +1,17 @@
+.fixedTop {
+	padding-top: 1rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	position: fixed;
+	left: 0;
+	width: 100%;
+	background-color: white;
+	z-index: 10;
+	border-bottom: 1px solid gray;
+}
+
+.scrollingBottom {
+	padding-top: 12rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}

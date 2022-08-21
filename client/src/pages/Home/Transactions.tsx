@@ -130,7 +130,7 @@ export default function Transactions({
 	}, [isSaving, isSavingTransaction, savingTransactionSuccess]);
 
 	return (
-		<div className={styles.root}>
+		<div>
 			{includePendingItems && (
 				<PendingItems
 					{...{

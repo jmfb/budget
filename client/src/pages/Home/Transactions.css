@@ -1,11 +1,3 @@
-.root {
-	overflow-y: scroll;
-	height: calc(100vh - 17rem);
-	padding-left: 4px;
-	padding-right: 8px;
-	border: 1px solid lightgray;
-}
-
 .date {
 	font-weight: bold;
 	margin-top: 0.5rem;

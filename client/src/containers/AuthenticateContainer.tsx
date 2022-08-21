@@ -22,7 +22,7 @@ export default function AuthenticationContainer() {
 	}
 
 	return (
-		<main>
+		<main className='responsive'>
 			<section>
 				<PageLoading message='Authenticating...' />
 			</section>

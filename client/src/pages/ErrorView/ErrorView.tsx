@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '~/components';
+import cx from 'classnames';
 import styles from './ErrorView.css';
 
 export interface IErrorViewProps {
@@ -16,7 +17,7 @@ export default function ErrorView({
 	onClickDismiss
 }: IErrorViewProps) {
 	return (
-		<main className={styles.root}>
+		<main className={cx('responsive', styles.root)}>
 			<section>
 				<h1>Error - {action}</h1>
 				<div className={styles.row}>

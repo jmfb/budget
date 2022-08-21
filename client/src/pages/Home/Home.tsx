@@ -11,6 +11,8 @@ import {
 	IWeeklyTransactionsByWeekOf
 } from '~/models';
 import { dateService } from '~/services';
+import cx from 'classnames';
+import styles from './Home.css';
 
 export interface IHomeProps {
 	onlyShowNewItems: boolean;
@@ -72,18 +74,19 @@ export default function Home({
 	const includePendingItems = weekOf > dateService.getStartOfLastWeek();
 
 	return (
-		<div>
-			<WeekView
-				{...{
-					weekOf,
-					weeklyTransactions,
-					setWeekOf,
-					getWeeklyTransactions
-				}}
-			/>
-			{isLoadingWeek && <PageLoading message='Loading transactions...' />}
-			{!isLoadingWeek && (
-				<>
+		<>
+			<div className={cx('responsive', styles.fixedTop)}>
+				<WeekView
+					{...{
+						weekOf,
+						weeklyTransactions,
+						setWeekOf,
+						getWeeklyTransactions
+					}}
+				/>
+				{isLoadingWeek ? (
+					<PageLoading message='Loading transactions...' />
+				) : (
 					<BudgetView
 						{...{
 							incomes,
@@ -93,6 +96,10 @@ export default function Home({
 						yearlyExpenseTotals={week.yearlyExpenseTotals}
 						transactions={week.transactions}
 					/>
+				)}
+			</div>
+			{!isLoadingWeek && (
+				<div className={styles.scrollingBottom}>
 					<Transactions
 						{...{
 							onlyShowNewItems,
@@ -118,8 +125,8 @@ export default function Home({
 						transactions={week.transactions}
 						yearlyExpenseTotals={week.yearlyExpenseTotals}
 					/>
-				</>
+				</div>
 			)}
-		</div>
+		</>
 	);
 }
