@@ -1,5 +1,4 @@
 .fixedTop {
-	padding-top: 1rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
 	position: fixed;
@@ -11,7 +10,7 @@
 }
 
 .scrollingBottom {
-	padding-top: 12rem;
+	padding-top: 11rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
 }
