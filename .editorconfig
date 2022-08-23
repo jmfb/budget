@@ -10,7 +10,7 @@ charaset = utf-8
 trim_trailing_whitespace = true
 max_line_length = 80
 
-[*.tf]
+[*.{tf,yml}]
 index_style = space
 tab_width = 2
 
