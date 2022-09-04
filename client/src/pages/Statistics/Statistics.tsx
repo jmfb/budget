@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageLoading } from '~/components';
 import Week from './Week';
+import ExpenseBudget from './ExpenseBudget';
 import { IIncome, IExpense, IWeeklyTransactions, IPendingItem } from '~/models';
 import { budgetService } from '~/services';
 import cx from 'classnames';
@@ -127,18 +128,11 @@ export default function Statistics({
 						yearlyExpenseTotals[expense.name] ??
 						0 + getWeekExpenseTotal(expense.name)
 				}))
-				.filter(item => item.total < item.expense.amount)
 				.map(item => (
-					<div
+					<ExpenseBudget
 						key={item.expense.name}
-						className={styles.row}>
-						Remaining {item.expense.name} Budget
-						<span className={cx(styles.net, styles.gain)}>
-							{budgetService.format(
-								item.expense.amount - item.total
-							)}
-						</span>
-					</div>
+						{...item}
+					/>
 				))}
 		</div>
 	);

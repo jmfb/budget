@@ -26,6 +26,10 @@ namespace Budget.Server.Services {
 		Task<IReadOnlyDictionary<string, decimal>> GetYearlyExpenseTotals(
 			string priorToWeekOf,
 			CancellationToken cancellationToken);
+		Task<IReadOnlyCollection<Transaction>> GetYearlyExpenses(
+			string expense,
+			int year,
+			CancellationToken CancellationToken);
 	}
 
 	public class BudgetService : IBudgetService {
@@ -117,6 +121,21 @@ namespace Budget.Server.Services {
 				.ToDictionary(
 					grouping => grouping.Key,
 					grouping => grouping.Select(transaction => transaction.Amount).Sum());
+		}
+
+		public async Task<IReadOnlyCollection<Transaction>> GetYearlyExpenses(
+			string expense,
+			int year,
+			CancellationToken CancellationToken
+		) {
+			var startOfYear = new DateTime(year, 1, 1).ToString("yyyy-MM-dd");
+			var endOfYear = new DateTime(year, 12, 31).ToString("yyyy-MM-dd");
+			return await Context
+				.ScanAsync<Transaction>(new[] {
+					new ScanCondition("Date", ScanOperator.Between, startOfYear, endOfYear),
+					new ScanCondition("ExpenseName", ScanOperator.Equal, expense)
+				})
+				.GetRemainingAsync();
 		}
 	}
 }

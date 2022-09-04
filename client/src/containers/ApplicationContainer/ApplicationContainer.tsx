@@ -45,6 +45,13 @@ const AsyncUploadsContainer = lazy(
 		)
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncYearlyExpensesContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'YearlyExpensesContainer' */ '~/containers/YearlyExpensesContainer'
+		)
+);
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncSignOutContainer = lazy(
 	() =>
 		import(
@@ -119,6 +126,10 @@ export default function ApplicationContainer() {
 						<Route
 							path='/uploads'
 							element={<AsyncUploadsContainer />}
+						/>
+						<Route
+							path='/yearly-expenses/:expense'
+							element={<AsyncYearlyExpensesContainer />}
 						/>
 						<Route
 							path='/sign-out'

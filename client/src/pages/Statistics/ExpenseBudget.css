@@ -1,0 +1,30 @@
+.root {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	cursor: pointer;
+	box-shadow: var(--box-shadow);
+	border-radius: 4px;
+	padding: 0.5rem 0.75rem;
+	display: block;
+	color: black;
+}
+
+.root:hover {
+	box-shadow: var(--box-shadow-active);
+	background-color: lightblue;
+	color: black;
+}
+
+.net {
+	font-weight: bold;
+}
+
+.gain {
+	margin-left: 0.5rem;
+	color: darkgreen;
+}
+
+.loss {
+	margin-left: 0.5rem;
+	color: darkred;
+}

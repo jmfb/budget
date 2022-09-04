@@ -1,5 +1,10 @@
 import { IDayOfWeek } from '~/models';
 
+export function getCurrentYear() {
+	const today = new Date();
+	return today.getFullYear();
+}
+
 export function getStartOfWeek(date: string) {
 	const value = parse(date);
 	value.setDate(value.getDate() - value.getDay());

@@ -94,3 +94,16 @@ export async function getWeeklyTransactions(
 		accessToken
 	});
 }
+
+export async function getYearlyExpenses(
+	accessToken: string,
+	expense: string,
+	year: number
+) {
+	return await get<ITransaction[]>({
+		endpoint: `/api/budget/yearly-expenses/${encodeURIComponent(
+			expense
+		)}/${year}`,
+		accessToken
+	});
+}

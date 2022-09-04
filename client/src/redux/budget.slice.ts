@@ -3,7 +3,8 @@ import {
 	IIncome,
 	IExpense,
 	IPendingItem,
-	IWeeklyTransactionsByWeekOf
+	IWeeklyTransactionsByWeekOf,
+	ITransaction
 } from '~/models';
 import {
 	getBudget,
@@ -16,6 +17,7 @@ import {
 	saveTransaction,
 	deleteTransaction,
 	getWeeklyTransactions,
+	getYearlyExpenses,
 	getAllText,
 	parseCsv,
 	mergeTransaction
@@ -29,6 +31,8 @@ export interface IBudgetState {
 	expenses: IExpense[];
 	pendingItems: IPendingItem[];
 	weeklyTransactions: IWeeklyTransactionsByWeekOf;
+	isLoadingYearlyExpenses: boolean;
+	yearlyExpenses: ITransaction[];
 	isSavingIncome: boolean;
 	savingIncomeSuccess: boolean;
 	isSavingExpense: boolean;
@@ -57,6 +61,8 @@ const initialState: IBudgetState = {
 	expenses: null,
 	pendingItems: null,
 	weeklyTransactions: {},
+	isLoadingYearlyExpenses: false,
+	yearlyExpenses: [],
 	isSavingIncome: false,
 	savingIncomeSuccess: false,
 	isSavingExpense: false,
@@ -74,7 +80,7 @@ const initialState: IBudgetState = {
 	fileText: null,
 	isParsingCsv: false,
 	parsingCsvSuccess: false,
-	csvRecords: null,
+	csvRecords: [],
 	logs: ''
 };
 
@@ -111,7 +117,7 @@ const slice = createSlice({
 			state.fileText = null;
 			state.isParsingCsv = false;
 			state.parsingCsvSuccess = false;
-			state.csvRecords = null;
+			state.csvRecords = [];
 			state.isMergingTransaction = false;
 			state.mergingTransactionSuccess = false;
 		},
@@ -322,6 +328,18 @@ const slice = createSlice({
 				delete state.weeklyTransactions[action.meta.arg];
 			})
 
+			.addCase(getYearlyExpenses.pending, state => {
+				state.isLoadingYearlyExpenses = true;
+				state.yearlyExpenses = [];
+			})
+			.addCase(getYearlyExpenses.fulfilled, (state, action) => {
+				state.isLoadingYearlyExpenses = false;
+				state.yearlyExpenses = action.payload;
+			})
+			.addCase(getYearlyExpenses.rejected, state => {
+				state.isLoadingYearlyExpenses = false;
+			})
+
 			.addCase(getAllText.pending, state => {
 				state.isReadingFile = true;
 				state.readingFileSuccess = false;
@@ -340,7 +358,7 @@ const slice = createSlice({
 			.addCase(parseCsv.pending, state => {
 				state.isParsingCsv = true;
 				state.parsingCsvSuccess = false;
-				state.csvRecords = null;
+				state.csvRecords = [];
 			})
 			.addCase(parseCsv.fulfilled, (state, action) => {
 				state.isParsingCsv = false;
@@ -383,6 +401,7 @@ export default {
 		saveTransaction,
 		deleteTransaction,
 		getWeeklyTransactions,
+		getYearlyExpenses,
 		getAllText,
 		parseCsv,
 		mergeTransaction

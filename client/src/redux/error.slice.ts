@@ -6,6 +6,7 @@ import {
 	saveExpense,
 	saveTransaction,
 	getWeeklyTransactions,
+	getYearlyExpenses,
 	getAllText,
 	parseCsv,
 	mergeTransaction
@@ -85,6 +86,13 @@ const slice = createSlice({
 				setErrorState(
 					state,
 					'Getting weekly transactions',
+					action.error.message
+				);
+			})
+			.addCase(getYearlyExpenses.rejected, (state, action) => {
+				setErrorState(
+					state,
+					'Getting yearly expenses',
 					action.error.message
 				);
 			})

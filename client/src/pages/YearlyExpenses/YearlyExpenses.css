@@ -1,0 +1,38 @@
+.heading {
+	margin-top: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.category {
+	font-size: 0.875rem;
+	margin-left: 1rem;
+}
+
+.edit {
+	margin-left: auto;
+}
+
+.message {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.under {
+	font-weight: bold;
+	color: darkgreen;
+	margin-right: 0.5rem;
+}
+
+.over {
+	font-weight: bold;
+	color: darkred;
+	margin-right: 0.5rem;
+}
+
+.resize {
+	margin-left: 1rem;
+}

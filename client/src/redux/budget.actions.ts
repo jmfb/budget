@@ -115,6 +115,19 @@ export const getWeeklyTransactions = createAsyncThunk(
 	}
 );
 
+export const getYearlyExpenses = createAsyncThunk(
+	'budget/getYearlyExpenses',
+	async (
+		{ expense, year }: { expense: string; year: number },
+		{ getState }
+	) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.getYearlyExpenses(accessToken, expense, year);
+	}
+);
+
 export const getAllText = createAsyncThunk(
 	'budget/getAllText',
 	async (file: File) => {

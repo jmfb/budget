@@ -1,0 +1,29 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1rem;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+}
+
+.date {
+	font-weight: bold;
+}
+
+.amount {
+	margin-left: 1rem;
+	width: 4rem;
+	text-align: right;
+}
+
+.note {
+	margin-left: 1rem;
+	font-style: italic;
+}
+
+.description {
+	font-size: 0.75rem;
+}

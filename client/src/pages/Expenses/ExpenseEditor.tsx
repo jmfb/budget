@@ -14,6 +14,7 @@ import { IExpense } from '~/models';
 export interface IExpenseEditorProps {
 	existingExpense: IExpense;
 	isSavingExpense: boolean;
+	mustRemainYearlyExpense?: boolean;
 	onSave(expense: IExpense): void;
 	onCancel(): void;
 }
@@ -21,6 +22,7 @@ export interface IExpenseEditorProps {
 export default function ExpenseEditor({
 	existingExpense,
 	isSavingExpense,
+	mustRemainYearlyExpense,
 	onSave,
 	onCancel
 }: IExpenseEditorProps) {
@@ -87,17 +89,21 @@ export default function ExpenseEditor({
 				value={amount}
 				onChange={setAmount}
 			/>
-			<Checkbox
-				name='Is Distributed Over Entire Year?'
-				value={isDistributed}
-				onChange={handleIsDistributedChanged}
-			/>
-			{!isDistributed && (
-				<NumberInput
-					name='Months Interval'
-					value={monthsInterval}
-					onChange={setMonthsInterval}
-				/>
+			{!mustRemainYearlyExpense && (
+				<>
+					<Checkbox
+						name='Is Distributed Over Entire Year?'
+						value={isDistributed}
+						onChange={handleIsDistributedChanged}
+					/>
+					{!isDistributed && (
+						<NumberInput
+							name='Months Interval'
+							value={monthsInterval}
+							onChange={setMonthsInterval}
+						/>
+					)}
+				</>
 			)}
 			<CategorySelect
 				{...{ category }}

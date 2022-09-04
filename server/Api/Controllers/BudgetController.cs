@@ -71,6 +71,15 @@ namespace Budget.Server.Api.Controllers {
 			return Ok();
 		}
 
+		[HttpGet("yearly-expenses/{expense}/{year}")]
+		public async Task<IEnumerable<Transaction>> GetYearlyExpenses(
+			[FromRoute] string expense,
+			[FromRoute] int year,
+			CancellationToken cancellationToken
+		) {
+			return await BudgetService.GetYearlyExpenses(expense, year, cancellationToken);
+		}
+
 		[HttpPut("pending-items")]
 		public async Task<IActionResult> SavePendingItemAsync(
 			[FromBody] PendingItem pendingItem,
