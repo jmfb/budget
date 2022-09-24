@@ -90,13 +90,12 @@ export interface IDayOfWeek {
 
 export interface IBankRecord {
 	date: string;
-	referenceNumber: string;
-	type: string;
+	account: string;
 	description: string;
-	debit: number;
-	credit: number;
 	checkNumber: string;
-	balance: number;
+	memo: string;
+	credit: number;
+	debit: number;
 	rawText: string;
 }
 
