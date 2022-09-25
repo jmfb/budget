@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { YearlyExpenses } from '~/pages';
-import { useAppSelector, budgetSlice } from '~/redux';
+import { useAppSelector, budgetSlice, expensesSlice } from '~/redux';
 import { dateService } from '~/services';
 
 type YearlyExpensesParams = {
@@ -12,24 +12,23 @@ type YearlyExpensesParams = {
 
 export default function YearlyExpensesContainer() {
 	const dispatch = useDispatch();
-	const { getYearlyExpenses, getBudget, saveExpense } = bindActionCreators(
+	const { getYearlyExpenses, getBudget } = bindActionCreators(
 		budgetSlice.actions,
 		dispatch
 	);
+	const { saveExpense } = bindActionCreators(expensesSlice.actions, dispatch);
 	const { expense: expenseName } = useParams<YearlyExpensesParams>();
 
 	const expense = useAppSelector(state =>
-		state.budget.expenses?.find(expense => expense.name === expenseName)
+		state.expenses.expenses.find(expense => expense.name === expenseName)
 	);
 	const isLoading = useAppSelector(
 		state => state.budget.isLoadingYearlyExpenses
 	);
 	const yearlyExpenses = useAppSelector(state => state.budget.yearlyExpenses);
-	const isSavingExpense = useAppSelector(
-		state => state.budget.isSavingExpense
-	);
+	const isSavingExpense = useAppSelector(state => state.expenses.isSaving);
 	const savingExpenseSuccess = useAppSelector(
-		state => state.budget.savingExpenseSuccess
+		state => state.expenses.wasSuccessful
 	);
 
 	useEffect(() => {

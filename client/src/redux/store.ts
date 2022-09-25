@@ -4,6 +4,7 @@ import errorSlice from './error.slice';
 import authSlice from './auth.slice';
 import diagnosticsSlice from './diagnostics.slice';
 import budgetSlice from './budget.slice';
+import { expensesSlice } from './expenses.slice';
 import IState from './IState';
 
 export function createStore() {
@@ -12,7 +13,8 @@ export function createStore() {
 			[errorSlice.name]: errorSlice.reducer,
 			[authSlice.name]: authSlice.reducer,
 			[diagnosticsSlice.name]: diagnosticsSlice.reducer,
-			[budgetSlice.name]: budgetSlice.reducer
+			[budgetSlice.name]: budgetSlice.reducer,
+			[expensesSlice.name]: expensesSlice.reducer
 		}
 	});
 }

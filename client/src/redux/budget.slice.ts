@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
 	IIncome,
-	IExpense,
 	IPendingItem,
 	IWeeklyTransactionsByWeekOf,
 	ITransaction
@@ -10,8 +9,6 @@ import {
 	getBudget,
 	saveIncome,
 	deleteIncome,
-	saveExpense,
-	deleteExpense,
 	savePendingItem,
 	deletePendingItem,
 	saveTransaction,
@@ -28,15 +25,12 @@ export interface IBudgetState {
 	onlyShowNewItems: boolean;
 	isLoadingBudget: boolean;
 	incomes: IIncome[];
-	expenses: IExpense[];
 	pendingItems: IPendingItem[];
 	weeklyTransactions: IWeeklyTransactionsByWeekOf;
 	isLoadingYearlyExpenses: boolean;
 	yearlyExpenses: ITransaction[];
 	isSavingIncome: boolean;
 	savingIncomeSuccess: boolean;
-	isSavingExpense: boolean;
-	savingExpenseSuccess: boolean;
 	isSavingPendingItem: boolean;
 	savingPendingItemSuccess: boolean;
 	isSavingTransaction: boolean;
@@ -58,15 +52,12 @@ const initialState: IBudgetState = {
 	onlyShowNewItems: false,
 	isLoadingBudget: false,
 	incomes: null,
-	expenses: null,
 	pendingItems: null,
 	weeklyTransactions: {},
 	isLoadingYearlyExpenses: false,
 	yearlyExpenses: [],
 	isSavingIncome: false,
 	savingIncomeSuccess: false,
-	isSavingExpense: false,
-	savingExpenseSuccess: false,
 	isSavingPendingItem: false,
 	savingPendingItemSuccess: false,
 	isSavingTransaction: false,
@@ -94,10 +85,6 @@ const slice = createSlice({
 		clearIncomeSave(state) {
 			state.isSavingIncome = false;
 			state.savingIncomeSuccess = false;
-		},
-		clearExpenseSave(state) {
-			state.isSavingExpense = false;
-			state.savingExpenseSuccess = false;
 		},
 		clearPendingItemSave(state) {
 			state.isSavingPendingItem = false;
@@ -133,7 +120,6 @@ const slice = createSlice({
 			.addCase(getBudget.fulfilled, (state, action) => {
 				state.isLoadingBudget = false;
 				state.incomes = action.payload.incomes;
-				state.expenses = action.payload.expenses;
 				state.pendingItems = action.payload.pendingItems;
 				state.weeklyTransactions[action.meta.arg] = {
 					isLoading: false,
@@ -181,43 +167,6 @@ const slice = createSlice({
 			.addCase(deleteIncome.rejected, state => {
 				state.isSavingIncome = false;
 				state.savingIncomeSuccess = false;
-			})
-
-			.addCase(saveExpense.pending, state => {
-				state.isSavingExpense = true;
-				state.savingExpenseSuccess = false;
-			})
-			.addCase(saveExpense.fulfilled, (state, action) => {
-				state.isSavingExpense = false;
-				state.savingExpenseSuccess = true;
-				const index = state.expenses.findIndex(
-					expense => expense.name === action.meta.arg.name
-				);
-				if (index === -1) {
-					state.expenses.push(action.meta.arg);
-				} else {
-					state.expenses[index] = action.meta.arg;
-				}
-			})
-			.addCase(saveExpense.rejected, state => {
-				state.isSavingExpense = false;
-				state.savingExpenseSuccess = false;
-			})
-
-			.addCase(deleteExpense.pending, state => {
-				state.isSavingExpense = true;
-				state.savingExpenseSuccess = false;
-			})
-			.addCase(deleteExpense.fulfilled, (state, action) => {
-				state.isSavingExpense = false;
-				state.savingExpenseSuccess = true;
-				state.expenses = state.expenses.filter(
-					expense => expense.name !== action.meta.arg.name
-				);
-			})
-			.addCase(deleteExpense.rejected, state => {
-				state.isSavingExpense = false;
-				state.savingExpenseSuccess = false;
 			})
 
 			.addCase(savePendingItem.pending, state => {
@@ -394,8 +343,6 @@ export default {
 		getBudget,
 		saveIncome,
 		deleteIncome,
-		saveExpense,
-		deleteExpense,
 		savePendingItem,
 		deletePendingItem,
 		saveTransaction,

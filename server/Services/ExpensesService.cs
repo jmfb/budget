@@ -9,8 +9,8 @@ using Amazon.DynamoDBv2.DocumentModel;
 
 namespace Budget.Server.Services {
 	public interface IExpensesService {
-		Task<DataVersion> GetVersionAsync(CancellationToken cancellationToken);
-		Task<DataVersion> GetNewVersionAsync(CancellationToken cancellationToken);
+		Task<long> GetVersionAsync(CancellationToken cancellationToken);
+		Task<long> GetNewVersionAsync(CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Expense>> GetExpensesAsync(CancellationToken cancellationToken);
 		Task<Expense> GetExpenseAsync(string name, CancellationToken cancellationToken);
 		Task SaveExpenseAsync(Expense expense, CancellationToken cancellationToken);
@@ -26,16 +26,18 @@ namespace Budget.Server.Services {
 
 		private const string versionName = "expenses";
 
-		public async Task<DataVersion> GetVersionAsync(CancellationToken cancellationToken) =>
-			await Context.LoadAsync(new DataVersion { Name = versionName }, cancellationToken);
+		public async Task<long> GetVersionAsync(CancellationToken cancellationToken) {
+			var dataVersion = await Context.LoadAsync(new DataVersion { Name = versionName }, cancellationToken);
+			return dataVersion?.Version ?? 0;
+		}
 
-		public async Task<DataVersion> GetNewVersionAsync(CancellationToken cancellationToken) {
+		public async Task<long> GetNewVersionAsync(CancellationToken cancellationToken) {
 			var newVersion = new DataVersion {
 				Name = versionName,
 				Version = DateTimeOffset.Now.ToUnixTimeMilliseconds()
 			};
 			await Context.SaveAsync(newVersion, cancellationToken);
-			return newVersion;
+			return newVersion.Version;
 		}
 
 		public async Task<IReadOnlyCollection<Expense>> GetExpensesAsync(CancellationToken cancellationToken) =>

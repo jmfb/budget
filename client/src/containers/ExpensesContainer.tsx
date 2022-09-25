@@ -1,25 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { useDispatch } from 'react-redux';
 import { Expenses } from '~/pages';
-import { useAppSelector, budgetSlice } from '~/redux';
-import { dateService } from '~/services';
+import { useAppSelector, expensesSlice } from '~/redux';
 
 export default function ExpensesContainer() {
 	const dispatch = useDispatch();
-	const { getBudget, saveExpense, deleteExpense, clearExpenseSave } =
-		bindActionCreators(budgetSlice.actions, dispatch);
-	const expenses = useAppSelector(state => state.budget.expenses);
-	const isSavingExpense = useAppSelector(
-		state => state.budget.isSavingExpense
+	const { saveExpense, deleteExpense, clearSave } = bindActionCreators(
+		expensesSlice.actions,
+		dispatch
 	);
+	const expenses = useAppSelector(state => state.expenses.expenses);
+	const isSavingExpense = useAppSelector(state => state.expenses.isSaving);
 	const savingExpenseSuccess = useAppSelector(
-		state => state.budget.savingExpenseSuccess
+		state => state.expenses.wasSuccessful
 	);
-
-	useEffect(() => {
-		getBudget(dateService.getStartOfCurrentWeek());
-	}, []);
 
 	return (
 		<Expenses
@@ -28,9 +23,9 @@ export default function ExpensesContainer() {
 				isSavingExpense,
 				savingExpenseSuccess,
 				saveExpense,
-				deleteExpense,
-				clearExpenseSave
+				deleteExpense
 			}}
+			clearExpenseSave={clearSave}
 		/>
 	);
 }

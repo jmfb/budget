@@ -11,14 +11,11 @@ namespace Budget.Server.Services {
 	public interface IBudgetService {
 		Task SaveIncomeAsync(Income income, CancellationToken cancellationToken);
 		Task DeleteIncomeAsync(string name, CancellationToken cancellationToken);
-		Task SaveExpenseAsync(Expense expense, CancellationToken cancellationToken);
-		Task DeleteExpenseAsync(string name, CancellationToken cancellationToken);
 		Task SaveTransactionAsync(Transaction transaction, CancellationToken cancellationToken);
 		Task DeleteTransactionAsync(string date, int id, CancellationToken cancellationToken);
 		Task SavePendingItemAsync(PendingItem pendingItem, CancellationToken cancellationToken);
 		Task DeletePendingItemAsync(int id, CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Income>> LoadAllIncomesAsync(CancellationToken cancellationToken);
-		Task<IReadOnlyCollection<Expense>> LoadAllExpensesAsync(CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<PendingItem>> LoadAllPendingItemsAsync(CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Transaction>> LoadWeeklyTransactionsAsync(
 			string weekOf,
@@ -45,12 +42,6 @@ namespace Budget.Server.Services {
 		public async Task DeleteIncomeAsync(string name, CancellationToken cancellationToken) =>
 			await Context.DeleteAsync(new Income { Name = name }, cancellationToken);
 
-		public async Task SaveExpenseAsync(Expense expense, CancellationToken cancellationToken) =>
-			await Context.SaveAsync(expense, cancellationToken);
-
-		public async Task DeleteExpenseAsync(string name, CancellationToken cancellationToken) =>
-			await Context.DeleteAsync(new Expense { Name = name }, cancellationToken);
-
 		public async Task SaveTransactionAsync(Transaction transaction, CancellationToken cancellationToken) =>
 			await Context.SaveAsync(transaction, cancellationToken);
 
@@ -66,11 +57,6 @@ namespace Budget.Server.Services {
 		public async Task<IReadOnlyCollection<Income>> LoadAllIncomesAsync(CancellationToken cancellationToken) =>
 			await Context
 				.ScanAsync<Income>(Enumerable.Empty<ScanCondition>())
-				.GetRemainingAsync(cancellationToken);
-
-		public async Task<IReadOnlyCollection<Expense>> LoadAllExpensesAsync(CancellationToken cancellationToken) =>
-			await Context
-				.ScanAsync<Expense>(Enumerable.Empty<ScanCondition>())
 				.GetRemainingAsync(cancellationToken);
 
 		public async Task<IReadOnlyCollection<PendingItem>> LoadAllPendingItemsAsync(CancellationToken cancellationToken) =>

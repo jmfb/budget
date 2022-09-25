@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 namespace Budget.Server.Models {
 	public class IndexModel {
 		public string BundleVersion { get; set; }
+		public long ExpensesVersion { get; set; }
 
 		[JsonIgnore]
 		public IEnumerable<string> ScriptChunks { get; set; }

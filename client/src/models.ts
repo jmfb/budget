@@ -6,6 +6,7 @@ export interface IErrorReport {
 
 export interface IIndexModel {
 	bundleVersion: string;
+	expensesVersion: number;
 }
 
 export interface ISignedInModel {
@@ -29,6 +30,11 @@ export interface IExpense {
 	category: string;
 	monthsInterval: number;
 	isDistributed: boolean;
+}
+
+export interface IGetExpensesResponse {
+	version: number;
+	expenses: IExpense[];
 }
 
 export enum TransactionSource {
@@ -60,7 +66,6 @@ export type IExpenseTotals = Record<string, number>;
 
 export interface IBudgetResponse {
 	incomes: IIncome[];
-	expenses: IExpense[];
 	weeklyTransactions: ITransaction[];
 	yearlyExpenseTotals: IExpenseTotals;
 	pendingItems: IPendingItem[];

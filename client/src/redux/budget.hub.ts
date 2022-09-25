@@ -1,7 +1,6 @@
-import { get, put, del } from './hub';
+import { get, send } from './hub';
 import {
 	IIncome,
-	IExpense,
 	IPendingItem,
 	ITransaction,
 	IBudgetResponse,
@@ -16,31 +15,18 @@ export async function getBudget(accessToken: string, weekOf: string) {
 }
 
 export async function saveIncome(accessToken: string, income: IIncome) {
-	await put({
+	await send({
 		endpoint: '/api/budget/incomes',
+		method: 'PUT',
 		accessToken,
 		body: income
 	});
 }
 
 export async function deleteIncome(accessToken: string, name: string) {
-	await del({
+	await send({
 		endpoint: `/api/budget/incomes/${encodeURIComponent(name)}`,
-		accessToken
-	});
-}
-
-export async function saveExpense(accessToken: string, expense: IExpense) {
-	await put({
-		endpoint: '/api/budget/expenses',
-		accessToken,
-		body: expense
-	});
-}
-
-export async function deleteExpense(accessToken: string, name: string) {
-	await del({
-		endpoint: `/api/budget/expenses/${encodeURIComponent(name)}`,
+		method: 'DELETE',
 		accessToken
 	});
 }
@@ -49,16 +35,18 @@ export async function savePendingItem(
 	accessToken: string,
 	pendingItem: IPendingItem
 ) {
-	await put({
+	await send({
 		endpoint: '/api/budget/pending-items',
+		method: 'PUT',
 		accessToken,
 		body: pendingItem
 	});
 }
 
 export async function deletePendingItem(accessToken: string, id: number) {
-	await del({
+	await send({
 		endpoint: `/api/budget/pending-items/${id}`,
+		method: 'DELETE',
 		accessToken
 	});
 }
@@ -67,8 +55,9 @@ export async function saveTransaction(
 	accessToken: string,
 	transaction: ITransaction
 ) {
-	await put({
+	await send({
 		endpoint: '/api/budget/transactions',
+		method: 'PUT',
 		accessToken,
 		body: transaction
 	});
@@ -79,8 +68,9 @@ export async function deleteTransaction(
 	date: string,
 	id: number
 ) {
-	await del({
+	await send({
 		endpoint: `/api/budget/transactions/${date}/${id}`,
+		method: 'DELETE',
 		accessToken
 	});
 }

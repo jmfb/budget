@@ -23,39 +23,45 @@ function formatUri(endpoint: string, query?: any) {
 	return query ? `${endpoint}?${queryString.stringify(query)}` : endpoint;
 }
 
-interface IGetRequest {
+type HttpMethod = 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE';
+
+interface IFetchRequest {
 	endpoint: string;
 	query?: any;
 	accessToken?: string;
+	method?: HttpMethod;
+	body?: {};
 }
 
-export async function get<T>(request: IGetRequest) {
-	const { endpoint, query, accessToken } = request;
+export async function get<T>(request: IFetchRequest) {
+	const { endpoint, query, accessToken, method, body } = request;
 	const response = await fetch(formatUri(endpoint, query), {
-		headers: getStandardHeaders(accessToken)
+		method: method ?? 'GET',
+		headers: getStandardHeaders(accessToken),
+		body: body ? JSON.stringify(body) : undefined
 	});
 	await checkStatus(response);
 	return (await response.json()) as T;
 }
 
-interface ISendRequest extends IGetRequest {
-	body?: any;
-}
-
-export async function put(request: ISendRequest) {
-	const { endpoint, query, accessToken, body } = request;
+export async function getOrDefault<T>(request: IFetchRequest) {
+	const { endpoint, query, accessToken, method, body } = request;
 	const response = await fetch(formatUri(endpoint, query), {
-		method: 'PUT',
+		method: method ?? 'GET',
 		headers: getStandardHeaders(accessToken),
 		body: body ? JSON.stringify(body) : undefined
 	});
+	if (response.status === 404) {
+		return null;
+	}
 	await checkStatus(response);
+	return (await response.json()) as T;
 }
 
-export async function del(request: ISendRequest) {
-	const { endpoint, query, accessToken, body } = request;
+export async function send(request: IFetchRequest) {
+	const { endpoint, query, accessToken, method, body } = request;
 	const response = await fetch(formatUri(endpoint, query), {
-		method: 'DELETE',
+		method: method ?? 'GET',
 		headers: getStandardHeaders(accessToken),
 		body: body ? JSON.stringify(body) : undefined
 	});

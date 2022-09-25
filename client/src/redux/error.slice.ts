@@ -3,7 +3,6 @@ import { getAuthenticationUrl, authenticate } from './auth.actions';
 import {
 	getBudget,
 	saveIncome,
-	saveExpense,
 	saveTransaction,
 	getWeeklyTransactions,
 	getYearlyExpenses,
@@ -11,6 +10,11 @@ import {
 	parseCsv,
 	mergeTransaction
 } from './budget.actions';
+import {
+	refreshExpenses,
+	saveExpense,
+	deleteExpense
+} from './expenses.actions';
 import { IErrorReport } from '~/models';
 
 export interface IErrorState {
@@ -72,9 +76,6 @@ const slice = createSlice({
 			.addCase(saveIncome.rejected, (state, action) => {
 				setErrorState(state, 'Saving income', action.error.message);
 			})
-			.addCase(saveExpense.rejected, (state, action) => {
-				setErrorState(state, 'Saving expense', action.error.message);
-			})
 			.addCase(saveTransaction.rejected, (state, action) => {
 				setErrorState(
 					state,
@@ -112,6 +113,20 @@ const slice = createSlice({
 					'Merging transaction',
 					action.error.message
 				);
+			})
+
+			.addCase(refreshExpenses.rejected, (state, action) => {
+				setErrorState(
+					state,
+					'Refreshing expenses',
+					action.error.message
+				);
+			})
+			.addCase(saveExpense.rejected, (state, action) => {
+				setErrorState(state, 'Saving expense', action.error.message);
+			})
+			.addCase(deleteExpense.rejected, (state, action) => {
+				setErrorState(state, 'Deleting expense', action.error.message);
 			})
 });
 

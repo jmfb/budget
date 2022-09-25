@@ -19,29 +19,32 @@ namespace Budget.Server.Api.Controllers {
 		public async Task<long> GetVersionAsync(
 			CancellationToken cancellationToken
 		) {
-			var version = await ExpensesService.GetVersionAsync(cancellationToken);
-			return version?.Version ?? 0;
+			return await ExpensesService.GetVersionAsync(cancellationToken);
 		}
 
 		[HttpGet]
-		public async Task<GetExpensesResult> GetExpensesAsync(
+		public async Task<GetExpensesResponse> GetExpensesAsync(
 			CancellationToken cancellationToken
 		) {
 			var versionTask = ExpensesService.GetVersionAsync(cancellationToken);
 			var expensesTask = ExpensesService.GetExpensesAsync(cancellationToken);
 			await Task.WhenAll(versionTask, expensesTask);
 			return new() {
-				Version = (await versionTask)?.Version ?? 0,
+				Version = await versionTask,
 				Expenses = await expensesTask
 			};
 		}
 
 		[HttpGet("{name}")]
-		public async Task<Expense> GetExpenseAsync(
+		public async Task<IActionResult> GetExpenseAsync(
 			[FromRoute] string name,
 			CancellationToken cancellationToken
 		) {
-			return await ExpensesService.GetExpenseAsync(name, cancellationToken);
+			var expense = await ExpensesService.GetExpenseAsync(name, cancellationToken);
+			if (expense == null) {
+				return NotFound();
+			}
+			return Ok(expense);
 		}
 
 		[HttpPut]
@@ -52,7 +55,7 @@ namespace Budget.Server.Api.Controllers {
 			var versionTask = ExpensesService.GetNewVersionAsync(cancellationToken);
 			var saveTask = ExpensesService.SaveExpenseAsync(expense, cancellationToken);
 			await Task.WhenAll(versionTask, saveTask);
-			return (await versionTask).Version;
+			return await versionTask;
 		}
 
 		[HttpDelete("{name}")]
@@ -63,7 +66,7 @@ namespace Budget.Server.Api.Controllers {
 			var versionTask = ExpensesService.GetNewVersionAsync(cancellationToken);
 			var deleteTask = ExpensesService.DeleteExpenseAsync(name, cancellationToken);
 			await Task.WhenAll(versionTask, deleteTask);
-			return (await versionTask).Version;
+			return await versionTask;
 		}
 	}
 }

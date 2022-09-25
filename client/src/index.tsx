@@ -4,6 +4,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PageLoading } from '~/components';
 import ErrorBoundary from '~/containers/ErrorBoundary';
+import { IIndexModel } from './models';
 import { createStore } from '~/redux';
 import './index.css';
 
@@ -32,6 +33,8 @@ function start() {
 
 	const store = createStore();
 	const rootContainer = document.getElementById('root');
+	const indexModelJson = rootContainer.getAttribute('data-initial-state');
+	const indexModel: IIndexModel = JSON.parse(indexModelJson);
 	const rootElement = (
 		<Provider {...{ store }}>
 			<BrowserRouter>
@@ -48,7 +51,11 @@ function start() {
 							/>
 							<Route
 								path='*'
-								element={<AsyncApplicationContainer />}
+								element={
+									<AsyncApplicationContainer
+										{...{ indexModel }}
+									/>
+								}
 							/>
 						</Routes>
 					</Suspense>

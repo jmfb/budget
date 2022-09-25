@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IIncome, IExpense, IPendingItem, ITransaction } from '~/models';
+import { IIncome, IPendingItem, ITransaction } from '~/models';
 import IState from './IState';
 import * as hub from './budget.hub';
 import { dateService, budgetService } from '~/services';
@@ -42,26 +42,6 @@ export const deleteIncome = createAsyncThunk(
 			auth: { accessToken }
 		} = getState() as IState;
 		await hub.deleteIncome(accessToken, name);
-	}
-);
-
-export const saveExpense = createAsyncThunk(
-	'budget/saveExpense',
-	async (expense: IExpense, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		await hub.saveExpense(accessToken, expense);
-	}
-);
-
-export const deleteExpense = createAsyncThunk(
-	'budget/deleteExpense',
-	async ({ name }: IExpense, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		await hub.deleteExpense(accessToken, name);
 	}
 );
 
