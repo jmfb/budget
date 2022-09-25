@@ -38,6 +38,7 @@ namespace Budget.Server {
 			services.AddSingleton<DynamoDBContext>(provider =>
 				new DynamoDBContext(provider.GetRequiredService<AmazonDynamoDBClient>()));
 			services.AddSingleton<IBudgetService, BudgetService>();
+			services.AddSingleton<IExpensesService, ExpensesService>();
 			services.AddControllers();
 			services
 				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

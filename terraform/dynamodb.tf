@@ -71,3 +71,20 @@ resource "aws_dynamodb_table" "pending_items" {
     "Name" = "budget-pending-items"
   }))
 }
+
+resource "aws_dynamodb_table" "data_versions" {
+  name = "budget-data-versions"
+  billing_mode = "PROVISIONED"
+  read_capacity = 1
+  write_capacity = 1
+  hash_key = "Name"
+
+  attribute {
+    name = "Name"
+    type = "S"
+  }
+
+  tags = merge(var.tags, tomap({
+    "Name" = "budget-data-versions"
+  }))
+}

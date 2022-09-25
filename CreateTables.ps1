@@ -55,6 +55,19 @@ try {
 		exit $lastexitcode
 	}
 
+	Write-Host "[$(Get-Date)] Creating budget-data-version table..."
+	& aws dynamodb create-table `
+		--endpoint-url http://localhost:8000 `
+		--table-name "budget-data-versions" `
+		--attribute-definitions `
+			AttributeName=Name,AttributeType=S `
+		--key-schema `
+			AttributeName=Name,KeyType=HASH `
+		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 | Out-Null
+	if ($lastexitcode -ne 0) {
+		exit $lastexitcode
+	}
+
 	exit 0
 } catch {
 	Write-Host $_ -BackgroundColor Red
