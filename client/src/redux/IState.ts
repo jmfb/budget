@@ -3,6 +3,7 @@ import { IAuthState } from './auth.slice';
 import { IDiagnosticsState } from './diagnostics.slice';
 import { IBudgetState } from './budget.slice';
 import { IExpensesState } from './expenses.slice';
+import { IIncomesState } from './incomes.slice';
 
 export default interface IState {
 	error: IErrorState;
@@ -10,4 +11,5 @@ export default interface IState {
 	diagnostics: IDiagnosticsState;
 	budget: IBudgetState;
 	expenses: IExpensesState;
+	incomes: IIncomesState;
 }

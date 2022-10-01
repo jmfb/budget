@@ -7,6 +7,7 @@ export interface IErrorReport {
 export interface IIndexModel {
 	bundleVersion: string;
 	expensesVersion: number;
+	incomesVersion: number;
 }
 
 export interface ISignedInModel {
@@ -22,6 +23,11 @@ export interface IIncome {
 	name: string;
 	amount: number;
 	weeksInterval: number;
+}
+
+export interface IGetIncomesResponse {
+	version: number;
+	incomes: IIncome[];
 }
 
 export interface IExpense {
@@ -65,7 +71,6 @@ export interface IPendingItem {
 export type IExpenseTotals = Record<string, number>;
 
 export interface IBudgetResponse {
-	incomes: IIncome[];
 	weeklyTransactions: ITransaction[];
 	yearlyExpenseTotals: IExpenseTotals;
 	pendingItems: IPendingItem[];

@@ -25,7 +25,7 @@ export default function HomeContainer() {
 	const isLoadingBudget = useAppSelector(
 		state => state.budget.isLoadingBudget
 	);
-	const incomes = useAppSelector(state => state.budget.incomes);
+	const incomes = useAppSelector(state => state.incomes.incomes);
 	const expenses = useAppSelector(state => state.expenses.expenses);
 	const pendingItems = useAppSelector(state => state.budget.pendingItems);
 	const weeklyTransactions = useAppSelector(

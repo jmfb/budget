@@ -5,7 +5,12 @@ import { useDispatch } from 'react-redux';
 import Header from './Header';
 import NewerVersionPrompt from './NewerVersionPrompt';
 import { IIndexModel } from '~/models';
-import { useAppSelector, diagnosticsSlice, expensesSlice } from '~/redux';
+import {
+	useAppSelector,
+	diagnosticsSlice,
+	expensesSlice,
+	incomesSlice
+} from '~/redux';
 import { useInterval } from '~/hooks';
 import cx from 'classnames';
 import styles from './AuthorizedApplicationContainer.css';
@@ -76,6 +81,10 @@ export function AuthorizedApplicationContainer({
 		expensesSlice.actions,
 		dispatch
 	);
+	const { refreshIncomes } = bindActionCreators(
+		incomesSlice.actions,
+		dispatch
+	);
 	const bundleVersion = useAppSelector(
 		state => state.diagnostics.bundleVersion
 	);
@@ -85,6 +94,7 @@ export function AuthorizedApplicationContainer({
 
 	useEffect(() => {
 		refreshExpenses(indexModel.expensesVersion);
+		refreshIncomes(indexModel.incomesVersion);
 	}, []);
 
 	useInterval(() => {

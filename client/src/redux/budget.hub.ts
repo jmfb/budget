@@ -1,6 +1,5 @@
 import { get, send } from './hub';
 import {
-	IIncome,
 	IPendingItem,
 	ITransaction,
 	IBudgetResponse,
@@ -10,23 +9,6 @@ import {
 export async function getBudget(accessToken: string, weekOf: string) {
 	return await get<IBudgetResponse>({
 		endpoint: `/api/budget/week-of/${weekOf}`,
-		accessToken
-	});
-}
-
-export async function saveIncome(accessToken: string, income: IIncome) {
-	await send({
-		endpoint: '/api/budget/incomes',
-		method: 'PUT',
-		accessToken,
-		body: income
-	});
-}
-
-export async function deleteIncome(accessToken: string, name: string) {
-	await send({
-		endpoint: `/api/budget/incomes/${encodeURIComponent(name)}`,
-		method: 'DELETE',
 		accessToken
 	});
 }

@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAuthenticationUrl, authenticate } from './auth.actions';
 import {
 	getBudget,
-	saveIncome,
 	saveTransaction,
 	getWeeklyTransactions,
 	getYearlyExpenses,
@@ -15,6 +14,7 @@ import {
 	saveExpense,
 	deleteExpense
 } from './expenses.actions';
+import { refreshIncomes, saveIncome, deleteIncome } from './incomes.actions';
 import { IErrorReport } from '~/models';
 
 export interface IErrorState {
@@ -73,9 +73,6 @@ const slice = createSlice({
 			.addCase(getBudget.rejected, (state, action) => {
 				setErrorState(state, 'Getting budget', action.error.message);
 			})
-			.addCase(saveIncome.rejected, (state, action) => {
-				setErrorState(state, 'Saving income', action.error.message);
-			})
 			.addCase(saveTransaction.rejected, (state, action) => {
 				setErrorState(
 					state,
@@ -127,6 +124,20 @@ const slice = createSlice({
 			})
 			.addCase(deleteExpense.rejected, (state, action) => {
 				setErrorState(state, 'Deleting expense', action.error.message);
+			})
+
+			.addCase(refreshIncomes.rejected, (state, action) => {
+				setErrorState(
+					state,
+					'Refreshing incomes',
+					action.error.message
+				);
+			})
+			.addCase(saveIncome.rejected, (state, action) => {
+				setErrorState(state, 'Saving income', action.error.message);
+			})
+			.addCase(deleteIncome.rejected, (state, action) => {
+				setErrorState(state, 'Deleting income', action.error.message);
 			})
 });
 

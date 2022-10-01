@@ -9,13 +9,16 @@ namespace Budget.Server.Controllers {
 	public class HomeController : Controller {
 		private AppSettings AppSettings { get; }
 		private IExpensesService ExpensesService { get; }
+		private IIncomesService IncomesService { get; }
 
 		public HomeController(
 			IOptions<AppSettings> appSettingsAccessor,
-			IExpensesService expensesService
+			IExpensesService expensesService,
+			IIncomesService incomesService
 		) {
 			AppSettings = appSettingsAccessor.Value;
 			ExpensesService = expensesService;
+			IncomesService = incomesService;
 		}
 
 		[HttpGet]
@@ -23,10 +26,12 @@ namespace Budget.Server.Controllers {
 			CancellationToken cancellationToken
 		) {
 			var expensesVersionTask = ExpensesService.GetVersionAsync(cancellationToken);
-			await Task.WhenAll(expensesVersionTask);
+			var incomesVersionTask = IncomesService.GetVersionAsync(cancellationToken);
+			await Task.WhenAll(expensesVersionTask, incomesVersionTask);
 			var model = new IndexModel {
 				BundleVersion = AppSettings.BundleVersion,
 				ExpensesVersion = await expensesVersionTask,
+				IncomesVersion = await incomesVersionTask,
 				ScriptChunks = AppSettings.ScriptChunks,
 				StyleChunks = AppSettings.StyleChunks
 			};

@@ -21,34 +21,14 @@ namespace Budget.Server.Api.Controllers {
 			[FromRoute] string weekOf,
 			CancellationToken cancellationToken
 		) {
-			var incomesTask = BudgetService.LoadAllIncomesAsync(cancellationToken);
 			var weeklyTransactionsTask = BudgetService.LoadWeeklyTransactionsAsync(weekOf, cancellationToken);
 			var pendingItemsTask = BudgetService.LoadAllPendingItemsAsync(cancellationToken);
 			var yearlyExpenseTotalsTask = BudgetService.GetYearlyExpenseTotals(weekOf, cancellationToken);
 			return new BudgetResponse {
-				Incomes = await incomesTask,
 				WeeklyTransactions = await weeklyTransactionsTask,
 				PendingItems = await pendingItemsTask,
 				YearlyExpenseTotals = await yearlyExpenseTotalsTask
 			};
-		}
-
-		[HttpPut("incomes")]
-		public async Task<IActionResult> SaveIncomeAsync(
-			[FromBody] Income income,
-			CancellationToken cancellationToken
-		) {
-			await BudgetService.SaveIncomeAsync(income, cancellationToken);
-			return Ok();
-		}
-
-		[HttpDelete("incomes/{name}")]
-		public async Task<IActionResult> DeleteIncomeAsync(
-			[FromRoute] string name,
-			CancellationToken cancellationToken
-		) {
-			await BudgetService.DeleteIncomeAsync(name, cancellationToken);
-			return Ok();
 		}
 
 		[HttpGet("yearly-expenses/{expense}/{year}")]

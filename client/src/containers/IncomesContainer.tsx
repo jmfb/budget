@@ -1,23 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { useDispatch } from 'react-redux';
 import { Incomes } from '~/pages';
-import { useAppSelector, budgetSlice } from '~/redux';
-import { dateService } from '~/services';
+import { useAppSelector, incomesSlice } from '~/redux';
 
 export default function IncomesContainer() {
 	const dispatch = useDispatch();
-	const { getBudget, saveIncome, deleteIncome, clearIncomeSave } =
-		bindActionCreators(budgetSlice.actions, dispatch);
-	const incomes = useAppSelector(state => state.budget.incomes);
-	const isSavingIncome = useAppSelector(state => state.budget.isSavingIncome);
-	const savingIncomeSuccess = useAppSelector(
-		state => state.budget.savingIncomeSuccess
+	const { saveIncome, deleteIncome, clearSave } = bindActionCreators(
+		incomesSlice.actions,
+		dispatch
 	);
-
-	useEffect(() => {
-		getBudget(dateService.getStartOfCurrentWeek());
-	}, []);
+	const incomes = useAppSelector(state => state.incomes.incomes);
+	const isSavingIncome = useAppSelector(state => state.incomes.isSaving);
+	const savingIncomeSuccess = useAppSelector(
+		state => state.incomes.wasSuccessful
+	);
 
 	return (
 		<Incomes
@@ -26,9 +23,9 @@ export default function IncomesContainer() {
 				isSavingIncome,
 				savingIncomeSuccess,
 				saveIncome,
-				deleteIncome,
-				clearIncomeSave
+				deleteIncome
 			}}
+			clearIncomeSave={clearSave}
 		/>
 	);
 }

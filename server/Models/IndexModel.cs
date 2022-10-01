@@ -6,6 +6,7 @@ namespace Budget.Server.Models {
 	public class IndexModel {
 		public string BundleVersion { get; set; }
 		public long ExpensesVersion { get; set; }
+		public long IncomesVersion { get; set; }
 
 		[JsonIgnore]
 		public IEnumerable<string> ScriptChunks { get; set; }

@@ -14,7 +14,7 @@ export default function StatisticsContainer() {
 	const weeklyTransactions = useAppSelector(
 		state => state.budget.weeklyTransactions
 	);
-	const incomes = useAppSelector(state => state.budget.incomes);
+	const incomes = useAppSelector(state => state.incomes.incomes);
 	const expenses = useAppSelector(state => state.expenses.expenses);
 	const pendingItems = useAppSelector(state => state.budget.pendingItems);
 	const weeksOf = dateService.getStartOfLastXWeeks(12);

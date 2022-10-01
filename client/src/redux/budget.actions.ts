@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IIncome, IPendingItem, ITransaction } from '~/models';
+import { IPendingItem, ITransaction } from '~/models';
 import IState from './IState';
 import * as hub from './budget.hub';
 import { dateService, budgetService } from '~/services';
@@ -16,32 +16,12 @@ export const getBudget = createAsyncThunk(
 	{
 		condition: (weekOf: string, { getState }) => {
 			const {
-				budget: { isLoadingBudget, incomes }
+				budget: { isLoadingBudget }
 			} = getState() as IState;
-			if (isLoadingBudget || incomes !== null) {
+			if (isLoadingBudget) {
 				return false;
 			}
 		}
-	}
-);
-
-export const saveIncome = createAsyncThunk(
-	'budget/saveIncome',
-	async (income: IIncome, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		await hub.saveIncome(accessToken, income);
-	}
-);
-
-export const deleteIncome = createAsyncThunk(
-	'budget/deleteIncome',
-	async ({ name }: IIncome, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		await hub.deleteIncome(accessToken, name);
 	}
 );
 

@@ -5,3 +5,4 @@ export { default as authSlice } from './auth.slice';
 export { default as diagnosticsSlice } from './diagnostics.slice';
 export { default as budgetSlice } from './budget.slice';
 export * from './expenses.slice';
+export * from './incomes.slice';
