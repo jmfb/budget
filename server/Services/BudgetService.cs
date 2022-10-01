@@ -11,9 +11,6 @@ namespace Budget.Server.Services {
 	public interface IBudgetService {
 		Task SaveTransactionAsync(Transaction transaction, CancellationToken cancellationToken);
 		Task DeleteTransactionAsync(string date, int id, CancellationToken cancellationToken);
-		Task SavePendingItemAsync(PendingItem pendingItem, CancellationToken cancellationToken);
-		Task DeletePendingItemAsync(int id, CancellationToken cancellationToken);
-		Task<IReadOnlyCollection<PendingItem>> LoadAllPendingItemsAsync(CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Transaction>> LoadWeeklyTransactionsAsync(
 			string weekOf,
 			CancellationToken cancellationToken);
@@ -38,17 +35,6 @@ namespace Budget.Server.Services {
 
 		public async Task DeleteTransactionAsync(string date, int id, CancellationToken cancellationToken) =>
 			await Context.DeleteAsync(new Transaction { Date = date, Id = id }, cancellationToken);
-
-		public async Task SavePendingItemAsync(PendingItem pendingItem, CancellationToken cancellationToken) =>
-			await Context.SaveAsync(pendingItem, cancellationToken);
-
-		public async Task DeletePendingItemAsync(int id, CancellationToken cancellationToken) =>
-			await Context.DeleteAsync(new PendingItem { Id = id }, cancellationToken);
-
-		public async Task<IReadOnlyCollection<PendingItem>> LoadAllPendingItemsAsync(CancellationToken cancellationToken) =>
-			await Context
-				.ScanAsync<PendingItem>(Enumerable.Empty<ScanCondition>())
-				.GetRemainingAsync(cancellationToken);
 
 		public async Task<IReadOnlyCollection<Transaction>> LoadTransactionsAsync(
 			string date,

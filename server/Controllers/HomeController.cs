@@ -10,15 +10,18 @@ namespace Budget.Server.Controllers {
 		private AppSettings AppSettings { get; }
 		private IExpensesService ExpensesService { get; }
 		private IIncomesService IncomesService { get; }
+		private IPendingItemsService PendingItemsService { get; }
 
 		public HomeController(
 			IOptions<AppSettings> appSettingsAccessor,
 			IExpensesService expensesService,
-			IIncomesService incomesService
+			IIncomesService incomesService,
+			IPendingItemsService pendingItemsService
 		) {
 			AppSettings = appSettingsAccessor.Value;
 			ExpensesService = expensesService;
 			IncomesService = incomesService;
+			PendingItemsService = pendingItemsService;
 		}
 
 		[HttpGet]
@@ -27,11 +30,17 @@ namespace Budget.Server.Controllers {
 		) {
 			var expensesVersionTask = ExpensesService.GetVersionAsync(cancellationToken);
 			var incomesVersionTask = IncomesService.GetVersionAsync(cancellationToken);
-			await Task.WhenAll(expensesVersionTask, incomesVersionTask);
+			var pendingItemsVersionTask = PendingItemsService.GetVersionAsync(cancellationToken);
+			await Task.WhenAll(
+				expensesVersionTask,
+				incomesVersionTask,
+				pendingItemsVersionTask
+			);
 			var model = new IndexModel {
 				BundleVersion = AppSettings.BundleVersion,
 				ExpensesVersion = await expensesVersionTask,
 				IncomesVersion = await incomesVersionTask,
+				PendingItemsVersion = await pendingItemsVersionTask,
 				ScriptChunks = AppSettings.ScriptChunks,
 				StyleChunks = AppSettings.StyleChunks
 			};

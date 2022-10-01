@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IPendingItem, ITransaction } from '~/models';
+import { ITransaction } from '~/models';
 import IState from './IState';
 import * as hub from './budget.hub';
 import { dateService, budgetService } from '~/services';
+import { deletePendingItem } from './pendingItems.actions';
 import { parse } from 'csv-parse';
 
 export const getBudget = createAsyncThunk(
@@ -22,26 +23,6 @@ export const getBudget = createAsyncThunk(
 				return false;
 			}
 		}
-	}
-);
-
-export const savePendingItem = createAsyncThunk(
-	'budget/savePendingItem',
-	async (pendingItem: IPendingItem, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		await hub.savePendingItem(accessToken, pendingItem);
-	}
-);
-
-export const deletePendingItem = createAsyncThunk(
-	'budget/deletePendingItem',
-	async ({ id }: IPendingItem, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		await hub.deletePendingItem(accessToken, id);
 	}
 );
 
@@ -128,15 +109,14 @@ export const parseCsv = createAsyncThunk(
 
 export const mergeTransaction = createAsyncThunk(
 	'budget/mergeTransaction',
-	async (transaction: ITransaction, { getState }) => {
+	async (transaction: ITransaction, { getState, dispatch }) => {
 		const {
 			auth: { accessToken },
-			budget: { weeklyTransactions, pendingItems }
+			budget: { weeklyTransactions }
 		} = getState() as IState;
 		const logs = [];
 		logs.push('='.repeat(60));
 		logs.push(JSON.stringify(transaction, null, 4));
-		const remainingPendingItems = [...pendingItems];
 		const copyOfWeeklyTransactions = { ...weeklyTransactions };
 		const weekOf = dateService.getStartOfWeek(transaction.date);
 		if (copyOfWeeklyTransactions[weekOf] === undefined) {
@@ -171,26 +151,22 @@ export const mergeTransaction = createAsyncThunk(
 				transactions: [...week.transactions, newTransaction]
 			};
 
+			const {
+				pendingItems: { pendingItems }
+			} = getState() as IState;
 			const matchingPendingItem = pendingItems.find(
 				pendingItem => pendingItem.amount === newTransaction.amount
 			);
 			if (matchingPendingItem) {
 				logs.push('Found matching pending item');
 				logs.push(JSON.stringify(matchingPendingItem, null, 4));
-				await hub.deletePendingItem(
-					accessToken,
-					matchingPendingItem.id
-				);
-				const indexOfPendingItem =
-					pendingItems.indexOf(matchingPendingItem);
-				remainingPendingItems.splice(indexOfPendingItem, 1);
+				await dispatch(deletePendingItem(matchingPendingItem));
 			}
 		} else {
 			logs.push('Skipping transaction');
 		}
 		return {
 			weeklyTransactions: copyOfWeeklyTransactions,
-			pendingItems: remainingPendingItems,
 			logs: logs.join('\n')
 		};
 	}

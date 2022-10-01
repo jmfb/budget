@@ -1,6 +1,5 @@
 import { get, send } from './hub';
 import {
-	IPendingItem,
 	ITransaction,
 	IBudgetResponse,
 	IWeeklyTransactionsResponse
@@ -9,26 +8,6 @@ import {
 export async function getBudget(accessToken: string, weekOf: string) {
 	return await get<IBudgetResponse>({
 		endpoint: `/api/budget/week-of/${weekOf}`,
-		accessToken
-	});
-}
-
-export async function savePendingItem(
-	accessToken: string,
-	pendingItem: IPendingItem
-) {
-	await send({
-		endpoint: '/api/budget/pending-items',
-		method: 'PUT',
-		accessToken,
-		body: pendingItem
-	});
-}
-
-export async function deletePendingItem(accessToken: string, id: number) {
-	await send({
-		endpoint: `/api/budget/pending-items/${id}`,
-		method: 'DELETE',
 		accessToken
 	});
 }

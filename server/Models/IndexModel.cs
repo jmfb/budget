@@ -7,6 +7,7 @@ namespace Budget.Server.Models {
 		public string BundleVersion { get; set; }
 		public long ExpensesVersion { get; set; }
 		public long IncomesVersion { get; set; }
+		public long PendingItemsVersion { get; set; }
 
 		[JsonIgnore]
 		public IEnumerable<string> ScriptChunks { get; set; }

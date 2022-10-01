@@ -8,6 +8,7 @@ export interface IIndexModel {
 	bundleVersion: string;
 	expensesVersion: number;
 	incomesVersion: number;
+	pendingItemsVersion: number;
 }
 
 export interface ISignedInModel {
@@ -68,12 +69,16 @@ export interface IPendingItem {
 	amount: number;
 }
 
+export interface IGetPendingItemsResponse {
+	version: number;
+	pendingItems: IPendingItem[];
+}
+
 export type IExpenseTotals = Record<string, number>;
 
 export interface IBudgetResponse {
 	weeklyTransactions: ITransaction[];
 	yearlyExpenseTotals: IExpenseTotals;
-	pendingItems: IPendingItem[];
 }
 
 export interface IWeeklyTransactionsResponse {

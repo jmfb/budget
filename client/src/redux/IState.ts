@@ -4,6 +4,7 @@ import { IDiagnosticsState } from './diagnostics.slice';
 import { IBudgetState } from './budget.slice';
 import { IExpensesState } from './expenses.slice';
 import { IIncomesState } from './incomes.slice';
+import { IPendingItemsState } from './pendingItems.slice';
 
 export default interface IState {
 	error: IErrorState;
@@ -12,4 +13,5 @@ export default interface IState {
 	budget: IBudgetState;
 	expenses: IExpensesState;
 	incomes: IIncomesState;
+	pendingItems: IPendingItemsState;
 }

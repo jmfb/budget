@@ -6,6 +6,7 @@ import diagnosticsSlice from './diagnostics.slice';
 import budgetSlice from './budget.slice';
 import { expensesSlice } from './expenses.slice';
 import { incomesSlice } from './incomes.slice';
+import { pendingItemsSlice } from './pendingItems.slice';
 import IState from './IState';
 
 export function createStore() {
@@ -16,7 +17,8 @@ export function createStore() {
 			[diagnosticsSlice.name]: diagnosticsSlice.reducer,
 			[budgetSlice.name]: budgetSlice.reducer,
 			[expensesSlice.name]: expensesSlice.reducer,
-			[incomesSlice.name]: incomesSlice.reducer
+			[incomesSlice.name]: incomesSlice.reducer,
+			[pendingItemsSlice.name]: pendingItemsSlice.reducer
 		}
 	});
 }

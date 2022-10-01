@@ -1,13 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-	IPendingItem,
-	IWeeklyTransactionsByWeekOf,
-	ITransaction
-} from '~/models';
+import { IWeeklyTransactionsByWeekOf, ITransaction } from '~/models';
 import {
 	getBudget,
-	savePendingItem,
-	deletePendingItem,
 	saveTransaction,
 	deleteTransaction,
 	getWeeklyTransactions,
@@ -21,12 +15,9 @@ import { dateService } from '~/services';
 export interface IBudgetState {
 	onlyShowNewItems: boolean;
 	isLoadingBudget: boolean;
-	pendingItems: IPendingItem[];
 	weeklyTransactions: IWeeklyTransactionsByWeekOf;
 	isLoadingYearlyExpenses: boolean;
 	yearlyExpenses: ITransaction[];
-	isSavingPendingItem: boolean;
-	savingPendingItemSuccess: boolean;
 	isSavingTransaction: boolean;
 	savingTransactionSuccess: boolean;
 	isDeletingTransaction: boolean;
@@ -45,12 +36,9 @@ export interface IBudgetState {
 const initialState: IBudgetState = {
 	onlyShowNewItems: false,
 	isLoadingBudget: false,
-	pendingItems: null,
 	weeklyTransactions: {},
 	isLoadingYearlyExpenses: false,
 	yearlyExpenses: [],
-	isSavingPendingItem: false,
-	savingPendingItemSuccess: false,
 	isSavingTransaction: false,
 	savingTransactionSuccess: false,
 	isDeletingTransaction: false,
@@ -72,10 +60,6 @@ const slice = createSlice({
 	reducers: {
 		setOnlyShowNewItems(state, action: PayloadAction<boolean>) {
 			state.onlyShowNewItems = action.payload;
-		},
-		clearPendingItemSave(state) {
-			state.isSavingPendingItem = false;
-			state.savingPendingItemSuccess = false;
 		},
 		clearTransactionSave(state) {
 			state.isSavingTransaction = false;
@@ -106,7 +90,6 @@ const slice = createSlice({
 			})
 			.addCase(getBudget.fulfilled, (state, action) => {
 				state.isLoadingBudget = false;
-				state.pendingItems = action.payload.pendingItems;
 				state.weeklyTransactions[action.meta.arg] = {
 					isLoading: false,
 					weekOf: action.meta.arg,
@@ -116,43 +99,6 @@ const slice = createSlice({
 			})
 			.addCase(getBudget.rejected, state => {
 				state.isLoadingBudget = false;
-			})
-
-			.addCase(savePendingItem.pending, state => {
-				state.isSavingPendingItem = true;
-				state.savingPendingItemSuccess = false;
-			})
-			.addCase(savePendingItem.fulfilled, (state, action) => {
-				state.isSavingPendingItem = false;
-				state.savingPendingItemSuccess = true;
-				const index = state.pendingItems.findIndex(
-					pendingItem => pendingItem.id === action.meta.arg.id
-				);
-				if (index === -1) {
-					state.pendingItems.push(action.meta.arg);
-				} else {
-					state.pendingItems[index] = action.meta.arg;
-				}
-			})
-			.addCase(savePendingItem.rejected, state => {
-				state.isSavingPendingItem = false;
-				state.savingPendingItemSuccess = false;
-			})
-
-			.addCase(deletePendingItem.pending, state => {
-				state.isSavingPendingItem = true;
-				state.savingPendingItemSuccess = false;
-			})
-			.addCase(deletePendingItem.fulfilled, (state, action) => {
-				state.isSavingPendingItem = false;
-				state.savingPendingItemSuccess = true;
-				state.pendingItems = state.pendingItems.filter(
-					pendingItem => pendingItem.id !== action.meta.arg.id
-				);
-			})
-			.addCase(deletePendingItem.rejected, state => {
-				state.isSavingPendingItem = false;
-				state.savingPendingItemSuccess = false;
 			})
 
 			.addCase(saveTransaction.pending, state => {
@@ -275,7 +221,6 @@ const slice = createSlice({
 			.addCase(mergeTransaction.fulfilled, (state, action) => {
 				state.isMergingTransaction = false;
 				state.mergingTransactionSuccess = true;
-				state.pendingItems = action.payload.pendingItems;
 				state.weeklyTransactions = action.payload.weeklyTransactions;
 				state.logs += action.payload.logs + '\n';
 			})
@@ -290,8 +235,6 @@ export default {
 	actions: {
 		...slice.actions,
 		getBudget,
-		savePendingItem,
-		deletePendingItem,
 		saveTransaction,
 		deleteTransaction,
 		getWeeklyTransactions,

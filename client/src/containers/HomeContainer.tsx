@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { bindActionCreators } from 'redux';
 import { useDispatch } from 'react-redux';
 import { Home } from '~/pages';
-import { useAppSelector, budgetSlice } from '~/redux';
+import { useAppSelector, budgetSlice, pendingItemsSlice } from '~/redux';
 import { dateService } from '~/services';
 
 export default function HomeContainer() {
@@ -12,13 +12,15 @@ export default function HomeContainer() {
 		saveTransaction,
 		deleteTransaction,
 		setOnlyShowNewItems,
-		savePendingItem,
-		deletePendingItem,
 		clearTransactionSave,
 		clearTransactionDelete,
-		clearPendingItemSave,
 		getWeeklyTransactions
 	} = bindActionCreators(budgetSlice.actions, dispatch);
+	const {
+		savePendingItem,
+		deletePendingItem,
+		clearSave: clearPendingItemSave
+	} = bindActionCreators(pendingItemsSlice.actions, dispatch);
 	const onlyShowNewItems = useAppSelector(
 		state => state.budget.onlyShowNewItems
 	);
@@ -27,7 +29,9 @@ export default function HomeContainer() {
 	);
 	const incomes = useAppSelector(state => state.incomes.incomes);
 	const expenses = useAppSelector(state => state.expenses.expenses);
-	const pendingItems = useAppSelector(state => state.budget.pendingItems);
+	const pendingItems = useAppSelector(
+		state => state.pendingItems.pendingItems
+	);
 	const weeklyTransactions = useAppSelector(
 		state => state.budget.weeklyTransactions
 	);
@@ -44,10 +48,10 @@ export default function HomeContainer() {
 		state => state.budget.deletingTransactionSuccess
 	);
 	const isSavingPendingItem = useAppSelector(
-		state => state.budget.isSavingPendingItem
+		state => state.pendingItems.isSaving
 	);
 	const savingPendingItemSuccess = useAppSelector(
-		state => state.budget.savingPendingItemSuccess
+		state => state.pendingItems.wasSuccessful
 	);
 	const [weekOf, setWeekOf] = useState(dateService.getStartOfCurrentWeek());
 

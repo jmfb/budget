@@ -6,3 +6,4 @@ export { default as diagnosticsSlice } from './diagnostics.slice';
 export { default as budgetSlice } from './budget.slice';
 export * from './expenses.slice';
 export * from './incomes.slice';
+export * from './pendingItems.slice';
