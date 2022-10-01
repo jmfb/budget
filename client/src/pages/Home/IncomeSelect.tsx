@@ -10,7 +10,7 @@ export interface IIncomeSelectProps {
 	onChange(incomeName: string): void;
 }
 
-export default function IncomeSelect({
+export function IncomeSelect({
 	incomes,
 	incomeName,
 	onChange

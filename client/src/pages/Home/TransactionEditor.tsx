@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Buttons, Input, CategorySelect } from '~/components';
-import IncomeSelect from './IncomeSelect';
-import ExpenseSelect from './ExpenseSelect';
-import ConfirmDelete from './ConfirmDelete';
+import { IncomeSelect } from './IncomeSelect';
+import { ExpenseSelect } from './ExpenseSelect';
+import { ConfirmDelete } from './ConfirmDelete';
 import { ITransaction, IIncome, IExpense } from '~/models';
 import { budgetService } from '~/services';
 
@@ -19,7 +19,7 @@ export interface ITransactionEditorProps {
 	onCancel(): void;
 }
 
-export default function TransactionEditor({
+export function TransactionEditor({
 	transaction,
 	incomes,
 	expenses,

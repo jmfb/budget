@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PageLoading, Button } from '~/components';
-import Category from './Category';
-import ExpenseEditor from './ExpenseEditor';
+import { Category } from './Category';
+import { ExpenseEditor } from './ExpenseEditor';
 import { budgetService } from '~/services';
 import { IExpense } from '~/models';
 import styles from './Expenses.css';
@@ -15,7 +15,7 @@ export interface IExpensesProps {
 	clearExpenseSave(): void;
 }
 
-export default function Expenses({
+export function Expenses({
 	expenses,
 	isSavingExpense,
 	savingExpenseSuccess,

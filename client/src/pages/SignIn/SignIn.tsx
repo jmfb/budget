@@ -1,5 +1,5 @@
 import React from 'react';
-import SignInButton from './SignInButton';
+import { SignInButton } from './SignInButton';
 import { PageLoading } from '~/components';
 
 export interface ISignInProps {
@@ -7,7 +7,7 @@ export interface ISignInProps {
 	onClickSignIn(): void;
 }
 
-export default function SignIn({ isSigningIn, onClickSignIn }: ISignInProps) {
+export function SignIn({ isSigningIn, onClickSignIn }: ISignInProps) {
 	return (
 		<main className='responsive'>
 			<section>

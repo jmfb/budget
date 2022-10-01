@@ -6,7 +6,7 @@ export interface IConfirmDeleteProps {
 	onCancel(): void;
 }
 
-export default function ConfirmDelete({
+export function ConfirmDelete({
 	onConfirmDelete,
 	onCancel
 }: IConfirmDeleteProps) {

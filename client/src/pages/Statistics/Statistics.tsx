@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageLoading } from '~/components';
-import Week from './Week';
-import ExpenseBudget from './ExpenseBudget';
+import { Week } from './Week';
+import { ExpenseBudget } from './ExpenseBudget';
 import { IIncome, IExpense, IWeeklyTransactions, IPendingItem } from '~/models';
 import { budgetService } from '~/services';
 import cx from 'classnames';
@@ -14,7 +14,7 @@ export interface IStatisticsProps {
 	weeks: IWeeklyTransactions[];
 }
 
-export default function Statistics({
+export function Statistics({
 	incomes,
 	expenses,
 	pendingItems,

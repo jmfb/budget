@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import styles from './LoadingIcon.css';
 
-export default function LoadingIcon() {
+export function LoadingIcon() {
 	const axisValues = [5, 11.5, 27, 42.5, 49];
 	const coordinates = [
 		[2, 0],

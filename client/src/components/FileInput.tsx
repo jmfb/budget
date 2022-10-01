@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingIcon from './LoadingIcon';
+import { LoadingIcon } from './LoadingIcon';
 import { ButtonVariant } from './Button';
 import cx from 'classnames';
 import styles from './FileInput.css';
@@ -14,7 +14,7 @@ export interface IFileInputProps {
 	onClick(file: File): void;
 }
 
-export default function FileInput({
+export function FileInput({
 	accept,
 	variant,
 	children,

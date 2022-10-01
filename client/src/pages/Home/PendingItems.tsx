@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { Button } from '~/components';
-import PendingItem from './PendingItem';
-import PendingItemEditor from './PendingItemEditor';
+import { PendingItem } from './PendingItem';
+import { PendingItemEditor } from './PendingItemEditor';
 import { IPendingItem } from '~/models';
 import { budgetService } from '~/services';
 import styles from './PendingItems.css';
@@ -16,7 +16,7 @@ export interface IPendingItemsProps {
 	clearPendingItemSave(): void;
 }
 
-export default function PendingItems({
+export function PendingItems({
 	pendingItems,
 	isSavingPendingItem,
 	savingPendingItemSuccess,

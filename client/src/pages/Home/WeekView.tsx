@@ -12,7 +12,7 @@ export interface IWeekViewProps {
 	getWeeklyTransactions(weekOf: string): void;
 }
 
-export default function WeekView({
+export function WeekView({
 	weekOf,
 	weeklyTransactions,
 	setWeekOf,

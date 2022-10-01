@@ -1,1 +1,1 @@
-export { default } from './YearlyExpenses';
+export * from './YearlyExpenses';

@@ -1,8 +1,8 @@
-export { default as ErrorView } from './ErrorView';
-export { default as Home } from './Home';
-export { default as SignIn } from './SignIn';
-export { default as Incomes } from './Incomes';
-export { default as Expenses } from './Expenses';
-export { default as Uploads } from './Uploads';
-export { default as Statistics } from './Statistics';
-export { default as YearlyExpenses } from './YearlyExpenses';
+export * from './ErrorView';
+export * from './Home';
+export * from './SignIn';
+export * from './Incomes';
+export * from './Expenses';
+export * from './Uploads';
+export * from './Statistics';
+export * from './YearlyExpenses';

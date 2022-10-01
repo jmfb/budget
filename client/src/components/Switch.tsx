@@ -8,7 +8,7 @@ export interface ISwitchProps {
 	onChange(value: boolean): void;
 }
 
-export default function Switch({ children, checked, onChange }: ISwitchProps) {
+export function Switch({ children, checked, onChange }: ISwitchProps) {
 	return (
 		<label className={styles.label}>
 			<ReactSwitch

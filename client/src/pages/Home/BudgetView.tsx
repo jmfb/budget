@@ -17,7 +17,7 @@ export interface IBudgetViewProps {
 	yearlyExpenseTotals: IExpenseTotals;
 }
 
-export default function BudgetView({
+export function BudgetView({
 	incomes,
 	expenses,
 	transactions,

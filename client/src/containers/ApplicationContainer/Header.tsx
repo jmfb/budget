@@ -3,9 +3,7 @@ import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
 import styles from './Header.css';
 
-export interface IHeaderProps {}
-
-export default function Header({}: IHeaderProps) {
+export function Header() {
 	return (
 		<header className={cx('responsive', styles.root)}>
 			<nav className={styles.links}>

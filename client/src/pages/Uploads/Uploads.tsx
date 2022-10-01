@@ -22,7 +22,7 @@ export interface IUploadsProps {
 	clearLogs(): void;
 }
 
-export default function Uploads({
+export function Uploads({
 	isReadingFile,
 	readingFileSuccess,
 	fileText,

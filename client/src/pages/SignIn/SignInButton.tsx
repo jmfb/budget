@@ -9,7 +9,7 @@ export interface ISignInButtonProps {
 	onClick(): void;
 }
 
-export default function SignInButton({
+export function SignInButton({
 	isDisabled,
 	type,
 	className,

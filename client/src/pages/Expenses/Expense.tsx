@@ -12,7 +12,7 @@ export interface IExpenseProps {
 	onEdit(): void;
 }
 
-export default function Expense({
+export function Expense({
 	expense,
 	isSavingExpense,
 	deleteExpense,

@@ -16,7 +16,7 @@ export interface IIncomeEditorProps {
 	onCancel(): void;
 }
 
-export default function IncomeEditor({
+export function IncomeEditor({
 	existingIncome,
 	isSavingIncome,
 	onSave,

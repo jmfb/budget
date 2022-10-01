@@ -1,8 +1,8 @@
 import React from 'react';
 import { PageLoading } from '~/components';
-import WeekView from './WeekView';
-import BudgetView from './BudgetView';
-import Transactions from './Transactions';
+import { WeekView } from './WeekView';
+import { BudgetView } from './BudgetView';
+import { Transactions } from './Transactions';
 import {
 	IIncome,
 	IExpense,
@@ -40,7 +40,7 @@ export interface IHomeProps {
 	getWeeklyTransactions(weekOf: string): void;
 }
 
-export default function Home({
+export function Home({
 	onlyShowNewItems,
 	isLoadingBudget,
 	incomes,

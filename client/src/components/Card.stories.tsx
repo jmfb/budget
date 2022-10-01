@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import Card, { ICardProps } from './Card';
-import Button from './Button';
+import { Card, ICardProps } from './Card';
+import { Button } from './Button';
 import '~/index.css';
 
 export default {

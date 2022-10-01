@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Switch } from '~/components';
-import PendingItems from './PendingItems';
-import Transaction from './Transaction';
-import TransactionEditor from './TransactionEditor';
+import { PendingItems } from './PendingItems';
+import { Transaction } from './Transaction';
+import { TransactionEditor } from './TransactionEditor';
 import {
 	ITransaction,
 	IIncome,
@@ -36,7 +36,7 @@ export interface ITransactionsProps {
 	clearPendingItemSave(): void;
 }
 
-export default function Transactions({
+export function Transactions({
 	onlyShowNewItems,
 	transactions,
 	incomes,

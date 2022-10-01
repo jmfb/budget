@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Input from './Input';
+import { Input } from './Input';
 
 export interface INumberInputProps {
 	name: string;
@@ -16,11 +16,7 @@ function parse(value: string) {
 	return Number.isNaN(result) ? 0 : result;
 }
 
-export default function NumberInput({
-	name,
-	value,
-	onChange
-}: INumberInputProps) {
+export function NumberInput({ name, value, onChange }: INumberInputProps) {
 	const [textValue, setTextValue] = useState(toString(value));
 
 	const handleTextChanged = (newTextValue: string) => {

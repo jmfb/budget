@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import ErrorView, { IErrorViewProps } from './ErrorView';
+import { ErrorView, IErrorViewProps } from './ErrorView';
 import '~/index.css';
 
 export default {

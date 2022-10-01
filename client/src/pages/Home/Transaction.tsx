@@ -13,7 +13,7 @@ export interface ITransactionProps {
 	onEdit(): void;
 }
 
-export default function Transaction({
+export function Transaction({
 	transaction,
 	incomes,
 	expenses,

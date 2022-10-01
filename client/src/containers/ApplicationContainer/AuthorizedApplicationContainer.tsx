@@ -1,7 +1,7 @@
 import React, { lazy, useEffect } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
-import Header from './Header';
-import NewerVersionPrompt from './NewerVersionPrompt';
+import { Header } from './Header';
+import { NewerVersionPrompt } from './NewerVersionPrompt';
 import { IIndexModel } from '~/models';
 import {
 	useActions,

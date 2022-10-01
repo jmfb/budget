@@ -7,9 +7,7 @@ export interface IExpenseTransactionProps {
 	transaction: ITransaction;
 }
 
-export default function ExpenseTransaction({
-	transaction
-}: IExpenseTransactionProps) {
+export function ExpenseTransaction({ transaction }: IExpenseTransactionProps) {
 	const { amount, note, description, date } = transaction;
 	return (
 		<div className={styles.root}>

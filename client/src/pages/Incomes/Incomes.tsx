@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PageLoading, Button } from '~/components';
-import Income from './Income';
-import IncomeEditor from './IncomeEditor';
+import { Income } from './Income';
+import { IncomeEditor } from './IncomeEditor';
 import { budgetService } from '~/services';
 import { IIncome } from '~/models';
 import styles from './Incomes.css';
@@ -15,7 +15,7 @@ export interface IIncomesProps {
 	clearIncomeSave(): void;
 }
 
-export default function Incomes({
+export function Incomes({
 	incomes,
 	isSavingIncome,
 	savingIncomeSuccess,

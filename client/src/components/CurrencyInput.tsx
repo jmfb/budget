@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Input from './Input';
+import { Input } from './Input';
 import { budgetService } from '~/services';
 
 export interface ICurrencyInputProps {
@@ -19,7 +19,7 @@ function parse(value: string) {
 	return Number.isNaN(result) ? 0 : result;
 }
 
-export default function CurrencyInput({
+export function CurrencyInput({
 	name,
 	value,
 	autoFocus,

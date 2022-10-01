@@ -8,7 +8,7 @@ export interface INewerVersionPromptProps {
 	onClickRefresh(): void;
 }
 
-export default function NewerVersionPrompt({
+export function NewerVersionPrompt({
 	bundleVersion,
 	serverBundleVersion,
 	onClickRefresh

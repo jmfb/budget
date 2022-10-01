@@ -8,7 +8,7 @@ export interface IWeekProps {
 	maxOverBudget: number;
 }
 
-export default function Week({
+export function Week({
 	remainingBudget,
 	maxUnderBudget,
 	maxOverBudget

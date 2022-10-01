@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PageLoading } from '~/components';
-import ErrorBoundary from '~/containers/ErrorBoundary';
+import { ErrorBoundaryContainer } from '~/containers/ErrorBoundary';
 import { IIndexModel } from './models';
 import { createStore } from '~/redux';
 import './index.css';
@@ -38,7 +38,7 @@ function start() {
 	const rootElement = (
 		<Provider {...{ store }}>
 			<BrowserRouter>
-				<ErrorBoundary>
+				<ErrorBoundaryContainer>
 					<Suspense fallback={<PageLoading />}>
 						<Routes>
 							<Route
@@ -59,7 +59,7 @@ function start() {
 							/>
 						</Routes>
 					</Suspense>
-				</ErrorBoundary>
+				</ErrorBoundaryContainer>
 			</BrowserRouter>
 		</Provider>
 	);

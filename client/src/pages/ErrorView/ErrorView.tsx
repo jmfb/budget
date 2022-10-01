@@ -10,7 +10,7 @@ export interface IErrorViewProps {
 	onClickDismiss(): void;
 }
 
-export default function ErrorView({
+export function ErrorView({
 	action,
 	context,
 	message,

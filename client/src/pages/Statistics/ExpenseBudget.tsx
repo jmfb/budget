@@ -10,7 +10,7 @@ export interface IExpenseBudgetProps {
 	total: number;
 }
 
-export default function ExpenseBudget({ expense, total }: IExpenseBudgetProps) {
+export function ExpenseBudget({ expense, total }: IExpenseBudgetProps) {
 	return (
 		<Link
 			className={styles.root}

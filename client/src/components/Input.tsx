@@ -11,7 +11,7 @@ export interface IInputProps {
 	onBlur?(): void;
 }
 
-export default function Input({
+export function Input({
 	name,
 	value,
 	type,

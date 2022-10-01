@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '~/components';
-import Expense from './Expense';
+import { Expense } from './Expense';
 import { IExpense } from '~/models';
 import { budgetService } from '~/services';
 import styles from './Category.css';
@@ -14,7 +14,7 @@ export interface ICategoryProps {
 	onEditExpense(expense: IExpense): void;
 }
 
-export default function Category({
+export function Category({
 	category,
 	expenses,
 	isSavingExpense,

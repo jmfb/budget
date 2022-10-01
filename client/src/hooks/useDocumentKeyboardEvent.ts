@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-export default function useDocumentKeyboardEvent(
+export function useDocumentKeyboardEvent(
 	eventName: string,
 	handler: (event: KeyboardEvent) => void
 ) {

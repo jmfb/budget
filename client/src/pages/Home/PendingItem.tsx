@@ -8,10 +8,7 @@ export interface IPendingItemProps {
 	onEdit(): void;
 }
 
-export default function PendingItem({
-	pendingItem,
-	onEdit
-}: IPendingItemProps) {
+export function PendingItem({ pendingItem, onEdit }: IPendingItemProps) {
 	const { name, amount } = pendingItem;
 	return (
 		<div

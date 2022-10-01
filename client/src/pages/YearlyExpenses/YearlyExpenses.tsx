@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageLoading, Pill, Button } from '~/components';
-import ExpenseEditor from '~/pages/Expenses/ExpenseEditor';
-import ExpenseTransaction from './ExpenseTransaction';
+import { ExpenseEditor } from '~/pages/Expenses/ExpenseEditor';
+import { ExpenseTransaction } from './ExpenseTransaction';
 import { IExpense, ITransaction } from '~/models';
 import { budgetService } from '~/services';
 import styles from './YearlyExpenses.css';
@@ -15,7 +15,7 @@ export interface IYearlyExpensesProps {
 	saveExpense(expense: IExpense): void;
 }
 
-export default function YearlyExpenses({
+export function YearlyExpenses({
 	expense,
 	isLoading,
 	yearlyExpenses,

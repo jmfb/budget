@@ -1,2 +1,2 @@
-export { default as useInterval } from './useInterval';
-export { default as useDocumentKeyboardEvent } from './useDocumentKeyboardEvent';
+export * from './useInterval';
+export * from './useDocumentKeyboardEvent';

@@ -19,7 +19,7 @@ export interface IExpenseEditorProps {
 	onCancel(): void;
 }
 
-export default function ExpenseEditor({
+export function ExpenseEditor({
 	existingExpense,
 	isSavingExpense,
 	mustRemainYearlyExpense,

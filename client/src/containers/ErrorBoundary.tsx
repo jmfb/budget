@@ -97,7 +97,11 @@ class ErrorBoundary extends React.PureComponent<
 	};
 }
 
-export default connect<IErrorBoundaryStateProps, IErrorBoundaryDispatchProps>(
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const ErrorBoundaryContainer = connect<
+	IErrorBoundaryStateProps,
+	IErrorBoundaryDispatchProps
+>(
 	mapStateToProps,
 	mapDispatchToProps
 )(ErrorBoundary);

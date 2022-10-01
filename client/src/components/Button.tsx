@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingIcon from './LoadingIcon';
+import { LoadingIcon } from './LoadingIcon';
 import cx from 'classnames';
 import styles from './Button.css';
 
@@ -15,7 +15,7 @@ export interface IButtonProps {
 	autoFocus?: boolean;
 }
 
-export default function Button({
+export function Button({
 	className,
 	variant,
 	onClick,

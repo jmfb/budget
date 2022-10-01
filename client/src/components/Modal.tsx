@@ -10,7 +10,7 @@ export interface IModalProps {
 	onClose(): void;
 }
 
-export default function Modal({
+export function Modal({
 	title,
 	children,
 	deleteButton,

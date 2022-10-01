@@ -1,6 +1,6 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import SignInButton, { ISignInButtonProps } from './SignInButton';
+import { SignInButton, ISignInButtonProps } from './SignInButton';
 import '~/index.css';
 
 export default {

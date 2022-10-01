@@ -5,6 +5,6 @@ export interface IButtonsProps {
 	children: ReactNode;
 }
 
-export default function Buttons({ children }: IButtonsProps) {
+export function Buttons({ children }: IButtonsProps) {
 	return <div className={styles.root}>{children}</div>;
 }

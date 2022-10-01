@@ -8,7 +8,7 @@ export interface ICategorySelectProps {
 	onChange(category: string): void;
 }
 
-export default function CategorySelect({
+export function CategorySelect({
 	category,
 	autoFocus,
 	onChange

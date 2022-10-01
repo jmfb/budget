@@ -13,7 +13,7 @@ export interface IPendingItemEditorProps {
 	onCancel(): void;
 }
 
-export default function PendingItemEditor({
+export function PendingItemEditor({
 	nextPendingItemId,
 	existingPendingItem,
 	isSavingPendingItem,

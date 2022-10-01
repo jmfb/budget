@@ -10,7 +10,7 @@ export interface IExpenseSelectProps {
 	onChange(expenseName: string): void;
 }
 
-export default function ExpenseSelect({
+export function ExpenseSelect({
 	expenses,
 	expenseName,
 	onChange

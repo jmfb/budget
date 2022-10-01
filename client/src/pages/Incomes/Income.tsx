@@ -12,7 +12,7 @@ export interface IIncomeProps {
 	onEdit(): void;
 }
 
-export default function Income({
+export function Income({
 	income,
 	isSavingIncome,
 	deleteIncome,

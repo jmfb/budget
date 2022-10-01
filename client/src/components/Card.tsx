@@ -7,6 +7,6 @@ export interface ICardProps {
 	children?: React.ReactNode;
 }
 
-export default function Card({ className, children }: ICardProps) {
+export function Card({ className, children }: ICardProps) {
 	return <div className={cx(styles.root, className)}>{children}</div>;
 }
