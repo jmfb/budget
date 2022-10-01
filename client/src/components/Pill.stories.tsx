@@ -1,18 +1,19 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react';
 import { Pill, IPillProps } from './Pill';
 import '~/index.css';
 
 export default {
 	title: 'Components/Pill',
 	component: Pill
-} as Meta;
+};
 
-const Template: Story<IPillProps> = props => (
-	<span style={{ display: 'inline-block' }}>
-		<Pill {...props}>Example</Pill>
-	</span>
-);
+function Template(props: IPillProps) {
+	return (
+		<span style={{ display: 'inline-block' }}>
+			<Pill {...props}>Example</Pill>
+		</span>
+	);
+}
 
 export const Info = Template.bind({});
 Info.args = {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react';
 import {
 	NewerVersionPrompt,
 	INewerVersionPromptProps
@@ -9,11 +8,11 @@ import '~/index.css';
 export default {
 	title: 'Containers/Application/NewerVersionPrompt',
 	component: NewerVersionPrompt
-} as Meta;
+};
 
-const Template: Story<INewerVersionPromptProps> = props => (
-	<NewerVersionPrompt {...props} />
-);
+function Template(props: INewerVersionPromptProps) {
+	return <NewerVersionPrompt {...props} />;
+}
 
 export const SameVersion = Template.bind({});
 SameVersion.args = {

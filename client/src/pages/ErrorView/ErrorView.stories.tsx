@@ -1,14 +1,15 @@
 import React from 'react';
-import { Story, Meta } from '@storybook/react';
 import { ErrorView, IErrorViewProps } from './ErrorView';
 import '~/index.css';
 
 export default {
 	title: 'Pages/ErrorView/Page',
 	component: ErrorView
-} as Meta;
+};
 
-const Template: Story<IErrorViewProps> = props => <ErrorView {...props} />;
+function Template(props: IErrorViewProps) {
+	return <ErrorView {...props} />;
+}
 
 export const Default = Template.bind({});
 Default.args = {
