@@ -9,6 +9,7 @@ export interface IIndexModel {
 	expensesVersion: number;
 	incomesVersion: number;
 	pendingItemsVersion: number;
+	weekVersions: Record<string, number>;
 }
 
 export interface ISignedInModel {
@@ -61,6 +62,12 @@ export interface ITransaction {
 	note: string;
 	expenseName: string;
 	incomeName: string;
+}
+
+export interface IGetTransactionsResponse {
+	version: number;
+	weekOf: string;
+	transactions: ITransaction[];
 }
 
 export interface IPendingItem {

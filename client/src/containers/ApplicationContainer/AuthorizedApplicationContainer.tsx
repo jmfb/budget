@@ -9,7 +9,8 @@ import {
 	diagnosticsSlice,
 	expensesSlice,
 	incomesSlice,
-	pendingItemsSlice
+	pendingItemsSlice,
+	transactionsSlice
 } from '~/redux';
 import { useInterval } from '~/hooks';
 import cx from 'classnames';
@@ -76,6 +77,7 @@ export function AuthorizedApplicationContainer({
 	const { refreshExpenses } = useActions(expensesSlice);
 	const { refreshIncomes } = useActions(incomesSlice);
 	const { refreshPendingItems } = useActions(pendingItemsSlice);
+	const { refreshTransactions } = useActions(transactionsSlice);
 	const bundleVersion = useAppSelector(
 		state => state.diagnostics.bundleVersion
 	);
@@ -87,6 +89,7 @@ export function AuthorizedApplicationContainer({
 		refreshExpenses(indexModel.expensesVersion);
 		refreshIncomes(indexModel.incomesVersion);
 		refreshPendingItems(indexModel.pendingItemsVersion);
+		refreshTransactions(indexModel.weekVersions);
 	}, []);
 
 	useInterval(() => {
