@@ -230,7 +230,7 @@ const slice = createSlice({
 			})
 });
 
-export default {
+export const budgetSlice = {
 	...slice,
 	actions: {
 		...slice.actions,

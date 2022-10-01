@@ -39,7 +39,7 @@ const slice = createSlice({
 			})
 });
 
-export default {
+export const diagnosticsSlice = {
 	...slice,
 	actions: {
 		...slice.actions,

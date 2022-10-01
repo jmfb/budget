@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITransaction } from '~/models';
-import IState from './IState';
+import { IState } from './IState';
 import * as hub from './budget.hub';
 import { dateService, budgetService } from '~/services';
 import { deletePendingItem } from './pendingItems.actions';

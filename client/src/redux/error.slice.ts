@@ -141,7 +141,7 @@ const slice = createSlice({
 			})
 });
 
-export default {
+export const errorSlice = {
 	...slice,
 	actions: {
 		...slice.actions

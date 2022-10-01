@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import IState from './IState';
+import { IState } from './IState';
 import * as hub from './diagnostics.hub';
 
 export const heartbeat = createAsyncThunk(

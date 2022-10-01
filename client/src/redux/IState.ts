@@ -6,7 +6,7 @@ import { IExpensesState } from './expenses.slice';
 import { IIncomesState } from './incomes.slice';
 import { IPendingItemsState } from './pendingItems.slice';
 
-export default interface IState {
+export interface IState {
 	error: IErrorState;
 	auth: IAuthState;
 	diagnostics: IDiagnosticsState;

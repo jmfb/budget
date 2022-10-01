@@ -65,7 +65,7 @@ const slice = createSlice({
 			})
 });
 
-export default {
+export const authSlice = {
 	...slice,
 	actions: {
 		...slice.actions,

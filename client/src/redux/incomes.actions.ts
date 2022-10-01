@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IIncome } from '~/models';
-import IState from './IState';
+import { IState } from './IState';
 import * as hub from './incomes.hub';
 
 export const refreshIncomes = createAsyncThunk(

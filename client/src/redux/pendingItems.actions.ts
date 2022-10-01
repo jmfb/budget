@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IPendingItem } from '~/models';
-import IState from './IState';
+import { IState } from './IState';
 import * as hub from './pendingItems.hub';
 
 export const refreshPendingItems = createAsyncThunk(

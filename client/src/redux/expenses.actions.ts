@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { IExpense } from '~/models';
-import IState from './IState';
+import { IState } from './IState';
 import * as hub from './expenses.hub';
 
 export const refreshExpenses = createAsyncThunk(
