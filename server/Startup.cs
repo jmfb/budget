@@ -41,6 +41,7 @@ namespace Budget.Server {
 			services.AddSingleton<IExpensesService, ExpensesService>();
 			services.AddSingleton<IIncomesService, IncomesService>();
 			services.AddSingleton<IPendingItemsService, PendingItemsService>();
+			services.AddSingleton<ITransactionsService, TransactionsService>();
 			services.AddControllers();
 			services
 				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
