@@ -11,7 +11,7 @@ export default function UploadsContainer() {
 		clearUpload,
 		clearLogs,
 		getBudget
-	} = useActions(budgetSlice.actions);
+	} = useActions(budgetSlice);
 	const isReadingFile = useAppSelector(state => state.budget.isReadingFile);
 	const readingFileSuccess = useAppSelector(
 		state => state.budget.readingFileSuccess

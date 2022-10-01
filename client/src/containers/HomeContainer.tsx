@@ -17,12 +17,12 @@ export default function HomeContainer() {
 		clearTransactionSave,
 		clearTransactionDelete,
 		getWeeklyTransactions
-	} = useActions(budgetSlice.actions);
+	} = useActions(budgetSlice);
 	const {
 		savePendingItem,
 		deletePendingItem,
 		clearSave: clearPendingItemSave
-	} = useActions(pendingItemsSlice.actions);
+	} = useActions(pendingItemsSlice);
 	const onlyShowNewItems = useAppSelector(
 		state => state.budget.onlyShowNewItems
 	);

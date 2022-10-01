@@ -5,7 +5,7 @@ import { useActions, useAppSelector, authSlice } from '~/redux';
 import queryString from 'query-string';
 
 export default function AuthenticationContainer() {
-	const { authenticate } = useActions(authSlice.actions);
+	const { authenticate } = useActions(authSlice);
 	const location = useLocation();
 	const email = useAppSelector(state => state.auth.email);
 	const { code } = queryString.parse(location.search) as { code: string };

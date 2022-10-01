@@ -11,7 +11,7 @@ export interface IApplicationContainerProps {
 export default function ApplicationContainer({
 	indexModel
 }: IApplicationContainerProps) {
-	const { readLocalStorage } = useActions(authSlice.actions);
+	const { readLocalStorage } = useActions(authSlice);
 	const redirectToSignIn = useAppSelector(
 		state => state.auth.redirectToSignIn
 	);

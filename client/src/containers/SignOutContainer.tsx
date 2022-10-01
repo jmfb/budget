@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useActions, authSlice } from '~/redux';
 
 export default function SignOutContainer() {
-	const { signOut } = useActions(authSlice.actions);
+	const { signOut } = useActions(authSlice);
 
 	useEffect(() => {
 		signOut();

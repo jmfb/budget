@@ -4,9 +4,7 @@ import { dateService } from '~/services';
 import { useActions, useAppSelector, budgetSlice } from '~/redux';
 
 export default function StatisticsContainer() {
-	const { getBudget, getWeeklyTransactions } = useActions(
-		budgetSlice.actions
-	);
+	const { getBudget, getWeeklyTransactions } = useActions(budgetSlice);
 	const weeklyTransactions = useAppSelector(
 		state => state.budget.weeklyTransactions
 	);

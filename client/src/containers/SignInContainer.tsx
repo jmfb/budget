@@ -4,7 +4,7 @@ import { SignIn } from '~/pages';
 import { useActions, useAppSelector, authSlice } from '~/redux';
 
 export default function SignInContainer() {
-	const { signOut, getAuthenticationUrl } = useActions(authSlice.actions);
+	const { signOut, getAuthenticationUrl } = useActions(authSlice);
 	const isSigningIn = useAppSelector(state => state.auth.isSigningIn);
 	const url = useAppSelector(state => state.auth.url);
 

@@ -14,8 +14,8 @@ type YearlyExpensesParams = {
 };
 
 export default function YearlyExpensesContainer() {
-	const { getYearlyExpenses, getBudget } = useActions(budgetSlice.actions);
-	const { saveExpense } = useActions(expensesSlice.actions);
+	const { getYearlyExpenses, getBudget } = useActions(budgetSlice);
+	const { saveExpense } = useActions(expensesSlice);
 	const { expense: expenseName } = useParams<YearlyExpensesParams>();
 
 	const expense = useAppSelector(state =>

@@ -72,10 +72,10 @@ export interface IAuthorizedApplicationContainerProps {
 export function AuthorizedApplicationContainer({
 	indexModel
 }: IAuthorizedApplicationContainerProps) {
-	const { heartbeat } = useActions(diagnosticsSlice.actions);
-	const { refreshExpenses } = useActions(expensesSlice.actions);
-	const { refreshIncomes } = useActions(incomesSlice.actions);
-	const { refreshPendingItems } = useActions(pendingItemsSlice.actions);
+	const { heartbeat } = useActions(diagnosticsSlice);
+	const { refreshExpenses } = useActions(expensesSlice);
+	const { refreshIncomes } = useActions(incomesSlice);
+	const { refreshPendingItems } = useActions(pendingItemsSlice);
 	const bundleVersion = useAppSelector(
 		state => state.diagnostics.bundleVersion
 	);
