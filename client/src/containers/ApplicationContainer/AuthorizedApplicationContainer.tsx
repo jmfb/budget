@@ -1,11 +1,10 @@
 import React, { lazy, useEffect } from 'react';
-import { bindActionCreators } from 'redux';
 import { Navigate, Routes, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import Header from './Header';
 import NewerVersionPrompt from './NewerVersionPrompt';
 import { IIndexModel } from '~/models';
 import {
+	useActions,
 	useAppSelector,
 	diagnosticsSlice,
 	expensesSlice,
@@ -73,23 +72,10 @@ export interface IAuthorizedApplicationContainerProps {
 export function AuthorizedApplicationContainer({
 	indexModel
 }: IAuthorizedApplicationContainerProps) {
-	const dispatch = useDispatch();
-	const { heartbeat } = bindActionCreators(
-		diagnosticsSlice.actions,
-		dispatch
-	);
-	const { refreshExpenses } = bindActionCreators(
-		expensesSlice.actions,
-		dispatch
-	);
-	const { refreshIncomes } = bindActionCreators(
-		incomesSlice.actions,
-		dispatch
-	);
-	const { refreshPendingItems } = bindActionCreators(
-		pendingItemsSlice.actions,
-		dispatch
-	);
+	const { heartbeat } = useActions(diagnosticsSlice.actions);
+	const { refreshExpenses } = useActions(expensesSlice.actions);
+	const { refreshIncomes } = useActions(incomesSlice.actions);
+	const { refreshPendingItems } = useActions(pendingItemsSlice.actions);
 	const bundleVersion = useAppSelector(
 		state => state.diagnostics.bundleVersion
 	);

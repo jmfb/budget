@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { bindActionCreators } from 'redux';
-import { useDispatch } from 'react-redux';
 import { Home } from '~/pages';
-import { useAppSelector, budgetSlice, pendingItemsSlice } from '~/redux';
+import {
+	useActions,
+	useAppSelector,
+	budgetSlice,
+	pendingItemsSlice
+} from '~/redux';
 import { dateService } from '~/services';
 
 export default function HomeContainer() {
-	const dispatch = useDispatch();
 	const {
 		getBudget,
 		saveTransaction,
@@ -15,12 +17,12 @@ export default function HomeContainer() {
 		clearTransactionSave,
 		clearTransactionDelete,
 		getWeeklyTransactions
-	} = bindActionCreators(budgetSlice.actions, dispatch);
+	} = useActions(budgetSlice.actions);
 	const {
 		savePendingItem,
 		deletePendingItem,
 		clearSave: clearPendingItemSave
-	} = bindActionCreators(pendingItemsSlice.actions, dispatch);
+	} = useActions(pendingItemsSlice.actions);
 	const onlyShowNewItems = useAppSelector(
 		state => state.budget.onlyShowNewItems
 	);

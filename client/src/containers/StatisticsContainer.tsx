@@ -1,15 +1,11 @@
 import React, { useEffect } from 'react';
-import { bindActionCreators } from 'redux';
-import { useDispatch } from 'react-redux';
 import { Statistics } from '~/pages';
 import { dateService } from '~/services';
-import { useAppSelector, budgetSlice } from '~/redux';
+import { useActions, useAppSelector, budgetSlice } from '~/redux';
 
 export default function StatisticsContainer() {
-	const dispatch = useDispatch();
-	const { getBudget, getWeeklyTransactions } = bindActionCreators(
-		budgetSlice.actions,
-		dispatch
+	const { getBudget, getWeeklyTransactions } = useActions(
+		budgetSlice.actions
 	);
 	const weeklyTransactions = useAppSelector(
 		state => state.budget.weeklyTransactions

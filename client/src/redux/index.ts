@@ -1,5 +1,7 @@
 export * from './IState';
 export * from './store';
+export * from './useAppSelector';
+export * from './useActions';
 export * from './error.slice';
 export * from './auth.slice';
 export * from './diagnostics.slice';

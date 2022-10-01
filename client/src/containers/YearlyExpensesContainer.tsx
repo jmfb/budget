@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { bindActionCreators } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 import { YearlyExpenses } from '~/pages';
-import { useAppSelector, budgetSlice, expensesSlice } from '~/redux';
+import {
+	useActions,
+	useAppSelector,
+	budgetSlice,
+	expensesSlice
+} from '~/redux';
 import { dateService } from '~/services';
 
 type YearlyExpensesParams = {
@@ -11,12 +14,8 @@ type YearlyExpensesParams = {
 };
 
 export default function YearlyExpensesContainer() {
-	const dispatch = useDispatch();
-	const { getYearlyExpenses, getBudget } = bindActionCreators(
-		budgetSlice.actions,
-		dispatch
-	);
-	const { saveExpense } = bindActionCreators(expensesSlice.actions, dispatch);
+	const { getYearlyExpenses, getBudget } = useActions(budgetSlice.actions);
+	const { saveExpense } = useActions(expensesSlice.actions);
 	const { expense: expenseName } = useParams<YearlyExpensesParams>();
 
 	const expense = useAppSelector(state =>

@@ -1,14 +1,10 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { useDispatch } from 'react-redux';
 import { Incomes } from '~/pages';
-import { useAppSelector, incomesSlice } from '~/redux';
+import { useActions, useAppSelector, incomesSlice } from '~/redux';
 
 export default function IncomesContainer() {
-	const dispatch = useDispatch();
-	const { saveIncome, deleteIncome, clearSave } = bindActionCreators(
-		incomesSlice.actions,
-		dispatch
+	const { saveIncome, deleteIncome, clearSave } = useActions(
+		incomesSlice.actions
 	);
 	const incomes = useAppSelector(state => state.incomes.incomes);
 	const isSavingIncome = useAppSelector(state => state.incomes.isSaving);

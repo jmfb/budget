@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
-import { bindActionCreators } from 'redux';
-import { useDispatch } from 'react-redux';
 import { Uploads } from '~/pages';
-import { useAppSelector, budgetSlice } from '~/redux';
+import { useActions, useAppSelector, budgetSlice } from '~/redux';
 import { dateService } from '~/services';
 
 export default function UploadsContainer() {
-	const dispatch = useDispatch();
 	const {
 		getAllText,
 		parseCsv,
@@ -14,7 +11,7 @@ export default function UploadsContainer() {
 		clearUpload,
 		clearLogs,
 		getBudget
-	} = bindActionCreators(budgetSlice.actions, dispatch);
+	} = useActions(budgetSlice.actions);
 	const isReadingFile = useAppSelector(state => state.budget.isReadingFile);
 	const readingFileSuccess = useAppSelector(
 		state => state.budget.readingFileSuccess

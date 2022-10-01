@@ -1,16 +1,10 @@
 import React, { useEffect } from 'react';
-import { bindActionCreators } from 'redux';
 import { Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { SignIn } from '~/pages';
-import { useAppSelector, authSlice } from '~/redux';
+import { useActions, useAppSelector, authSlice } from '~/redux';
 
 export default function SignInContainer() {
-	const dispatch = useDispatch();
-	const { signOut, getAuthenticationUrl } = bindActionCreators(
-		authSlice.actions,
-		dispatch
-	);
+	const { signOut, getAuthenticationUrl } = useActions(authSlice.actions);
 	const isSigningIn = useAppSelector(state => state.auth.isSigningIn);
 	const url = useAppSelector(state => state.auth.url);
 

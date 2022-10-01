@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { bindActionCreators } from 'redux';
 import { Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { AuthorizedApplicationContainer } from './AuthorizedApplicationContainer';
 import { IIndexModel } from '~/models';
-import { useAppSelector, authSlice } from '~/redux';
+import { useActions, useAppSelector, authSlice } from '~/redux';
 
 export interface IApplicationContainerProps {
 	indexModel: IIndexModel;
@@ -13,11 +11,7 @@ export interface IApplicationContainerProps {
 export default function ApplicationContainer({
 	indexModel
 }: IApplicationContainerProps) {
-	const dispatch = useDispatch();
-	const { readLocalStorage } = bindActionCreators(
-		authSlice.actions,
-		dispatch
-	);
+	const { readLocalStorage } = useActions(authSlice.actions);
 	const redirectToSignIn = useAppSelector(
 		state => state.auth.redirectToSignIn
 	);

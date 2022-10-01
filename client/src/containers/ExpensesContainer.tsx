@@ -1,14 +1,10 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { useDispatch } from 'react-redux';
 import { Expenses } from '~/pages';
-import { useAppSelector, expensesSlice } from '~/redux';
+import { useActions, useAppSelector, expensesSlice } from '~/redux';
 
 export default function ExpensesContainer() {
-	const dispatch = useDispatch();
-	const { saveExpense, deleteExpense, clearSave } = bindActionCreators(
-		expensesSlice.actions,
-		dispatch
+	const { saveExpense, deleteExpense, clearSave } = useActions(
+		expensesSlice.actions
 	);
 	const expenses = useAppSelector(state => state.expenses.expenses);
 	const isSavingExpense = useAppSelector(state => state.expenses.isSaving);
