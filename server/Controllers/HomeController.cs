@@ -8,29 +8,32 @@ using Budget.Server.Services;
 namespace Budget.Server.Controllers {
 	public class HomeController : Controller {
 		private AppSettings AppSettings { get; }
-		private IExpensesService ExpensesService { get; }
-		private IIncomesService IncomesService { get; }
-		private IPendingItemsService PendingItemsService { get; }
+		private IDataVersionsService DataVersionsService { get; }
 
 		public HomeController(
 			IOptions<AppSettings> appSettingsAccessor,
-			IExpensesService expensesService,
-			IIncomesService incomesService,
-			IPendingItemsService pendingItemsService
+			IDataVersionsService dataVersionsService
 		) {
 			AppSettings = appSettingsAccessor.Value;
-			ExpensesService = expensesService;
-			IncomesService = incomesService;
-			PendingItemsService = pendingItemsService;
+			DataVersionsService = dataVersionsService;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> Index(
 			CancellationToken cancellationToken
 		) {
-			var expensesVersionTask = ExpensesService.GetVersionAsync(cancellationToken);
-			var incomesVersionTask = IncomesService.GetVersionAsync(cancellationToken);
-			var pendingItemsVersionTask = PendingItemsService.GetVersionAsync(cancellationToken);
+			var expensesVersionTask = DataVersionsService.GetVersionAsync(
+				DataVersionNames.Expenses,
+				cancellationToken
+			);
+			var incomesVersionTask = DataVersionsService.GetVersionAsync(
+				DataVersionNames.Incomes,
+				cancellationToken
+			);
+			var pendingItemsVersionTask = DataVersionsService.GetVersionAsync(
+				DataVersionNames.PendingItems,
+				cancellationToken
+			);
 			await Task.WhenAll(
 				expensesVersionTask,
 				incomesVersionTask,

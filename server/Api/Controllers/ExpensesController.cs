@@ -10,23 +10,34 @@ namespace Budget.Server.Api.Controllers {
 	[Route("api/expenses")]
 	public class ExpensesController : AuthorizedController {
 		private IExpensesService ExpensesService { get; }
+		private IDataVersionsService DataVersionsService { get; }
 
-		public ExpensesController(IExpensesService expensesService) {
+		public ExpensesController(
+			IExpensesService expensesService,
+			IDataVersionsService dataVersionsService
+		) {
 			ExpensesService = expensesService;
+			DataVersionsService = dataVersionsService;
 		}
 
 		[HttpGet("version")]
 		public async Task<long> GetVersionAsync(
 			CancellationToken cancellationToken
 		) {
-			return await ExpensesService.GetVersionAsync(cancellationToken);
+			return await DataVersionsService.GetVersionAsync(
+				DataVersionNames.Expenses,
+				cancellationToken
+			);
 		}
 
 		[HttpGet]
 		public async Task<GetExpensesResponse> GetExpensesAsync(
 			CancellationToken cancellationToken
 		) {
-			var versionTask = ExpensesService.GetVersionAsync(cancellationToken);
+			var versionTask = DataVersionsService.GetVersionAsync(
+				DataVersionNames.Expenses,
+				cancellationToken
+			);
 			var expensesTask = ExpensesService.GetExpensesAsync(cancellationToken);
 			await Task.WhenAll(versionTask, expensesTask);
 			return new() {
@@ -52,7 +63,10 @@ namespace Budget.Server.Api.Controllers {
 			[FromBody] Expense expense,
 			CancellationToken cancellationToken
 		) {
-			var versionTask = ExpensesService.GetNewVersionAsync(cancellationToken);
+			var versionTask = DataVersionsService.GetNewVersionAsync(
+				DataVersionNames.Expenses,
+				cancellationToken
+			);
 			var saveTask = ExpensesService.SaveExpenseAsync(expense, cancellationToken);
 			await Task.WhenAll(versionTask, saveTask);
 			return await versionTask;
@@ -63,7 +77,10 @@ namespace Budget.Server.Api.Controllers {
 			[FromRoute] string name,
 			CancellationToken cancellationToken
 		) {
-			var versionTask = ExpensesService.GetNewVersionAsync(cancellationToken);
+			var versionTask = DataVersionsService.GetNewVersionAsync(
+				DataVersionNames.Expenses,
+				cancellationToken
+			);
 			var deleteTask = ExpensesService.DeleteExpenseAsync(name, cancellationToken);
 			await Task.WhenAll(versionTask, deleteTask);
 			return await versionTask;

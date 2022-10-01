@@ -9,8 +9,6 @@ using Amazon.DynamoDBv2.DocumentModel;
 
 namespace Budget.Server.Services {
 	public interface ITransactionsService {
-		Task<long> GetVersionAsync(string weekOf, CancellationToken cancellationToken);
-		Task<long> GetNewVersionAsync(string weekOf, CancellationToken cancellationToken);
 		Task<IReadOnlyCollection<Transaction>> GetTransactionsByWeekAsync(string weekOf, CancellationToken cancellationToken);
 		Task<Transaction> GetTransactionAsync(string date, int id, CancellationToken cancellationToken);
 		Task SaveTransactionAsync(Transaction transaction, CancellationToken cancellationToken);
@@ -22,24 +20,6 @@ namespace Budget.Server.Services {
 
 		public TransactionsService(DynamoDBContext context) {
 			Context = context;
-		}
-
-		private static string GetVersionName(string weekOf) {
-			return $"transactions-week-{weekOf}";
-		}
-
-		public async Task<long> GetVersionAsync(string weekOf, CancellationToken cancellationToken) {
-			var dataVersion = await Context.LoadAsync(new DataVersion { Name = GetVersionName(weekOf) }, cancellationToken);
-			return dataVersion?.Version ?? 0;
-		}
-
-		public async Task<long> GetNewVersionAsync(string weekOf, CancellationToken cancellationToken) {
-			var newVersion = new DataVersion {
-				Name = GetVersionName(weekOf),
-				Version = DateTimeOffset.Now.ToUnixTimeMilliseconds()
-			};
-			await Context.SaveAsync(newVersion, cancellationToken);
-			return newVersion.Version;
 		}
 
 		private async Task<IReadOnlyCollection<Transaction>> GetTransactionsByDateAsync(
