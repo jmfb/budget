@@ -10,6 +10,11 @@ using Amazon.DynamoDBv2.DocumentModel;
 namespace Budget.Server.Services {
 	public interface IDataVersionsService {
 		Task<long> GetVersionAsync(string name, CancellationToken cancellationToken);
+		Task<IReadOnlyCollection<DataVersion>> GetVersionsAsync(
+			string firstName,
+			string lastName,
+			CancellationToken cancellationToken
+		);
 		Task<long> GetNewVersionAsync(string name, CancellationToken cancellationToken);
 	}
 
@@ -23,6 +28,18 @@ namespace Budget.Server.Services {
 		public async Task<long> GetVersionAsync(string name, CancellationToken cancellationToken) {
 			var dataVersion = await Context.LoadAsync(new DataVersion { Name = name }, cancellationToken);
 			return dataVersion?.Version ?? 0;
+		}
+
+		public async Task<IReadOnlyCollection<DataVersion>> GetVersionsAsync(
+			string firstName,
+			string lastName,
+			CancellationToken cancellationToken
+		) {
+			return await Context
+				.ScanAsync<DataVersion>(new[] {
+					new ScanCondition("Name", ScanOperator.Between, firstName, lastName)
+				})
+				.GetRemainingAsync();
 		}
 
 		public async Task<long> GetNewVersionAsync(string name, CancellationToken cancellationToken) {

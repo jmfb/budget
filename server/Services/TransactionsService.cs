@@ -9,6 +9,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 
 namespace Budget.Server.Services {
 	public interface ITransactionsService {
+		string GetStartOfWeek(string date);
 		Task<IReadOnlyCollection<Transaction>> GetTransactionsByWeekAsync(string weekOf, CancellationToken cancellationToken);
 		Task<Transaction> GetTransactionAsync(string date, int id, CancellationToken cancellationToken);
 		Task SaveTransactionAsync(Transaction transaction, CancellationToken cancellationToken);
@@ -20,6 +21,12 @@ namespace Budget.Server.Services {
 
 		public TransactionsService(DynamoDBContext context) {
 			Context = context;
+		}
+
+		public string GetStartOfWeek(string date) {
+			var parsedDate = DateTime.Parse(date);
+			var startOfWeek = parsedDate.AddDays(-(int)parsedDate.DayOfWeek);
+			return startOfWeek.ToString("yyyy-MM-dd");
 		}
 
 		private async Task<IReadOnlyCollection<Transaction>> GetTransactionsByDateAsync(

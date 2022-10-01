@@ -8,6 +8,7 @@ namespace Budget.Server.Models {
 		public long ExpensesVersion { get; set; }
 		public long IncomesVersion { get; set; }
 		public long PendingItemsVersion { get; set; }
+		public IReadOnlyDictionary<string, long> WeekVersions { get; set; }
 
 		[JsonIgnore]
 		public IEnumerable<string> ScriptChunks { get; set; }
