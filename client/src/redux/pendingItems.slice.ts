@@ -63,7 +63,7 @@ const slice = createSlice({
 				state.wasSuccessful = true;
 				const updatedPendingItem = action.meta.arg;
 				const index = state.pendingItems.findIndex(
-					pendingItem => pendingItem.name === updatedPendingItem.name
+					pendingItem => pendingItem.id === updatedPendingItem.id
 				);
 				if (index === -1) {
 					state.pendingItems.push(updatedPendingItem);
@@ -84,7 +84,7 @@ const slice = createSlice({
 				state.wasSuccessful = true;
 				const deletedPendingItem = action.meta.arg;
 				state.pendingItems = state.pendingItems.filter(
-					pendingItem => pendingItem.name !== deletedPendingItem.name
+					pendingItem => pendingItem.id !== deletedPendingItem.id
 				);
 				state.version = action.payload;
 				updateLocalStorage(state);
