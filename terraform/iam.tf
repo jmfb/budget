@@ -41,7 +41,8 @@ data "aws_iam_policy_document" "policy" {
       aws_dynamodb_table.incomes.arn,
       aws_dynamodb_table.expenses.arn,
       aws_dynamodb_table.transactions.arn,
-      aws_dynamodb_table.pending_items.arn
+      aws_dynamodb_table.pending_items.arn,
+      aws_dynamodb_table.data_versions.arn
     ]
   }
 }
