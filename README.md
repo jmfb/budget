@@ -4,7 +4,7 @@ Cooperative app for tracking weekly expenses against a budget.
 
 ## Prerequisites
 
-* Download [terraform 1.2.7](https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_windows_amd64.zip) and alias to terraform_1.2.7
+* Download [terraform 1.3.1](https://releases.hashicorp.com/terraform/1.3.1/terraform_1.3.1_windows_amd64.zip) and alias to terraform_1.3.1
 * `choco install awscli` (min version 2.1.29)
 * `choco install dotnet` (min version 6.0.8)
 * `choco install dotnet-sdk` (min version 6.0.400)
