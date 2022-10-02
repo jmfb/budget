@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import cx from 'classnames';
-import styles from './Header.css';
+import styles from './Header.module.css';
 
 export function Header() {
 	return (

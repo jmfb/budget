@@ -14,7 +14,7 @@ import {
 } from '~/redux';
 import { useInterval } from '~/hooks';
 import cx from 'classnames';
-import styles from './AuthorizedApplicationContainer.css';
+import styles from './AuthorizedApplicationContainer.module.css';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncHomeContainer = lazy(

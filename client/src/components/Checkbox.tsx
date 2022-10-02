@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Checkbox.css';
+import styles from './Checkbox.module.css';
 
 export interface ICheckboxProps {
 	name: string;

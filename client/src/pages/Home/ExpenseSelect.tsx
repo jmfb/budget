@@ -2,7 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { IExpense } from '~/models';
 import { budgetService } from '~/services';
-import styles from './ExpenseSelect.css';
+import styles from './ExpenseSelect.module.css';
 
 export interface IExpenseSelectProps {
 	expenses: IExpense[];

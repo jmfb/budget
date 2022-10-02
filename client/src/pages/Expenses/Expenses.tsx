@@ -4,7 +4,7 @@ import { Category } from './Category';
 import { ExpenseEditor } from './ExpenseEditor';
 import { budgetService } from '~/services';
 import { IExpense } from '~/models';
-import styles from './Expenses.css';
+import styles from './Expenses.module.css';
 
 export interface IExpensesProps {
 	expenses: IExpense[];

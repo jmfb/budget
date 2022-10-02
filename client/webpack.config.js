@@ -50,7 +50,7 @@ module.exports = {
 				use: 'babel-loader'
 			},
 			{
-				test: /\.css$/,
+				test: /\.module\.css$/,
 				exclude: /node_modules/,
 				use: [
 					MiniCssExtractPlugin.loader,

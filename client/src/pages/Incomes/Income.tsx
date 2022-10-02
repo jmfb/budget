@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '~/components';
 import { IIncome } from '~/models';
 import { budgetService } from '~/services';
-import styles from './Income.css';
+import styles from './Income.module.css';
 
 export interface IIncomeProps {
 	income: IIncome;

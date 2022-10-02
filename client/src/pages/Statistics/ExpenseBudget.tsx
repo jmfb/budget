@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { IExpense } from '~/models';
 import { budgetService } from '~/services';
 import cx from 'classnames';
-import styles from './ExpenseBudget.css';
+import styles from './ExpenseBudget.module.css';
 
 export interface IExpenseBudgetProps {
 	expense: IExpense;

@@ -6,7 +6,7 @@ import { PageLoading } from '~/components';
 import { ErrorBoundaryContainer } from '~/containers/ErrorBoundary';
 import { IIndexModel } from './models';
 import { createStore } from '~/redux';
-import './index.css';
+import './index.module.css';
 
 function start() {
 	// eslint-disable-next-line @typescript-eslint/naming-convention

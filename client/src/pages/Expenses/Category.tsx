@@ -3,7 +3,7 @@ import { Card } from '~/components';
 import { Expense } from './Expense';
 import { IExpense } from '~/models';
 import { budgetService } from '~/services';
-import styles from './Category.css';
+import styles from './Category.module.css';
 
 export interface ICategoryProps {
 	category: string;

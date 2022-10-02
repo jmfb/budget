@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import ReactModal from 'react-modal';
-import styles from './Modal.css';
+import styles from './Modal.module.css';
 
 export interface IModalProps {
 	title: ReactNode;

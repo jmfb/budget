@@ -4,7 +4,7 @@ import { PendingItems } from './PendingItems';
 import { Transaction } from './Transaction';
 import { TransactionEditor } from './TransactionEditor';
 import { ITransaction, IIncome, IExpense, IPendingItem } from '~/models';
-import styles from './Transactions.css';
+import styles from './Transactions.module.css';
 
 export interface ITransactionsProps {
 	onlyShowNewItems: boolean;

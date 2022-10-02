@@ -3,7 +3,7 @@ import { Button, ChevronLeftIcon, ChevronRightIcon } from '~/components';
 import { dateService } from '~/services';
 import { IWeekState } from '~/redux';
 import cx from 'classnames';
-import styles from './WeekView.css';
+import styles from './WeekView.module.css';
 
 export interface IWeekViewProps {
 	weekOf: string;

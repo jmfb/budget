@@ -2,7 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { IIncome } from '~/models';
 import { budgetService } from '~/services';
-import styles from './IncomeSelect.css';
+import styles from './IncomeSelect.module.css';
 
 export interface IIncomeSelectProps {
 	incomes: IIncome[];

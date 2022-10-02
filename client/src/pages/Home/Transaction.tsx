@@ -2,7 +2,7 @@ import React from 'react';
 import { Pill } from '~/components';
 import { ITransaction, IIncome, IExpense } from '~/models';
 import { budgetService } from '~/services';
-import styles from './Transaction.css';
+import styles from './Transaction.module.css';
 
 export interface ITransactionProps {
 	transaction: ITransaction;

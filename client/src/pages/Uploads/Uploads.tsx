@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FileInput, PageLoading, Button } from '~/components';
 import { budgetService } from '~/services';
 import { ITransaction } from '~/models';
-import styles from './Uploads.css';
+import styles from './Uploads.module.css';
 
 export interface IUploadsProps {
 	isReadingFile: boolean;

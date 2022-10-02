@@ -1,7 +1,7 @@
 import React from 'react';
 import { IPendingItem } from '~/models';
 import { budgetService } from '~/services';
-import styles from './PendingItem.css';
+import styles from './PendingItem.module.css';
 
 export interface IPendingItemProps {
 	pendingItem: IPendingItem;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { LoadingIcon } from './LoadingIcon';
 import cx from 'classnames';
-import styles from './Button.css';
+import styles from './Button.module.css';
 
 export type ButtonVariant = 'primary' | 'default' | 'danger';
 

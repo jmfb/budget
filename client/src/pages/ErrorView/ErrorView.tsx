@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '~/components';
 import cx from 'classnames';
-import styles from './ErrorView.css';
+import styles from './ErrorView.module.css';
 
 export interface IErrorViewProps {
 	action?: string;

@@ -5,7 +5,7 @@ import { PendingItem } from './PendingItem';
 import { PendingItemEditor } from './PendingItemEditor';
 import { IPendingItem } from '~/models';
 import { budgetService } from '~/services';
-import styles from './PendingItems.css';
+import styles from './PendingItems.module.css';
 
 export interface IPendingItemsProps {
 	pendingItems: IPendingItem[];

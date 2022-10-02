@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '~/components';
 import { IExpense } from '~/models';
 import { budgetService } from '~/services';
-import styles from './Expense.css';
+import styles from './Expense.module.css';
 
 export interface IExpenseProps {
 	expense: IExpense;

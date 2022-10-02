@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import ReactSwitch from 'react-switch';
-import styles from './Switch.css';
+import styles from './Switch.module.css';
 
 export interface ISwitchProps {
 	children?: ReactNode;

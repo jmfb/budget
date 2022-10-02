@@ -1,6 +1,6 @@
 import React from 'react';
 import { budgetService } from '~/services';
-import styles from './Week.css';
+import styles from './Week.module.css';
 
 export interface IWeekProps {
 	remainingBudget: number;

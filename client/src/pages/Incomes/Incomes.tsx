@@ -4,7 +4,7 @@ import { Income } from './Income';
 import { IncomeEditor } from './IncomeEditor';
 import { budgetService } from '~/services';
 import { IIncome } from '~/models';
-import styles from './Incomes.css';
+import styles from './Incomes.module.css';
 
 export interface IIncomesProps {
 	incomes: IIncome[];

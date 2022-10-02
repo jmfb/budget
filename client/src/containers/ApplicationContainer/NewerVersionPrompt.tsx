@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '~/components';
-import styles from './NewerVersionPrompt.css';
+import styles from './NewerVersionPrompt.module.css';
 
 export interface INewerVersionPromptProps {
 	bundleVersion: string;

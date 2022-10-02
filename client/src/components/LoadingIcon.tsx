@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import styles from './LoadingIcon.css';
+import styles from './LoadingIcon.module.css';
 
 export function LoadingIcon() {
 	const axisValues = [5, 11.5, 27, 42.5, 49];

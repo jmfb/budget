@@ -1,6 +1,6 @@
 import React from 'react';
 import { LoadingIcon } from './LoadingIcon';
-import styles from './PageLoading.css';
+import styles from './PageLoading.module.css';
 
 export interface IPageLoadingProps {
 	message?: string;

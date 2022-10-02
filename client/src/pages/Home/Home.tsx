@@ -7,7 +7,7 @@ import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
 import { IWeekState } from '~/redux';
 import { dateService } from '~/services';
 import cx from 'classnames';
-import styles from './Home.css';
+import styles from './Home.module.css';
 
 export interface IHomeProps {
 	onlyShowNewItems: boolean;

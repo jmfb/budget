@@ -6,7 +6,7 @@ import { IIncome, IExpense, IPendingItem, ITransaction } from '~/models';
 import { budgetService } from '~/services';
 import { IWeekState } from '~/redux';
 import cx from 'classnames';
-import styles from './Statistics.css';
+import styles from './Statistics.module.css';
 
 export interface IStatisticsProps {
 	incomes: IIncome[];

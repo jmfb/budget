@@ -2,8 +2,8 @@ import React from 'react';
 import { LoadingIcon } from './LoadingIcon';
 import { ButtonVariant } from './Button';
 import cx from 'classnames';
-import styles from './FileInput.css';
-import buttonStyles from './Button.css';
+import styles from './FileInput.module.css';
+import buttonStyles from './Button.module.css';
 
 export interface IFileInputProps {
 	accept: string;
