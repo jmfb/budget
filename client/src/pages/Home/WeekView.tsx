@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, ChevronLeftIcon, ChevronRightIcon } from '~/components';
+import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
+import { Button } from '~/components';
 import { dateService } from '~/services';
 import { IWeekState } from '~/redux';
 import cx from 'classnames';
@@ -36,7 +37,7 @@ export function WeekView({
 				onClick={handlePreviousClicked}
 				isDisabled={isFirstWeek}
 				className={styles.previous}>
-				<ChevronLeftIcon />
+				<MdNavigateBefore className={styles.icon} />
 			</Button>
 			<span>
 				<div className={styles.weekRange}>
@@ -75,7 +76,7 @@ export function WeekView({
 				onClick={handleNextClicked}
 				isDisabled={isCurrentWeek}
 				className={styles.next}>
-				<ChevronRightIcon />
+				<MdNavigateNext className={styles.icon} />
 			</Button>
 		</div>
 	);

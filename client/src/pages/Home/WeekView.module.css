@@ -16,6 +16,11 @@
 	margin-top: 12px;
 }
 
+.icon {
+	width: 1rem;
+	height: 1rem;
+}
+
 .weekRange {
 	text-align: center;
 }

@@ -12,4 +12,3 @@ export * from './Checkbox';
 export * from './CategorySelect';
 export * from './Buttons';
 export * from './Switch';
-export * from './Icon';
