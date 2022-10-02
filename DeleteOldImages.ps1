@@ -10,15 +10,15 @@ try {
 	. .\ExecFunction.ps1
 
 	Write-Host "[$(Get-Date)] Getting all images from repository..."
-	exec { $imagesJson = & aws ecr list-images --repository-name budget }
+	exec { $Env:imagesJson = & aws ecr list-images --repository-name budget }
 
 	Write-Host "[$(Get-Date)] Finding latest version's imageDigest..."
-	$images = $imagesJson | ConvertFrom-Json
+	$images = $Env:imagesJson | ConvertFrom-Json
 	$latestDigest = ($images.imageIds | Where { $_.imageTag -eq "latest"}).imageDigest
 	Write-Host "[$(Get-Date)] Latest digest: $latestDigest"
 	if ([string]::IsNullOrEmpty($latestDigest)) {
 		Write-Host "[$(Get-Date)] Could not parse latest digest from images:"
-		Write-Host $imagesJson
+		Write-Host $Env:imagesJson
 		exit -1
 	}
 
