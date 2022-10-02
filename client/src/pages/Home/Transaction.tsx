@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pill } from '~/components';
-import { ITransaction, IIncome, IExpense, IExpenseTotals } from '~/models';
+import { ITransaction, IIncome, IExpense } from '~/models';
 import { budgetService } from '~/services';
 import styles from './Transaction.css';
 
@@ -8,8 +8,7 @@ export interface ITransactionProps {
 	transaction: ITransaction;
 	incomes: IIncome[];
 	expenses: IExpense[];
-	yearlyExpenseTotals: IExpenseTotals;
-	weekExpenseTotals: IExpenseTotals;
+	expenseTransactions: Record<string, ITransaction[]>;
 	onEdit(): void;
 }
 
@@ -17,8 +16,7 @@ export function Transaction({
 	transaction,
 	incomes,
 	expenses,
-	yearlyExpenseTotals,
-	weekExpenseTotals,
+	expenseTransactions,
 	onEdit
 }: ITransactionProps) {
 	const { amount, description, category, note, expenseName, incomeName } =
@@ -27,8 +25,7 @@ export function Transaction({
 		transaction,
 		incomes,
 		expenses,
-		yearlyExpenseTotals,
-		weekExpenseTotals
+		expenseTransactions
 	);
 	return (
 		<div

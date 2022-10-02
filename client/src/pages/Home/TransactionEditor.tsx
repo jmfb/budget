@@ -11,10 +11,9 @@ export interface ITransactionEditorProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	isSavingTransaction: boolean;
-	isDeletingTransaction: boolean;
-	deletingTransactionSuccess: boolean;
+	savingTransactionSuccess: boolean;
 	deleteTransaction(transaction: ITransaction): void;
-	clearTransactionDelete(): void;
+	clearTransactionSave(): void;
 	onSave(updatedTransaction: ITransaction): void;
 	onCancel(): void;
 }
@@ -24,10 +23,9 @@ export function TransactionEditor({
 	incomes,
 	expenses,
 	isSavingTransaction,
-	isDeletingTransaction,
-	deletingTransactionSuccess,
+	savingTransactionSuccess,
 	deleteTransaction,
-	clearTransactionDelete,
+	clearTransactionSave,
 	onSave,
 	onCancel
 }: ITransactionEditorProps) {
@@ -79,14 +77,14 @@ export function TransactionEditor({
 	const handleAddIncomeClicked = () => setIsAddingIncome(true);
 
 	useEffect(() => {
-		if (isDeleting && !isDeletingTransaction) {
+		if (isDeleting && !isSavingTransaction) {
 			setIsDeleting(false);
-			if (deletingTransactionSuccess) {
+			if (savingTransactionSuccess) {
 				onCancel();
 			}
-			clearTransactionDelete();
+			clearTransactionSave();
 		}
-	}, [isDeleting, isDeletingTransaction, deletingTransactionSuccess]);
+	}, [isDeleting, isSavingTransaction, savingTransactionSuccess]);
 
 	const { amount, description, date } = transaction;
 

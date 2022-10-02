@@ -1,27 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IWeeklyTransactionsByWeekOf, ITransaction } from '~/models';
-import {
-	getBudget,
-	saveTransaction,
-	deleteTransaction,
-	getWeeklyTransactions,
-	getYearlyExpenses,
-	getAllText,
-	parseCsv,
-	mergeTransaction
-} from './budget.actions';
-import { dateService } from '~/services';
+import { getAllText, parseCsv, mergeTransaction } from './budget.actions';
 
 export interface IBudgetState {
 	onlyShowNewItems: boolean;
-	isLoadingBudget: boolean;
-	weeklyTransactions: IWeeklyTransactionsByWeekOf;
-	isLoadingYearlyExpenses: boolean;
-	yearlyExpenses: ITransaction[];
-	isSavingTransaction: boolean;
-	savingTransactionSuccess: boolean;
-	isDeletingTransaction: boolean;
-	deletingTransactionSuccess: boolean;
 	isMergingTransaction: boolean;
 	mergingTransactionSuccess: boolean;
 	isReadingFile: boolean;
@@ -35,14 +16,6 @@ export interface IBudgetState {
 
 const initialState: IBudgetState = {
 	onlyShowNewItems: false,
-	isLoadingBudget: false,
-	weeklyTransactions: {},
-	isLoadingYearlyExpenses: false,
-	yearlyExpenses: [],
-	isSavingTransaction: false,
-	savingTransactionSuccess: false,
-	isDeletingTransaction: false,
-	deletingTransactionSuccess: false,
 	isMergingTransaction: false,
 	mergingTransactionSuccess: false,
 	isReadingFile: false,
@@ -61,14 +34,6 @@ const slice = createSlice({
 		setOnlyShowNewItems(state, action: PayloadAction<boolean>) {
 			state.onlyShowNewItems = action.payload;
 		},
-		clearTransactionSave(state) {
-			state.isSavingTransaction = false;
-			state.savingTransactionSuccess = false;
-		},
-		clearTransactionDelete(state) {
-			state.isDeletingTransaction = false;
-			state.deletingTransactionSuccess = false;
-		},
 		clearUpload(state) {
 			state.isReadingFile = false;
 			state.readingFileSuccess = false;
@@ -85,105 +50,6 @@ const slice = createSlice({
 	},
 	extraReducers: builder =>
 		builder
-			.addCase(getBudget.pending, state => {
-				state.isLoadingBudget = true;
-			})
-			.addCase(getBudget.fulfilled, (state, action) => {
-				state.isLoadingBudget = false;
-				state.weeklyTransactions[action.meta.arg] = {
-					isLoading: false,
-					weekOf: action.meta.arg,
-					transactions: action.payload.weeklyTransactions,
-					yearlyExpenseTotals: action.payload.yearlyExpenseTotals
-				};
-			})
-			.addCase(getBudget.rejected, state => {
-				state.isLoadingBudget = false;
-			})
-
-			.addCase(saveTransaction.pending, state => {
-				state.isSavingTransaction = true;
-				state.savingTransactionSuccess = false;
-			})
-			.addCase(saveTransaction.fulfilled, (state, action) => {
-				state.isSavingTransaction = false;
-				state.savingTransactionSuccess = true;
-				const { transactions } =
-					state.weeklyTransactions[
-						dateService.getStartOfWeek(action.meta.arg.date)
-					];
-				const index = transactions.findIndex(
-					transaction =>
-						transaction.date === action.meta.arg.date &&
-						transaction.id === action.meta.arg.id
-				);
-				if (index === -1) {
-					transactions.push(action.meta.arg);
-				} else {
-					transactions[index] = action.meta.arg;
-				}
-			})
-			.addCase(saveTransaction.rejected, state => {
-				state.isSavingTransaction = false;
-				state.savingTransactionSuccess = false;
-			})
-
-			.addCase(deleteTransaction.pending, state => {
-				state.isDeletingTransaction = true;
-				state.deletingTransactionSuccess = false;
-			})
-			.addCase(deleteTransaction.fulfilled, (state, action) => {
-				state.isDeletingTransaction = false;
-				state.deletingTransactionSuccess = true;
-				const weeklyTransactions =
-					state.weeklyTransactions[
-						dateService.getStartOfWeek(action.meta.arg.date)
-					];
-				weeklyTransactions.transactions =
-					weeklyTransactions.transactions.filter(
-						transaction =>
-							transaction.date !== action.meta.arg.date ||
-							transaction.id !== action.meta.arg.id
-					);
-			})
-			.addCase(deleteTransaction.rejected, state => {
-				state.isDeletingTransaction = false;
-				state.deletingTransactionSuccess = false;
-			})
-
-			.addCase(getWeeklyTransactions.pending, (state, action) => {
-				state.weeklyTransactions[action.meta.arg] = {
-					isLoading: true,
-					weekOf: action.meta.arg,
-					transactions: null,
-					yearlyExpenseTotals: null
-				};
-			})
-			.addCase(getWeeklyTransactions.fulfilled, (state, action) => {
-				const weeklyTransactions =
-					state.weeklyTransactions[action.meta.arg];
-				weeklyTransactions.isLoading = false;
-				weeklyTransactions.transactions =
-					action.payload.weeklyTransactions;
-				weeklyTransactions.yearlyExpenseTotals =
-					action.payload.yearlyExpenseTotals;
-			})
-			.addCase(getWeeklyTransactions.rejected, (state, action) => {
-				delete state.weeklyTransactions[action.meta.arg];
-			})
-
-			.addCase(getYearlyExpenses.pending, state => {
-				state.isLoadingYearlyExpenses = true;
-				state.yearlyExpenses = [];
-			})
-			.addCase(getYearlyExpenses.fulfilled, (state, action) => {
-				state.isLoadingYearlyExpenses = false;
-				state.yearlyExpenses = action.payload;
-			})
-			.addCase(getYearlyExpenses.rejected, state => {
-				state.isLoadingYearlyExpenses = false;
-			})
-
 			.addCase(getAllText.pending, state => {
 				state.isReadingFile = true;
 				state.readingFileSuccess = false;
@@ -221,8 +87,7 @@ const slice = createSlice({
 			.addCase(mergeTransaction.fulfilled, (state, action) => {
 				state.isMergingTransaction = false;
 				state.mergingTransactionSuccess = true;
-				state.weeklyTransactions = action.payload.weeklyTransactions;
-				state.logs += action.payload.logs + '\n';
+				state.logs += action.payload + '\n';
 			})
 			.addCase(mergeTransaction.rejected, state => {
 				state.isMergingTransaction = false;
@@ -234,11 +99,6 @@ export const budgetSlice = {
 	...slice,
 	actions: {
 		...slice.actions,
-		getBudget,
-		saveTransaction,
-		deleteTransaction,
-		getWeeklyTransactions,
-		getYearlyExpenses,
 		getAllText,
 		parseCsv,
 		mergeTransaction

@@ -1,12 +1,6 @@
 import React from 'react';
 import { budgetService } from '~/services';
-import {
-	IIncome,
-	IExpense,
-	ITransaction,
-	IPendingItem,
-	IExpenseTotals
-} from '~/models';
+import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
 import styles from './BudgetView.css';
 
 export interface IBudgetViewProps {
@@ -14,7 +8,7 @@ export interface IBudgetViewProps {
 	expenses: IExpense[];
 	transactions: ITransaction[];
 	pendingItems: IPendingItem[];
-	yearlyExpenseTotals: IExpenseTotals;
+	expenseTransactions: Record<string, ITransaction[]>;
 }
 
 export function BudgetView({
@@ -22,7 +16,7 @@ export function BudgetView({
 	expenses,
 	transactions,
 	pendingItems,
-	yearlyExpenseTotals
+	expenseTransactions
 }: IBudgetViewProps) {
 	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
 	const totalSpend = budgetService.getTotalSpend(
@@ -30,7 +24,7 @@ export function BudgetView({
 		pendingItems,
 		incomes,
 		expenses,
-		yearlyExpenseTotals
+		expenseTransactions
 	);
 	const extraIncome = budgetService.getExtraIncome(
 		transactions,

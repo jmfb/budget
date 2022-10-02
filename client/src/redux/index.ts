@@ -10,3 +10,4 @@ export * from './expenses.slice';
 export * from './incomes.slice';
 export * from './pendingItems.slice';
 export * from './transactions.slice';
+export * from './getExpenseTransactions';

@@ -5,8 +5,7 @@ import {
 	ICapitalOneRecord,
 	ITransaction,
 	IPendingItem,
-	TransactionSource,
-	IExpenseTotals
+	TransactionSource
 } from '~/models';
 import * as dateService from './dateService';
 
@@ -67,12 +66,34 @@ export function format(value: number) {
 	}).format(value);
 }
 
+export function getTotal(transactions: ITransaction[]) {
+	return transactions?.reduce((total, { amount }) => total + amount, 0) ?? 0;
+}
+
+export function getExpenseTotal(
+	expenseTransactions: Record<string, ITransaction[]>,
+	transaction: ITransaction
+) {
+	if (!transaction.expenseName) {
+		return 0;
+	}
+	const transactions = expenseTransactions[transaction.expenseName];
+	if (!transactions) {
+		return 0;
+	}
+	const priorTransactions = transactions.filter(
+		prior =>
+			prior.date < transaction.date ||
+			(prior.date === transaction.date && prior.id < transaction.id)
+	);
+	return getTotal(priorTransactions);
+}
+
 export function getTransactionAmount(
 	transaction: ITransaction,
 	incomes: IIncome[],
 	expenses: IExpense[],
-	yearlyExpenseTotals: IExpenseTotals,
-	weekExpesneTotals: IExpenseTotals
+	expenseTransactions: Record<string, ITransaction[]>
 ) {
 	const income = incomes.find(
 		income => income.name === transaction.incomeName
@@ -80,10 +101,7 @@ export function getTransactionAmount(
 	const expense = expenses.find(
 		expense => expense.name === transaction.expenseName
 	);
-	const yearlyExpenseTotal =
-		yearlyExpenseTotals[transaction.expenseName] ?? 0;
-	const weekExpenseTotal = weekExpesneTotals[transaction.expenseName] ?? 0;
-	const expenseTotal = yearlyExpenseTotal + weekExpenseTotal;
+	const expenseTotal = getExpenseTotal(expenseTransactions, transaction);
 	const expenseTotalWithAmount = expenseTotal + transaction.amount;
 
 	if (transaction.amount > 0 || expense) {
@@ -106,28 +124,23 @@ export function getTotalSpend(
 	pendingItems: IPendingItem[],
 	incomes: IIncome[],
 	expenses: IExpense[],
-	yearlyExpenseTotals: IExpenseTotals
+	expenseTransactions: Record<string, ITransaction[]>
 ) {
 	if (!transactions) {
 		return 0;
 	}
 	const pendingTotal = getTotalPendingSpend(pendingItems);
-	const weekExpenseTotal: IExpenseTotals = {};
 	let transactionTotal = 0;
 	for (const transaction of transactions) {
 		const amount = getTransactionAmount(
 			transaction,
 			incomes,
 			expenses,
-			yearlyExpenseTotals,
-			weekExpenseTotal
+			expenseTransactions
 		);
 		if (amount > 0) {
 			transactionTotal += amount;
 		}
-		const currentWeekTotal = weekExpenseTotal[transaction.expenseName] ?? 0;
-		weekExpenseTotal[transaction.expenseName] =
-			currentWeekTotal + transaction.amount;
 	}
 	return pendingTotal + transactionTotal;
 }
@@ -142,7 +155,7 @@ export function getExtraIncome(
 	}
 	return transactions
 		.map(transaction =>
-			getTransactionAmount(transaction, incomes, expenses, {}, {})
+			getTransactionAmount(transaction, incomes, expenses, {})
 		)
 		.filter(amount => amount < 0)
 		.reduce((total, amount) => total - amount, 0);
@@ -152,8 +165,7 @@ export function getDiscrepancy(
 	transaction: ITransaction,
 	incomes: IIncome[],
 	expenses: IExpense[],
-	yearlyExpenseTotals: IExpenseTotals,
-	weekExpesneTotals: IExpenseTotals
+	expenseTransactions: Record<string, ITransaction[]>
 ) {
 	const income = incomes.find(
 		income => income.name === transaction.incomeName
@@ -166,9 +178,10 @@ export function getDiscrepancy(
 	);
 	if (expense) {
 		if (expense.isDistributed) {
-			const yearlyExpenseTotal = yearlyExpenseTotals[expense.name] ?? 0;
-			const weekExpenseTotal = weekExpesneTotals[expense.name] ?? 0;
-			const expenseTotal = yearlyExpenseTotal + weekExpenseTotal;
+			const expenseTotal = getExpenseTotal(
+				expenseTransactions,
+				transaction
+			);
 			const expenseTotalWithAmount = expenseTotal + transaction.amount;
 			if (expenseTotal > expense.amount) {
 				return transaction.amount;

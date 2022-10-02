@@ -1,32 +1,28 @@
 import React from 'react';
 import { Button, ChevronLeftIcon, ChevronRightIcon } from '~/components';
 import { dateService } from '~/services';
-import { IWeeklyTransactionsByWeekOf } from '~/models';
+import { IWeekState } from '~/redux';
 import cx from 'classnames';
 import styles from './WeekView.css';
 
 export interface IWeekViewProps {
 	weekOf: string;
-	weeklyTransactions: IWeeklyTransactionsByWeekOf;
+	weeklyTransactions: Record<string, IWeekState>;
 	setWeekOf(value: string): void;
-	getWeeklyTransactions(weekOf: string): void;
 }
 
 export function WeekView({
 	weekOf,
 	weeklyTransactions,
-	setWeekOf,
-	getWeeklyTransactions
+	setWeekOf
 }: IWeekViewProps) {
 	const endOfWeek = dateService.getEndOfWeek(weekOf);
 	const daysOfWeek = dateService.getDaysOfWeek(weekOf);
 	const isCurrentWeek = weekOf === dateService.getStartOfCurrentWeek();
+	const previousWeek = dateService.addDays(weekOf, -7);
+	const isFirstWeek = !weeklyTransactions[previousWeek];
 
 	const handlePreviousClicked = () => {
-		const previousWeek = dateService.addDays(weekOf, -7);
-		if (weeklyTransactions[previousWeek] === undefined) {
-			getWeeklyTransactions(previousWeek);
-		}
 		setWeekOf(previousWeek);
 	};
 	const handleNextClicked = () => {
@@ -38,6 +34,7 @@ export function WeekView({
 			<Button
 				variant='default'
 				onClick={handlePreviousClicked}
+				isDisabled={isFirstWeek}
 				className={styles.previous}>
 				<ChevronLeftIcon />
 			</Button>

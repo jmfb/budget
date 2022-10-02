@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Home } from '~/pages';
 import {
 	useActions,
 	useAppSelector,
 	budgetSlice,
-	pendingItemsSlice
+	pendingItemsSlice,
+	transactionsSlice,
+	getExpenseTransactions
 } from '~/redux';
 import { dateService } from '~/services';
 
 export default function HomeContainer() {
+	const { setOnlyShowNewItems } = useActions(budgetSlice);
 	const {
-		getBudget,
 		saveTransaction,
 		deleteTransaction,
-		setOnlyShowNewItems,
-		clearTransactionSave,
-		clearTransactionDelete,
-		getWeeklyTransactions
-	} = useActions(budgetSlice);
+		clearSave: clearTransactionSave
+	} = useActions(transactionsSlice);
 	const {
 		savePendingItem,
 		deletePendingItem,
@@ -27,7 +26,7 @@ export default function HomeContainer() {
 		state => state.budget.onlyShowNewItems
 	);
 	const isLoadingBudget = useAppSelector(
-		state => state.budget.isLoadingBudget
+		state => state.transactions.isRefreshing
 	);
 	const incomes = useAppSelector(state => state.incomes.incomes);
 	const expenses = useAppSelector(state => state.expenses.expenses);
@@ -35,19 +34,14 @@ export default function HomeContainer() {
 		state => state.pendingItems.pendingItems
 	);
 	const weeklyTransactions = useAppSelector(
-		state => state.budget.weeklyTransactions
+		state => state.transactions.weeks
 	);
+	const expenseTransactions = useAppSelector(getExpenseTransactions);
 	const isSavingTransaction = useAppSelector(
-		state => state.budget.isSavingTransaction
+		state => state.transactions.isSaving
 	);
 	const savingTransactionSuccess = useAppSelector(
-		state => state.budget.savingTransactionSuccess
-	);
-	const isDeletingTransaction = useAppSelector(
-		state => state.budget.isDeletingTransaction
-	);
-	const deletingTransactionSuccess = useAppSelector(
-		state => state.budget.deletingTransactionSuccess
+		state => state.transactions.wasSuccessful
 	);
 	const isSavingPendingItem = useAppSelector(
 		state => state.pendingItems.isSaving
@@ -56,10 +50,6 @@ export default function HomeContainer() {
 		state => state.pendingItems.wasSuccessful
 	);
 	const [weekOf, setWeekOf] = useState(dateService.getStartOfCurrentWeek());
-
-	useEffect(() => {
-		getBudget(weekOf);
-	}, []);
 
 	return (
 		<Home
@@ -70,10 +60,9 @@ export default function HomeContainer() {
 				expenses,
 				pendingItems,
 				weeklyTransactions,
+				expenseTransactions,
 				isSavingTransaction,
 				savingTransactionSuccess,
-				isDeletingTransaction,
-				deletingTransactionSuccess,
 				isSavingPendingItem,
 				savingPendingItemSuccess,
 				weekOf,
@@ -84,9 +73,7 @@ export default function HomeContainer() {
 				savePendingItem,
 				deletePendingItem,
 				clearTransactionSave,
-				clearTransactionDelete,
-				clearPendingItemSave,
-				getWeeklyTransactions
+				clearPendingItemSave
 			}}
 		/>
 	);

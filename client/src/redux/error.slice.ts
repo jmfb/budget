@@ -1,20 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAuthenticationUrl, authenticate } from './auth.actions';
-import {
-	getBudget,
-	saveTransaction,
-	getWeeklyTransactions,
-	getYearlyExpenses,
-	getAllText,
-	parseCsv,
-	mergeTransaction
-} from './budget.actions';
+import { getAllText, parseCsv, mergeTransaction } from './budget.actions';
 import {
 	refreshExpenses,
 	saveExpense,
 	deleteExpense
 } from './expenses.actions';
 import { refreshIncomes, saveIncome, deleteIncome } from './incomes.actions';
+import {
+	getTransactions,
+	refreshTransactions,
+	saveTransaction,
+	deleteTransaction
+} from './transactions.actions';
 import { IErrorReport } from '~/models';
 
 export interface IErrorState {
@@ -70,30 +68,6 @@ const slice = createSlice({
 			.addCase(authenticate.rejected, (state, action) => {
 				setErrorState(state, 'Authenticating', action.error.message);
 			})
-			.addCase(getBudget.rejected, (state, action) => {
-				setErrorState(state, 'Getting budget', action.error.message);
-			})
-			.addCase(saveTransaction.rejected, (state, action) => {
-				setErrorState(
-					state,
-					'Saving transaction',
-					action.error.message
-				);
-			})
-			.addCase(getWeeklyTransactions.rejected, (state, action) => {
-				setErrorState(
-					state,
-					'Getting weekly transactions',
-					action.error.message
-				);
-			})
-			.addCase(getYearlyExpenses.rejected, (state, action) => {
-				setErrorState(
-					state,
-					'Getting yearly expenses',
-					action.error.message
-				);
-			})
 			.addCase(getAllText.rejected, (state, action) => {
 				setErrorState(state, 'Reading file', action.error.message);
 			})
@@ -138,6 +112,35 @@ const slice = createSlice({
 			})
 			.addCase(deleteIncome.rejected, (state, action) => {
 				setErrorState(state, 'Deleting income', action.error.message);
+			})
+
+			.addCase(getTransactions.rejected, (state, action) => {
+				setErrorState(
+					state,
+					'Getting transactions',
+					action.error.message
+				);
+			})
+			.addCase(refreshTransactions.rejected, (state, action) => {
+				setErrorState(
+					state,
+					'Refreshing transactions',
+					action.error.message
+				);
+			})
+			.addCase(saveTransaction.rejected, (state, action) => {
+				setErrorState(
+					state,
+					'Saving transaction',
+					action.error.message
+				);
+			})
+			.addCase(deleteTransaction.rejected, (state, action) => {
+				setErrorState(
+					state,
+					'Deleting transaction',
+					action.error.message
+				);
 			})
 });
 

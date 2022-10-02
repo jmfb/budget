@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Statistics } from '~/pages';
 import { dateService } from '~/services';
-import { useActions, useAppSelector, budgetSlice } from '~/redux';
+import { useAppSelector, getExpenseTransactions } from '~/redux';
 
 export default function StatisticsContainer() {
-	const { getBudget, getWeeklyTransactions } = useActions(budgetSlice);
+	const expenseTransactions = useAppSelector(getExpenseTransactions);
 	const weeklyTransactions = useAppSelector(
-		state => state.budget.weeklyTransactions
+		state => state.transactions.weeks
 	);
 	const incomes = useAppSelector(state => state.incomes.incomes);
 	const expenses = useAppSelector(state => state.expenses.expenses);
@@ -16,22 +16,14 @@ export default function StatisticsContainer() {
 	const weeksOf = dateService.getStartOfLastXWeeks(12);
 	const weeks = weeksOf.map(weekOf => weeklyTransactions[weekOf]);
 
-	useEffect(() => {
-		getBudget(weeksOf[0]);
-		for (const weekOf of weeksOf) {
-			if (weeklyTransactions[weekOf] === undefined) {
-				getWeeklyTransactions(weekOf);
-			}
-		}
-	}, []);
-
 	return (
 		<Statistics
 			{...{
 				incomes,
 				expenses,
 				pendingItems,
-				weeks
+				weeks,
+				expenseTransactions
 			}}
 		/>
 	);

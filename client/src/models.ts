@@ -81,27 +81,6 @@ export interface IGetPendingItemsResponse {
 	pendingItems: IPendingItem[];
 }
 
-export type IExpenseTotals = Record<string, number>;
-
-export interface IBudgetResponse {
-	weeklyTransactions: ITransaction[];
-	yearlyExpenseTotals: IExpenseTotals;
-}
-
-export interface IWeeklyTransactionsResponse {
-	weeklyTransactions: ITransaction[];
-	yearlyExpenseTotals: IExpenseTotals;
-}
-
-export interface IWeeklyTransactions {
-	weekOf: string;
-	isLoading: boolean;
-	transactions: ITransaction[];
-	yearlyExpenseTotals: IExpenseTotals;
-}
-
-export type IWeeklyTransactionsByWeekOf = Record<string, IWeeklyTransactions>;
-
 export interface IDayOfWeek {
 	day: number;
 	weekday: string;

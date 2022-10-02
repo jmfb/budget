@@ -1,17 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Uploads } from '~/pages';
 import { useActions, useAppSelector, budgetSlice } from '~/redux';
-import { dateService } from '~/services';
 
 export default function UploadsContainer() {
-	const {
-		getAllText,
-		parseCsv,
-		mergeTransaction,
-		clearUpload,
-		clearLogs,
-		getBudget
-	} = useActions(budgetSlice);
+	const { getAllText, parseCsv, mergeTransaction, clearUpload, clearLogs } =
+		useActions(budgetSlice);
 	const isReadingFile = useAppSelector(state => state.budget.isReadingFile);
 	const readingFileSuccess = useAppSelector(
 		state => state.budget.readingFileSuccess
@@ -29,17 +22,13 @@ export default function UploadsContainer() {
 		state => state.budget.mergingTransactionSuccess
 	);
 	const weeklyTransactions = useAppSelector(
-		state => state.budget.weeklyTransactions
+		state => state.transactions.weeks
 	);
 	const logs = useAppSelector(state => state.budget.logs);
 
 	const isLoading = Object.keys(weeklyTransactions).some(
 		weekOf => weeklyTransactions[weekOf].isLoading
 	);
-
-	useEffect(() => {
-		getBudget(dateService.getStartOfCurrentWeek());
-	}, []);
 
 	return (
 		<Uploads

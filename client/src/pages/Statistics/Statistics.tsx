@@ -2,8 +2,9 @@ import React from 'react';
 import { PageLoading } from '~/components';
 import { Week } from './Week';
 import { ExpenseBudget } from './ExpenseBudget';
-import { IIncome, IExpense, IWeeklyTransactions, IPendingItem } from '~/models';
+import { IIncome, IExpense, IPendingItem, ITransaction } from '~/models';
 import { budgetService } from '~/services';
+import { IWeekState } from '~/redux';
 import cx from 'classnames';
 import styles from './Statistics.css';
 
@@ -11,14 +12,16 @@ export interface IStatisticsProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	pendingItems: IPendingItem[];
-	weeks: IWeeklyTransactions[];
+	weeks: IWeekState[];
+	expenseTransactions: Record<string, ITransaction[]>;
 }
 
 export function Statistics({
 	incomes,
 	expenses,
 	pendingItems,
-	weeks
+	weeks,
+	expenseTransactions
 }: IStatisticsProps) {
 	const isLoading =
 		!incomes ||
@@ -28,13 +31,6 @@ export function Statistics({
 		return <PageLoading message='Loading transactions' />;
 	}
 
-	const getWeekExpenseTotal = (expenseName: string) => {
-		return weeks[0].transactions
-			.filter(transaction => transaction.expenseName === expenseName)
-			.reduce((total, transaction) => total + transaction.amount, 0);
-	};
-
-	const { yearlyExpenseTotals } = weeks[0];
 	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
 	const totalSpends = weeks.map((week, index) =>
 		budgetService.getTotalSpend(
@@ -42,7 +38,7 @@ export function Statistics({
 			index === 0 ? pendingItems : [],
 			incomes,
 			expenses,
-			week.yearlyExpenseTotals
+			expenseTransactions
 		)
 	);
 	const extraIncomes = weeks.map(week =>
@@ -122,16 +118,13 @@ export function Statistics({
 			)}
 			{expenses
 				.filter(expense => expense.isDistributed)
-				.map(expense => ({
-					expense,
-					total:
-						yearlyExpenseTotals[expense.name] ??
-						0 + getWeekExpenseTotal(expense.name)
-				}))
-				.map(item => (
+				.map(expense => (
 					<ExpenseBudget
-						key={item.expense.name}
-						{...item}
+						key={expense.name}
+						{...{ expense }}
+						total={budgetService.getTotal(
+							expenseTransactions[expense.name]
+						)}
 					/>
 				))}
 		</div>
