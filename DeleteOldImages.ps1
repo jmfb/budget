@@ -7,11 +7,10 @@ param(
 $ErrorActionPreference = "Stop"
 
 try {
+	. .\ExecFunction.ps1
+
 	Write-Host "[$(Get-Date)] Getting all images from repository..."
-	$imagesJson = & aws ecr list-images --repository-name budget
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
-	}
+	exec { $imagesJson = & aws ecr list-images --repository-name budget }
 
 	Write-Host "[$(Get-Date)] Finding latest version's imageDigest..."
 	$images = $imagesJson | ConvertFrom-Json
@@ -37,10 +36,7 @@ try {
 		Write-Host "[$(Get-Date)] Dry run (nothing is being deleted)."
 	} else {
 		Write-Host "[$(Get-Date)] Deleting old versions from repository..."
-		& aws ecr batch-delete-image --repository-name budget --image-ids $oldVersions
-		if ($lastexitcode -ne 0) {
-			exit $lastexitcode
-		}
+		exec { & aws ecr batch-delete-image --repository-name budget --image-ids $oldVersions }
 	}
 
 	Write-Host "[$(Get-Date)] Done."

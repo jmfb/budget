@@ -6,26 +6,19 @@ param(
 $ErrorActionPreference = "Stop"
 
 try {
+	. .\ExecFunction.ps1
+
 	Write-Host "[$(Get-Date)] Changing to client directory."
 	Push-Location "$PSScriptRoot\client"
 
 	Write-Host "[$(Get-Date)] Installing missing packages."
-	& yarn install
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
-	}
+	exec { & yarn install }
 
 	Write-Host "[$(Get-Date)] Building client configuration: $configuration"
-	& yarn run $configuration
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
-	}
+	exec { & yarn run $configuration }
 
 	Write-Host "[$(Get-Date)] Verifying prettier configuration."
-	& yarn run prettier-ci
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
-	}
+	exec { & yarn run prettier-ci }
 
 	Write-Host "[$(Get-Date)] Successfully built client."
 	exit 0

@@ -11,6 +11,8 @@ param(
 $ErrorActionPreference = "Stop"
 
 try {
+	. .\ExecFunction.ps1
+
 	Write-Host "[$(Get-Date)] Changing to terraform directory..."
 	Push-Location "$PSScriptRoot\terraform"
 
@@ -44,17 +46,11 @@ try {
 
 	if ($init) {
 		Write-Host "[$(Get-Date)] Initializing terraform..."
-		& terraform_1.3.1 init
-		if ($lastexitcode -ne 0) {
-			exit $lastexitcode
-		}
+		exec { & terraform_1.3.1 init }
 	}
 
 	Write-Host "[$(Get-Date)] Planning terraform with tfplan output..."
-	& terraform_1.3.1 plan -out tfplan
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
-	}
+	exec { & terraform_1.3.1 plan -out tfplan }
 
 	Write-Host "[$(Get-Date)] Successfully planned terraform."
 	exit 0

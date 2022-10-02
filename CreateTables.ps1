@@ -1,8 +1,10 @@
 $ErrorActionPreference = "Stop"
 
 try {
+	. .\ExecFunction.ps1
+
 	Write-Host "[$(Get-Date)] Creating budget-incomes table..."
-	& aws dynamodb create-table `
+	exec { & aws dynamodb create-table `
 		--endpoint-url http://localhost:8000 `
 		--table-name "budget-incomes" `
 		--attribute-definitions `
@@ -10,12 +12,10 @@ try {
 		--key-schema `
 			AttributeName=Name,KeyType=HASH `
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 | Out-Null
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
 	}
 
 	Write-Host "[$(Get-Date)] Creating budget-expenses table..."
-	& aws dynamodb create-table `
+	exec { & aws dynamodb create-table `
 		--endpoint-url http://localhost:8000 `
 		--table-name "budget-expenses" `
 		--attribute-definitions `
@@ -23,12 +23,10 @@ try {
 		--key-schema `
 			AttributeName=Name,KeyType=HASH `
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 | Out-Null
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
 	}
 
 	Write-Host "[$(Get-Date)] Creating budget-transactions table..."
-	& aws dynamodb create-table `
+	exec { & aws dynamodb create-table `
 		--endpoint-url http://localhost:8000 `
 		--table-name "budget-transactions" `
 		--attribute-definitions `
@@ -38,12 +36,10 @@ try {
 			AttributeName=Date,KeyType=HASH `
 			AttributeName=Id,KeyType=RANGE `
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 | Out-Null
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
 	}
 
 	Write-Host "[$(Get-Date)] Creating budget-pending-items table..."
-	& aws dynamodb create-table `
+	exec { & aws dynamodb create-table `
 		--endpoint-url http://localhost:8000 `
 		--table-name "budget-pending-items" `
 		--attribute-definitions `
@@ -51,12 +47,10 @@ try {
 		--key-schema `
 			AttributeName=Id,KeyType=HASH `
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 | Out-Null
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
 	}
 
 	Write-Host "[$(Get-Date)] Creating budget-data-version table..."
-	& aws dynamodb create-table `
+	exec { & aws dynamodb create-table `
 		--endpoint-url http://localhost:8000 `
 		--table-name "budget-data-versions" `
 		--attribute-definitions `
@@ -64,8 +58,6 @@ try {
 		--key-schema `
 			AttributeName=Name,KeyType=HASH `
 		--provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 | Out-Null
-	if ($lastexitcode -ne 0) {
-		exit $lastexitcode
 	}
 
 	exit 0

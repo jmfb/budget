@@ -7,6 +7,8 @@ param(
 $ErrorActionPreference = "Stop"
 
 try {
+	. .\ExecFunction.ps1
+
 	Write-Host "[$(Get-Date)] Done."
 	exit 0
 } catch {
