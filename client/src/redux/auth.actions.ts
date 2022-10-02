@@ -42,9 +42,3 @@ export const authenticate = createAsyncThunk(
 		}
 	}
 );
-
-export const signOut = createAsyncThunk('auth/signOut', () => {
-	localStorage.removeItem('email');
-	localStorage.removeItem('accessToken');
-	return Promise.resolve();
-});

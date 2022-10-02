@@ -2,8 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
 	readLocalStorage,
 	getAuthenticationUrl,
-	authenticate,
-	signOut
+	authenticate
 } from './auth.actions';
 
 export interface IAuthState {
@@ -25,7 +24,12 @@ const initialState: IAuthState = {
 const slice = createSlice({
 	name: 'auth',
 	initialState,
-	reducers: {},
+	reducers: {
+		signOut(state) {
+			Object.assign(state, initialState);
+			localStorage.clear();
+		}
+	},
 	extraReducers: builder =>
 		builder
 			.addCase(readLocalStorage.fulfilled, (state, action) => {
@@ -49,10 +53,6 @@ const slice = createSlice({
 				state.isSigningIn = false;
 			})
 
-			.addCase(signOut.fulfilled, state => {
-				Object.assign(state, initialState);
-			})
-
 			.addCase(authenticate.pending, state => {
 				state.isSigningIn = false;
 				state.redirectToSignIn = false;
@@ -71,7 +71,6 @@ export const authSlice = {
 		...slice.actions,
 		readLocalStorage,
 		getAuthenticationUrl,
-		authenticate,
-		signOut
+		authenticate
 	}
 };
