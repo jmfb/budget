@@ -11,7 +11,6 @@ import styles from './Home.css';
 
 export interface IHomeProps {
 	onlyShowNewItems: boolean;
-	isLoadingBudget: boolean;
 	incomes: IIncome[];
 	expenses: IExpense[];
 	pendingItems: IPendingItem[];
@@ -34,7 +33,6 @@ export interface IHomeProps {
 
 export function Home({
 	onlyShowNewItems,
-	isLoadingBudget,
 	incomes,
 	expenses,
 	pendingItems,
@@ -54,10 +52,6 @@ export function Home({
 	clearTransactionSave,
 	clearPendingItemSave
 }: IHomeProps) {
-	if (isLoadingBudget || incomes === null || expenses === null) {
-		return <PageLoading message='Loading budget...' />;
-	}
-
 	const week = weeklyTransactions[weekOf];
 	const isLoadingWeek = week === undefined || week.isLoading;
 	const includePendingItems = weekOf > dateService.getStartOfLastWeek();

@@ -25,9 +25,6 @@ export default function HomeContainer() {
 	const onlyShowNewItems = useAppSelector(
 		state => state.budget.onlyShowNewItems
 	);
-	const isLoadingBudget = useAppSelector(
-		state => state.transactions.isRefreshing
-	);
 	const incomes = useAppSelector(state => state.incomes.incomes);
 	const expenses = useAppSelector(state => state.expenses.expenses);
 	const pendingItems = useAppSelector(
@@ -55,7 +52,6 @@ export default function HomeContainer() {
 		<Home
 			{...{
 				onlyShowNewItems,
-				isLoadingBudget,
 				incomes,
 				expenses,
 				pendingItems,

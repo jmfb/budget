@@ -15,7 +15,6 @@ export default function YearlyExpensesContainer() {
 	const expense = useAppSelector(state =>
 		state.expenses.expenses.find(expense => expense.name === expenseName)
 	);
-	const isLoading = useAppSelector(state => state.transactions.isRefreshing);
 	const weeklyTransactions = useAppSelector(
 		state => state.transactions.weeks
 	);
@@ -39,7 +38,6 @@ export default function YearlyExpensesContainer() {
 		<YearlyExpenses
 			{...{
 				expense,
-				isLoading,
 				yearlyExpenses,
 				isSavingExpense,
 				savingExpenseSuccess,

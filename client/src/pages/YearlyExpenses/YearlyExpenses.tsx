@@ -8,7 +8,6 @@ import styles from './YearlyExpenses.css';
 
 export interface IYearlyExpensesProps {
 	expense: IExpense;
-	isLoading: boolean;
 	yearlyExpenses: ITransaction[];
 	isSavingExpense: boolean;
 	savingExpenseSuccess: boolean;
@@ -17,7 +16,6 @@ export interface IYearlyExpensesProps {
 
 export function YearlyExpenses({
 	expense,
-	isLoading,
 	yearlyExpenses,
 	isSavingExpense,
 	savingExpenseSuccess,
@@ -38,10 +36,6 @@ export function YearlyExpenses({
 
 	if (!expense) {
 		return <PageLoading message='Loading expenses...' />;
-	}
-
-	if (isLoading) {
-		return <PageLoading message='Loading yearly expenses...' />;
 	}
 
 	const total = yearlyExpenses.reduce(

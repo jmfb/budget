@@ -15,14 +15,12 @@ export interface IWeekState {
 }
 
 export interface ITransactionsState {
-	isRefreshing: boolean;
 	weeks: Record<string, IWeekState>;
 	isSaving: boolean;
 	wasSuccessful: boolean;
 }
 
 const initialState: ITransactionsState = {
-	isRefreshing: false,
 	weeks: JSON.parse(localStorage.getItem('weeks')) ?? {},
 	isSaving: false,
 	wasSuccessful: false
@@ -65,16 +63,6 @@ const slice = createSlice({
 			})
 			.addCase(getTransactions.rejected, (state, action) => {
 				state.weeks[action.meta.arg].isLoading = false;
-			})
-
-			.addCase(refreshTransactions.pending, state => {
-				state.isRefreshing = true;
-			})
-			.addCase(refreshTransactions.fulfilled, state => {
-				state.isRefreshing = false;
-			})
-			.addCase(refreshTransactions.rejected, state => {
-				state.isRefreshing = false;
 			})
 
 			.addCase(saveTransaction.pending, state => {
