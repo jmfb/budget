@@ -1,5 +1,3 @@
-import queryString from 'query-string';
-
 async function checkStatus(response: Response) {
 	const { status, statusText } = response;
 	if (status < 200 || status >= 300) {
@@ -19,15 +17,15 @@ function getStandardHeaders(accessToken?: string) {
 	};
 }
 
-function formatUri(endpoint: string, query?: any) {
-	return query ? `${endpoint}?${queryString.stringify(query)}` : endpoint;
+function formatUri(endpoint: string, query?: Record<string, string>) {
+	return query ? `${endpoint}?${new URLSearchParams(query)}` : endpoint;
 }
 
 type HttpMethod = 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE';
 
 interface IFetchRequest {
 	endpoint: string;
-	query?: any;
+	query?: Record<string, string>;
 	accessToken?: string;
 	method?: HttpMethod;
 	body?: {};
