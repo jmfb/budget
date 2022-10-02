@@ -23,10 +23,10 @@ try {
 	Write-Host "[$(Get-Date)] New version: $version"
 
 	Write-Host "[$(Get-Date)] Getting ECR password from AWS..."
-	exec { $password = & aws ecr get-login-password --region us-east-1 }
+	exec { $Env:password = & aws ecr get-login-password --region us-east-1 }
 
 	Write-Host "[$(Get-Date)] Logging docker in to ECR repository..."
-	exec { & docker login $repository --username AWS --password $password }
+	exec { & docker login $repository --username AWS --password $Env:password }
 
 	Write-Host "[$(Get-Date)] Building docker image..."
 	exec { & docker build --build-arg version=$version -t budget . }
