@@ -16,6 +16,9 @@ try {
 	Write-Host "[$(Get-Date)] Changing to terraform directory..."
 	Push-Location "$PSScriptRoot\terraform"
 
+	Write-Host "[$(Get-Date)] Verifying terraform formatting..."
+	exec { & terraform_1.3.1 fmt -recursive -check }
+
 	Write-Host "[$(Get-Date)] Configuring terraform environment variables..."
 	if ([string]::IsNullOrEmpty($Env:BudgetAuthClientSecret)) {
 		Write-Host "[$(Get-Date)] Missing BudgetAuthClientSecret environment variable."
@@ -48,6 +51,9 @@ try {
 		Write-Host "[$(Get-Date)] Initializing terraform..."
 		exec { & terraform_1.3.1 init }
 	}
+
+	Write-Host "[$(Get-Date)] Validating terraform..."
+	exec { & terraform_1.3.1 validate }
 
 	Write-Host "[$(Get-Date)] Planning terraform with tfplan output..."
 	exec { & terraform_1.3.1 plan -out tfplan }
