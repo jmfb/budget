@@ -10,7 +10,7 @@ data "aws_kms_ciphertext" "auth_client_secret" {
 
 data "aws_ecr_image" "image" {
   repository_name = var.name
-  image_tag = "latest"
+  image_tag       = "latest"
 }
 
 locals {
@@ -35,9 +35,9 @@ resource "aws_lambda_function" "lambda" {
     }
   }
 
-  tags = merge(var.tags, tomap({
-    "Name" = var.name
-  }))
+  tags = merge(var.tags, {
+    Name = var.name
+  })
 
   depends_on = [aws_cloudwatch_log_group.logs]
 }

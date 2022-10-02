@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "gateway" {
-  name        = var.name
-  description = "Budget ASP.NET Core API Gateway"
+  name               = var.name
+  description        = "Budget ASP.NET Core API Gateway"
   binary_media_types = ["*/*"]
 }
 

@@ -27,8 +27,8 @@ data "aws_iam_policy_document" "policy" {
   }
 
   statement {
-    effect    = "Allow"
-    actions   = [
+    effect = "Allow"
+    actions = [
       "dynamodb:DescribeTable",
       "dynamodb:Query",
       "dynamodb:Scan",
