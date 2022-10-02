@@ -13,6 +13,9 @@ try {
 		exec { . "$PSScriptRoot\BuildClient.ps1" }
 	}
 
+	Write-Host "[$(Get-Date)] Verfiying .NET formatting..."
+	exec { & dotnet format --verify-no-changes }
+
 	$repository = "862438233085.dkr.ecr.us-east-1.amazonaws.com"
 	Write-Host "[$(Get-Date)] ECR repository: $repository"
 
