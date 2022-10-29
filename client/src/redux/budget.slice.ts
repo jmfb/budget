@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getAllText, parseCsv, mergeTransaction, matchedTransaction } from './budget.actions';
+import {
+	getAllText,
+	parseCsv,
+	mergeTransaction,
+	matchedTransaction
+} from './budget.actions';
 import { ITransaction } from '~/models';
 
 export interface IBudgetState {

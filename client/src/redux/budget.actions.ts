@@ -44,7 +44,9 @@ export const parseCsv = createAsyncThunk(
 	}
 );
 
-export const matchedTransaction = createAction<ITransaction>('budget/matchedTransaction');
+export const matchedTransaction = createAction<ITransaction>(
+	'budget/matchedTransaction'
+);
 
 export const mergeTransaction = createAsyncThunk(
 	'budget/mergeTransaction',
@@ -65,9 +67,10 @@ export const mergeTransaction = createAsyncThunk(
 			const dailyTransactions = week.transactions.filter(
 				({ date }) => date === transaction.date
 			);
-			const existingTransaction = dailyTransactions.find(second =>
-				budgetService.isSameTransaction(transaction, second) &&
-				!matchedTransactions.includes(second)
+			const existingTransaction = dailyTransactions.find(
+				second =>
+					budgetService.isSameTransaction(transaction, second) &&
+					!matchedTransactions.includes(second)
 			);
 			if (existingTransaction === undefined) {
 				logs.push('No matching transaction found for date');
