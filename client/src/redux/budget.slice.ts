@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getAllText, parseCsv, mergeTransaction } from './budget.actions';
+import { getAllText, parseCsv, mergeTransaction, matchedTransaction } from './budget.actions';
+import { ITransaction } from '~/models';
 
 export interface IBudgetState {
 	onlyShowNewItems: boolean;
@@ -12,6 +13,7 @@ export interface IBudgetState {
 	parsingCsvSuccess: boolean;
 	csvRecords: string[][];
 	logs: string;
+	matchedTransactions: ITransaction[];
 }
 
 const initialState: IBudgetState = {
@@ -24,7 +26,8 @@ const initialState: IBudgetState = {
 	isParsingCsv: false,
 	parsingCsvSuccess: false,
 	csvRecords: [],
-	logs: ''
+	logs: '',
+	matchedTransactions: []
 };
 
 const slice = createSlice({
@@ -43,6 +46,7 @@ const slice = createSlice({
 			state.csvRecords = [];
 			state.isMergingTransaction = false;
 			state.mergingTransactionSuccess = false;
+			state.matchedTransactions = [];
 		},
 		clearLogs(state) {
 			state.logs = '';
@@ -92,6 +96,9 @@ const slice = createSlice({
 			.addCase(mergeTransaction.rejected, state => {
 				state.isMergingTransaction = false;
 				state.mergingTransactionSuccess = false;
+			})
+			.addCase(matchedTransaction, (state, action) => {
+				state.matchedTransactions.push(action.payload);
 			})
 });
 

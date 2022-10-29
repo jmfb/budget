@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import { ITransaction } from '~/models';
 import { IState } from './IState';
 import { dateService, budgetService } from '~/services';
@@ -44,12 +44,15 @@ export const parseCsv = createAsyncThunk(
 	}
 );
 
+export const matchedTransaction = createAction<ITransaction>('budget/matchedTransaction');
+
 export const mergeTransaction = createAsyncThunk(
 	'budget/mergeTransaction',
 	async (transaction: ITransaction, { getState, dispatch }) => {
 		const {
 			pendingItems: { pendingItems },
-			transactions: { weeks }
+			transactions: { weeks },
+			budget: { matchedTransactions }
 		} = getState() as IState;
 		const logs = [];
 		logs.push('='.repeat(60));
@@ -63,7 +66,8 @@ export const mergeTransaction = createAsyncThunk(
 				({ date }) => date === transaction.date
 			);
 			const existingTransaction = dailyTransactions.find(second =>
-				budgetService.isSameTransaction(transaction, second)
+				budgetService.isSameTransaction(transaction, second) &&
+				!matchedTransactions.includes(second)
 			);
 			if (existingTransaction === undefined) {
 				logs.push('No matching transaction found for date');
@@ -74,6 +78,7 @@ export const mergeTransaction = createAsyncThunk(
 						Math.max(0, ...dailyTransactions.map(({ id }) => id)) +
 						1
 				};
+				dispatch(matchedTransaction(newTransaction));
 				await dispatch(saveTransaction(newTransaction));
 
 				const matchingPendingItem = pendingItems.find(
@@ -85,6 +90,7 @@ export const mergeTransaction = createAsyncThunk(
 					await dispatch(deletePendingItem(matchingPendingItem));
 				}
 			} else {
+				dispatch(matchedTransaction(existingTransaction));
 				logs.push('Skipping transaction');
 			}
 		}
