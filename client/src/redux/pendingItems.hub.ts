@@ -1,4 +1,4 @@
-import { get, getOrDefault } from './hub';
+import { get, getOrDefault, download } from './hub';
 import { IPendingItem, IGetPendingItemsResponse } from '~/models';
 
 export async function getVersion(accessToken: string) {
@@ -38,6 +38,13 @@ export async function deletePendingItem(accessToken: string, id: number) {
 	return await get<number>({
 		endpoint: `/api/pending-items/${id}`,
 		method: 'DELETE',
+		accessToken
+	});
+}
+
+export async function downloadPendingItems(accessToken: string) {
+	await download({
+		endpoint: '/api/pending-items/download',
 		accessToken
 	});
 }

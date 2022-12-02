@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IIncome } from '~/models';
-import { refreshIncomes, saveIncome, deleteIncome } from './incomes.actions';
+import {
+	refreshIncomes,
+	saveIncome,
+	deleteIncome,
+	downloadIncomes
+} from './incomes.actions';
 
 export interface IIncomesState {
 	version: number;
@@ -8,6 +13,7 @@ export interface IIncomesState {
 	isLoading: boolean;
 	isSaving: boolean;
 	wasSuccessful: boolean;
+	isDownloading: boolean;
 }
 
 const initialState: IIncomesState = {
@@ -15,7 +21,8 @@ const initialState: IIncomesState = {
 	incomes: JSON.parse(localStorage.getItem('incomes')) ?? [],
 	isLoading: false,
 	isSaving: false,
-	wasSuccessful: false
+	wasSuccessful: false,
+	isDownloading: false
 };
 
 function updateLocalStorage(state: IIncomesState) {
@@ -85,6 +92,16 @@ const slice = createSlice({
 			.addCase(deleteIncome.rejected, state => {
 				state.isSaving = false;
 			})
+
+			.addCase(downloadIncomes.pending, state => {
+				state.isDownloading = true;
+			})
+			.addCase(downloadIncomes.fulfilled, state => {
+				state.isDownloading = false;
+			})
+			.addCase(downloadIncomes.rejected, state => {
+				state.isDownloading = false;
+			})
 });
 
 export const incomesSlice = {
@@ -93,6 +110,7 @@ export const incomesSlice = {
 		...slice.actions,
 		refreshIncomes,
 		saveIncome,
-		deleteIncome
+		deleteIncome,
+		downloadIncomes
 	}
 };

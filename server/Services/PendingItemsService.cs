@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Budget.Server.Models;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using CsvHelper;
 
 namespace Budget.Server.Services {
 	public interface IPendingItemsService {
@@ -13,6 +16,7 @@ namespace Budget.Server.Services {
 		Task<PendingItem> GetPendingItemAsync(int id, CancellationToken cancellationToken);
 		Task SavePendingItemAsync(PendingItem pendingItem, CancellationToken cancellationToken);
 		Task DeletePendingItemAsync(int id, CancellationToken cancellationToken);
+		Task<byte[]> ExportAsync(CancellationToken cancellationToken);
 	}
 
 	public class PendingItemsService : IPendingItemsService {
@@ -35,5 +39,17 @@ namespace Budget.Server.Services {
 
 		public async Task DeletePendingItemAsync(int id, CancellationToken cancellationToken) =>
 			await Context.DeleteAsync(new PendingItem { Id = id }, cancellationToken);
+
+		public async Task<byte[]> ExportAsync(CancellationToken cancellationToken) {
+			var pendingItems = await Context
+				.ScanAsync<PendingItem>(new List<ScanCondition>())
+				.GetRemainingAsync(cancellationToken);
+			using var memoryStream = new MemoryStream();
+			using var writer = new StreamWriter(memoryStream);
+			using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+			csv.WriteRecords(pendingItems);
+			writer.Flush();
+			return memoryStream.ToArray();
+		}
 	}
 }

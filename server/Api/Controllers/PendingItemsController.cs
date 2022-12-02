@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -84,6 +85,18 @@ namespace Budget.Server.Api.Controllers {
 			var deleteTask = PendingItemsService.DeletePendingItemAsync(id, cancellationToken);
 			await Task.WhenAll(versionTask, deleteTask);
 			return await versionTask;
+		}
+
+		[HttpGet("download")]
+		public async Task<IActionResult> DownloadAsync(
+			CancellationToken cancellationToken
+		) {
+			var pendingItems = await PendingItemsService.ExportAsync(cancellationToken);
+			return File(
+				pendingItems,
+				"text/csv",
+				$"pending_items_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.csv"
+			);
 		}
 	}
 }

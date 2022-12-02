@@ -3,7 +3,8 @@ import { IPendingItem } from '~/models';
 import {
 	refreshPendingItems,
 	savePendingItem,
-	deletePendingItem
+	deletePendingItem,
+	downloadPendingItems
 } from './pendingItems.actions';
 
 export interface IPendingItemsState {
@@ -12,6 +13,7 @@ export interface IPendingItemsState {
 	isLoading: boolean;
 	isSaving: boolean;
 	wasSuccessful: boolean;
+	isDownloading: boolean;
 }
 
 const initialState: IPendingItemsState = {
@@ -19,7 +21,8 @@ const initialState: IPendingItemsState = {
 	pendingItems: JSON.parse(localStorage.getItem('pending-items')) ?? [],
 	isLoading: false,
 	isSaving: false,
-	wasSuccessful: false
+	wasSuccessful: false,
+	isDownloading: false
 };
 
 function updateLocalStorage(state: IPendingItemsState) {
@@ -92,6 +95,16 @@ const slice = createSlice({
 			.addCase(deletePendingItem.rejected, state => {
 				state.isSaving = false;
 			})
+
+			.addCase(downloadPendingItems.pending, state => {
+				state.isDownloading = true;
+			})
+			.addCase(downloadPendingItems.fulfilled, state => {
+				state.isDownloading = false;
+			})
+			.addCase(downloadPendingItems.rejected, state => {
+				state.isDownloading = false;
+			})
 });
 
 export const pendingItemsSlice = {
@@ -100,6 +113,7 @@ export const pendingItemsSlice = {
 		...slice.actions,
 		refreshPendingItems,
 		savePendingItem,
-		deletePendingItem
+		deletePendingItem,
+		downloadPendingItems
 	}
 };

@@ -1,4 +1,4 @@
-import { get, getOrDefault } from './hub';
+import { get, getOrDefault, download } from './hub';
 import { IIncome, IGetIncomesResponse } from '~/models';
 
 export async function getVersion(accessToken: string) {
@@ -35,6 +35,13 @@ export async function deleteIncome(accessToken: string, name: string) {
 	return await get<number>({
 		endpoint: `/api/incomes/${encodeURIComponent(name)}`,
 		method: 'DELETE',
+		accessToken
+	});
+}
+
+export async function downloadIncomes(accessToken: string) {
+	await download({
+		endpoint: '/api/incomes/download',
 		accessToken
 	});
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -84,6 +85,18 @@ namespace Budget.Server.Api.Controllers {
 			var deleteTask = IncomesService.DeleteIncomeAsync(name, cancellationToken);
 			await Task.WhenAll(versionTask, deleteTask);
 			return await versionTask;
+		}
+
+		[HttpGet("download")]
+		public async Task<IActionResult> DownloadAsync(
+			CancellationToken cancellationToken
+		) {
+			var incomes = await IncomesService.ExportAsync(cancellationToken);
+			return File(
+				incomes,
+				"text/csv",
+				$"incomes_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.csv"
+			);
 		}
 	}
 }

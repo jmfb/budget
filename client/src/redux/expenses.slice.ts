@@ -3,7 +3,8 @@ import { IExpense } from '~/models';
 import {
 	refreshExpenses,
 	saveExpense,
-	deleteExpense
+	deleteExpense,
+	downloadExpenses
 } from './expenses.actions';
 
 export interface IExpensesState {
@@ -12,6 +13,7 @@ export interface IExpensesState {
 	isLoading: boolean;
 	isSaving: boolean;
 	wasSuccessful: boolean;
+	isDownloading: boolean;
 }
 
 const initialState: IExpensesState = {
@@ -19,7 +21,8 @@ const initialState: IExpensesState = {
 	expenses: JSON.parse(localStorage.getItem('expenses')) ?? [],
 	isLoading: false,
 	isSaving: false,
-	wasSuccessful: false
+	wasSuccessful: false,
+	isDownloading: false
 };
 
 function updateLocalStorage(state: IExpensesState) {
@@ -89,6 +92,16 @@ const slice = createSlice({
 			.addCase(deleteExpense.rejected, state => {
 				state.isSaving = false;
 			})
+
+			.addCase(downloadExpenses.pending, state => {
+				state.isDownloading = true;
+			})
+			.addCase(downloadExpenses.fulfilled, state => {
+				state.isDownloading = false;
+			})
+			.addCase(downloadExpenses.rejected, state => {
+				state.isDownloading = false;
+			})
 });
 
 export const expensesSlice = {
@@ -97,6 +110,7 @@ export const expensesSlice = {
 		...slice.actions,
 		refreshExpenses,
 		saveExpense,
-		deleteExpense
+		deleteExpense,
+		downloadExpenses
 	}
 };

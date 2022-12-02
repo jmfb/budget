@@ -36,3 +36,13 @@ export const deletePendingItem = createAsyncThunk(
 		return await hub.deletePendingItem(accessToken, id);
 	}
 );
+
+export const downloadPendingItems = createAsyncThunk(
+	'pendingItems/downloadPendingItems',
+	async (request, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.downloadPendingItems(accessToken);
+	}
+);

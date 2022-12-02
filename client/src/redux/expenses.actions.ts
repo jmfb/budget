@@ -36,3 +36,13 @@ export const deleteExpense = createAsyncThunk(
 		return await hub.deleteExpense(accessToken, name);
 	}
 );
+
+export const downloadExpenses = createAsyncThunk(
+	'expenses/downloadExpenses',
+	async (request, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.downloadExpenses(accessToken);
+	}
+);

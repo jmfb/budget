@@ -1,4 +1,4 @@
-import { get, getOrDefault } from './hub';
+import { get, getOrDefault, download } from './hub';
 import { IExpense, IGetExpensesResponse } from '~/models';
 
 export async function getVersion(accessToken: string) {
@@ -35,6 +35,13 @@ export async function deleteExpense(accessToken: string, name: string) {
 	return await get<number>({
 		endpoint: `/api/expenses/${encodeURIComponent(name)}`,
 		method: 'DELETE',
+		accessToken
+	});
+}
+
+export async function downloadExpenses(accessToken: string) {
+	await download({
+		endpoint: '/api/expenses/download',
 		accessToken
 	});
 }
