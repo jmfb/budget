@@ -1,3 +1,6 @@
+import { saveAs } from 'file-saver';
+import { parse } from 'content-disposition';
+
 async function checkStatus(response: Response) {
 	const { status, statusText } = response;
 	if (status < 200 || status >= 300) {
@@ -7,14 +10,18 @@ async function checkStatus(response: Response) {
 	}
 }
 
-function getStandardHeaders(accessToken?: string) {
+function getHeaders(accept: string, accessToken?: string) {
 	return {
-		Accept: 'application/json',
+		Accept: accept,
 		'Content-Type': 'application/json',
 		...(accessToken === undefined
 			? {}
 			: { Authorization: `Bearer ${accessToken}` })
 	};
+}
+
+function getStandardHeaders(accessToken?: string) {
+	return getHeaders('application/json', accessToken);
 }
 
 function formatUri(endpoint: string, query?: Record<string, string>) {
@@ -64,4 +71,18 @@ export async function send(request: IFetchRequest) {
 		body: body ? JSON.stringify(body) : undefined
 	});
 	await checkStatus(response);
+}
+
+export async function download(request: IFetchRequest) {
+	const { endpoint, query, accessToken, method, body } = request;
+	const response = await fetch(formatUri(endpoint, query), {
+		method: method ?? 'GET',
+		headers: getHeaders('*/*', accessToken),
+		body: body ? JSON.stringify(body) : undefined
+	});
+	await checkStatus(response);
+	const {
+		parameters: { filename }
+	} = parse(response.headers.get('content-disposition'));
+	saveAs(await response.blob(), filename);
 }

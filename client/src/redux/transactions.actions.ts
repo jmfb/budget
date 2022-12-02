@@ -78,3 +78,13 @@ export const deleteTransaction = createAsyncThunk(
 		return await hub.deleteTransaction(accessToken, date, id);
 	}
 );
+
+export const downloadTransactions = createAsyncThunk(
+	'transactions/downloadTransactions',
+	async (request, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.downloadTransactions(accessToken);
+	}
+);

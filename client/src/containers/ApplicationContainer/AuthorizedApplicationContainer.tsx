@@ -65,6 +65,13 @@ const AsyncSignOutContainer = lazy(
 			/* webpackChunkName: 'SignOutContainer' */ '~/containers/SignOutContainer'
 		)
 );
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncAboutContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'AboutContainer' */ '~/containers/AboutContainer'
+		)
+);
 
 export interface IAuthorizedApplicationContainerProps {
 	indexModel: IIndexModel;
@@ -133,6 +140,10 @@ export function AuthorizedApplicationContainer({
 						<Route
 							path='/sign-out'
 							element={<AsyncSignOutContainer />}
+						/>
+						<Route
+							path='/about'
+							element={<AsyncAboutContainer />}
 						/>
 						<Route
 							path='*'

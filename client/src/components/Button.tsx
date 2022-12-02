@@ -1,4 +1,5 @@
 import React from 'react';
+import { IconType } from 'react-icons';
 import { LoadingIcon } from './LoadingIcon';
 import cx from 'classnames';
 import styles from './Button.module.css';
@@ -7,6 +8,7 @@ export type ButtonVariant = 'primary' | 'default' | 'danger';
 
 export interface IButtonProps {
 	className?: string;
+	icon?: IconType;
 	variant: ButtonVariant;
 	onClick?(): void;
 	children?: React.ReactNode;
@@ -17,6 +19,8 @@ export interface IButtonProps {
 
 export function Button({
 	className,
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	icon: Icon,
 	variant,
 	onClick,
 	children,
@@ -33,7 +37,11 @@ export function Button({
 				className
 			)}
 			disabled={isDisabled}>
-			<div className={cx({ [styles.processing]: isProcessing })}>
+			<div
+				className={cx(styles.children, {
+					[styles.processing]: isProcessing
+				})}>
+				{Icon && <Icon className={styles.icon} />}
 				{children}
 			</div>
 			{isProcessing && <LoadingIcon />}

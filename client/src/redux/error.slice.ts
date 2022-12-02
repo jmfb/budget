@@ -11,7 +11,8 @@ import {
 	getTransactions,
 	refreshTransactions,
 	saveTransaction,
-	deleteTransaction
+	deleteTransaction,
+	downloadTransactions
 } from './transactions.actions';
 import { IErrorReport } from '~/models';
 
@@ -139,6 +140,13 @@ const slice = createSlice({
 				setErrorState(
 					state,
 					'Deleting transaction',
+					action.error.message
+				);
+			})
+			.addCase(downloadTransactions.rejected, (state, action) => {
+				setErrorState(
+					state,
+					'Downloading transactions',
 					action.error.message
 				);
 			})

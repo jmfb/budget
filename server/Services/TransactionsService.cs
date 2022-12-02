@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Budget.Server.Models;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using CsvHelper;
 
 namespace Budget.Server.Services {
 	public interface ITransactionsService {
@@ -14,6 +17,7 @@ namespace Budget.Server.Services {
 		Task<Transaction> GetTransactionAsync(string date, int id, CancellationToken cancellationToken);
 		Task SaveTransactionAsync(Transaction transaction, CancellationToken cancellationToken);
 		Task DeleteTransactionAsync(string date, int id, CancellationToken cancellationToken);
+		Task<byte[]> ExportAsync(CancellationToken cancellationToken);
 	}
 
 	public class TransactionsService : ITransactionsService {
@@ -57,5 +61,17 @@ namespace Budget.Server.Services {
 
 		public async Task DeleteTransactionAsync(string date, int id, CancellationToken cancellationToken) =>
 			await Context.DeleteAsync(new Transaction { Date = date, Id = id }, cancellationToken);
+
+		public async Task<byte[]> ExportAsync(CancellationToken cancellationToken) {
+			var transactions = await Context
+				.ScanAsync<Transaction>(new List<ScanCondition>())
+				.GetRemainingAsync(cancellationToken);
+			using var memoryStream = new MemoryStream();
+			using var writer = new StreamWriter(memoryStream);
+			using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+			csv.WriteRecords(transactions);
+			writer.Flush();
+			return memoryStream.ToArray();
+		}
 	}
 }

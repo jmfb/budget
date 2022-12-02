@@ -46,11 +46,11 @@ export function Header() {
 				</div>
 				<div className={styles.right}>
 					<NavLink
-						to='/sign-out'
+						to='/about'
 						className={props =>
 							props.isActive ? styles.active : ''
 						}>
-						Sign Out
+						About
 					</NavLink>
 				</div>
 			</nav>

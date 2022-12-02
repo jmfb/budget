@@ -9,6 +9,7 @@
     <PackageReference Include="AWSSDK.Core" Version="3.7.13.14" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.5.10" />
     <PackageReference Include="AWSSDK.KeyManagementService" Version="3.7.4.34" />
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
   </ItemGroup>

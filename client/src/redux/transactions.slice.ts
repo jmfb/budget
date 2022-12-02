@@ -4,7 +4,8 @@ import {
 	getTransactions,
 	refreshTransactions,
 	saveTransaction,
-	deleteTransaction
+	deleteTransaction,
+	downloadTransactions
 } from './transactions.actions';
 import { dateService } from '~/services';
 
@@ -18,12 +19,14 @@ export interface ITransactionsState {
 	weeks: Record<string, IWeekState>;
 	isSaving: boolean;
 	wasSuccessful: boolean;
+	isDownloading: boolean;
 }
 
 const initialState: ITransactionsState = {
 	weeks: JSON.parse(localStorage.getItem('weeks')) ?? {},
 	isSaving: false,
-	wasSuccessful: false
+	wasSuccessful: false,
+	isDownloading: false
 };
 
 function updateLocalStorage(state: ITransactionsState) {
@@ -120,6 +123,16 @@ const slice = createSlice({
 			.addCase(deleteTransaction.rejected, state => {
 				state.isSaving = false;
 			})
+
+			.addCase(downloadTransactions.pending, state => {
+				state.isDownloading = true;
+			})
+			.addCase(downloadTransactions.fulfilled, state => {
+				state.isDownloading = false;
+			})
+			.addCase(downloadTransactions.rejected, state => {
+				state.isDownloading = false;
+			})
 });
 
 export const transactionsSlice = {
@@ -129,6 +142,7 @@ export const transactionsSlice = {
 		getTransactions,
 		refreshTransactions,
 		saveTransaction,
-		deleteTransaction
+		deleteTransaction,
+		downloadTransactions
 	}
 };

@@ -1,4 +1,4 @@
-import { get } from './hub';
+import { get, download } from './hub';
 import { ITransaction, IGetTransactionsResponse } from '~/models';
 
 export async function getVersion(accessToken: string, weekOf: string) {
@@ -35,6 +35,13 @@ export async function deleteTransaction(
 	return await get<number>({
 		endpoint: `/api/transactions/${date}/${id}`,
 		method: 'DELETE',
+		accessToken
+	});
+}
+
+export async function downloadTransactions(accessToken: string) {
+	await download({
+		endpoint: '/api/transactions/download',
 		accessToken
 	});
 }

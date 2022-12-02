@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -82,6 +83,18 @@ namespace Budget.Server.Api.Controllers {
 			var deleteTask = TransactionsService.DeleteTransactionAsync(date, id, cancellationToken);
 			await Task.WhenAll(versionTask, deleteTask);
 			return await versionTask;
+		}
+
+		[HttpGet("download")]
+		public async Task<IActionResult> DownloadAsync(
+			CancellationToken cancellationToken
+		) {
+			var transactions = await TransactionsService.ExportAsync(cancellationToken);
+			return File(
+				transactions,
+				"text/csv",
+				$"trasnactions_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.csv"
+			);
 		}
 	}
 }
