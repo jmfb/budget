@@ -216,9 +216,10 @@ export function parseBankRecord(record: string[]): IBankRecord {
 		account: record[1],
 		description: record[2],
 		checkNumber: record[3],
-		memo: record[4],
-		credit: Number.parseFloat(record[5]),
-		debit: Number.parseFloat(record[6]),
+		category: record[4],
+		memo: record[5],
+		credit: Number.parseFloat(record[6]),
+		debit: Number.parseFloat(record[7]),
 		rawText: record.join(',')
 	};
 }
@@ -239,14 +240,14 @@ export function parseCapitalOneRecord(record: string[]): ICapitalOneRecord {
 export function convertBankRecordToTransaction(
 	record: IBankRecord
 ): ITransaction {
-	const { date, description, debit, credit, rawText } = record;
+	const { date, description, category, debit, credit, rawText } = record;
 	return {
 		date,
 		id: 0,
 		source: TransactionSource.Bank,
 		rawText,
 		amount: -(credit || debit),
-		originalCategory: '',
+		originalCategory: category,
 		description,
 		category: '',
 		note: '',

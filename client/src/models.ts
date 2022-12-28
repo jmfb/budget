@@ -94,6 +94,7 @@ export interface IBankRecord {
 	account: string;
 	description: string;
 	checkNumber: string;
+	category: string;
 	memo: string;
 	credit: number;
 	debit: number;
