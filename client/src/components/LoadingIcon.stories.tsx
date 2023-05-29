@@ -1,6 +1,6 @@
 import React from 'react';
 import { LoadingIcon } from './LoadingIcon';
-import '~/index.css';
+import '~/index.module.css';
 
 export default {
 	title: 'Components/LoadingIcon',

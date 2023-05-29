@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageLoading, IPageLoadingProps } from './PageLoading';
-import '~/index.css';
+import '~/index.module.css';
 
 export default {
 	title: 'Components/PageLoading',

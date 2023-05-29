@@ -12,7 +12,7 @@ module.exports = {
 		sourceType: 'module'
 	},
 	plugins: ['@typescript-eslint', '@typescript-eslint/tslint'],
-	extends: ['prettier'],
+	extends: ['prettier', 'plugin:storybook/recommended'],
 	rules: {
 		semi: 'off',
 		camelcase: 'off',

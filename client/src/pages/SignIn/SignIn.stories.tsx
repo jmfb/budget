@@ -1,6 +1,6 @@
 import React from 'react';
 import { SignIn, ISignInProps } from './SignIn';
-import '~/index.css';
+import '~/index.module.css';
 
 export default {
 	title: 'Pages/SignIn/Page',

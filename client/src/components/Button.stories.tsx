@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, IButtonProps } from './Button';
-import '~/index.css';
+import '~/index.module.css';
 
 export default {
 	title: 'Components/Button',

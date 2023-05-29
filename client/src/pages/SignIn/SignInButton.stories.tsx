@@ -1,6 +1,6 @@
 import React from 'react';
 import { SignInButton, ISignInButtonProps } from './SignInButton';
-import '~/index.css';
+import '~/index.module.css';
 
 export default {
 	title: 'Pages/SignIn/SignInButton',

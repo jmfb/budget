@@ -3,7 +3,7 @@ import {
 	NewerVersionPrompt,
 	INewerVersionPromptProps
 } from './NewerVersionPrompt';
-import '~/index.css';
+import '~/index.module.css';
 
 export default {
 	title: 'Containers/Application/NewerVersionPrompt',

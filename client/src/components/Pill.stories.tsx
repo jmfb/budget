@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pill, IPillProps } from './Pill';
-import '~/index.css';
+import '~/index.module.css';
 
 export default {
 	title: 'Components/Pill',

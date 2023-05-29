@@ -1,6 +1,6 @@
 import React from 'react';
 import { ErrorView, IErrorViewProps } from './ErrorView';
-import '~/index.css';
+import '~/index.module.css';
 
 export default {
 	title: 'Pages/ErrorView/Page',
