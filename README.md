@@ -93,3 +93,27 @@ cd client
 ... (review images to delete) ...
 > delete
 ```
+
+## Maintenance
+
+### Server
+
+You should run the following commands to ensure your pacakge references are up to date:
+
+```PowerShell
+dotnet list package --outdate
+...
+dotnet add package <PACKAGE-NAME>
+dotnet add package <PACKAGE-NAME> --version <VERSION>
+...
+```
+
+### Client
+
+You should run the following commands to ensure your package references are up to date:
+
+```PowerShell
+yarn upgrade-interactive
+```
+
+You may occasionally need to delete caniuse-lite from the yarn lock file in order to pull in the latest version.
