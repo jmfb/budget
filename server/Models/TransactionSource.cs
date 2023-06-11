@@ -1,6 +1,6 @@
-namespace Budget.Server.Models {
-	public enum TransactionSource {
-		Bank = 0,
-		CapitalOne = 1
-	}
+namespace Budget.Server.Models;
+
+public enum TransactionSource {
+	Bank = 0,
+	CapitalOne = 1
 }

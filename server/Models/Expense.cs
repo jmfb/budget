@@ -1,21 +1,21 @@
 using Amazon.DynamoDBv2.DataModel;
 
-namespace Budget.Server.Models {
-	[DynamoDBTable("budget-expenses")]
-	public class Expense {
-		[DynamoDBHashKey]
-		public string Name { get; set; }
+namespace Budget.Server.Models;
 
-		[DynamoDBProperty]
-		public decimal Amount { get; set; }
+[DynamoDBTable("budget-expenses")]
+public class Expense {
+	[DynamoDBHashKey]
+	public string Name { get; set; }
 
-		[DynamoDBProperty]
-		public string Category { get; set; }
+	[DynamoDBProperty]
+	public decimal Amount { get; set; }
 
-		[DynamoDBProperty]
-		public int MonthsInterval { get; set; }
+	[DynamoDBProperty]
+	public string Category { get; set; }
 
-		[DynamoDBProperty]
-		public bool IsDistributed { get; set; }
-	}
+	[DynamoDBProperty]
+	public int MonthsInterval { get; set; }
+
+	[DynamoDBProperty]
+	public bool IsDistributed { get; set; }
 }

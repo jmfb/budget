@@ -6,24 +6,24 @@ using Amazon.Lambda.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 
-namespace Budget.Server {
-	public class LambdaEntryPoint : APIGatewayProxyFunction {
-		protected override void Init(IWebHostBuilder builder) {
-			RegisterBinaryContentTypes();
-			builder
-				.UseContentRoot(Directory.GetCurrentDirectory())
-				.UseStartup<Startup>()
-				.UseLambdaServer();
-		}
+namespace Budget.Server;
 
-		private readonly IEnumerable<string> binaryContentTypes = new[] {
-			"image/x-icon",
-			"image/png"
-		};
+public class LambdaEntryPoint : APIGatewayProxyFunction {
+	protected override void Init(IWebHostBuilder builder) {
+		RegisterBinaryContentTypes();
+		builder
+			.UseContentRoot(Directory.GetCurrentDirectory())
+			.UseStartup<Startup>()
+			.UseLambdaServer();
+	}
 
-		private void RegisterBinaryContentTypes() {
-			foreach (var contentType in binaryContentTypes)
-				RegisterResponseContentEncodingForContentType(contentType, ResponseContentEncoding.Base64);
-		}
+	private readonly IEnumerable<string> binaryContentTypes = new[] {
+		"image/x-icon",
+		"image/png"
+	};
+
+	private void RegisterBinaryContentTypes() {
+		foreach (var contentType in binaryContentTypes)
+			RegisterResponseContentEncodingForContentType(contentType, ResponseContentEncoding.Base64);
 	}
 }
