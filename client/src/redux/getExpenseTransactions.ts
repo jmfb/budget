@@ -22,12 +22,15 @@ export const getExpenseTransactions = createSelector(
 	transactions =>
 		transactions
 			.filter(transaction => !!transaction.expenseName)
-			.reduce((map, transaction) => {
-				if (map[transaction.expenseName]) {
-					map[transaction.expenseName].push(transaction);
-				} else {
-					map[transaction.expenseName] = [transaction];
-				}
-				return map;
-			}, {} as Record<string, ITransaction[]>)
+			.reduce(
+				(map, transaction) => {
+					if (map[transaction.expenseName]) {
+						map[transaction.expenseName].push(transaction);
+					} else {
+						map[transaction.expenseName] = [transaction];
+					}
+					return map;
+				},
+				{} as Record<string, ITransaction[]>
+			)
 );

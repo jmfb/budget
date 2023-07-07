@@ -60,15 +60,18 @@ export function Transactions({
 					!transaction.incomeName &&
 					!transaction.category)
 		)
-		.reduce((map, transaction) => {
-			const grouping = map[transaction.date];
-			if (grouping === undefined) {
-				map[transaction.date] = [transaction];
-			} else {
-				grouping.push(transaction);
-			}
-			return map;
-		}, {} as Record<string, ITransaction[]>);
+		.reduce(
+			(map, transaction) => {
+				const grouping = map[transaction.date];
+				if (grouping === undefined) {
+					map[transaction.date] = [transaction];
+				} else {
+					grouping.push(transaction);
+				}
+				return map;
+			},
+			{} as Record<string, ITransaction[]>
+		);
 
 	const createEditClickedHandler = (transaction: ITransaction) => () => {
 		setShowEditor(true);

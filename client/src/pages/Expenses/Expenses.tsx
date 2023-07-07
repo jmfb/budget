@@ -59,15 +59,18 @@ export function Expenses({
 		return <PageLoading message='Loading expenses' />;
 	}
 
-	const expensesByCategory = expenses.reduce((map, expense) => {
-		const grouping = map[expense.category];
-		if (grouping === undefined) {
-			map[expense.category] = [expense];
-		} else {
-			grouping.push(expense);
-		}
-		return map;
-	}, {} as Record<string, IExpense[]>);
+	const expensesByCategory = expenses.reduce(
+		(map, expense) => {
+			const grouping = map[expense.category];
+			if (grouping === undefined) {
+				map[expense.category] = [expense];
+			} else {
+				grouping.push(expense);
+			}
+			return map;
+		},
+		{} as Record<string, IExpense[]>
+	);
 
 	const weeklyExpenses = budgetService.getWeeklyExpenses(expenses);
 	return (
