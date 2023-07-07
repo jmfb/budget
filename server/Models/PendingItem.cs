@@ -12,4 +12,13 @@ public class PendingItem {
 
 	[DynamoDBProperty]
 	public decimal Amount { get; set; }
+
+	[DynamoDBProperty]
+	public string Category { get; set; }
+
+	[DynamoDBProperty]
+	public string ExpenseName { get; set; }
+
+	[DynamoDBProperty]
+	public string IncomeName { get; set; }
 }

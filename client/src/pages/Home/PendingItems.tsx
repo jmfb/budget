@@ -3,11 +3,13 @@ import { MdAdd } from 'react-icons/md';
 import { Button } from '~/components';
 import { PendingItem } from './PendingItem';
 import { PendingItemEditor } from './PendingItemEditor';
-import { IPendingItem } from '~/models';
+import { IPendingItem, IIncome, IExpense } from '~/models';
 import { budgetService } from '~/services';
 import styles from './PendingItems.module.css';
 
 export interface IPendingItemsProps {
+	incomes: IIncome[];
+	expenses: IExpense[];
 	pendingItems: IPendingItem[];
 	isSavingPendingItem: boolean;
 	savingPendingItemSuccess: boolean;
@@ -17,6 +19,8 @@ export interface IPendingItemsProps {
 }
 
 export function PendingItems({
+	incomes,
+	expenses,
 	pendingItems,
 	isSavingPendingItem,
 	savingPendingItemSuccess,
@@ -96,6 +100,8 @@ export function PendingItems({
 			{isEditing && (
 				<PendingItemEditor
 					{...{
+						incomes,
+						expenses,
 						nextPendingItemId,
 						existingPendingItem,
 						isSavingPendingItem,

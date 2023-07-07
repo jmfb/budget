@@ -101,7 +101,7 @@ cd client
 You should run the following commands to ensure your pacakge references are up to date:
 
 ```PowerShell
-dotnet list package --outdate
+dotnet list package --outdated
 ...
 dotnet add package <PACKAGE-NAME>
 dotnet add package <PACKAGE-NAME> --version <VERSION>

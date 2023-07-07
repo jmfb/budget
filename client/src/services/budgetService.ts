@@ -52,7 +52,9 @@ export function getMonthlyExpense(expense: IExpense) {
 }
 
 export function getTotalPendingSpend(pendingItems: IPendingItem[]) {
-	return pendingItems.reduce((total, item) => total + item.amount, 0);
+	return pendingItems
+		.filter(item => !item.expenseName && !item.incomeName)
+		.reduce((total, item) => total + item.amount, 0);
 }
 
 export function round(value: number) {

@@ -75,23 +75,30 @@ export const mergeTransaction = createAsyncThunk(
 			if (existingTransaction === undefined) {
 				logs.push('No matching transaction found for date');
 				logs.push(JSON.stringify(dailyTransactions, null, 4));
-				const newTransaction = {
-					...transaction,
-					id:
-						Math.max(0, ...dailyTransactions.map(({ id }) => id)) +
-						1
-				};
-				dispatch(matchedTransaction(newTransaction));
-				await dispatch(saveTransaction(newTransaction));
 
 				const matchingPendingItem = pendingItems.find(
-					pendingItem => pendingItem.amount === newTransaction.amount
+					pendingItem => pendingItem.amount === transaction.amount
 				);
 				if (matchingPendingItem) {
 					logs.push('Found matching pending item');
 					logs.push(JSON.stringify(matchingPendingItem, null, 4));
 					await dispatch(deletePendingItem(matchingPendingItem));
 				}
+
+				const maxId = Math.max(
+					0,
+					...dailyTransactions.map(({ id }) => id)
+				);
+				const newTransaction = {
+					...transaction,
+					id: maxId + 1,
+					category: matchingPendingItem?.category ?? '',
+					expenseName: matchingPendingItem?.expenseName ?? '',
+					incomeName: matchingPendingItem?.incomeName ?? '',
+					note: matchingPendingItem?.name ?? ''
+				};
+				dispatch(matchedTransaction(newTransaction));
+				await dispatch(saveTransaction(newTransaction));
 			} else {
 				dispatch(matchedTransaction(existingTransaction));
 				logs.push('Skipping transaction');

@@ -102,6 +102,8 @@ export function Transactions({
 			{includePendingItems && (
 				<PendingItems
 					{...{
+						incomes,
+						expenses,
 						pendingItems,
 						isSavingPendingItem,
 						savingPendingItemSuccess,

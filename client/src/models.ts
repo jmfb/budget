@@ -74,6 +74,9 @@ export interface IPendingItem {
 	id: number;
 	name: string;
 	amount: number;
+	category: string;
+	expenseName: string;
+	incomeName: string;
 }
 
 export interface IGetPendingItemsResponse {
