@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Budget.Server.Models;
 using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
 using CsvHelper;
 
 namespace Budget.Server.Services;

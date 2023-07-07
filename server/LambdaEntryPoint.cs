@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Amazon.Lambda.AspNetCoreServer;
-using Amazon.Lambda.Core;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace Budget.Server;
 

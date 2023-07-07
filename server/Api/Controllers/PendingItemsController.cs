@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Budget.Server.Api.Models;
 using Budget.Server.Models;
 using Budget.Server.Services;
