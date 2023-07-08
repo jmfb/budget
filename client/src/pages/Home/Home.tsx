@@ -102,6 +102,7 @@ export function Home({
 							clearTransactionSave,
 							clearPendingItemSave
 						}}
+						variant='home'
 						transactions={week.transactions}
 					/>
 				</div>

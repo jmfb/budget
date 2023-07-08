@@ -302,3 +302,52 @@ export function isSameTransaction(first: ITransaction, second: ITransaction) {
 		isSameDescription(first.description, second.description)
 	);
 }
+
+export function matchesTransaction(
+	searchQuery: string,
+	transaction: ITransaction
+) {
+	const strings = [
+		transaction.category,
+		transaction.note,
+		transaction.incomeName,
+		transaction.expenseName,
+		transaction.description
+	];
+	const numbers = [transaction.amount];
+	return (
+		matchesStrings(searchQuery, strings) ||
+		matchesNumbers(searchQuery, numbers)
+	);
+}
+
+function matchesStrings(searchQuery: string, values: string[]) {
+	return values.some(value => matchesString(searchQuery, value));
+}
+
+function matchesString(searchQuery: string, value: string) {
+	if (!searchQuery) {
+		return true;
+	}
+	if (!value) {
+		return false;
+	}
+	return value.toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0;
+}
+
+function matchesNumbers(searchQuery: string, values: number[]) {
+	if (!searchQuery) {
+		return true;
+	}
+	const numberSearch = Number.parseFloat(searchQuery);
+	if (Number.isNaN(numberSearch)) {
+		return false;
+	}
+	return values.some(value => matchesNumber(numberSearch, value));
+}
+
+function matchesNumber(numberSearch: number, value: number) {
+	const lowerBound = Math.abs(value) - 1;
+	const upperBound = Math.abs(value) + 1;
+	return numberSearch >= lowerBound && numberSearch <= upperBound;
+}

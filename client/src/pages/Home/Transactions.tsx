@@ -7,6 +7,7 @@ import { ITransaction, IIncome, IExpense, IPendingItem } from '~/models';
 import styles from './Transactions.module.css';
 
 export interface ITransactionsProps {
+	variant: 'home' | 'search';
 	onlyShowNewItems: boolean;
 	transactions: ITransaction[];
 	incomes: IIncome[];
@@ -28,6 +29,7 @@ export interface ITransactionsProps {
 }
 
 export function Transactions({
+	variant,
 	onlyShowNewItems,
 	transactions,
 	incomes,
@@ -113,13 +115,15 @@ export function Transactions({
 					}}
 				/>
 			)}
-			<div className={styles.onlyShowNewItems}>
-				<Switch
-					checked={onlyShowNewItems}
-					onChange={setOnlyShowNewItems}>
-					Only show new items
-				</Switch>
-			</div>
+			{variant === 'home' && (
+				<div className={styles.onlyShowNewItems}>
+					<Switch
+						checked={onlyShowNewItems}
+						onChange={setOnlyShowNewItems}>
+						Only show new items
+					</Switch>
+				</div>
+			)}
 			{Object.keys(transactionsByDate)
 				.sort((a, b) => -a.localeCompare(b))
 				.map(date => (

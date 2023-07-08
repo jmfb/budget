@@ -6,3 +6,4 @@ export * from './Expenses';
 export * from './Uploads';
 export * from './Statistics';
 export * from './YearlyExpenses';
+export * from './Search';
