@@ -72,6 +72,13 @@ const AsyncAboutContainer = lazy(
 			/* webpackChunkName: 'AboutContainer' */ '~/containers/AboutContainer'
 		)
 );
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncSearchContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SearchContainer' */ '~/containers/SearchContainer'
+		)
+);
 
 export interface IAuthorizedApplicationContainerProps {
 	indexModel: IIndexModel;
@@ -144,6 +151,10 @@ export function AuthorizedApplicationContainer({
 						<Route
 							path='/about'
 							element={<AsyncAboutContainer />}
+						/>
+						<Route
+							path='/search'
+							element={<AsyncSearchContainer />}
 						/>
 						<Route
 							path='*'

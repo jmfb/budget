@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MdAdd } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { MdAdd, MdSearch } from 'react-icons/md';
 import { Button } from '~/components';
 import { PendingItem } from './PendingItem';
 import { PendingItemEditor } from './PendingItemEditor';
@@ -76,12 +77,16 @@ export function PendingItems({
 						{budgetService.format(totalAmount)}
 					</span>
 				)}
-				<Button
-					className={styles.addButton}
-					variant='primary'
-					onClick={handleAddPendingItem}>
-					<MdAdd className={styles.addIcon} />
-				</Button>
+				<div className={styles.buttons}>
+					<Link to='/search'>
+						<MdSearch className={styles.search} />
+					</Link>
+					<Button
+						variant='primary'
+						onClick={handleAddPendingItem}>
+						<MdAdd className={styles.addIcon} />
+					</Button>
+				</div>
 			</div>
 			{[...pendingItems]
 				.sort((a, b) => a.amount - b.amount)

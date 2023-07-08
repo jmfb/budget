@@ -8,8 +8,22 @@
 	margin-left: 1rem;
 }
 
-.addButton {
+.buttons {
 	margin-left: auto;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 1rem;
+}
+
+.buttons a {
+	display: contents;
+}
+
+.search {
+	width: 2rem;
+	height: 2rem;
+	color: black;
 }
 
 .addIcon {
