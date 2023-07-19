@@ -11,11 +11,6 @@ export interface ISearchProps {
 	expenses: IExpense[];
 	expenseTransactions: Record<string, ITransaction[]>;
 	transactions: ITransaction[];
-	isSavingTransaction: boolean;
-	savingTransactionSuccess: boolean;
-	saveTransaction(transaction: ITransaction): void;
-	deleteTransaction(transaction: ITransaction): void;
-	clearTransactionSave(): void;
 	onUpdateSearch(searchQuery: string): void;
 }
 
@@ -26,11 +21,6 @@ export function Search({
 	expenses,
 	expenseTransactions,
 	transactions,
-	isSavingTransaction,
-	savingTransactionSuccess,
-	saveTransaction,
-	deleteTransaction,
-	clearTransactionSave,
 	onUpdateSearch
 }: ISearchProps) {
 	if (isLoading) {
@@ -56,12 +46,7 @@ export function Search({
 					transactions,
 					incomes,
 					expenses,
-					expenseTransactions,
-					isSavingTransaction,
-					savingTransactionSuccess,
-					saveTransaction,
-					deleteTransaction,
-					clearTransactionSave
+					expenseTransactions
 				}}
 				variant='search'
 				onlyShowNewItems={false}

@@ -1,30 +1,13 @@
 import React, { useState } from 'react';
 import { Search } from '~/pages';
-import {
-	useAppSelector,
-	useActions,
-	getExpenseTransactions,
-	transactionsSlice
-} from '~/redux';
+import { useAppSelector, getExpenseTransactions } from '~/redux';
 import { budgetService } from '~/services';
 
 export default function SearchContainer() {
-	const {
-		saveTransaction,
-		deleteTransaction,
-		clearSave: clearTransactionSave
-	} = useActions(transactionsSlice);
-
 	const weeks = useAppSelector(state => state.transactions.weeks);
 	const incomes = useAppSelector(state => state.incomes.incomes);
 	const expenses = useAppSelector(state => state.expenses.expenses);
 	const expenseTransactions = useAppSelector(getExpenseTransactions);
-	const isSavingTransaction = useAppSelector(
-		state => state.transactions.isSaving
-	);
-	const savingTransactionSuccess = useAppSelector(
-		state => state.transactions.wasSuccessful
-	);
 
 	const [searchQuery, setSearchQuery] = useState('');
 
@@ -47,12 +30,7 @@ export default function SearchContainer() {
 				incomes,
 				expenses,
 				expenseTransactions,
-				transactions,
-				isSavingTransaction,
-				savingTransactionSuccess,
-				saveTransaction,
-				deleteTransaction,
-				clearTransactionSave
+				transactions
 			}}
 			onUpdateSearch={setSearchQuery}
 		/>

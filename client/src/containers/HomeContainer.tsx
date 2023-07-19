@@ -5,18 +5,12 @@ import {
 	useAppSelector,
 	budgetSlice,
 	pendingItemsSlice,
-	transactionsSlice,
 	getExpenseTransactions
 } from '~/redux';
 import { dateService } from '~/services';
 
 export default function HomeContainer() {
 	const { setOnlyShowNewItems } = useActions(budgetSlice);
-	const {
-		saveTransaction,
-		deleteTransaction,
-		clearSave: clearTransactionSave
-	} = useActions(transactionsSlice);
 	const {
 		savePendingItem,
 		deletePendingItem,
@@ -34,12 +28,6 @@ export default function HomeContainer() {
 		state => state.transactions.weeks
 	);
 	const expenseTransactions = useAppSelector(getExpenseTransactions);
-	const isSavingTransaction = useAppSelector(
-		state => state.transactions.isSaving
-	);
-	const savingTransactionSuccess = useAppSelector(
-		state => state.transactions.wasSuccessful
-	);
 	const isSavingPendingItem = useAppSelector(
 		state => state.pendingItems.isSaving
 	);
@@ -57,18 +45,13 @@ export default function HomeContainer() {
 				pendingItems,
 				weeklyTransactions,
 				expenseTransactions,
-				isSavingTransaction,
-				savingTransactionSuccess,
 				isSavingPendingItem,
 				savingPendingItemSuccess,
 				weekOf,
 				setWeekOf,
 				setOnlyShowNewItems,
-				saveTransaction,
-				deleteTransaction,
 				savePendingItem,
 				deletePendingItem,
-				clearTransactionSave,
 				clearPendingItemSave
 			}}
 		/>

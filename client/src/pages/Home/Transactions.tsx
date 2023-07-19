@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Switch } from '~/components';
 import { PendingItems } from './PendingItems';
 import { Transaction } from './Transaction';
-import { TransactionEditor } from './TransactionEditor';
+import { TransactionEditorContainer } from './TransactionEditorContainer';
 import { ITransaction, IIncome, IExpense, IPendingItem } from '~/models';
 import styles from './Transactions.module.css';
 
@@ -15,16 +15,11 @@ export interface ITransactionsProps {
 	pendingItems: IPendingItem[];
 	expenseTransactions: Record<string, ITransaction[]>;
 	includePendingItems: boolean;
-	isSavingTransaction: boolean;
-	savingTransactionSuccess: boolean;
 	isSavingPendingItem: boolean;
 	savingPendingItemSuccess: boolean;
 	setOnlyShowNewItems(value: boolean): void;
-	saveTransaction(transaction: ITransaction): void;
-	deleteTransaction(transaction: ITransaction): void;
 	savePendingItem(pendingItem: IPendingItem): void;
 	deletePendingItem(pendingItem: IPendingItem): void;
-	clearTransactionSave(): void;
 	clearPendingItemSave(): void;
 }
 
@@ -37,22 +32,16 @@ export function Transactions({
 	pendingItems,
 	expenseTransactions,
 	includePendingItems,
-	isSavingTransaction,
-	savingTransactionSuccess,
 	isSavingPendingItem,
 	savingPendingItemSuccess,
 	setOnlyShowNewItems,
-	saveTransaction,
-	deleteTransaction,
 	savePendingItem,
 	deletePendingItem,
-	clearTransactionSave,
 	clearPendingItemSave
 }: ITransactionsProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingTransaction, setExistingTransaction] =
 		useState<ITransaction>(null);
-	const [isSaving, setIsSaving] = useState(false);
 
 	const transactionsByDate = transactions
 		.filter(
@@ -80,24 +69,10 @@ export function Transactions({
 		setExistingTransaction(transaction);
 	};
 
-	const closeEditor = () => {
+	const handleCloseEditor = () => {
 		setShowEditor(false);
 		setExistingTransaction(null);
 	};
-
-	const handleSaveClicked = (updatedTransaction: ITransaction) => {
-		setIsSaving(true);
-		saveTransaction(updatedTransaction);
-	};
-
-	useEffect(() => {
-		if (!isSavingTransaction && isSaving) {
-			setIsSaving(false);
-			if (savingTransactionSuccess) {
-				closeEditor();
-			}
-		}
-	}, [isSaving, isSavingTransaction, savingTransactionSuccess]);
 
 	return (
 		<div>
@@ -149,18 +124,9 @@ export function Transactions({
 					</div>
 				))}
 			{showEditor && (
-				<TransactionEditor
-					{...{
-						incomes,
-						expenses,
-						isSavingTransaction,
-						savingTransactionSuccess,
-						deleteTransaction,
-						clearTransactionSave
-					}}
+				<TransactionEditorContainer
 					transaction={existingTransaction}
-					onSave={handleSaveClicked}
-					onCancel={closeEditor}
+					onClose={handleCloseEditor}
 				/>
 			)}
 		</div>
