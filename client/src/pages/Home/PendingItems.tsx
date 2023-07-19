@@ -1,40 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MdAdd, MdSearch } from 'react-icons/md';
 import { Button } from '~/components';
 import { PendingItem } from './PendingItem';
-import { PendingItemEditor } from './PendingItemEditor';
-import { IPendingItem, IIncome, IExpense } from '~/models';
+import { PendingItemEditorContainer } from './PendingItemEditorContainer';
+import { IPendingItem } from '~/models';
 import { budgetService } from '~/services';
+import { useAppSelector } from '~/redux';
 import styles from './PendingItems.module.css';
 
-export interface IPendingItemsProps {
-	incomes: IIncome[];
-	expenses: IExpense[];
-	pendingItems: IPendingItem[];
-	isSavingPendingItem: boolean;
-	savingPendingItemSuccess: boolean;
-	savePendingItem(pendingItem: IPendingItem): void;
-	deletePendingItem(pendingItem: IPendingItem): void;
-	clearPendingItemSave(): void;
-}
+export function PendingItems() {
+	const pendingItems = useAppSelector(
+		state => state.pendingItems.pendingItems
+	);
 
-export function PendingItems({
-	incomes,
-	expenses,
-	pendingItems,
-	isSavingPendingItem,
-	savingPendingItemSuccess,
-	savePendingItem,
-	deletePendingItem,
-	clearPendingItemSave
-}: IPendingItemsProps) {
 	const [isEditing, setIsEditing] = useState(false);
-	const [isSaving, setIsSaving] = useState(false);
 	const [existingPendingItem, setExistingPendingItem] =
 		useState<IPendingItem>(null);
-	const nextPendingItemId =
-		Math.max(0, ...pendingItems.map(item => item.id)) + 1;
 
 	const createEditClickedHandler = (pendingItem: IPendingItem) => () => {
 		setIsEditing(true);
@@ -46,25 +28,10 @@ export function PendingItems({
 		setExistingPendingItem(null);
 	};
 
-	const handleSaveClicked = (updatedPendingItem: IPendingItem) => {
-		setIsSaving(true);
-		savePendingItem(updatedPendingItem);
-	};
-
-	const handleCancelClicked = () => {
+	const handleCloseEditor = () => {
 		setIsEditing(false);
 		setExistingPendingItem(null);
 	};
-
-	useEffect(() => {
-		if (isSaving && !isSavingPendingItem) {
-			setIsSaving(false);
-			if (savingPendingItemSuccess) {
-				setIsEditing(false);
-			}
-			clearPendingItemSave();
-		}
-	}, [isSaving, isSavingPendingItem, savingPendingItemSuccess]);
 
 	const totalAmount = budgetService.getTotalPendingSpend(pendingItems);
 
@@ -103,19 +70,9 @@ export function PendingItems({
 				</div>
 			)}
 			{isEditing && (
-				<PendingItemEditor
-					{...{
-						incomes,
-						expenses,
-						nextPendingItemId,
-						existingPendingItem,
-						isSavingPendingItem,
-						savingPendingItemSuccess,
-						deletePendingItem,
-						clearPendingItemSave
-					}}
-					onSave={handleSaveClicked}
-					onCancel={handleCancelClicked}
+				<PendingItemEditorContainer
+					existingPendingItem={existingPendingItem}
+					onClose={handleCloseEditor}
 				/>
 			)}
 		</div>

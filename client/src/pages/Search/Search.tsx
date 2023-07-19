@@ -52,12 +52,6 @@ export function Search({
 				onlyShowNewItems={false}
 				setOnlyShowNewItems={undefined}
 				includePendingItems={false}
-				pendingItems={[]}
-				isSavingPendingItem={false}
-				savingPendingItemSuccess={false}
-				savePendingItem={undefined}
-				deletePendingItem={undefined}
-				clearPendingItemSave={undefined}
 			/>
 		</div>
 	);

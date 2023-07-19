@@ -16,14 +16,9 @@ export interface IHomeProps {
 	pendingItems: IPendingItem[];
 	weeklyTransactions: Record<string, IWeekState>;
 	expenseTransactions: Record<string, ITransaction[]>;
-	isSavingPendingItem: boolean;
-	savingPendingItemSuccess: boolean;
 	weekOf: string;
 	setWeekOf(value: string): void;
 	setOnlyShowNewItems(value: boolean): void;
-	savePendingItem(pendingItem: IPendingItem): void;
-	deletePendingItem(pendingItem: IPendingItem): void;
-	clearPendingItemSave(): void;
 }
 
 export function Home({
@@ -33,14 +28,9 @@ export function Home({
 	pendingItems,
 	weeklyTransactions,
 	expenseTransactions,
-	isSavingPendingItem,
-	savingPendingItemSuccess,
 	weekOf,
 	setWeekOf,
-	setOnlyShowNewItems,
-	savePendingItem,
-	deletePendingItem,
-	clearPendingItemSave
+	setOnlyShowNewItems
 }: IHomeProps) {
 	const week = weeklyTransactions[weekOf];
 	const isLoadingWeek = week === undefined || week.isLoading;
@@ -77,15 +67,9 @@ export function Home({
 							onlyShowNewItems,
 							incomes,
 							expenses,
-							pendingItems,
 							expenseTransactions,
 							includePendingItems,
-							isSavingPendingItem,
-							savingPendingItemSuccess,
-							setOnlyShowNewItems,
-							savePendingItem,
-							deletePendingItem,
-							clearPendingItemSave
+							setOnlyShowNewItems
 						}}
 						variant='home'
 						transactions={week.transactions}

@@ -3,7 +3,7 @@ import { Switch } from '~/components';
 import { PendingItems } from './PendingItems';
 import { Transaction } from './Transaction';
 import { TransactionEditorContainer } from './TransactionEditorContainer';
-import { ITransaction, IIncome, IExpense, IPendingItem } from '~/models';
+import { ITransaction, IIncome, IExpense } from '~/models';
 import styles from './Transactions.module.css';
 
 export interface ITransactionsProps {
@@ -12,15 +12,9 @@ export interface ITransactionsProps {
 	transactions: ITransaction[];
 	incomes: IIncome[];
 	expenses: IExpense[];
-	pendingItems: IPendingItem[];
 	expenseTransactions: Record<string, ITransaction[]>;
 	includePendingItems: boolean;
-	isSavingPendingItem: boolean;
-	savingPendingItemSuccess: boolean;
 	setOnlyShowNewItems(value: boolean): void;
-	savePendingItem(pendingItem: IPendingItem): void;
-	deletePendingItem(pendingItem: IPendingItem): void;
-	clearPendingItemSave(): void;
 }
 
 export function Transactions({
@@ -29,15 +23,9 @@ export function Transactions({
 	transactions,
 	incomes,
 	expenses,
-	pendingItems,
 	expenseTransactions,
 	includePendingItems,
-	isSavingPendingItem,
-	savingPendingItemSuccess,
-	setOnlyShowNewItems,
-	savePendingItem,
-	deletePendingItem,
-	clearPendingItemSave
+	setOnlyShowNewItems
 }: ITransactionsProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingTransaction, setExistingTransaction] =
@@ -76,20 +64,7 @@ export function Transactions({
 
 	return (
 		<div>
-			{includePendingItems && (
-				<PendingItems
-					{...{
-						incomes,
-						expenses,
-						pendingItems,
-						isSavingPendingItem,
-						savingPendingItemSuccess,
-						savePendingItem,
-						deletePendingItem,
-						clearPendingItemSave
-					}}
-				/>
-			)}
+			{includePendingItems && <PendingItems />}
 			{variant === 'home' && (
 				<div className={styles.onlyShowNewItems}>
 					<Switch
