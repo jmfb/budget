@@ -28,16 +28,14 @@ export default function AboutContainer() {
 	);
 	return (
 		<About
-			{...{
-				isDownloadingTransactions,
-				isDownloadingPendingItems,
-				isDownloadingExpenses,
-				isDownloadingIncomes,
-				downloadTransactions,
-				downloadPendingItems,
-				downloadExpenses,
-				downloadIncomes
-			}}
+			isDownloadingTransactions={isDownloadingTransactions}
+			isDownloadingPendingItems={isDownloadingPendingItems}
+			isDownloadingExpenses={isDownloadingExpenses}
+			isDownloadingIncomes={isDownloadingIncomes}
+			downloadTransactions={downloadTransactions}
+			downloadPendingItems={downloadPendingItems}
+			downloadExpenses={downloadExpenses}
+			downloadIncomes={downloadIncomes}
 		/>
 	);
 }

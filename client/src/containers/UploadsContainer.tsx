@@ -32,23 +32,21 @@ export default function UploadsContainer() {
 
 	return (
 		<Uploads
-			{...{
-				isReadingFile,
-				readingFileSuccess,
-				fileText,
-				isParsingCsv,
-				parsingCsvSuccess,
-				csvRecords,
-				isMergingTransaction,
-				mergingTransactionSuccess,
-				isLoading,
-				logs,
-				getAllText,
-				parseCsv,
-				mergeTransaction,
-				clearUpload,
-				clearLogs
-			}}
+			isReadingFile={isReadingFile}
+			readingFileSuccess={readingFileSuccess}
+			fileText={fileText}
+			isParsingCsv={isParsingCsv}
+			parsingCsvSuccess={parsingCsvSuccess}
+			csvRecords={csvRecords}
+			isMergingTransaction={isMergingTransaction}
+			mergingTransactionSuccess={mergingTransactionSuccess}
+			isLoading={isLoading}
+			logs={logs}
+			getAllText={getAllText}
+			parseCsv={parseCsv}
+			mergeTransaction={mergeTransaction}
+			clearUpload={clearUpload}
+			clearLogs={clearLogs}
 		/>
 	);
 }

@@ -33,7 +33,7 @@ export function NumberInput({ name, value, onChange }: INumberInputProps) {
 
 	return (
 		<Input
-			{...{ name }}
+			name={name}
 			type='number'
 			value={textValue}
 			onChange={handleTextChanged}

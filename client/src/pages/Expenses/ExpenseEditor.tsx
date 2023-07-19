@@ -106,7 +106,7 @@ export function ExpenseEditor({
 				</>
 			)}
 			<CategorySelect
-				{...{ category }}
+				category={category}
 				onChange={setCategory}
 			/>
 		</Modal>

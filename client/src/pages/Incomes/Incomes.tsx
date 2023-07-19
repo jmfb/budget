@@ -78,22 +78,18 @@ export function Incomes({
 				{incomes.map(income => (
 					<Income
 						key={income.name}
-						{...{
-							income,
-							isSavingIncome,
-							deleteIncome,
-							clearIncomeSave
-						}}
+						income={income}
+						isSavingIncome={isSavingIncome}
+						deleteIncome={deleteIncome}
+						clearIncomeSave={clearIncomeSave}
 						onEdit={createEditClickedHandler(income)}
 					/>
 				))}
 			</div>
 			{showEditor && (
 				<IncomeEditor
-					{...{
-						existingIncome,
-						isSavingIncome
-					}}
+					existingIncome={existingIncome}
+					isSavingIncome={isSavingIncome}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
 				/>

@@ -126,7 +126,7 @@ export function TransactionEditor({
 				{budgetService.format(amount)} on {date}
 			</div>
 			<CategorySelect
-				{...{ category }}
+				category={category}
 				autoFocus
 				onChange={setCategory}
 			/>
@@ -151,13 +151,15 @@ export function TransactionEditor({
 			)}
 			{showIncomeSelect && (
 				<IncomeSelect
-					{...{ incomes, incomeName }}
+					incomes={incomes}
+					incomeName={incomeName}
 					onChange={handleIncomeNameChanged}
 				/>
 			)}
 			{showExpenseSelect && (
 				<ExpenseSelect
-					{...{ expenses, expenseName }}
+					expenses={expenses}
+					expenseName={expenseName}
 					onChange={handleExpenseNameChanged}
 				/>
 			)}

@@ -28,12 +28,10 @@ export function Input({
 		<label className={styles.label}>
 			{name}
 			<input
-				{...{
-					value,
-					placeholder,
-					autoFocus,
-					onBlur
-				}}
+				value={value}
+				placeholder={placeholder}
+				autoFocus={autoFocus}
+				onBlur={onBlur}
 				className={styles.input}
 				type={type ?? 'text'}
 				onChange={handleChanged}

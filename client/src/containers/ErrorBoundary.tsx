@@ -76,11 +76,9 @@ class ErrorBoundary extends React.PureComponent<
 		if (showError || hasBoundaryError) {
 			return (
 				<ErrorView
-					{...{
-						action,
-						context,
-						message
-					}}
+					action={action}
+					context={context}
+					message={message}
 					onClickDismiss={this.handleDismissClicked}
 				/>
 			);

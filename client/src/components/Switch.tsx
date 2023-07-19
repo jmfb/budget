@@ -12,7 +12,8 @@ export function Switch({ children, checked, onChange }: ISwitchProps) {
 	return (
 		<label className={styles.label}>
 			<ReactSwitch
-				{...{ checked, onChange }}
+				checked={checked}
+				onChange={onChange}
 				onColor='#2a6ce5'
 				height={16}
 				width={32}

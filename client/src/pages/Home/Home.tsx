@@ -40,21 +40,17 @@ export function Home({
 		<>
 			<div className={cx('responsive', styles.fixedTop)}>
 				<WeekView
-					{...{
-						weekOf,
-						weeklyTransactions,
-						setWeekOf
-					}}
+					weekOf={weekOf}
+					weeklyTransactions={weeklyTransactions}
+					setWeekOf={setWeekOf}
 				/>
 				{isLoadingWeek ? (
 					<PageLoading message='Loading transactions...' />
 				) : (
 					<BudgetView
-						{...{
-							incomes,
-							expenses,
-							expenseTransactions
-						}}
+						incomes={incomes}
+						expenses={expenses}
+						expenseTransactions={expenseTransactions}
 						pendingItems={includePendingItems ? pendingItems : []}
 						transactions={week.transactions}
 					/>
@@ -63,14 +59,12 @@ export function Home({
 			{!isLoadingWeek && (
 				<div className={styles.scrollingBottom}>
 					<Transactions
-						{...{
-							onlyShowNewItems,
-							incomes,
-							expenses,
-							expenseTransactions,
-							includePendingItems,
-							setOnlyShowNewItems
-						}}
+						onlyShowNewItems={onlyShowNewItems}
+						incomes={incomes}
+						expenses={expenses}
+						expenseTransactions={expenseTransactions}
+						includePendingItems={includePendingItems}
+						setOnlyShowNewItems={setOnlyShowNewItems}
 						variant='home'
 						transactions={week.transactions}
 					/>

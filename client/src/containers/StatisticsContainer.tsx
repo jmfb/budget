@@ -18,13 +18,11 @@ export default function StatisticsContainer() {
 
 	return (
 		<Statistics
-			{...{
-				incomes,
-				expenses,
-				pendingItems,
-				weeks,
-				expenseTransactions
-			}}
+			incomes={incomes}
+			expenses={expenses}
+			pendingItems={pendingItems}
+			weeks={weeks}
+			expenseTransactions={expenseTransactions}
 		/>
 	);
 }

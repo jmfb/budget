@@ -36,13 +36,11 @@ export default function YearlyExpensesContainer() {
 
 	return (
 		<YearlyExpenses
-			{...{
-				expense,
-				yearlyExpenses,
-				isSavingExpense,
-				savingExpenseSuccess,
-				saveExpense
-			}}
+			expense={expense}
+			yearlyExpenses={yearlyExpenses}
+			isSavingExpense={isSavingExpense}
+			savingExpenseSuccess={savingExpenseSuccess}
+			saveExpense={saveExpense}
 		/>
 	);
 }

@@ -17,10 +17,11 @@ export function ExpenseBudget({ expense, total }: IExpenseBudgetProps) {
 			to={`/yearly-expenses/${encodeURIComponent(expense.name)}`}>
 			Remaining {expense.name} Budget
 			<span
-				className={cx(styles.net, {
-					[styles.gain]: expense.amount >= total,
-					[styles.loss]: expense.amount < total
-				})}>
+				className={cx(
+					styles.net,
+					expense.amount >= total && styles.gain,
+					expense.amount < total && styles.loss
+				)}>
 				{budgetService.format(Math.abs(expense.amount - total))}
 			</span>
 		</Link>

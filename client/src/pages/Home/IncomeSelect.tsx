@@ -32,7 +32,7 @@ export function IncomeSelect({
 			<Select
 				isClearable
 				placeholder='Select income...'
-				{...{ options }}
+				options={options}
 				value={selectedOption}
 				onChange={handleChange}
 			/>

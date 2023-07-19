@@ -26,7 +26,7 @@ export function SignInButton({
 			className={cx(
 				styles.root,
 				styles[type],
-				{ [styles.disabled]: isDisabled },
+				isDisabled && styles.disabled,
 				className
 			)}
 			onClick={handleClicked}

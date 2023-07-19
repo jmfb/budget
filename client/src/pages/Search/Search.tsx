@@ -42,12 +42,10 @@ export function Search({
 				</div>
 			)}
 			<Transactions
-				{...{
-					transactions,
-					incomes,
-					expenses,
-					expenseTransactions
-				}}
+				transactions={transactions}
+				incomes={incomes}
+				expenses={expenses}
+				expenseTransactions={expenseTransactions}
 				variant='search'
 				onlyShowNewItems={false}
 				setOnlyShowNewItems={undefined}

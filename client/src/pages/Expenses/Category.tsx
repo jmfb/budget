@@ -41,12 +41,10 @@ export function Category({
 				.map(expense => (
 					<Expense
 						key={expense.name}
-						{...{
-							expense,
-							isSavingExpense,
-							deleteExpense,
-							clearExpenseSave
-						}}
+						expense={expense}
+						isSavingExpense={isSavingExpense}
+						deleteExpense={deleteExpense}
+						clearExpenseSave={clearExpenseSave}
 						onEdit={createEditClickedHandler(expense)}
 					/>
 				))}

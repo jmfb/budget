@@ -162,10 +162,8 @@ export function AuthorizedApplicationContainer({
 						/>
 					</Routes>
 					<NewerVersionPrompt
-						{...{
-							bundleVersion,
-							serverBundleVersion
-						}}
+						bundleVersion={bundleVersion}
+						serverBundleVersion={serverBundleVersion}
 						onClickRefresh={handleRefreshClicked}
 					/>
 				</section>

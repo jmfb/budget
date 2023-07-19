@@ -60,7 +60,7 @@ export function PendingItems() {
 				.map(pendingItem => (
 					<PendingItem
 						key={pendingItem.id}
-						{...{ pendingItem }}
+						pendingItem={pendingItem}
 						onEdit={createEditClickedHandler(pendingItem)}
 					/>
 				))}

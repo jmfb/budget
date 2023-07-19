@@ -85,12 +85,10 @@ export function Transactions({
 							.map(transaction => (
 								<Transaction
 									key={transaction.id}
-									{...{
-										transaction,
-										incomes,
-										expenses,
-										expenseTransactions
-									}}
+									transaction={transaction}
+									incomes={incomes}
+									expenses={expenses}
+									expenseTransactions={expenseTransactions}
 									onEdit={createEditClickedHandler(
 										transaction
 									)}

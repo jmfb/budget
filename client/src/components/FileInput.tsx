@@ -29,7 +29,7 @@ export function FileInput({
 	return (
 		<label>
 			<input
-				{...{ accept }}
+				accept={accept}
 				className={styles.input}
 				type='file'
 				disabled={isDisabled}
@@ -40,7 +40,7 @@ export function FileInput({
 					buttonStyles.button,
 					buttonStyles[variant ?? 'default'],
 					styles.button,
-					{ [buttonStyles.processing]: isProcessing }
+					isProcessing && buttonStyles.processing
 				)}>
 				{children}
 				{isProcessing && <LoadingIcon />}

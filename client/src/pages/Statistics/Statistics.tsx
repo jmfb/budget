@@ -66,11 +66,9 @@ export function Statistics({
 				{remainingBudgets.map((remainingBudget, index) => (
 					<Week
 						key={index}
-						{...{
-							remainingBudget,
-							maxUnderBudget,
-							maxOverBudget
-						}}
+						remainingBudget={remainingBudget}
+						maxUnderBudget={maxUnderBudget}
+						maxOverBudget={maxOverBudget}
 					/>
 				))}
 			</div>
@@ -121,7 +119,7 @@ export function Statistics({
 				.map(expense => (
 					<ExpenseBudget
 						key={expense.name}
-						{...{ expense }}
+						expense={expense}
 						total={budgetService.getTotal(
 							expenseTransactions[expense.name]
 						)}

@@ -122,12 +122,12 @@ export function YearlyExpenses({
 				.map(transaction => (
 					<ExpenseTransaction
 						key={transaction.id}
-						{...{ transaction }}
+						transaction={transaction}
 					/>
 				))}
 			{isEditing && (
 				<ExpenseEditor
-					{...{ isSavingExpense }}
+					isSavingExpense={isSavingExpense}
 					existingExpense={editingExpense}
 					onSave={handleEditSaved}
 					onCancel={handleEditCanceled}

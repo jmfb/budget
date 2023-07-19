@@ -12,13 +12,11 @@ export default function IncomesContainer() {
 
 	return (
 		<Incomes
-			{...{
-				incomes,
-				isSavingIncome,
-				savingIncomeSuccess,
-				saveIncome,
-				deleteIncome
-			}}
+			incomes={incomes}
+			isSavingIncome={isSavingIncome}
+			savingIncomeSuccess={savingIncomeSuccess}
+			saveIncome={saveIncome}
+			deleteIncome={deleteIncome}
 			clearIncomeSave={clearSave}
 		/>
 	);

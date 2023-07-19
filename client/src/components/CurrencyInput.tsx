@@ -43,7 +43,8 @@ export function CurrencyInput({
 
 	return (
 		<Input
-			{...{ name, autoFocus }}
+			name={name}
+			autoFocus={autoFocus}
 			value={textValue}
 			placeholder='0.00'
 			onChange={handleTextChanged}

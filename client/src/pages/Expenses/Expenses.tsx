@@ -93,12 +93,10 @@ export function Expenses({
 					.map(category => (
 						<Category
 							key={category}
-							{...{
-								category,
-								isSavingExpense,
-								deleteExpense,
-								clearExpenseSave
-							}}
+							category={category}
+							isSavingExpense={isSavingExpense}
+							deleteExpense={deleteExpense}
+							clearExpenseSave={clearExpenseSave}
 							expenses={expensesByCategory[category]}
 							onEditExpense={handleEditExpense}
 						/>
@@ -106,10 +104,8 @@ export function Expenses({
 			</div>
 			{showEditor && (
 				<ExpenseEditor
-					{...{
-						existingExpense,
-						isSavingExpense
-					}}
+					existingExpense={existingExpense}
+					isSavingExpense={isSavingExpense}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
 				/>

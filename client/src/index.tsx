@@ -36,7 +36,7 @@ function start() {
 	const indexModelJson = rootContainer.getAttribute('data-initial-state');
 	const indexModel: IIndexModel = JSON.parse(indexModelJson);
 	const rootElement = (
-		<Provider {...{ store }}>
+		<Provider store={store}>
 			<BrowserRouter>
 				<ErrorBoundaryContainer>
 					<Suspense fallback={<PageLoading />}>
@@ -53,7 +53,7 @@ function start() {
 								path='*'
 								element={
 									<AsyncApplicationContainer
-										{...{ indexModel }}
+										indexModel={indexModel}
 									/>
 								}
 							/>

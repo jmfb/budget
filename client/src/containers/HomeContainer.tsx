@@ -26,17 +26,15 @@ export default function HomeContainer() {
 
 	return (
 		<Home
-			{...{
-				onlyShowNewItems,
-				incomes,
-				expenses,
-				pendingItems,
-				weeklyTransactions,
-				expenseTransactions,
-				weekOf,
-				setWeekOf,
-				setOnlyShowNewItems
-			}}
+			onlyShowNewItems={onlyShowNewItems}
+			incomes={incomes}
+			expenses={expenses}
+			pendingItems={pendingItems}
+			weeklyTransactions={weeklyTransactions}
+			expenseTransactions={expenseTransactions}
+			weekOf={weekOf}
+			setWeekOf={setWeekOf}
+			setOnlyShowNewItems={setOnlyShowNewItems}
 		/>
 	);
 }

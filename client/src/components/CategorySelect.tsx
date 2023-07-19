@@ -50,7 +50,8 @@ export function CategorySelect({
 			<Creatable
 				isClearable
 				placeholder='Select category...'
-				{...{ options, autoFocus }}
+				options={options}
+				autoFocus={autoFocus}
 				value={selectedOption}
 				onChange={handleChange}
 			/>

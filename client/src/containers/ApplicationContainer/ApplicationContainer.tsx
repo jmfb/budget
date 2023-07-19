@@ -30,5 +30,5 @@ export default function ApplicationContainer({
 		return null;
 	}
 
-	return <AuthorizedApplicationContainer {...{ indexModel }} />;
+	return <AuthorizedApplicationContainer indexModel={indexModel} />;
 }

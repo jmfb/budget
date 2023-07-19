@@ -24,14 +24,12 @@ export default function SearchContainer() {
 
 	return (
 		<Search
-			{...{
-				searchQuery,
-				isLoading,
-				incomes,
-				expenses,
-				expenseTransactions,
-				transactions
-			}}
+			searchQuery={searchQuery}
+			isLoading={isLoading}
+			incomes={incomes}
+			expenses={expenses}
+			expenseTransactions={expenseTransactions}
+			transactions={transactions}
 			onUpdateSearch={setSearchQuery}
 		/>
 	);

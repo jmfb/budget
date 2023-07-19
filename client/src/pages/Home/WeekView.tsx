@@ -48,11 +48,12 @@ export function WeekView({
 					{daysOfWeek.map(dayOfWeek => (
 						<div
 							key={dayOfWeek.day}
-							className={cx(styles.dayOfWeek, {
-								[styles.past]: dayOfWeek.isPast,
-								[styles.today]: dayOfWeek.isToday,
-								[styles.future]: dayOfWeek.isFuture
-							})}>
+							className={cx(
+								styles.dayOfWeek,
+								dayOfWeek.isPast && styles.past,
+								dayOfWeek.isToday && styles.today,
+								dayOfWeek.isFuture && styles.future
+							)}>
 							<strong>{dayOfWeek.weekday}</strong>
 						</div>
 					))}
@@ -61,11 +62,12 @@ export function WeekView({
 					{daysOfWeek.map(dayOfWeek => (
 						<div
 							key={dayOfWeek.day}
-							className={cx(styles.dayOfWeek, {
-								[styles.past]: dayOfWeek.isPast,
-								[styles.today]: dayOfWeek.isToday,
-								[styles.future]: dayOfWeek.isFuture
-							})}>
+							className={cx(
+								styles.dayOfWeek,
+								dayOfWeek.isPast && styles.past,
+								dayOfWeek.isToday && styles.today,
+								dayOfWeek.isFuture && styles.future
+							)}>
 							{dayOfWeek.day}
 						</div>
 					))}

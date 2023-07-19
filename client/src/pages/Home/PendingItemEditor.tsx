@@ -164,19 +164,21 @@ export function PendingItemEditor({
 			)}
 			{showCategorySelect && (
 				<CategorySelect
-					{...{ category }}
+					category={category}
 					onChange={handleCategoryChanged}
 				/>
 			)}
 			{showIncomeSelect && (
 				<IncomeSelect
-					{...{ incomes, incomeName }}
+					incomes={incomes}
+					incomeName={incomeName}
 					onChange={handleIncomeNameChanged}
 				/>
 			)}
 			{showExpenseSelect && (
 				<ExpenseSelect
-					{...{ expenses, expenseName }}
+					expenses={expenses}
+					expenseName={expenseName}
 					onChange={handleExpenseNameChanged}
 				/>
 			)}

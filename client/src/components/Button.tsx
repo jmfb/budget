@@ -30,7 +30,8 @@ export function Button({
 }: IButtonProps) {
 	return (
 		<button
-			{...{ onClick, autoFocus }}
+			onClick={onClick}
+			autoFocus={autoFocus}
 			className={cx(
 				styles.button,
 				styles[variant ?? 'default'],
@@ -38,9 +39,10 @@ export function Button({
 			)}
 			disabled={isDisabled}>
 			<div
-				className={cx(styles.children, {
-					[styles.processing]: isProcessing
-				})}>
+				className={cx(
+					styles.children,
+					isProcessing && styles.processing
+				)}>
 				{Icon && <Icon className={styles.icon} />}
 				{children}
 			</div>

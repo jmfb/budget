@@ -12,13 +12,11 @@ export default function ExpensesContainer() {
 
 	return (
 		<Expenses
-			{...{
-				expenses,
-				isSavingExpense,
-				savingExpenseSuccess,
-				saveExpense,
-				deleteExpense
-			}}
+			expenses={expenses}
+			isSavingExpense={isSavingExpense}
+			savingExpenseSuccess={savingExpenseSuccess}
+			saveExpense={saveExpense}
+			deleteExpense={deleteExpense}
 			clearExpenseSave={clearSave}
 		/>
 	);
