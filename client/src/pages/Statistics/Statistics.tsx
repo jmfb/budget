@@ -13,6 +13,7 @@ export interface IStatisticsProps {
 	expenses: IExpense[];
 	pendingItems: IPendingItem[];
 	weeks: IWeekState[];
+	allWeeksInYear: IWeekState[];
 	expenseTransactions: Record<string, ITransaction[]>;
 }
 
@@ -21,12 +22,14 @@ export function Statistics({
 	expenses,
 	pendingItems,
 	weeks,
+	allWeeksInYear,
 	expenseTransactions
 }: IStatisticsProps) {
 	const isLoading =
 		!incomes ||
 		!expenses ||
-		weeks.some(week => week === undefined || week.isLoading);
+		weeks.some(week => week === undefined || week.isLoading) ||
+		allWeeksInYear.some(week => week === undefined || week.isLoading);
 	if (isLoading) {
 		return <PageLoading message='Loading transactions' />;
 	}
@@ -59,6 +62,20 @@ export function Statistics({
 	const maxOverBudget = Math.min(0, ...remainingBudgets);
 	const netResult = totalRemainingBudget + totalExtraIncome;
 
+	const weekTotals = allWeeksInYear.map(
+		(week, index) =>
+			weeklyBudget -
+			budgetService.getTotalSpend(
+				week.transactions,
+				index === 0 ? pendingItems : [],
+				incomes,
+				expenses,
+				expenseTransactions
+			) +
+			budgetService.getExtraIncome(week.transactions, incomes, expenses)
+	);
+	const yearTotal = weekTotals.reduce((sum, amount) => sum + amount, 0);
+
 	return (
 		<div>
 			<h2 className={styles.h2}>Last {weeks.length} Weeks</h2>
@@ -74,7 +91,7 @@ export function Statistics({
 			</div>
 			{totalRemainingBudget >= 0 && (
 				<div className={styles.row}>
-					Total Under
+					Total Under (Last {weeks.length} Weeks)
 					<span className={styles.gain}>
 						{budgetService.format(totalRemainingBudget)}
 					</span>
@@ -82,9 +99,25 @@ export function Statistics({
 			)}
 			{totalRemainingBudget < 0 && (
 				<div className={styles.row}>
-					Total Over
+					Total Over (Last {weeks.length} Weeks)
 					<span className={styles.loss}>
 						{budgetService.format(-totalRemainingBudget)}
+					</span>
+				</div>
+			)}
+			{yearTotal >= 0 && (
+				<div className={styles.row}>
+					Total Under (Entire Year)
+					<span className={styles.gain}>
+						{budgetService.format(yearTotal)}
+					</span>
+				</div>
+			)}
+			{yearTotal < 0 && (
+				<div className={styles.row}>
+					Total Over (Entire Year)
+					<span className={styles.loss}>
+						{budgetService.format(-yearTotal)}
 					</span>
 				</div>
 			)}

@@ -15,6 +15,9 @@ export default function StatisticsContainer() {
 	);
 	const weeksOf = dateService.getStartOfLastXWeeks(12);
 	const weeks = weeksOf.map(weekOf => weeklyTransactions[weekOf]);
+	const allWeeksInYear = dateService
+		.getAllWeeksOfCurrentYear()
+		.map(weekOf => weeklyTransactions[weekOf]);
 
 	return (
 		<Statistics
@@ -22,6 +25,7 @@ export default function StatisticsContainer() {
 			expenses={expenses}
 			pendingItems={pendingItems}
 			weeks={weeks}
+			allWeeksInYear={allWeeksInYear}
 			expenseTransactions={expenseTransactions}
 		/>
 	);

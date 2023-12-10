@@ -39,6 +39,25 @@ export function getStartOfLastXWeeks(count: number) {
 	return result;
 }
 
+function isStartOfYearInWeekOf(year: number, weekOf: string) {
+	const startOfWeek = parse(weekOf);
+	if (startOfWeek.getFullYear() < year) {
+		return true;
+	}
+	return startOfWeek.getMonth() === 0 && startOfWeek.getDate() === 1;
+}
+
+export function getAllWeeksOfCurrentYear() {
+	const currentYear = getCurrentYear();
+	let weekOf = getStartOfCurrentWeek();
+	const result = [weekOf];
+	while (!isStartOfYearInWeekOf(currentYear, weekOf)) {
+		weekOf = addDays(weekOf, -7);
+		result.push(weekOf);
+	}
+	return result;
+}
+
 const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 export function getDaysOfWeek(weekOf: string): IDayOfWeek[] {
