@@ -14,13 +14,13 @@ language plpgsql security definer
 as $$ begin return query
 
 select
-	id,
-	year,
-	name,
-	amount,
-	category_id,
-	months_interval,
-	is_distributed
+	expenses.id,
+	expenses.year,
+	expenses.name,
+	expenses.amount,
+	expenses.category_id,
+	expenses.months_interval,
+	expenses.is_distributed
 from budget.expenses as expenses
 inner join budget.categories as categories
 	on categories.id = expenses.category_id

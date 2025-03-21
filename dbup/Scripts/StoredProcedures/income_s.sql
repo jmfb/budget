@@ -12,11 +12,11 @@ language plpgsql security definer
 as $$ begin return query
 
 select
-	id,
-	year,
-	name,
-	amount,
-	weeks_interval
+	incomes.id,
+	incomes.year,
+	incomes.name,
+	incomes.amount,
+	incomes.weeks_interval
 from budget.incomes as incomes
 where
 	incomes.id = p_id;
