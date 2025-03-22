@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using Budget.Server.Api.Models;
 using Budget.Server.Models;
 using Budget.Server.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Budget.Server.Api.Controllers;
 
+[Authorize]
 [Route("api/incomes")]
-public class IncomesController : AuthorizedController
+public class IncomesController : Controller
 {
 	private IIncomesService IncomesService { get; }
 	private IDataVersionsService DataVersionsService { get; }

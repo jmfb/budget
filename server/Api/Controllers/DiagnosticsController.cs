@@ -1,12 +1,14 @@
 using Budget.Server.Api.Models;
 using Budget.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace Budget.Server.Api.Controllers;
 
+[Authorize]
 [Route("api/diagnostics")]
-public class DiagnosticsController : AuthorizedController
+public class DiagnosticsController : Controller
 {
 	private AppSettings AppSettings { get; }
 

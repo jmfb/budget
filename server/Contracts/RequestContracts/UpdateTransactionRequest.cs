@@ -1,10 +1,10 @@
 using System;
+using Budget.Server.Contracts.DataContracts;
 
-namespace Budget.Server.Contracts.DataContracts;
+namespace Budget.Server.Contracts.RequestContracts;
 
-public class Transaction
+public class UpdateTransactionRequest
 {
-	public int Id { get; set; }
 	public DateOnly Date { get; set; }
 	public TransactionSource SourceId { get; set; }
 	public string RawText { get; set; }
