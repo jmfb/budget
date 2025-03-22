@@ -1,6 +1,3 @@
-using Amazon;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DataModel;
 using Budget.Server.Configuration;
 using Budget.Server.DAL;
 using Budget.Server.Models;
@@ -11,7 +8,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace Budget.Server;
 
@@ -32,36 +28,12 @@ public class Startup
 	public void ConfigureServices(IServiceCollection services)
 	{
 		var key = AppSettings.CreateKey();
-		services.Configure<AppSettings>(settings =>
-			settings.Configure(key, HostEnvironment.WebRootPath)
-		);
+		services.Configure<AppSettings>(settings => settings.Configure(key));
 		services.Configure<DatabaseOptions>(
 			Configuration.GetSection("Database")
 		);
 		services.AddHttpClient<IAuthenticationService, AuthenticationService>();
-		services.AddSingleton<AmazonDynamoDBClient>(provider =>
-			HostEnvironment.IsDevelopment()
-				? new AmazonDynamoDBClient(
-					new AmazonDynamoDBConfig
-					{
-						ServiceURL = "http://localhost:8000",
-					}
-				)
-				: new AmazonDynamoDBClient(
-					new AmazonDynamoDBConfig
-					{
-						RegionEndpoint = RegionEndpoint.USEast1,
-					}
-				)
-		);
-		services.AddSingleton<DynamoDBContext>(provider => new DynamoDBContext(
-			provider.GetRequiredService<AmazonDynamoDBClient>()
-		));
-		services.AddSingleton<IExpensesService, ExpensesService>();
-		services.AddSingleton<IIncomesService, IncomesService>();
-		services.AddSingleton<IPendingItemsService, PendingItemsService>();
-		services.AddSingleton<ITransactionsService, TransactionsService>();
-		services.AddSingleton<IDataVersionsService, DataVersionsService>();
+		services.AddSingleton<IDiagnosticDataBridge, DiagnosticDataBridge>();
 		services.AddSingleton<ICategoryDataBridge, CategoryDataBridge>();
 		services.AddSingleton<IIncomeDataBridge, IncomeDataBridge>();
 		services.AddSingleton<IExpenseDataBridge, ExpenseDataBridge>();
@@ -78,7 +50,6 @@ public class Startup
 	{
 		app.UseHsts();
 		app.UseHttpsRedirection();
-		app.UseStaticFiles(StaticFiles.Configure());
 		app.UseRouting();
 		app.UseAuthentication();
 		app.UseAuthorization();

@@ -1,4 +1,4 @@
-namespace Budget.Server.Api.Models;
+namespace Budget.Server.Contracts.DataContracts;
 
 public class SignedInModel
 {
