@@ -64,6 +64,7 @@ public class Startup
 		services.AddSingleton<IDataVersionsService, DataVersionsService>();
 		services.AddSingleton<ICategoryDataBridge, CategoryDataBridge>();
 		services.AddSingleton<IIncomeDataBridge, IncomeDataBridge>();
+		services.AddSingleton<IExpenseDataBridge, ExpenseDataBridge>();
 		services.AddControllers();
 		services
 			.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
