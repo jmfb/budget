@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading;
@@ -11,43 +12,56 @@ using Npgsql;
 
 namespace Budget.Server.DAL;
 
-public interface IExpenseDataBridge
+public interface ITransactionDataBridge
 {
-	Task<IReadOnlyCollection<Expense>> GetAllAsync(
-		int year,
+	Task<IReadOnlyCollection<Transaction>> GetAllAsync(
+		DateOnly startDateInclusive,
+		DateOnly endDateExclusive,
+		int skip,
+		int take,
 		CancellationToken cancellationToken
 	);
 
-	Task<Expense> GetAsync(int id, CancellationToken cancellationToken);
+	Task<Transaction> GetAsync(int id, CancellationToken cancellationToken);
 
 	Task<int> CreateAsync(
-		int year,
-		string name,
+		DateOnly date,
+		TransactionSource sourceId,
+		string rawText,
 		decimal amount,
-		int categoryId,
-		int monthsInterval,
-		bool isDistributed,
+		string originalCategory,
+		int? categoryId,
+		string note,
+		int? expenseId,
+		int? incomeId,
 		CancellationToken cancellationToken
 	);
 
 	Task UpdateAsync(
 		int id,
-		string name,
+		DateOnly date,
+		TransactionSource sourceId,
+		string rawText,
 		decimal amount,
-		int categoryId,
-		int monthsInterval,
-		bool isDistributed,
+		string originalCategory,
+		int? categoryId,
+		string note,
+		int? expenseId,
+		int? incomeId,
 		CancellationToken cancellationToken
 	);
 
 	Task DeleteAsync(int id, CancellationToken cancellationToken);
 }
 
-public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
-	: IExpenseDataBridge
+public class TransactionDataBridge(IOptions<DatabaseOptions> options)
+	: ITransactionDataBridge
 {
-	public async Task<IReadOnlyCollection<Expense>> GetAllAsync(
-		int year,
+	public async Task<IReadOnlyCollection<Transaction>> GetAllAsync(
+		DateOnly startDateInclusive,
+		DateOnly endDateExclusive,
+		int skip,
+		int take,
 		CancellationToken cancellationToken
 	)
 	{
@@ -55,10 +69,16 @@ public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
 			options.Value.ConnectionString
 		);
 		await connection.OpenAsync(cancellationToken);
-		var result = await connection.QueryAsync<Expense>(
+		var result = await connection.QueryAsync<Transaction>(
 			new CommandDefinition(
-				"budget.expenses_s",
-				new { p_year = year },
+				"budget.transactions_s",
+				new
+				{
+					p_start_date_inclusive = startDateInclusive,
+					p_end_date_exclusive = endDateExclusive,
+					p_skip = skip,
+					p_take = take,
+				},
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
 			)
@@ -66,7 +86,7 @@ public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
 		return result.AsList();
 	}
 
-	public async Task<Expense> GetAsync(
+	public async Task<Transaction> GetAsync(
 		int id,
 		CancellationToken cancellationToken
 	)
@@ -75,9 +95,9 @@ public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
 			options.Value.ConnectionString
 		);
 		await connection.OpenAsync(cancellationToken);
-		return await connection.QuerySingleOrDefaultAsync<Expense>(
+		return await connection.QuerySingleOrDefaultAsync<Transaction>(
 			new CommandDefinition(
-				"budget.expense_s",
+				"budget.transaction_s",
 				new { p_id = id },
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
@@ -86,12 +106,15 @@ public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
 	}
 
 	public async Task<int> CreateAsync(
-		int year,
-		string name,
+		DateOnly date,
+		TransactionSource sourceId,
+		string rawText,
 		decimal amount,
-		int categoryId,
-		int monthsInterval,
-		bool isDistributed,
+		string originalCategory,
+		int? categoryId,
+		string note,
+		int? expenseId,
+		int? incomeId,
 		CancellationToken cancellationToken
 	)
 	{
@@ -101,15 +124,18 @@ public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
 		await connection.OpenAsync(cancellationToken);
 		return await connection.QuerySingleAsync<int>(
 			new CommandDefinition(
-				"budget.expense_i",
+				"budget.transaction_i",
 				new
 				{
-					p_year = year,
-					p_name = name,
+					p_date = date,
+					p_source_id = sourceId,
+					p_raw_text = rawText,
 					p_amount = MoneyParameter.Create(amount),
+					p_original_category = originalCategory,
 					p_category_id = categoryId,
-					p_months_interval = monthsInterval,
-					p_is_distributed = isDistributed,
+					p_note = note,
+					p_expense_id = expenseId,
+					p_income_id = incomeId,
 				},
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
@@ -119,11 +145,15 @@ public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
 
 	public async Task UpdateAsync(
 		int id,
-		string name,
+		DateOnly date,
+		TransactionSource sourceId,
+		string rawText,
 		decimal amount,
-		int categoryId,
-		int monthsInterval,
-		bool isDistributed,
+		string originalCategory,
+		int? categoryId,
+		string note,
+		int? expenseId,
+		int? incomeId,
 		CancellationToken cancellationToken
 	)
 	{
@@ -133,15 +163,19 @@ public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
 		await connection.OpenAsync(cancellationToken);
 		await connection.ExecuteAsync(
 			new CommandDefinition(
-				"budget.expense_u",
+				"budget.transaction_u",
 				new
 				{
 					p_id = id,
-					p_name = name,
+					p_date = date,
+					p_source_id = sourceId,
+					p_raw_text = rawText,
 					p_amount = MoneyParameter.Create(amount),
+					p_original_category = originalCategory,
 					p_category_id = categoryId,
-					p_months_interval = monthsInterval,
-					p_is_distributed = isDistributed,
+					p_note = note,
+					p_expense_id = expenseId,
+					p_income_id = incomeId,
 				},
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
@@ -157,7 +191,7 @@ public class ExpenseDataBridge(IOptions<DatabaseOptions> options)
 		await connection.OpenAsync(cancellationToken);
 		await connection.ExecuteAsync(
 			new CommandDefinition(
-				"budget.expense_d",
+				"budget.transaction_d",
 				new { p_id = id },
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken

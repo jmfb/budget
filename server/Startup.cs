@@ -65,6 +65,8 @@ public class Startup
 		services.AddSingleton<ICategoryDataBridge, CategoryDataBridge>();
 		services.AddSingleton<IIncomeDataBridge, IncomeDataBridge>();
 		services.AddSingleton<IExpenseDataBridge, ExpenseDataBridge>();
+		services.AddSingleton<IPendingItemDataBridge, PendingItemDataBridge>();
+		services.AddSingleton<ITransactionDataBridge, TransactionDataBridge>();
 		services.AddControllers();
 		services
 			.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

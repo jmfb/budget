@@ -13,14 +13,14 @@ namespace Budget.Server.DAL;
 
 public interface IIncomeDataBridge
 {
-	Task<IReadOnlyCollection<Income>> GetIncomesAsync(
+	Task<IReadOnlyCollection<Income>> GetAllAsync(
 		int year,
 		CancellationToken cancellationToken
 	);
 
-	Task<Income> GetIncomeAsync(int id, CancellationToken cancellationToken);
+	Task<Income> GetAsync(int id, CancellationToken cancellationToken);
 
-	Task<int> CreateIncomeAsync(
+	Task<int> CreateAsync(
 		int year,
 		string name,
 		decimal amount,
@@ -28,7 +28,7 @@ public interface IIncomeDataBridge
 		CancellationToken cancellationToken
 	);
 
-	Task UpdateIncomeAsync(
+	Task UpdateAsync(
 		int id,
 		string name,
 		decimal amount,
@@ -36,13 +36,13 @@ public interface IIncomeDataBridge
 		CancellationToken cancellationToken
 	);
 
-	Task DeleteIncomeAsync(int id, CancellationToken cancellationToken);
+	Task DeleteAsync(int id, CancellationToken cancelloken);
 }
 
 public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 	: IIncomeDataBridge
 {
-	public async Task<IReadOnlyCollection<Income>> GetIncomesAsync(
+	public async Task<IReadOnlyCollection<Income>> GetAllAsync(
 		int year,
 		CancellationToken cancellationToken
 	)
@@ -62,7 +62,7 @@ public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 		return result.AsList();
 	}
 
-	public async Task<Income> GetIncomeAsync(
+	public async Task<Income> GetAsync(
 		int id,
 		CancellationToken cancellationToken
 	)
@@ -81,7 +81,7 @@ public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 		);
 	}
 
-	public async Task<int> CreateIncomeAsync(
+	public async Task<int> CreateAsync(
 		int year,
 		string name,
 		decimal amount,
@@ -109,7 +109,7 @@ public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 		);
 	}
 
-	public async Task UpdateIncomeAsync(
+	public async Task UpdateAsync(
 		int id,
 		string name,
 		decimal amount,
@@ -137,10 +137,7 @@ public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 		);
 	}
 
-	public async Task DeleteIncomeAsync(
-		int id,
-		CancellationToken cancellationToken
-	)
+	public async Task DeleteAsync(int id, CancellationToken cancellationToken)
 	{
 		await using var connection = new NpgsqlConnection(
 			options.Value.ConnectionString

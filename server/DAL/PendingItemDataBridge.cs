@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Budget.Server.DAL.Bindings;
 using Budget.Server.DAL.Models;
 using Budget.Server.Options;
 using Dapper;
@@ -10,31 +11,40 @@ using Npgsql;
 
 namespace Budget.Server.DAL;
 
-public interface ICategoryDataBridge
+public interface IPendingItemDataBridge
 {
-	Task<IReadOnlyCollection<Category>> GetAllAsync(
+	Task<IReadOnlyCollection<PendingItem>> GetAllAsync(
 		CancellationToken cancellationToken
 	);
 
-	Task<Category> GetAsync(int id, CancellationToken cancellationToken);
+	Task<PendingItem> GetAsync(int id, CancellationToken cancellationToken);
 
-	Task<int> CreateAsync(string name, CancellationToken cancellationToken);
+	Task<int> CreateAsync(
+		string name,
+		decimal amount,
+		int? categoryId,
+		int? expenseId,
+		int? incomeId,
+		CancellationToken cancellationToken
+	);
 
-	Task UpdateAsync(int id, string name, CancellationToken cancellationToken);
+	Task UpdateAsync(
+		int id,
+		string name,
+		decimal amount,
+		int? categoryId,
+		int? expenseId,
+		int? incomeId,
+		CancellationToken cancellationToken
+	);
 
 	Task DeleteAsync(int id, CancellationToken cancellationToken);
-
-	Task RetireAsync(
-		int retireId,
-		int replacementId,
-		CancellationToken cancellationToken
-	);
 }
 
-public class CategoryDataBridge(IOptions<DatabaseOptions> options)
-	: ICategoryDataBridge
+public class PendingItemDataBridge(IOptions<DatabaseOptions> options)
+	: IPendingItemDataBridge
 {
-	public async Task<IReadOnlyCollection<Category>> GetAllAsync(
+	public async Task<IReadOnlyCollection<PendingItem>> GetAllAsync(
 		CancellationToken cancellationToken
 	)
 	{
@@ -42,9 +52,9 @@ public class CategoryDataBridge(IOptions<DatabaseOptions> options)
 			options.Value.ConnectionString
 		);
 		await connection.OpenAsync(cancellationToken);
-		var result = await connection.QueryAsync<Category>(
+		var result = await connection.QueryAsync<PendingItem>(
 			new CommandDefinition(
-				"budget.categories_s",
+				"budget.pending_items_s",
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
 			)
@@ -52,7 +62,7 @@ public class CategoryDataBridge(IOptions<DatabaseOptions> options)
 		return result.AsList();
 	}
 
-	public async Task<Category> GetAsync(
+	public async Task<PendingItem> GetAsync(
 		int id,
 		CancellationToken cancellationToken
 	)
@@ -61,9 +71,9 @@ public class CategoryDataBridge(IOptions<DatabaseOptions> options)
 			options.Value.ConnectionString
 		);
 		await connection.OpenAsync(cancellationToken);
-		return await connection.QuerySingleOrDefaultAsync<Category>(
+		return await connection.QuerySingleOrDefaultAsync<PendingItem>(
 			new CommandDefinition(
-				"budget.category_s",
+				"budget.pending_item_s",
 				new { p_id = id },
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
@@ -73,6 +83,10 @@ public class CategoryDataBridge(IOptions<DatabaseOptions> options)
 
 	public async Task<int> CreateAsync(
 		string name,
+		decimal amount,
+		int? categoryId,
+		int? expenseId,
+		int? incomeId,
 		CancellationToken cancellationToken
 	)
 	{
@@ -82,8 +96,15 @@ public class CategoryDataBridge(IOptions<DatabaseOptions> options)
 		await connection.OpenAsync(cancellationToken);
 		return await connection.QuerySingleAsync<int>(
 			new CommandDefinition(
-				"budget.category_i",
-				new { p_name = name },
+				"budget.pending_item_i",
+				new
+				{
+					p_name = name,
+					p_amount = MoneyParameter.Create(amount),
+					p_category_id = categoryId,
+					p_expense_id = expenseId,
+					p_income_id = incomeId,
+				},
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
 			)
@@ -93,6 +114,10 @@ public class CategoryDataBridge(IOptions<DatabaseOptions> options)
 	public async Task UpdateAsync(
 		int id,
 		string name,
+		decimal amount,
+		int? categoryId,
+		int? expenseId,
+		int? incomeId,
 		CancellationToken cancellationToken
 	)
 	{
@@ -102,8 +127,16 @@ public class CategoryDataBridge(IOptions<DatabaseOptions> options)
 		await connection.OpenAsync(cancellationToken);
 		await connection.ExecuteAsync(
 			new CommandDefinition(
-				"budget.category_u",
-				new { p_id = id, p_name = name },
+				"budget.pending_item_u",
+				new
+				{
+					p_id = id,
+					p_name = name,
+					p_amount = MoneyParameter.Create(amount),
+					p_category_id = categoryId,
+					p_expense_id = expenseId,
+					p_income_id = incomeId,
+				},
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
 			)
@@ -118,32 +151,8 @@ public class CategoryDataBridge(IOptions<DatabaseOptions> options)
 		await connection.OpenAsync(cancellationToken);
 		await connection.ExecuteAsync(
 			new CommandDefinition(
-				"budget.category_d",
+				"budget.pending_item_d",
 				new { p_id = id },
-				commandType: CommandType.StoredProcedure,
-				cancellationToken: cancellationToken
-			)
-		);
-	}
-
-	public async Task RetireAsync(
-		int retireId,
-		int replacementId,
-		CancellationToken cancellationToken
-	)
-	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
-		await connection.OpenAsync(cancellationToken);
-		await connection.ExecuteAsync(
-			new CommandDefinition(
-				"budget.category_retire",
-				new
-				{
-					p_retire_id = retireId,
-					p_replacement_id = replacementId,
-				},
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
 			)

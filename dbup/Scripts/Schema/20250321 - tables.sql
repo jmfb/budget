@@ -108,7 +108,7 @@ create table budget.transactions (
 	amount money not null,
 	original_category text not null,
 	description text not null,
-	category_id int not null,
+	category_id int null,
 	note text not null,
 	expense_id int null,
 	income_id int null,
