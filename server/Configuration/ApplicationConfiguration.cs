@@ -1,5 +1,3 @@
-using System;
-using Dapper;
 using Microsoft.AspNetCore.Builder;
 
 namespace Budget.Server.Configuration;
@@ -8,9 +6,7 @@ public static class ApplicationConfiguration
 {
 	public static WebApplication Configure(this WebApplication app)
 	{
-		AppContext.SetSwitch("Npgsql.EnableStoredProcedureCompatMode", true);
-		DefaultTypeMap.MatchNamesWithUnderscores = true;
-
+		DapperConfiguration.Configure();
 		app.UsePathBase("/api");
 		app.UseCors(policy =>
 		{

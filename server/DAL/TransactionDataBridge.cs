@@ -74,8 +74,12 @@ public class TransactionDataBridge(IOptions<DatabaseOptions> options)
 				"budget.transactions_s",
 				new
 				{
-					p_start_date_inclusive = startDateInclusive,
-					p_end_date_exclusive = endDateExclusive,
+					p_start_date_inclusive = DateParameter.Create(
+						startDateInclusive
+					),
+					p_end_date_exclusive = DateParameter.Create(
+						endDateExclusive
+					),
 					p_skip = skip,
 					p_take = take,
 				},
@@ -127,7 +131,7 @@ public class TransactionDataBridge(IOptions<DatabaseOptions> options)
 				"budget.transaction_i",
 				new
 				{
-					p_date = date,
+					p_date = DateParameter.Create(date),
 					p_source_id = sourceId,
 					p_raw_text = rawText,
 					p_amount = MoneyParameter.Create(amount),
@@ -167,7 +171,7 @@ public class TransactionDataBridge(IOptions<DatabaseOptions> options)
 				new
 				{
 					p_id = id,
-					p_date = date,
+					p_date = DateParameter.Create(date),
 					p_source_id = sourceId,
 					p_raw_text = rawText,
 					p_amount = MoneyParameter.Create(amount),
