@@ -1,4 +1,4 @@
-namespace Budget.Server.DAL.Models;
+namespace Budget.Server.Contracts.DataContracts;
 
 public class Expense
 {

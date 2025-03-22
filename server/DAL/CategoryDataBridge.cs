@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Budget.Server.DAL.Models;
+using Budget.Server.Contracts.DataContracts;
 using Budget.Server.Options;
 using Dapper;
 using Microsoft.Extensions.Options;
