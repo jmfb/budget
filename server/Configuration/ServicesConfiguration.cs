@@ -1,36 +1,25 @@
-using Budget.Server.Configuration;
 using Budget.Server.DAL;
 using Budget.Server.Models;
 using Budget.Server.Options;
 using Budget.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Budget.Server;
+namespace Budget.Server.Configuration;
 
-public class Startup
+public static class ServicesConfiguration
 {
-	public IConfiguration Configuration { get; }
-	public IWebHostEnvironment HostEnvironment { get; }
-
-	public Startup(
-		IConfiguration configuration,
-		IWebHostEnvironment hostEnvironment
+	public static WebApplicationBuilder Configure(
+		this WebApplicationBuilder builder
 	)
 	{
-		Configuration = configuration;
-		HostEnvironment = hostEnvironment;
-	}
-
-	public void ConfigureServices(IServiceCollection services)
-	{
+		var services = builder.Services;
+		var configuration = builder.Configuration;
 		var key = AppSettings.CreateKey();
 		services.Configure<AppSettings>(settings => settings.Configure(key));
 		services.Configure<DatabaseOptions>(
-			Configuration.GetSection("Database")
+			configuration.GetSection("Database")
 		);
 		services.AddHttpClient<IAuthenticationService, AuthenticationService>();
 		services.AddSingleton<IDiagnosticDataBridge, DiagnosticDataBridge>();
@@ -43,16 +32,7 @@ public class Startup
 		services
 			.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			.AddJwtBearer(options => Authentication.Configure(options, key));
-		services.AddMvc();
-	}
-
-	public void Configure(IApplicationBuilder app)
-	{
-		app.UseHsts();
-		app.UseHttpsRedirection();
-		app.UseRouting();
-		app.UseAuthentication();
-		app.UseAuthorization();
-		app.UseEndpoints(Endpoints.Configure);
+		services.AddCors();
+		return builder;
 	}
 }
