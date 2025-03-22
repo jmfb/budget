@@ -62,6 +62,7 @@ public class Startup
 		services.AddSingleton<IPendingItemsService, PendingItemsService>();
 		services.AddSingleton<ITransactionsService, TransactionsService>();
 		services.AddSingleton<IDataVersionsService, DataVersionsService>();
+		services.AddSingleton<ICategoryDataBridge, CategoryDataBridge>();
 		services.AddSingleton<IIncomeDataBridge, IncomeDataBridge>();
 		services.AddControllers();
 		services
