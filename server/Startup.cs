@@ -2,7 +2,9 @@ using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Budget.Server.Configuration;
+using Budget.Server.DAL;
 using Budget.Server.Models;
+using Budget.Server.Options;
 using Budget.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +35,9 @@ public class Startup
 		services.Configure<AppSettings>(settings =>
 			settings.Configure(key, HostEnvironment.WebRootPath)
 		);
+		services.Configure<DatabaseOptions>(
+			Configuration.GetSection("Database")
+		);
 		services.AddHttpClient<IAuthenticationService, AuthenticationService>();
 		services.AddSingleton<AmazonDynamoDBClient>(provider =>
 			HostEnvironment.IsDevelopment()
@@ -57,6 +62,7 @@ public class Startup
 		services.AddSingleton<IPendingItemsService, PendingItemsService>();
 		services.AddSingleton<ITransactionsService, TransactionsService>();
 		services.AddSingleton<IDataVersionsService, DataVersionsService>();
+		services.AddSingleton<IIncomeDataBridge, IncomeDataBridge>();
 		services.AddControllers();
 		services
 			.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
