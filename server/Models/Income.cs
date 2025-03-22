@@ -3,7 +3,8 @@ using Amazon.DynamoDBv2.DataModel;
 namespace Budget.Server.Models;
 
 [DynamoDBTable("budget-incomes")]
-public class Income {
+public class Income
+{
 	[DynamoDBHashKey]
 	public string Name { get; set; }
 

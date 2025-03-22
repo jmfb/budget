@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Budget.Server;
 
-public class LambdaEntryPoint : APIGatewayProxyFunction {
-	protected override void Init(IWebHostBuilder builder) {
+public class LambdaEntryPoint : APIGatewayProxyFunction
+{
+	protected override void Init(IWebHostBuilder builder)
+	{
 		RegisterBinaryContentTypes();
 		builder
 			.UseContentRoot(Directory.GetCurrentDirectory())
@@ -14,13 +16,18 @@ public class LambdaEntryPoint : APIGatewayProxyFunction {
 			.UseLambdaServer();
 	}
 
-	private readonly IEnumerable<string> binaryContentTypes = new[] {
+	private readonly IEnumerable<string> binaryContentTypes = new[]
+	{
 		"image/x-icon",
-		"image/png"
+		"image/png",
 	};
 
-	private void RegisterBinaryContentTypes() {
+	private void RegisterBinaryContentTypes()
+	{
 		foreach (var contentType in binaryContentTypes)
-			RegisterResponseContentEncodingForContentType(contentType, ResponseContentEncoding.Base64);
+			RegisterResponseContentEncodingForContentType(
+				contentType,
+				ResponseContentEncoding.Base64
+			);
 	}
 }

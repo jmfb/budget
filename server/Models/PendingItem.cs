@@ -3,7 +3,8 @@ using Amazon.DynamoDBv2.DataModel;
 namespace Budget.Server.Models;
 
 [DynamoDBTable("budget-pending-items")]
-public class PendingItem {
+public class PendingItem
+{
 	[DynamoDBHashKey]
 	public int Id { get; set; }
 

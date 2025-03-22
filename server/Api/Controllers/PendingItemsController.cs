@@ -1,30 +1,31 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Budget.Server.Api.Models;
 using Budget.Server.Models;
 using Budget.Server.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Budget.Server.Api.Controllers;
 
 [Route("api/pending-items")]
-public class PendingItemsController : AuthorizedController {
+public class PendingItemsController : AuthorizedController
+{
 	private IPendingItemsService PendingItemsService { get; }
 	private IDataVersionsService DataVersionsService { get; }
 
 	public PendingItemsController(
 		IPendingItemsService pendingItemsService,
 		IDataVersionsService dataVersionsService
-	) {
+	)
+	{
 		PendingItemsService = pendingItemsService;
 		DataVersionsService = dataVersionsService;
 	}
 
 	[HttpGet("version")]
-	public async Task<long> GetVersionAsync(
-		CancellationToken cancellationToken
-	) {
+	public async Task<long> GetVersionAsync(CancellationToken cancellationToken)
+	{
 		return await DataVersionsService.GetVersionAsync(
 			DataVersionNames.PendingItems,
 			cancellationToken
@@ -34,16 +35,20 @@ public class PendingItemsController : AuthorizedController {
 	[HttpGet]
 	public async Task<GetPendingItemsResponse> GetPendingItemsAsync(
 		CancellationToken cancellationToken
-	) {
+	)
+	{
 		var versionTask = DataVersionsService.GetVersionAsync(
 			DataVersionNames.PendingItems,
 			cancellationToken
 		);
-		var pendingItemsTask = PendingItemsService.GetPendingItemsAsync(cancellationToken);
+		var pendingItemsTask = PendingItemsService.GetPendingItemsAsync(
+			cancellationToken
+		);
 		await Task.WhenAll(versionTask, pendingItemsTask);
-		return new() {
+		return new()
+		{
 			Version = await versionTask,
-			PendingItems = await pendingItemsTask
+			PendingItems = await pendingItemsTask,
 		};
 	}
 
@@ -51,9 +56,14 @@ public class PendingItemsController : AuthorizedController {
 	public async Task<IActionResult> GetPendingItemAsync(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
-	) {
-		var pendingItem = await PendingItemsService.GetPendingItemAsync(id, cancellationToken);
-		if (pendingItem == null) {
+	)
+	{
+		var pendingItem = await PendingItemsService.GetPendingItemAsync(
+			id,
+			cancellationToken
+		);
+		if (pendingItem == null)
+		{
 			return NotFound();
 		}
 		return Ok(pendingItem);
@@ -63,12 +73,16 @@ public class PendingItemsController : AuthorizedController {
 	public async Task<long> PutPendingItemAsync(
 		[FromBody] PendingItem pendingItem,
 		CancellationToken cancellationToken
-	) {
+	)
+	{
 		var versionTask = DataVersionsService.GetNewVersionAsync(
 			DataVersionNames.PendingItems,
 			cancellationToken
 		);
-		var saveTask = PendingItemsService.SavePendingItemAsync(pendingItem, cancellationToken);
+		var saveTask = PendingItemsService.SavePendingItemAsync(
+			pendingItem,
+			cancellationToken
+		);
 		await Task.WhenAll(versionTask, saveTask);
 		return await versionTask;
 	}
@@ -77,12 +91,16 @@ public class PendingItemsController : AuthorizedController {
 	public async Task<long> DeletePendingItemAsync(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
-	) {
+	)
+	{
 		var versionTask = DataVersionsService.GetNewVersionAsync(
 			DataVersionNames.PendingItems,
 			cancellationToken
 		);
-		var deleteTask = PendingItemsService.DeletePendingItemAsync(id, cancellationToken);
+		var deleteTask = PendingItemsService.DeletePendingItemAsync(
+			id,
+			cancellationToken
+		);
 		await Task.WhenAll(versionTask, deleteTask);
 		return await versionTask;
 	}
@@ -90,8 +108,11 @@ public class PendingItemsController : AuthorizedController {
 	[HttpGet("download")]
 	public async Task<IActionResult> DownloadAsync(
 		CancellationToken cancellationToken
-	) {
-		var pendingItems = await PendingItemsService.ExportAsync(cancellationToken);
+	)
+	{
+		var pendingItems = await PendingItemsService.ExportAsync(
+			cancellationToken
+		);
 		return File(
 			pendingItems,
 			"text/csv",

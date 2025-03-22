@@ -1,6 +1,7 @@
 namespace Budget.Server.DbUp;
 
-public enum Mode {
+public enum Mode
+{
 	Plan,
-	Apply
+	Apply,
 }
