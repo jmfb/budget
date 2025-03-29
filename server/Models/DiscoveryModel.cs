@@ -2,8 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Budget.Server.Models;
 
-public class DiscoveryModel
-{
+public class DiscoveryModel {
 	[JsonPropertyName("authorization_endpoint")]
 	public string AuthorizationEndpoint { get; set; }
 

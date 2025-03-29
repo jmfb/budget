@@ -1,0 +1,20 @@
+@model Budget.Server.Models.IndexModel
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="author" content="Jacob Buysse">
+		<meta name="description" content="Weekly Budget Tracking">
+		<title>Budget</title>
+		@foreach (var scriptChunk in Model.ScriptChunks) {
+			{<script defer src="@scriptChunk"></script>}
+		}
+		@foreach (var styleChunk in Model.StyleChunks) {
+			{<link href="@styleChunk" rel="stylesheet" />}
+		}
+	</head>
+	<body>
+		<div id="root" data-initial-state="@Model.ToJson()"></div>
+	</body>
+</html>

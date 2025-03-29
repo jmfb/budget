@@ -2,8 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Budget.Server.Models;
 
-public class UserInfoModel
-{
+public class UserInfoModel {
 	[JsonPropertyName("email")]
 	public string Email { get; set; }
 }
