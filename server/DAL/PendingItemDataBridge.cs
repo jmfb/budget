@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Budget.Server.Contracts.DataContracts;
 using Budget.Server.DAL.Bindings;
+using Budget.Server.Models;
 using Budget.Server.Options;
 using Dapper;
 using Microsoft.Extensions.Options;
@@ -41,16 +42,16 @@ public interface IPendingItemDataBridge
 	Task DeleteAsync(int id, CancellationToken cancellationToken);
 }
 
-public class PendingItemDataBridge(IOptions<DatabaseOptions> options)
-	: IPendingItemDataBridge
+public class PendingItemDataBridge(
+	IOptions<DatabaseOptions> options,
+	IOptions<AppSettings> appSettings
+) : BaseDataBridge(options.Value, appSettings.Value), IPendingItemDataBridge
 {
 	public async Task<IReadOnlyCollection<PendingItem>> GetAllAsync(
 		CancellationToken cancellationToken
 	)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		var result = await connection.QueryAsync<PendingItem>(
 			new CommandDefinition(
@@ -67,9 +68,7 @@ public class PendingItemDataBridge(IOptions<DatabaseOptions> options)
 		CancellationToken cancellationToken
 	)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		return await connection.QuerySingleOrDefaultAsync<PendingItem>(
 			new CommandDefinition(
@@ -90,9 +89,7 @@ public class PendingItemDataBridge(IOptions<DatabaseOptions> options)
 		CancellationToken cancellationToken
 	)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		return await connection.QuerySingleAsync<int>(
 			new CommandDefinition(
@@ -121,9 +118,7 @@ public class PendingItemDataBridge(IOptions<DatabaseOptions> options)
 		CancellationToken cancellationToken
 	)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		await connection.ExecuteAsync(
 			new CommandDefinition(
@@ -145,9 +140,7 @@ public class PendingItemDataBridge(IOptions<DatabaseOptions> options)
 
 	public async Task DeleteAsync(int id, CancellationToken cancellationToken)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		await connection.ExecuteAsync(
 			new CommandDefinition(

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Budget.Server.Contracts.DataContracts;
 using Budget.Server.DAL.Bindings;
+using Budget.Server.Models;
 using Budget.Server.Options;
 using Dapper;
 using Microsoft.Extensions.Options;
@@ -39,17 +40,17 @@ public interface IIncomeDataBridge
 	Task DeleteAsync(int id, CancellationToken cancelloken);
 }
 
-public class IncomeDataBridge(IOptions<DatabaseOptions> options)
-	: IIncomeDataBridge
+public class IncomeDataBridge(
+	IOptions<DatabaseOptions> options,
+	IOptions<AppSettings> appSettings
+) : BaseDataBridge(options.Value, appSettings.Value), IIncomeDataBridge
 {
 	public async Task<IReadOnlyCollection<Income>> GetAllAsync(
 		int year,
 		CancellationToken cancellationToken
 	)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		var result = await connection.QueryAsync<Income>(
 			new CommandDefinition(
@@ -67,9 +68,7 @@ public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 		CancellationToken cancellationToken
 	)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		return await connection.QuerySingleOrDefaultAsync<Income>(
 			new CommandDefinition(
@@ -89,9 +88,7 @@ public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 		CancellationToken cancellationToken
 	)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		return await connection.QuerySingleAsync<int>(
 			new CommandDefinition(
@@ -117,9 +114,7 @@ public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 		CancellationToken cancellationToken
 	)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		await connection.ExecuteAsync(
 			new CommandDefinition(
@@ -139,9 +134,7 @@ public class IncomeDataBridge(IOptions<DatabaseOptions> options)
 
 	public async Task DeleteAsync(int id, CancellationToken cancellationToken)
 	{
-		await using var connection = new NpgsqlConnection(
-			options.Value.ConnectionString
-		);
+		await using var connection = new NpgsqlConnection(ConnectionString);
 		await connection.OpenAsync(cancellationToken);
 		await connection.ExecuteAsync(
 			new CommandDefinition(
