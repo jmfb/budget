@@ -1,4 +1,4 @@
-create or replace function budget.diagnostics_s_20250318 ()
+create or replace function budget.diagnostics_s ()
 returns table (
 	start_time timestamp with time zone,
 	server_time timestamp with time zone,

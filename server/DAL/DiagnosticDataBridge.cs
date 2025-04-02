@@ -27,7 +27,7 @@ public class DiagnosticDataBridge(IOptions<DatabaseOptions> options)
 		await connection.OpenAsync(cancellationToken);
 		return await connection.QuerySingleAsync<DatabaseDiagnostics>(
 			new CommandDefinition(
-				"budget.diagnostics_s_20250318",
+				"budget.diagnostics_s",
 				commandType: CommandType.StoredProcedure,
 				cancellationToken: cancellationToken
 			)
