@@ -3,7 +3,6 @@ using Amazon;
 using Amazon.SecretsManager;
 using Amazon.SecretsManager.Extensions.Caching;
 using Budget.Server.DAL;
-using Budget.Server.Models;
 using Budget.Server.Options;
 using Budget.Server.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
