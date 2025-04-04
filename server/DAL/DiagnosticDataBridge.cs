@@ -17,8 +17,8 @@ public interface IDiagnosticDataBridge
 
 public class DiagnosticDataBridge(
 	IOptions<DatabaseOptions> options,
-	IOptions<AppSettings> appSettings
-) : BaseDataBridge(options.Value, appSettings.Value), IDiagnosticDataBridge
+	Secrets secrets
+) : BaseDataBridge(options.Value, secrets), IDiagnosticDataBridge
 {
 	public async Task<DatabaseDiagnostics> GetAsync(
 		CancellationToken cancellationToken

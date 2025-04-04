@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Budget.Server.Models;
 using Budget.Server.Options;
 
 namespace Budget.Server.DAL;
 
-public class BaseDataBridge(DatabaseOptions options, AppSettings appSettings)
+public class BaseDataBridge(DatabaseOptions options, Secrets secrets)
 {
 	protected string ConnectionString =>
 		string.Join(
@@ -16,7 +15,7 @@ public class BaseDataBridge(DatabaseOptions options, AppSettings appSettings)
 				["Port"] = options.Port,
 				["Database"] = "budget",
 				["User Id"] = options.UserName,
-				["Password"] = appSettings.DatabasePassword,
+				["Password"] = secrets.DatabasePassword,
 			}.Select(entry => $"{entry.Key}={entry.Value}")
 		);
 }

@@ -57,8 +57,8 @@ public interface ITransactionDataBridge
 
 public class TransactionDataBridge(
 	IOptions<DatabaseOptions> options,
-	IOptions<AppSettings> appSettings
-) : BaseDataBridge(options.Value, appSettings.Value), ITransactionDataBridge
+	Secrets secrets
+) : BaseDataBridge(options.Value, secrets), ITransactionDataBridge
 {
 	public async Task<IReadOnlyCollection<Transaction>> GetAllAsync(
 		DateOnly startDateInclusive,

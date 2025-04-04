@@ -34,8 +34,8 @@ public interface ICategoryDataBridge
 
 public class CategoryDataBridge(
 	IOptions<DatabaseOptions> options,
-	IOptions<AppSettings> appSettings
-) : BaseDataBridge(options.Value, appSettings.Value), ICategoryDataBridge
+	Secrets secrets
+) : BaseDataBridge(options.Value, secrets), ICategoryDataBridge
 {
 	public async Task<IReadOnlyCollection<Category>> GetAllAsync(
 		CancellationToken cancellationToken

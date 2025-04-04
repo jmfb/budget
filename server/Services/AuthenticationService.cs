@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using Budget.Server.Models;
-using Microsoft.Extensions.Options;
+using Budget.Server.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Budget.Server.Services;
@@ -40,15 +40,11 @@ public class AuthenticationService : IAuthenticationService
 	private SymmetricSecurityKey Key { get; }
 	private string ClientSecret { get; }
 
-	public AuthenticationService(
-		HttpClient httpClient,
-		IOptions<AppSettings> appSettingsAccessor
-	)
+	public AuthenticationService(HttpClient httpClient, Secrets secrets)
 	{
 		HttpClient = httpClient;
-		var appSettings = appSettingsAccessor.Value;
-		Key = appSettings.Key;
-		ClientSecret = appSettings.BudgetAuthClientSecret;
+		Key = secrets.Key;
+		ClientSecret = secrets.AuthClientSecret;
 	}
 
 	private async Task<DiscoveryModel> GetDiscoveryModelAsync()

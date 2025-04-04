@@ -46,8 +46,8 @@ public interface IExpenseDataBridge
 
 public class ExpenseDataBridge(
 	IOptions<DatabaseOptions> options,
-	IOptions<AppSettings> appSettings
-) : BaseDataBridge(options.Value, appSettings.Value), IExpenseDataBridge
+	Secrets secrets
+) : BaseDataBridge(options.Value, secrets), IExpenseDataBridge
 {
 	public async Task<IReadOnlyCollection<Expense>> GetAllAsync(
 		int year,

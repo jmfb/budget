@@ -42,8 +42,8 @@ public interface IIncomeDataBridge
 
 public class IncomeDataBridge(
 	IOptions<DatabaseOptions> options,
-	IOptions<AppSettings> appSettings
-) : BaseDataBridge(options.Value, appSettings.Value), IIncomeDataBridge
+	Secrets secrets
+) : BaseDataBridge(options.Value, secrets), IIncomeDataBridge
 {
 	public async Task<IReadOnlyCollection<Income>> GetAllAsync(
 		int year,

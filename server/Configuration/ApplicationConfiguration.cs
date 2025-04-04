@@ -6,6 +6,12 @@ public static class ApplicationConfiguration
 {
 	public static WebApplication Configure(this WebApplication app)
 	{
+		ConfigureApplication(app);
+		return app;
+	}
+
+	public static void ConfigureApplication(IApplicationBuilder app)
+	{
 		DapperConfiguration.Configure();
 		app.UsePathBase("/api");
 		app.UseCors(policy =>
@@ -15,8 +21,6 @@ public static class ApplicationConfiguration
 		app.UseRouting();
 		app.UseAuthentication();
 		app.UseAuthorization();
-		app.UseEndpoints(_ => { });
-		app.MapControllers();
-		return app;
+		app.UseEndpoints(endpoints => endpoints.MapControllers());
 	}
 }

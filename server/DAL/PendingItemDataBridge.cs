@@ -44,8 +44,8 @@ public interface IPendingItemDataBridge
 
 public class PendingItemDataBridge(
 	IOptions<DatabaseOptions> options,
-	IOptions<AppSettings> appSettings
-) : BaseDataBridge(options.Value, appSettings.Value), IPendingItemDataBridge
+	Secrets secrets
+) : BaseDataBridge(options.Value, secrets), IPendingItemDataBridge
 {
 	public async Task<IReadOnlyCollection<PendingItem>> GetAllAsync(
 		CancellationToken cancellationToken

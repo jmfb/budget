@@ -7,7 +7,7 @@ the budget project.
 
 ```PowerShell
 $Env:BudgetTokenSecret = "" # TODO: Set this from BitWarden
-$Env:DatabasePassword = "" # TODO: Set this from BitWarden
+$Env:BudgetDatabasePassword = "" # TODO: Set this from BitWarden
 dotnet run
 ```
 
