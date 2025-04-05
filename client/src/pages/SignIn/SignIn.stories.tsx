@@ -1,18 +1,18 @@
-import { SignIn, ISignInProps } from "./SignIn";
-import "~/index.module.css";
+import { Meta, StoryObj } from "@storybook/react";
+import { SignIn } from "./SignIn";
+import { fn } from "@storybook/test";
 
-export default {
-	title: "Pages/SignIn/Page",
+const meta = {
 	component: SignIn,
-};
+	args: {
+		isSigningIn: false,
+		onClickSignIn: fn(),
+	},
+} satisfies Meta<typeof SignIn>;
 
-function Template(props: ISignInProps) {
-	return <SignIn {...props} />;
-}
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
+export const standard: Story = {};
 
-export const SigningIn = Template.bind({});
-SigningIn.args = {
-	isSigningIn: true,
-};
+export const signingIn: Story = { args: { isSigningIn: true } };

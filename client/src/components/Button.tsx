@@ -9,7 +9,7 @@ export type ButtonVariant = "primary" | "default" | "danger";
 export interface IButtonProps {
 	className?: string;
 	icon?: IconType;
-	variant: ButtonVariant;
+	variant?: ButtonVariant;
 	onClick?(): void;
 	children?: ReactNode;
 	isDisabled?: boolean;

@@ -9,6 +9,7 @@
 		"build-prod": "vite build --mode prod",
 		"typescript": "tsc --watch --noEmit",
 		"typescript-ci": "tsc --noEmit",
+		"storybook": "storybook dev -p 6006",
 		"prettier-ci": "prettier --check .",
 		"prettier-write": "prettier --write .",
 		"lint-ci": "eslint './src/**/*.{js,jsx,ts,tsx}'"
@@ -34,6 +35,7 @@
 		"eslint": "^9.24.0",
 		"eslint-config-prettier": "^10.1.1",
 		"prettier": "^3.5.3",
+		"storybook": "^8.6.12",
 		"terser": "^5.39.0",
 		"ts-node": "^10.9.2",
 		"typescript": "5.8.3",

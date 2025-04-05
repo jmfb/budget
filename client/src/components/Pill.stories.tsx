@@ -1,30 +1,22 @@
-import { Pill, IPillProps } from "./Pill";
-import "~/index.module.css";
+import { Meta, StoryObj } from "@storybook/react";
+import { Pill } from "./Pill";
 
-export default {
-	title: "Components/Pill",
+const meta = {
 	component: Pill,
-};
+	render(props) {
+		return (
+			<span style={{ display: "inline-block" }}>
+				<Pill {...props}>Example</Pill>
+			</span>
+		);
+	},
+} satisfies Meta<typeof Pill>;
 
-function Template(props: IPillProps) {
-	return (
-		<span style={{ display: "inline-block" }}>
-			<Pill {...props}>Example</Pill>
-		</span>
-	);
-}
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Info = Template.bind({});
-Info.args = {
-	type: "info",
-};
+export const info: Story = { args: { type: "info" } };
 
-export const Danger = Template.bind({});
-Danger.args = {
-	type: "danger",
-};
+export const danger: Story = { args: { type: "danger" } };
 
-export const Success = Template.bind({});
-Success.args = {
-	type: "success",
-};
+export const success: Story = { args: { type: "success" } };

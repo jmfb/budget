@@ -1,24 +1,24 @@
-import { Button, IButtonProps } from "./Button";
-import "~/index.module.css";
+import { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./Button";
 
-export default {
-	title: "Components/Button",
+const meta = {
 	component: Button,
-};
+	render(props) {
+		return <Button {...props}>Example</Button>;
+	},
+} satisfies Meta<typeof Button>;
 
-function Template(props: IButtonProps) {
-	return <Button {...props}>Example</Button>;
-}
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
+export const standard: Story = {};
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-	isDisabled: true,
-};
+export const primary: Story = { args: { variant: "primary" } };
 
-export const Processing = Template.bind({});
-Processing.args = {
-	isDisabled: true,
-	isProcessing: true,
+export const danger: Story = { args: { variant: "danger" } };
+
+export const disabled: Story = { args: { isDisabled: true } };
+
+export const processing: Story = {
+	args: { isDisabled: true, isProcessing: true },
 };

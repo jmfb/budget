@@ -1,22 +1,23 @@
-import { Card, ICardProps } from "./Card";
+import { Meta, StoryObj } from "@storybook/react";
+import { Card } from "./Card";
 import { Button } from "./Button";
-import "~/index.module.css";
 
-export default {
-	title: "Components/Card",
+const meta = {
 	component: Card,
-};
+	render(props) {
+		return (
+			<Card {...props}>
+				<h2>Example</h2>
+				<div>This is a card</div>
+				<Button variant="primary" onClick={() => console.log("click")}>
+					OK
+				</Button>
+			</Card>
+		);
+	},
+} satisfies Meta<typeof Card>;
 
-function Template(props: ICardProps) {
-	return (
-		<Card {...props}>
-			<h2>Example</h2>
-			<div>This is a card</div>
-			<Button variant="primary" onClick={() => console.log("click")}>
-				OK
-			</Button>
-		</Card>
-	);
-}
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
+export const standard: Story = {};
