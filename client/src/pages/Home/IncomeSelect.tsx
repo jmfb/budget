@@ -21,7 +21,7 @@ export function IncomeSelect({
 	const selectedOption =
 		options.find((option) => option.value.name === incomeName) ?? null;
 
-	const handleChange = (option: { value: IIncome }) => {
+	const handleChange = (option: { value: IIncome } | null) => {
 		onChange(option?.value.name ?? "");
 	};
 

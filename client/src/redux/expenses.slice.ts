@@ -17,8 +17,8 @@ export interface IExpensesState {
 }
 
 const initialState: IExpensesState = {
-	version: JSON.parse(localStorage.getItem("expenses-version")) ?? null,
-	expenses: JSON.parse(localStorage.getItem("expenses")) ?? [],
+	version: JSON.parse(localStorage.getItem("expenses-version") ?? "") ?? null,
+	expenses: JSON.parse(localStorage.getItem("expenses") ?? "") ?? [],
 	isLoading: false,
 	isSaving: false,
 	wasSuccessful: false,

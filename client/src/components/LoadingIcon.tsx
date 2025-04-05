@@ -40,7 +40,7 @@ export function LoadingIcon() {
 							begin="0s"
 							dur="1s"
 							values={coordinates
-								.map((unused, position) =>
+								.map((_, position) =>
 									position === index ? 1 : 0,
 								)
 								.join(";")}

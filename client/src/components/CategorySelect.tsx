@@ -39,7 +39,7 @@ export function CategorySelect({
 		options.push(selectedOption);
 	}
 
-	const handleChange = (option: { value: string }) => {
+	const handleChange = (option: { value: string } | null) => {
 		onChange(option?.value ?? "");
 	};
 

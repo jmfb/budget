@@ -14,10 +14,14 @@ export const getAllText = createAsyncThunk(
 				const reader = new FileReader();
 				reader.onload = async (event) => {
 					try {
-						const {
-							target: { result },
-						} = event;
-						resolve((<string>result).trim());
+						if (event.target) {
+							const {
+								target: { result },
+							} = event;
+							resolve((<string>result).trim());
+						} else {
+							reject(new Error("Null FileReader"));
+						}
 					} catch (error) {
 						reject(error);
 					}

@@ -27,7 +27,7 @@ const initialState: IBudgetState = {
 	mergingTransactionSuccess: false,
 	isReadingFile: false,
 	readingFileSuccess: false,
-	fileText: null,
+	fileText: "",
 	isParsingCsv: false,
 	parsingCsvSuccess: false,
 	csvRecords: [],
@@ -45,7 +45,7 @@ const slice = createSlice({
 		clearUpload(state) {
 			state.isReadingFile = false;
 			state.readingFileSuccess = false;
-			state.fileText = null;
+			state.fileText = "";
 			state.isParsingCsv = false;
 			state.parsingCsvSuccess = false;
 			state.csvRecords = [];
@@ -62,7 +62,7 @@ const slice = createSlice({
 			.addCase(getAllText.pending, (state) => {
 				state.isReadingFile = true;
 				state.readingFileSuccess = false;
-				state.fileText = null;
+				state.fileText = "";
 			})
 			.addCase(getAllText.fulfilled, (state, action) => {
 				state.isReadingFile = false;

@@ -6,11 +6,11 @@ import {
 } from "./auth.actions";
 
 export interface IAuthState {
-	email?: string;
+	email: string | null | undefined;
 	accessToken: string;
 	redirectToSignIn: boolean;
 	isSigningIn: boolean;
-	url?: string;
+	url: string | undefined;
 }
 
 const initialState: IAuthState = {

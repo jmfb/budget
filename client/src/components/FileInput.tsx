@@ -22,7 +22,10 @@ export function FileInput({
 	onClick,
 }: IFileInputProps) {
 	const handleInputChanged = (event: React.FormEvent<HTMLInputElement>) => {
-		onClick(event.currentTarget.files[0]);
+		const { files } = event.currentTarget;
+		if (files) {
+			onClick(files[0]);
+		}
 	};
 
 	return (

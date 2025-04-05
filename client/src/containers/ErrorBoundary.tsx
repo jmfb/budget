@@ -96,10 +96,7 @@ class ErrorBoundary extends PureComponent<
 	};
 }
 
-export const ErrorBoundaryContainer = connect<
-	IErrorBoundaryStateProps,
-	IErrorBoundaryDispatchProps
->(
+export const ErrorBoundaryContainer = connect(
 	mapStateToProps,
 	mapDispatchToProps,
 )(ErrorBoundary);

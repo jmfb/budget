@@ -10,7 +10,7 @@ export default function AuthenticationContainer() {
 	const code = searchParams.get("code");
 
 	useEffect(() => {
-		authenticate(code);
+		authenticate(code ?? "");
 	}, [code]);
 
 	if (email !== undefined || !code) {

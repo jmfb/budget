@@ -24,7 +24,9 @@ export function Expenses({
 	clearExpenseSave,
 }: IExpensesProps) {
 	const [showEditor, setShowEditor] = useState(false);
-	const [existingExpense, setExistingExpense] = useState<IExpense>(null);
+	const [existingExpense, setExistingExpense] = useState<IExpense | null>(
+		null,
+	);
 	const [isSaving, setIsSaving] = useState(false);
 
 	const handleAddClicked = () => {
@@ -105,7 +107,7 @@ export function Expenses({
 			</div>
 			{showEditor && (
 				<ExpenseEditor
-					existingExpense={existingExpense}
+					existingExpense={existingExpense!}
 					isSavingExpense={isSavingExpense}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}

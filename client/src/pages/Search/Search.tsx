@@ -47,7 +47,7 @@ export function Search({
 				expenseTransactions={expenseTransactions}
 				variant="search"
 				onlyShowNewItems={false}
-				setOnlyShowNewItems={undefined}
+				setOnlyShowNewItems={() => undefined}
 				includePendingItems={false}
 			/>
 		</div>

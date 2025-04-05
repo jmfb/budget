@@ -21,7 +21,7 @@ export function ExpenseSelect({
 	const selectedOption =
 		options.find((option) => option.value.name === expenseName) ?? null;
 
-	const handleChange = (option: { value: IExpense }) => {
+	const handleChange = (option: { value: IExpense } | null) => {
 		onChange(option?.value.name ?? "");
 	};
 

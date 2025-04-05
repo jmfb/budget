@@ -24,7 +24,7 @@ export function Incomes({
 	clearIncomeSave,
 }: IIncomesProps) {
 	const [showEditor, setShowEditor] = useState(false);
-	const [existingIncome, setExistingIncome] = useState<IIncome>(null);
+	const [existingIncome, setExistingIncome] = useState<IIncome | null>(null);
 	const [isSaving, setIsSaving] = useState(false);
 
 	const handleAddClicked = () => {
@@ -89,7 +89,7 @@ export function Incomes({
 			</div>
 			{showEditor && (
 				<IncomeEditor
-					existingIncome={existingIncome}
+					existingIncome={existingIncome!}
 					isSavingIncome={isSavingIncome}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}

@@ -23,7 +23,7 @@ export function YearlyExpenses({
 }: IYearlyExpensesProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
-	const [editingExpense, setEditingExpense] = useState<IExpense>(null);
+	const [editingExpense, setEditingExpense] = useState<IExpense | null>(null);
 
 	useEffect(() => {
 		if (!isSavingExpense && isSaving) {
@@ -129,7 +129,7 @@ export function YearlyExpenses({
 			{isEditing && (
 				<ExpenseEditor
 					isSavingExpense={isSavingExpense}
-					existingExpense={editingExpense}
+					existingExpense={editingExpense!}
 					onSave={handleEditSaved}
 					onCancel={handleEditCanceled}
 					mustRemainYearlyExpense

@@ -83,6 +83,6 @@ export async function download(request: IFetchRequest) {
 	await checkStatus(response);
 	const {
 		parameters: { filename },
-	} = parse(response.headers.get("content-disposition"));
+	} = parse(response.headers.get("content-disposition") ?? "");
 	saveAs(await response.blob(), filename);
 }

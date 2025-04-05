@@ -16,7 +16,7 @@ export function PendingItems() {
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [existingPendingItem, setExistingPendingItem] =
-		useState<IPendingItem>(null);
+		useState<IPendingItem | null>(null);
 
 	const createEditClickedHandler = (pendingItem: IPendingItem) => () => {
 		setIsEditing(true);
@@ -69,7 +69,7 @@ export function PendingItems() {
 			)}
 			{isEditing && (
 				<PendingItemEditorContainer
-					existingPendingItem={existingPendingItem}
+					existingPendingItem={existingPendingItem!}
 					onClose={handleCloseEditor}
 				/>
 			)}

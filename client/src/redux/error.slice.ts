@@ -18,9 +18,9 @@ import { IErrorReport } from "~/models";
 
 export interface IErrorState {
 	showError: boolean;
-	action?: string;
-	context?: string;
-	message?: string;
+	action: string | undefined;
+	context: string | undefined;
+	message: string | undefined;
 }
 
 const initialState: IErrorState = {
@@ -33,7 +33,7 @@ const initialState: IErrorState = {
 function setErrorState(
 	state: IErrorState,
 	name: string,
-	message: string,
+	message: string | undefined,
 	context?: any,
 ) {
 	state.showError = true;

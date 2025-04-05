@@ -42,7 +42,7 @@ export function Uploads({
 	const [isMergingBank, setIsMergingBank] = useState(false);
 	const [isMergingCapitalOne, setIsMergingCapitalOne] = useState(false);
 	const [isUploading, setIsUploading] = useState(false);
-	const [uploadIndex, setUploadIndex] = useState<number>(null);
+	const [uploadIndex, setUploadIndex] = useState<number | null>(null);
 
 	const handleUploadBank = (file: File) => {
 		setIsMergingBank(true);
@@ -124,7 +124,7 @@ export function Uploads({
 
 	useEffect(() => {
 		if (isUploading && !isMergingTransaction && mergingTransactionSuccess) {
-			setUploadIndex(uploadIndex + 1);
+			setUploadIndex(uploadIndex! + 1);
 		}
 	}, [isUploading, isMergingTransaction, mergingTransactionSuccess]);
 
@@ -176,7 +176,7 @@ export function Uploads({
 							<progress
 								className={styles.progress}
 								max={csvRecords.length}
-								value={uploadIndex}
+								value={uploadIndex!}
 							/>
 						)}
 					</div>

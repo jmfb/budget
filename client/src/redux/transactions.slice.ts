@@ -10,7 +10,7 @@ import {
 import { dateService } from "~/services";
 
 export interface IWeekState {
-	version: number;
+	version: number | null;
 	transactions: ITransaction[];
 	isLoading: boolean;
 }
@@ -23,7 +23,7 @@ export interface ITransactionsState {
 }
 
 const initialState: ITransactionsState = {
-	weeks: JSON.parse(localStorage.getItem("weeks")) ?? {},
+	weeks: JSON.parse(localStorage.getItem("weeks") ?? "") ?? {},
 	isSaving: false,
 	wasSuccessful: false,
 	isDownloading: false,

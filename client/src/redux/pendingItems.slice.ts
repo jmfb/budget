@@ -17,8 +17,9 @@ export interface IPendingItemsState {
 }
 
 const initialState: IPendingItemsState = {
-	version: JSON.parse(localStorage.getItem("pending-items-version")) ?? null,
-	pendingItems: JSON.parse(localStorage.getItem("pending-items")) ?? [],
+	version:
+		JSON.parse(localStorage.getItem("pending-items-version") ?? "") ?? null,
+	pendingItems: JSON.parse(localStorage.getItem("pending-items") ?? "") ?? [],
 	isLoading: false,
 	isSaving: false,
 	wasSuccessful: false,

@@ -17,8 +17,8 @@ export interface IIncomesState {
 }
 
 const initialState: IIncomesState = {
-	version: JSON.parse(localStorage.getItem("incomes-version")) ?? null,
-	incomes: JSON.parse(localStorage.getItem("incomes")) ?? [],
+	version: JSON.parse(localStorage.getItem("incomes-version") ?? "") ?? null,
+	incomes: JSON.parse(localStorage.getItem("incomes") ?? "") ?? [],
 	isLoading: false,
 	isSaving: false,
 	wasSuccessful: false,

@@ -29,7 +29,7 @@ export function Transactions({
 }: ITransactionsProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingTransaction, setExistingTransaction] =
-		useState<ITransaction>(null);
+		useState<ITransaction | null>(null);
 
 	const transactionsByDate = transactions
 		.filter(
@@ -99,7 +99,7 @@ export function Transactions({
 				))}
 			{showEditor && (
 				<TransactionEditorContainer
-					transaction={existingTransaction}
+					transaction={existingTransaction!}
 					onClose={handleCloseEditor}
 				/>
 			)}
