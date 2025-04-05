@@ -1,4 +1,4 @@
-import { ErrorInfo } from "react";
+import { PureComponent, ErrorInfo } from "react";
 import { connect } from "react-redux";
 import { ErrorView } from "~/pages";
 import { IErrorReport } from "~/models";
@@ -44,7 +44,7 @@ const mapDispatchToProps: IErrorBoundaryDispatchProps = {
 	...errorSlice.actions,
 };
 
-class ErrorBoundary extends React.PureComponent<
+class ErrorBoundary extends PureComponent<
 	IErrorBoundaryProps,
 	IErrorBoundaryState
 > {

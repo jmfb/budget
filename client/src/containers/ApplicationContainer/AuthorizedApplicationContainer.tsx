@@ -1,18 +1,14 @@
 import { lazy, useEffect } from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
 import { Header } from "./Header";
-import { NewerVersionPrompt } from "./NewerVersionPrompt";
 import { IIndexModel } from "~/models";
 import {
 	useActions,
-	useAppSelector,
-	diagnosticsSlice,
 	expensesSlice,
 	incomesSlice,
 	pendingItemsSlice,
 	transactionsSlice,
 } from "~/redux";
-import { useInterval } from "~/hooks";
 import { clsx } from "clsx";
 import styles from "./AuthorizedApplicationContainer.module.css";
 
@@ -87,17 +83,10 @@ export interface IAuthorizedApplicationContainerProps {
 export function AuthorizedApplicationContainer({
 	indexModel,
 }: IAuthorizedApplicationContainerProps) {
-	const { heartbeat } = useActions(diagnosticsSlice);
 	const { refreshExpenses } = useActions(expensesSlice);
 	const { refreshIncomes } = useActions(incomesSlice);
 	const { refreshPendingItems } = useActions(pendingItemsSlice);
 	const { refreshTransactions } = useActions(transactionsSlice);
-	const bundleVersion = useAppSelector(
-		(state) => state.diagnostics.bundleVersion,
-	);
-	const serverBundleVersion = useAppSelector(
-		(state) => state.diagnostics.serverBundleVersion,
-	);
 
 	useEffect(() => {
 		refreshExpenses(indexModel.expensesVersion);
@@ -105,14 +94,6 @@ export function AuthorizedApplicationContainer({
 		refreshPendingItems(indexModel.pendingItemsVersion);
 		refreshTransactions(indexModel.weekVersions);
 	}, []);
-
-	useInterval(() => {
-		heartbeat();
-	}, 60_000);
-
-	const handleRefreshClicked = () => {
-		window.location.reload();
-	};
 
 	return (
 		<>
@@ -155,11 +136,6 @@ export function AuthorizedApplicationContainer({
 						/>
 						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
-					<NewerVersionPrompt
-						bundleVersion={bundleVersion}
-						serverBundleVersion={serverBundleVersion}
-						onClickRefresh={handleRefreshClicked}
-					/>
 				</section>
 			</main>
 		</>

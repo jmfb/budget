@@ -4,7 +4,6 @@ export * from "./useAppSelector";
 export * from "./useActions";
 export * from "./error.slice";
 export * from "./auth.slice";
-export * from "./diagnostics.slice";
 export * from "./budget.slice";
 export * from "./expenses.slice";
 export * from "./incomes.slice";
