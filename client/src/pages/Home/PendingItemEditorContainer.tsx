@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { PendingItemEditor } from './PendingItemEditor';
-import { IPendingItem } from '~/models';
-import { useActions, useAppSelector, pendingItemsSlice } from '~/redux';
+import { useState, useEffect } from "react";
+import { PendingItemEditor } from "./PendingItemEditor";
+import { IPendingItem } from "~/models";
+import { useActions, useAppSelector, pendingItemsSlice } from "~/redux";
 
 export interface IPendingItemEditorContainerProps {
 	existingPendingItem: IPendingItem;
@@ -10,24 +10,24 @@ export interface IPendingItemEditorContainerProps {
 
 export function PendingItemEditorContainer({
 	existingPendingItem,
-	onClose
+	onClose,
 }: IPendingItemEditorContainerProps) {
 	const {
 		savePendingItem,
 		deletePendingItem,
-		clearSave: clearPendingItemSave
+		clearSave: clearPendingItemSave,
 	} = useActions(pendingItemsSlice);
 
-	const incomes = useAppSelector(state => state.incomes.incomes);
-	const expenses = useAppSelector(state => state.expenses.expenses);
+	const incomes = useAppSelector((state) => state.incomes.incomes);
+	const expenses = useAppSelector((state) => state.expenses.expenses);
 	const pendingItems = useAppSelector(
-		state => state.pendingItems.pendingItems
+		(state) => state.pendingItems.pendingItems,
 	);
 	const isSavingPendingItem = useAppSelector(
-		state => state.pendingItems.isSaving
+		(state) => state.pendingItems.isSaving,
 	);
 	const savingPendingItemSuccess = useAppSelector(
-		state => state.pendingItems.wasSuccessful
+		(state) => state.pendingItems.wasSuccessful,
 	);
 
 	const [isSaving, setIsSaving] = useState(false);
@@ -48,7 +48,7 @@ export function PendingItemEditorContainer({
 	};
 
 	const nextPendingItemId =
-		Math.max(0, ...pendingItems.map(item => item.id)) + 1;
+		Math.max(0, ...pendingItems.map((item) => item.id)) + 1;
 
 	return (
 		<PendingItemEditor

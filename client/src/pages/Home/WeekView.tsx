@@ -1,9 +1,9 @@
-import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
-import { Button } from '~/components';
-import { dateService } from '~/services';
-import { IWeekState } from '~/redux';
-import { clsx } from 'clsx';
-import styles from './WeekView.module.css';
+import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
+import { Button } from "~/components";
+import { dateService } from "~/services";
+import { IWeekState } from "~/redux";
+import { clsx } from "clsx";
+import styles from "./WeekView.module.css";
 
 export interface IWeekViewProps {
 	weekOf: string;
@@ -14,7 +14,7 @@ export interface IWeekViewProps {
 export function WeekView({
 	weekOf,
 	weeklyTransactions,
-	setWeekOf
+	setWeekOf,
 }: IWeekViewProps) {
 	const endOfWeek = dateService.getEndOfWeek(weekOf);
 	const daysOfWeek = dateService.getDaysOfWeek(weekOf);
@@ -32,51 +32,55 @@ export function WeekView({
 	return (
 		<div className={styles.root}>
 			<Button
-				variant='default'
+				variant="default"
 				onClick={handlePreviousClicked}
 				isDisabled={isFirstWeek}
-				className={styles.previous}>
+				className={styles.previous}
+			>
 				<MdNavigateBefore className={styles.icon} />
 			</Button>
 			<span>
 				<div className={styles.weekRange}>
-					{dateService.format(weekOf)} to{' '}
+					{dateService.format(weekOf)} to{" "}
 					{dateService.format(endOfWeek)}
 				</div>
 				<div className={styles.daysOfWeek}>
-					{daysOfWeek.map(dayOfWeek => (
+					{daysOfWeek.map((dayOfWeek) => (
 						<div
 							key={dayOfWeek.day}
 							className={clsx(
 								styles.dayOfWeek,
 								dayOfWeek.isPast && styles.past,
 								dayOfWeek.isToday && styles.today,
-								dayOfWeek.isFuture && styles.future
-							)}>
+								dayOfWeek.isFuture && styles.future,
+							)}
+						>
 							<strong>{dayOfWeek.weekday}</strong>
 						</div>
 					))}
 				</div>
 				<div className={styles.daysOfWeek}>
-					{daysOfWeek.map(dayOfWeek => (
+					{daysOfWeek.map((dayOfWeek) => (
 						<div
 							key={dayOfWeek.day}
 							className={clsx(
 								styles.dayOfWeek,
 								dayOfWeek.isPast && styles.past,
 								dayOfWeek.isToday && styles.today,
-								dayOfWeek.isFuture && styles.future
-							)}>
+								dayOfWeek.isFuture && styles.future,
+							)}
+						>
 							{dayOfWeek.day}
 						</div>
 					))}
 				</div>
 			</span>
 			<Button
-				variant='default'
+				variant="default"
 				onClick={handleNextClicked}
 				isDisabled={isCurrentWeek}
-				className={styles.next}>
+				className={styles.next}
+			>
 				<MdNavigateNext className={styles.icon} />
 			</Button>
 		</div>

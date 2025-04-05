@@ -1,5 +1,5 @@
-import { LoadingIcon } from './LoadingIcon';
-import styles from './PageLoading.module.css';
+import { LoadingIcon } from "./LoadingIcon";
+import styles from "./PageLoading.module.css";
 
 export interface IPageLoadingProps {
 	message?: string;

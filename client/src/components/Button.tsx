@@ -1,9 +1,9 @@
-import { IconType } from 'react-icons';
-import { LoadingIcon } from './LoadingIcon';
+import { IconType } from "react-icons";
+import { LoadingIcon } from "./LoadingIcon";
 import { clsx } from "clsx";
-import styles from './Button.module.css';
+import styles from "./Button.module.css";
 
-export type ButtonVariant = 'primary' | 'default' | 'danger';
+export type ButtonVariant = "primary" | "default" | "danger";
 
 export interface IButtonProps {
 	className?: string;
@@ -25,7 +25,7 @@ export function Button({
 	children,
 	isDisabled,
 	isProcessing,
-	autoFocus
+	autoFocus,
 }: IButtonProps) {
 	return (
 		<button
@@ -33,15 +33,17 @@ export function Button({
 			autoFocus={autoFocus}
 			className={clsx(
 				styles.button,
-				styles[variant ?? 'default'],
-				className
+				styles[variant ?? "default"],
+				className,
 			)}
-			disabled={isDisabled}>
+			disabled={isDisabled}
+		>
 			<div
 				className={clsx(
 					styles.children,
-					isProcessing && styles.processing
-				)}>
+					isProcessing && styles.processing,
+				)}
+			>
 				{Icon && <Icon className={styles.icon} />}
 				{children}
 			</div>

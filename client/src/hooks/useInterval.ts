@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
 
 type Action = () => void;
 
@@ -12,7 +12,7 @@ export function useInterval(callback: Action, timeout: number) {
 	useEffect(() => {
 		const intervalId = window.setInterval(
 			() => callbackRef.current(),
-			timeout
+			timeout,
 		);
 		return () => window.clearInterval(intervalId);
 	}, [timeout]);

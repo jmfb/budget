@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import { MdExitToApp, MdDownload } from 'react-icons/md';
-import { Button } from '~/components';
-import styles from './About.module.css';
+import { Link } from "react-router-dom";
+import { MdExitToApp, MdDownload } from "react-icons/md";
+import { Button } from "~/components";
+import styles from "./About.module.css";
 
 export interface IAboutProps {
 	isDownloadingTransactions: boolean;
@@ -22,46 +22,48 @@ export function About({
 	downloadTransactions,
 	downloadPendingItems,
 	downloadExpenses,
-	downloadIncomes
+	downloadIncomes,
 }: IAboutProps) {
 	return (
 		<div>
 			<h1 className={styles.heading}>
 				Jake and Sarah's Budget App
-				<Link
-					to='/sign-out'
-					className={styles['sign-out']}>
+				<Link to="/sign-out" className={styles["sign-out"]}>
 					Sign Out
 					<MdExitToApp className={styles.exit} />
 				</Link>
 			</h1>
-			<div className={styles['download-buttons']}>
+			<div className={styles["download-buttons"]}>
 				<Button
-					variant='default'
+					variant="default"
 					icon={MdDownload}
 					isProcessing={isDownloadingTransactions}
-					onClick={downloadTransactions}>
+					onClick={downloadTransactions}
+				>
 					Download Transactions (.csv)
 				</Button>
 				<Button
-					variant='default'
+					variant="default"
 					icon={MdDownload}
 					isProcessing={isDownloadingPendingItems}
-					onClick={downloadPendingItems}>
+					onClick={downloadPendingItems}
+				>
 					Download Pending Items (.csv)
 				</Button>
 				<Button
-					variant='default'
+					variant="default"
 					icon={MdDownload}
 					isProcessing={isDownloadingExpenses}
-					onClick={downloadExpenses}>
+					onClick={downloadExpenses}
+				>
 					Download Expenses (.csv)
 				</Button>
 				<Button
-					variant='default'
+					variant="default"
 					icon={MdDownload}
 					isProcessing={isDownloadingIncomes}
-					onClick={downloadIncomes}>
+					onClick={downloadIncomes}
+				>
 					Download Incomes (.csv)
 				</Button>
 			</div>

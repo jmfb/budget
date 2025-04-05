@@ -1,16 +1,16 @@
-import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
-import { ITransaction } from '~/models';
-import { IState } from './IState';
-import * as hub from './transactions.hub';
+import { AnyAction, createAsyncThunk, ThunkDispatch } from "@reduxjs/toolkit";
+import { ITransaction } from "~/models";
+import { IState } from "./IState";
+import * as hub from "./transactions.hub";
 
 export const getTransactions = createAsyncThunk(
-	'transactions/getTransactions',
+	"transactions/getTransactions",
 	async (weekOf: string, { getState }) => {
 		const {
-			auth: { accessToken }
+			auth: { accessToken },
 		} = getState() as IState;
 		return await hub.getTransactions(accessToken, weekOf);
-	}
+	},
 );
 
 interface ILoadWeekResult {
@@ -20,7 +20,7 @@ interface ILoadWeekResult {
 
 async function loadWeek(
 	weekOf: string,
-	dispatch: ThunkDispatch<unknown, unknown, AnyAction>
+	dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
 ) {
 	try {
 		await dispatch(getTransactions(weekOf));
@@ -31,10 +31,10 @@ async function loadWeek(
 }
 
 export const refreshTransactions = createAsyncThunk(
-	'transactions/refreshTransactions',
+	"transactions/refreshTransactions",
 	async (weekVersions: Record<string, number>, { getState, dispatch }) => {
 		const {
-			transactions: { weeks }
+			transactions: { weeks },
 		} = getState() as IState;
 		const weeksToGet = Object.entries(weekVersions)
 			.filter(([weekOf, version]) => weeks[weekOf]?.version !== version)
@@ -45,7 +45,7 @@ export const refreshTransactions = createAsyncThunk(
 		const initialWeeks = weeksToGet.slice(0, maxConcurrent);
 		const pendingWeeks = weeksToGet.slice(maxConcurrent);
 		const currentRequests = new Map<string, Promise<ILoadWeekResult>>(
-			initialWeeks.map(weekOf => [weekOf, loadWeek(weekOf, dispatch)])
+			initialWeeks.map((weekOf) => [weekOf, loadWeek(weekOf, dispatch)]),
 		);
 		for (const weekOf of pendingWeeks) {
 			const result = await Promise.any(currentRequests.values());
@@ -56,35 +56,35 @@ export const refreshTransactions = createAsyncThunk(
 			currentRequests.set(weekOf, loadWeek(weekOf, dispatch));
 		}
 		await Promise.all(currentRequests.values());
-	}
+	},
 );
 
 export const saveTransaction = createAsyncThunk(
-	'transactions/saveTransaction',
+	"transactions/saveTransaction",
 	async (transaction: ITransaction, { getState }) => {
 		const {
-			auth: { accessToken }
+			auth: { accessToken },
 		} = getState() as IState;
 		return await hub.putTransaction(accessToken, transaction);
-	}
+	},
 );
 
 export const deleteTransaction = createAsyncThunk(
-	'transactions/deleteTransaction',
+	"transactions/deleteTransaction",
 	async ({ date, id }: ITransaction, { getState }) => {
 		const {
-			auth: { accessToken }
+			auth: { accessToken },
 		} = getState() as IState;
 		return await hub.deleteTransaction(accessToken, date, id);
-	}
+	},
 );
 
 export const downloadTransactions = createAsyncThunk(
-	'transactions/downloadTransactions',
+	"transactions/downloadTransactions",
 	async (request, { getState }) => {
 		const {
-			auth: { accessToken }
+			auth: { accessToken },
 		} = getState() as IState;
 		return await hub.downloadTransactions(accessToken);
-	}
+	},
 );

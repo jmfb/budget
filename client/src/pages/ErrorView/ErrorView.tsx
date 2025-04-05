@@ -1,6 +1,6 @@
-import { Button } from '~/components';
-import { clsx } from 'clsx';
-import styles from './ErrorView.module.css';
+import { Button } from "~/components";
+import { clsx } from "clsx";
+import styles from "./ErrorView.module.css";
 
 export interface IErrorViewProps {
 	action?: string;
@@ -13,10 +13,10 @@ export function ErrorView({
 	action,
 	context,
 	message,
-	onClickDismiss
+	onClickDismiss,
 }: IErrorViewProps) {
 	return (
-		<main className={clsx('responsive', styles.root)}>
+		<main className={clsx("responsive", styles.root)}>
 			<section>
 				<h1>Error - {action}</h1>
 				<div className={styles.row}>
@@ -27,14 +27,13 @@ export function ErrorView({
 					</div>
 					<div className={styles.actions}>
 						<Button
-							variant='primary'
+							variant="primary"
 							className={styles.action}
-							onClick={onClickDismiss}>
+							onClick={onClickDismiss}
+						>
 							Dismiss
 						</Button>
-						<a
-							href='/sign-in'
-							className={styles.signIn}>
+						<a href="/sign-in" className={styles.signIn}>
 							Sign In
 						</a>
 					</div>

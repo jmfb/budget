@@ -1,5 +1,5 @@
-import { saveAs } from 'file-saver';
-import { parse } from 'content-disposition';
+import { saveAs } from "file-saver";
+import { parse } from "content-disposition";
 
 async function checkStatus(response: Response) {
 	const { status, statusText } = response;
@@ -13,22 +13,22 @@ async function checkStatus(response: Response) {
 function getHeaders(accept: string, accessToken?: string) {
 	return {
 		Accept: accept,
-		'Content-Type': 'application/json',
+		"Content-Type": "application/json",
 		...(accessToken === undefined
 			? {}
-			: { Authorization: `Bearer ${accessToken}` })
+			: { Authorization: `Bearer ${accessToken}` }),
 	};
 }
 
 function getStandardHeaders(accessToken?: string) {
-	return getHeaders('application/json', accessToken);
+	return getHeaders("application/json", accessToken);
 }
 
 function formatUri(endpoint: string, query?: Record<string, string>) {
 	return query ? `${endpoint}?${new URLSearchParams(query)}` : endpoint;
 }
 
-type HttpMethod = 'GET' | 'PUT' | 'POST' | 'PATCH' | 'DELETE';
+type HttpMethod = "GET" | "PUT" | "POST" | "PATCH" | "DELETE";
 
 interface IFetchRequest {
 	endpoint: string;
@@ -41,9 +41,9 @@ interface IFetchRequest {
 export async function get<T>(request: IFetchRequest) {
 	const { endpoint, query, accessToken, method, body } = request;
 	const response = await fetch(formatUri(endpoint, query), {
-		method: method ?? 'GET',
+		method: method ?? "GET",
 		headers: getStandardHeaders(accessToken),
-		body: body ? JSON.stringify(body) : undefined
+		body: body ? JSON.stringify(body) : undefined,
 	});
 	await checkStatus(response);
 	return (await response.json()) as T;
@@ -52,9 +52,9 @@ export async function get<T>(request: IFetchRequest) {
 export async function getOrDefault<T>(request: IFetchRequest) {
 	const { endpoint, query, accessToken, method, body } = request;
 	const response = await fetch(formatUri(endpoint, query), {
-		method: method ?? 'GET',
+		method: method ?? "GET",
 		headers: getStandardHeaders(accessToken),
-		body: body ? JSON.stringify(body) : undefined
+		body: body ? JSON.stringify(body) : undefined,
 	});
 	if (response.status === 404) {
 		return null;
@@ -66,9 +66,9 @@ export async function getOrDefault<T>(request: IFetchRequest) {
 export async function send(request: IFetchRequest) {
 	const { endpoint, query, accessToken, method, body } = request;
 	const response = await fetch(formatUri(endpoint, query), {
-		method: method ?? 'GET',
+		method: method ?? "GET",
 		headers: getStandardHeaders(accessToken),
-		body: body ? JSON.stringify(body) : undefined
+		body: body ? JSON.stringify(body) : undefined,
 	});
 	await checkStatus(response);
 }
@@ -76,13 +76,13 @@ export async function send(request: IFetchRequest) {
 export async function download(request: IFetchRequest) {
 	const { endpoint, query, accessToken, method, body } = request;
 	const response = await fetch(formatUri(endpoint, query), {
-		method: method ?? 'GET',
-		headers: getHeaders('*/*', accessToken),
-		body: body ? JSON.stringify(body) : undefined
+		method: method ?? "GET",
+		headers: getHeaders("*/*", accessToken),
+		body: body ? JSON.stringify(body) : undefined,
 	});
 	await checkStatus(response);
 	const {
-		parameters: { filename }
-	} = parse(response.headers.get('content-disposition'));
+		parameters: { filename },
+	} = parse(response.headers.get("content-disposition"));
 	saveAs(await response.blob(), filename);
 }

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Button } from '~/components';
-import { IExpense } from '~/models';
-import { budgetService } from '~/services';
-import styles from './Expense.module.css';
+import { useState, useEffect } from "react";
+import { Button } from "~/components";
+import { IExpense } from "~/models";
+import { budgetService } from "~/services";
+import styles from "./Expense.module.css";
 
 export interface IExpenseProps {
 	expense: IExpense;
@@ -17,17 +17,17 @@ export function Expense({
 	isSavingExpense,
 	deleteExpense,
 	clearExpenseSave,
-	onEdit
+	onEdit,
 }: IExpenseProps) {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const { name, amount, monthsInterval, isDistributed } = expense;
 	const interval = isDistributed
 		? monthsInterval === 1
-			? 'over a month'
+			? "over a month"
 			: `over ${monthsInterval} months`
 		: monthsInterval === 1
-		? 'every month'
-		: `every ${monthsInterval} months`;
+			? "every month"
+			: `every ${monthsInterval} months`;
 
 	useEffect(() => {
 		if (!isSavingExpense && isDeleting) {
@@ -47,16 +47,18 @@ export function Expense({
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
 			<Button
-				variant='default'
+				variant="default"
 				className={styles.editButton}
-				onClick={onEdit}>
+				onClick={onEdit}
+			>
 				Edit
 			</Button>
 			<Button
-				variant='danger'
+				variant="danger"
 				onClick={handleDeleteClicked}
 				isProcessing={isDeleting}
-				isDisabled={isSavingExpense}>
+				isDisabled={isSavingExpense}
+			>
 				Delete
 			</Button>
 		</div>

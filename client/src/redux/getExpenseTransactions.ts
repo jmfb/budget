@@ -1,27 +1,27 @@
-import { createSelector } from '@reduxjs/toolkit';
-import { ITransaction } from '~/models';
-import { IState } from './IState';
+import { createSelector } from "@reduxjs/toolkit";
+import { ITransaction } from "~/models";
+import { IState } from "./IState";
 
 const getWeeks = (state: IState) => state.transactions.weeks;
 
-const getAllTransactions = createSelector(getWeeks, weeks =>
-	Object.entries(weeks).flatMap(([weekOf, week]) => week.transactions)
+const getAllTransactions = createSelector(getWeeks, (weeks) =>
+	Object.entries(weeks).flatMap(([weekOf, week]) => week.transactions),
 );
 
 const getCurrentYearTransactions = createSelector(
 	getAllTransactions,
-	transactions =>
+	(transactions) =>
 		transactions.filter(
-			transaction =>
-				transaction.date >= `${new Date().getFullYear()}-01-01`
-		)
+			(transaction) =>
+				transaction.date >= `${new Date().getFullYear()}-01-01`,
+		),
 );
 
 export const getExpenseTransactions = createSelector(
 	getCurrentYearTransactions,
-	transactions =>
+	(transactions) =>
 		transactions
-			.filter(transaction => !!transaction.expenseName)
+			.filter((transaction) => !!transaction.expenseName)
 			.reduce(
 				(map, transaction) => {
 					if (map[transaction.expenseName]) {
@@ -31,6 +31,6 @@ export const getExpenseTransactions = createSelector(
 					}
 					return map;
 				},
-				{} as Record<string, ITransaction[]>
-			)
+				{} as Record<string, ITransaction[]>,
+			),
 );

@@ -1,37 +1,37 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as hub from './auth.hub';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import * as hub from "./auth.hub";
 
 export const readLocalStorage = createAsyncThunk(
-	'auth/readLocalStorage',
+	"auth/readLocalStorage",
 	() => {
-		const email = localStorage.getItem('email');
+		const email = localStorage.getItem("email");
 		if (email === null) {
-			localStorage.removeItem('accessToken');
+			localStorage.removeItem("accessToken");
 		}
-		const accessToken = localStorage.getItem('accessToken');
+		const accessToken = localStorage.getItem("accessToken");
 		if (accessToken === null) {
 			return Promise.reject();
 		} else {
 			return Promise.resolve({ email, accessToken });
 		}
-	}
+	},
 );
 
 export const getAuthenticationUrl = createAsyncThunk(
-	'auth/getAuthenticationUrl',
+	"auth/getAuthenticationUrl",
 	async () => {
 		const url = await hub.getAuthenticationUrl();
 		window.location.href = url;
 		return url;
-	}
+	},
 );
 
 export const authenticate = createAsyncThunk(
-	'auth/authenticate',
+	"auth/authenticate",
 	async (code: string) => {
 		const { email, accessToken } = await hub.signIn(code);
-		localStorage.setItem('email', email);
-		localStorage.setItem('accessToken', accessToken);
+		localStorage.setItem("email", email);
+		localStorage.setItem("accessToken", accessToken);
 		return { email, accessToken };
 	},
 	{
@@ -39,6 +39,6 @@ export const authenticate = createAsyncThunk(
 			if (!code) {
 				return false;
 			}
-		}
-	}
+		},
+	},
 );

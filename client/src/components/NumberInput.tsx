@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Input } from './Input';
+import { useState } from "react";
+import { Input } from "./Input";
 
 export interface INumberInputProps {
 	name: string;
@@ -34,7 +34,7 @@ export function NumberInput({ name, value, onChange }: INumberInputProps) {
 	return (
 		<Input
 			name={name}
-			type='number'
+			type="number"
 			value={textValue}
 			onChange={handleTextChanged}
 			onBlur={handleBlurred}

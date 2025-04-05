@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Modal, Button, Buttons, Input, CategorySelect } from '~/components';
-import { IncomeSelect } from './IncomeSelect';
-import { ExpenseSelect } from './ExpenseSelect';
-import { ConfirmDelete } from './ConfirmDelete';
-import { ITransaction, IIncome, IExpense } from '~/models';
-import { budgetService } from '~/services';
+import { useState, useEffect } from "react";
+import { Modal, Button, Buttons, Input, CategorySelect } from "~/components";
+import { IncomeSelect } from "./IncomeSelect";
+import { ExpenseSelect } from "./ExpenseSelect";
+import { ConfirmDelete } from "./ConfirmDelete";
+import { ITransaction, IIncome, IExpense } from "~/models";
+import { budgetService } from "~/services";
 
 export interface ITransactionEditorProps {
 	transaction: ITransaction;
@@ -27,14 +27,14 @@ export function TransactionEditor({
 	deleteTransaction,
 	clearTransactionSave,
 	onSave,
-	onCancel
+	onCancel,
 }: ITransactionEditorProps) {
-	const [category, setCategory] = useState(transaction.category ?? '');
-	const [note, setNote] = useState(transaction.note ?? '');
+	const [category, setCategory] = useState(transaction.category ?? "");
+	const [note, setNote] = useState(transaction.note ?? "");
 	const [expenseName, setExpenseName] = useState(
-		transaction.expenseName ?? ''
+		transaction.expenseName ?? "",
 	);
-	const [incomeName, setIncomeName] = useState(transaction.incomeName ?? '');
+	const [incomeName, setIncomeName] = useState(transaction.incomeName ?? "");
 	const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [isAddingExpense, setIsAddingExpense] = useState(false);
@@ -46,7 +46,7 @@ export function TransactionEditor({
 			category,
 			note,
 			expenseName,
-			incomeName
+			incomeName,
 		});
 	};
 
@@ -98,30 +98,34 @@ export function TransactionEditor({
 			title={description}
 			deleteButton={
 				<Button
-					variant='danger'
+					variant="danger"
 					onClick={handleDeleteClicked}
 					isDisabled={isModificationInProgress}
-					isProcessing={isDeleting}>
+					isProcessing={isDeleting}
+				>
 					Delete
 				</Button>
 			}
 			buttons={
 				<Buttons>
 					<Button
-						variant='default'
+						variant="default"
 						onClick={onCancel}
-						isDisabled={isModificationInProgress}>
+						isDisabled={isModificationInProgress}
+					>
 						Cancel
 					</Button>
 					<Button
-						variant='primary'
+						variant="primary"
 						onClick={handleSaveClicked}
 						isDisabled={isModificationInProgress}
-						isProcessing={isSavingTransaction}>
+						isProcessing={isSavingTransaction}
+					>
 						Save
 					</Button>
 				</Buttons>
-			}>
+			}
+		>
 			<div>
 				{budgetService.format(amount)} on {date}
 			</div>
@@ -130,21 +134,13 @@ export function TransactionEditor({
 				autoFocus
 				onChange={setCategory}
 			/>
-			<Input
-				name='Note'
-				value={note}
-				onChange={setNote}
-			/>
+			<Input name="Note" value={note} onChange={setNote} />
 			{!showExpenseSelect && !showIncomeSelect && (
 				<Buttons>
-					<Button
-						variant='default'
-						onClick={handleAddExpenseClicked}>
+					<Button variant="default" onClick={handleAddExpenseClicked}>
 						Expense
 					</Button>
-					<Button
-						variant='default'
-						onClick={handleAddIncomeClicked}>
+					<Button variant="default" onClick={handleAddIncomeClicked}>
 						Income
 					</Button>
 				</Buttons>

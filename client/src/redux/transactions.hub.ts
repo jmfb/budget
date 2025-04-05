@@ -1,47 +1,47 @@
-import { get, download } from './hub';
-import { ITransaction, IGetTransactionsResponse } from '~/models';
+import { get, download } from "./hub";
+import { ITransaction, IGetTransactionsResponse } from "~/models";
 
 export async function getVersion(accessToken: string, weekOf: string) {
 	return await get<number>({
 		endpoint: `/api/transactions/week-of/${weekOf}/version`,
-		accessToken
+		accessToken,
 	});
 }
 
 export async function getTransactions(accessToken: string, weekOf: string) {
 	return await get<IGetTransactionsResponse>({
 		endpoint: `/api/transactions/week-of/${weekOf}`,
-		accessToken
+		accessToken,
 	});
 }
 
 export async function putTransaction(
 	accessToken: string,
-	transaction: ITransaction
+	transaction: ITransaction,
 ) {
 	return await get<number>({
-		endpoint: '/api/transactions',
-		method: 'PUT',
+		endpoint: "/api/transactions",
+		method: "PUT",
 		accessToken,
-		body: transaction
+		body: transaction,
 	});
 }
 
 export async function deleteTransaction(
 	accessToken: string,
 	date: string,
-	id: number
+	id: number,
 ) {
 	return await get<number>({
 		endpoint: `/api/transactions/${date}/${id}`,
-		method: 'DELETE',
-		accessToken
+		method: "DELETE",
+		accessToken,
 	});
 }
 
 export async function downloadTransactions(accessToken: string) {
 	await download({
-		endpoint: '/api/transactions/download',
-		accessToken
+		endpoint: "/api/transactions/download",
+		accessToken,
 	});
 }

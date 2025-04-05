@@ -1,9 +1,9 @@
-import styles from './Input.module.css';
+import styles from "./Input.module.css";
 
 export interface IInputProps {
 	name: string;
 	value: string;
-	type?: 'text' | 'number';
+	type?: "text" | "number";
 	placeholder?: string;
 	autoFocus?: boolean;
 	onChange(value: string): void;
@@ -17,7 +17,7 @@ export function Input({
 	placeholder,
 	autoFocus,
 	onChange,
-	onBlur
+	onBlur,
 }: IInputProps) {
 	const handleChanged = (event: React.FormEvent<HTMLInputElement>) => {
 		onChange(event.currentTarget.value);
@@ -32,7 +32,7 @@ export function Input({
 				autoFocus={autoFocus}
 				onBlur={onBlur}
 				className={styles.input}
-				type={type ?? 'text'}
+				type={type ?? "text"}
 				onChange={handleChanged}
 			/>
 		</label>

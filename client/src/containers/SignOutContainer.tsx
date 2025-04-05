@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useActions, authSlice } from '~/redux';
+import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { useActions, authSlice } from "~/redux";
 
 export default function SignOutContainer() {
 	const { signOut } = useActions(authSlice);
@@ -9,5 +9,5 @@ export default function SignOutContainer() {
 		signOut();
 	}, []);
 
-	return <Navigate to='/sign-in' />;
+	return <Navigate to="/sign-in" />;
 }

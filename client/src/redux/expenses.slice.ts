@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IExpense } from '~/models';
+import { createSlice } from "@reduxjs/toolkit";
+import { IExpense } from "~/models";
 import {
 	refreshExpenses,
 	saveExpense,
 	deleteExpense,
-	downloadExpenses
-} from './expenses.actions';
+	downloadExpenses,
+} from "./expenses.actions";
 
 export interface IExpensesState {
 	version: number;
@@ -17,31 +17,31 @@ export interface IExpensesState {
 }
 
 const initialState: IExpensesState = {
-	version: JSON.parse(localStorage.getItem('expenses-version')) ?? null,
-	expenses: JSON.parse(localStorage.getItem('expenses')) ?? [],
+	version: JSON.parse(localStorage.getItem("expenses-version")) ?? null,
+	expenses: JSON.parse(localStorage.getItem("expenses")) ?? [],
 	isLoading: false,
 	isSaving: false,
 	wasSuccessful: false,
-	isDownloading: false
+	isDownloading: false,
 };
 
 function updateLocalStorage(state: IExpensesState) {
-	localStorage.setItem('expenses-version', JSON.stringify(state.version));
-	localStorage.setItem('expenses', JSON.stringify(state.expenses));
+	localStorage.setItem("expenses-version", JSON.stringify(state.version));
+	localStorage.setItem("expenses", JSON.stringify(state.expenses));
 }
 
 const slice = createSlice({
-	name: 'expenses',
+	name: "expenses",
 	initialState,
 	reducers: {
 		clearSave(state) {
 			state.isSaving = false;
 			state.wasSuccessful = false;
-		}
+		},
 	},
-	extraReducers: builder =>
+	extraReducers: (builder) =>
 		builder
-			.addCase(refreshExpenses.pending, state => {
+			.addCase(refreshExpenses.pending, (state) => {
 				state.isLoading = true;
 			})
 			.addCase(refreshExpenses.fulfilled, (state, action) => {
@@ -52,10 +52,10 @@ const slice = createSlice({
 					updateLocalStorage(state);
 				}
 			})
-			.addCase(refreshExpenses.rejected, state => {
+			.addCase(refreshExpenses.rejected, (state) => {
 				state.isLoading = false;
 			})
-			.addCase(saveExpense.pending, state => {
+			.addCase(saveExpense.pending, (state) => {
 				state.isSaving = true;
 			})
 			.addCase(saveExpense.fulfilled, (state, action) => {
@@ -63,7 +63,7 @@ const slice = createSlice({
 				state.wasSuccessful = true;
 				const updatedExpense = action.meta.arg;
 				const index = state.expenses.findIndex(
-					expense => expense.name === updatedExpense.name
+					(expense) => expense.name === updatedExpense.name,
 				);
 				if (index === -1) {
 					state.expenses.push(updatedExpense);
@@ -73,10 +73,10 @@ const slice = createSlice({
 				state.version = action.payload;
 				updateLocalStorage(state);
 			})
-			.addCase(saveExpense.rejected, state => {
+			.addCase(saveExpense.rejected, (state) => {
 				state.isSaving = false;
 			})
-			.addCase(deleteExpense.pending, state => {
+			.addCase(deleteExpense.pending, (state) => {
 				state.isSaving = true;
 			})
 			.addCase(deleteExpense.fulfilled, (state, action) => {
@@ -84,24 +84,24 @@ const slice = createSlice({
 				state.wasSuccessful = true;
 				const deletedExpense = action.meta.arg;
 				state.expenses = state.expenses.filter(
-					expense => expense.name !== deletedExpense.name
+					(expense) => expense.name !== deletedExpense.name,
 				);
 				state.version = action.payload;
 				updateLocalStorage(state);
 			})
-			.addCase(deleteExpense.rejected, state => {
+			.addCase(deleteExpense.rejected, (state) => {
 				state.isSaving = false;
 			})
 
-			.addCase(downloadExpenses.pending, state => {
+			.addCase(downloadExpenses.pending, (state) => {
 				state.isDownloading = true;
 			})
-			.addCase(downloadExpenses.fulfilled, state => {
+			.addCase(downloadExpenses.fulfilled, (state) => {
 				state.isDownloading = false;
 			})
-			.addCase(downloadExpenses.rejected, state => {
+			.addCase(downloadExpenses.rejected, (state) => {
 				state.isDownloading = false;
-			})
+			}),
 });
 
 export const expensesSlice = {
@@ -111,6 +111,6 @@ export const expensesSlice = {
 		refreshExpenses,
 		saveExpense,
 		deleteExpense,
-		downloadExpenses
-	}
+		downloadExpenses,
+	},
 };

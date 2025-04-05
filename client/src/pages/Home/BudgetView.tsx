@@ -1,6 +1,6 @@
-import { budgetService } from '~/services';
-import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
-import styles from './BudgetView.module.css';
+import { budgetService } from "~/services";
+import { IIncome, IExpense, ITransaction, IPendingItem } from "~/models";
+import styles from "./BudgetView.module.css";
 
 export interface IBudgetViewProps {
 	incomes: IIncome[];
@@ -15,7 +15,7 @@ export function BudgetView({
 	expenses,
 	transactions,
 	pendingItems,
-	expenseTransactions
+	expenseTransactions,
 }: IBudgetViewProps) {
 	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
 	const totalSpend = budgetService.getTotalSpend(
@@ -23,12 +23,12 @@ export function BudgetView({
 		pendingItems,
 		incomes,
 		expenses,
-		expenseTransactions
+		expenseTransactions,
 	);
 	const extraIncome = budgetService.getExtraIncome(
 		transactions,
 		incomes,
-		expenses
+		expenses,
 	);
 	const remainingBudget = weeklyBudget - totalSpend;
 	return (

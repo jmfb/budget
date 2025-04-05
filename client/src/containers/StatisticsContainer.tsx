@@ -1,22 +1,22 @@
-import { Statistics } from '~/pages';
-import { dateService } from '~/services';
-import { useAppSelector, getExpenseTransactions } from '~/redux';
+import { Statistics } from "~/pages";
+import { dateService } from "~/services";
+import { useAppSelector, getExpenseTransactions } from "~/redux";
 
 export default function StatisticsContainer() {
 	const expenseTransactions = useAppSelector(getExpenseTransactions);
 	const weeklyTransactions = useAppSelector(
-		state => state.transactions.weeks
+		(state) => state.transactions.weeks,
 	);
-	const incomes = useAppSelector(state => state.incomes.incomes);
-	const expenses = useAppSelector(state => state.expenses.expenses);
+	const incomes = useAppSelector((state) => state.incomes.incomes);
+	const expenses = useAppSelector((state) => state.expenses.expenses);
 	const pendingItems = useAppSelector(
-		state => state.pendingItems.pendingItems
+		(state) => state.pendingItems.pendingItems,
 	);
 	const weeksOf = dateService.getStartOfLastXWeeks(12);
-	const weeks = weeksOf.map(weekOf => weeklyTransactions[weekOf]);
+	const weeks = weeksOf.map((weekOf) => weeklyTransactions[weekOf]);
 	const allWeeksInYear = dateService
 		.getAllWeeksOfCurrentYear()
-		.map(weekOf => weeklyTransactions[weekOf]);
+		.map((weekOf) => weeklyTransactions[weekOf]);
 
 	return (
 		<Statistics

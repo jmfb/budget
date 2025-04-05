@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { PageLoading, Button } from '~/components';
-import { Category } from './Category';
-import { ExpenseEditor } from './ExpenseEditor';
-import { budgetService } from '~/services';
-import { IExpense } from '~/models';
-import styles from './Expenses.module.css';
+import { useEffect, useState } from "react";
+import { PageLoading, Button } from "~/components";
+import { Category } from "./Category";
+import { ExpenseEditor } from "./ExpenseEditor";
+import { budgetService } from "~/services";
+import { IExpense } from "~/models";
+import styles from "./Expenses.module.css";
 
 export interface IExpensesProps {
 	expenses: IExpense[];
@@ -21,7 +21,7 @@ export function Expenses({
 	savingExpenseSuccess,
 	saveExpense,
 	deleteExpense,
-	clearExpenseSave
+	clearExpenseSave,
 }: IExpensesProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingExpense, setExistingExpense] = useState<IExpense>(null);
@@ -56,7 +56,7 @@ export function Expenses({
 	}, [isSavingExpense, isSaving, savingExpenseSuccess]);
 
 	if (expenses === null) {
-		return <PageLoading message='Loading expenses' />;
+		return <PageLoading message="Loading expenses" />;
 	}
 
 	const expensesByCategory = expenses.reduce(
@@ -69,7 +69,7 @@ export function Expenses({
 			}
 			return map;
 		},
-		{} as Record<string, IExpense[]>
+		{} as Record<string, IExpense[]>,
 	);
 
 	const weeklyExpenses = budgetService.getWeeklyExpenses(expenses);
@@ -81,16 +81,17 @@ export function Expenses({
 					{budgetService.format(weeklyExpenses)} every week
 				</h3>
 				<Button
-					variant='primary'
+					variant="primary"
 					className={styles.addButton}
-					onClick={handleAddClicked}>
+					onClick={handleAddClicked}
+				>
 					Add
 				</Button>
 			</div>
 			<div>
 				{Object.keys(expensesByCategory)
 					.sort((a, b) => a.localeCompare(b))
-					.map(category => (
+					.map((category) => (
 						<Category
 							key={category}
 							category={category}

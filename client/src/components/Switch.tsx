@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
-import ReactSwitch from 'react-switch';
-import styles from './Switch.module.css';
+import { ReactNode } from "react";
+import ReactSwitch from "react-switch";
+import styles from "./Switch.module.css";
 
 export interface ISwitchProps {
 	children?: ReactNode;
@@ -14,7 +14,7 @@ export function Switch({ children, checked, onChange }: ISwitchProps) {
 			<ReactSwitch
 				checked={checked}
 				onChange={onChange}
-				onColor='#2a6ce5'
+				onColor="#2a6ce5"
 				height={16}
 				width={32}
 				checkedIcon={false}

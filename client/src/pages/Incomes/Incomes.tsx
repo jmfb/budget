@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { PageLoading, Button } from '~/components';
-import { Income } from './Income';
-import { IncomeEditor } from './IncomeEditor';
-import { budgetService } from '~/services';
-import { IIncome } from '~/models';
-import styles from './Incomes.module.css';
+import { useEffect, useState } from "react";
+import { PageLoading, Button } from "~/components";
+import { Income } from "./Income";
+import { IncomeEditor } from "./IncomeEditor";
+import { budgetService } from "~/services";
+import { IIncome } from "~/models";
+import styles from "./Incomes.module.css";
 
 export interface IIncomesProps {
 	incomes: IIncome[];
@@ -21,7 +21,7 @@ export function Incomes({
 	savingIncomeSuccess,
 	saveIncome,
 	deleteIncome,
-	clearIncomeSave
+	clearIncomeSave,
 }: IIncomesProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingIncome, setExistingIncome] = useState<IIncome>(null);
@@ -56,7 +56,7 @@ export function Incomes({
 	}, [isSavingIncome, isSaving, savingIncomeSuccess]);
 
 	if (incomes === null) {
-		return <PageLoading message='Loading incomes' />;
+		return <PageLoading message="Loading incomes" />;
 	}
 
 	const weeklyIncomes = budgetService.getWeeklyIncomes(incomes);
@@ -68,14 +68,15 @@ export function Incomes({
 					{budgetService.format(weeklyIncomes)} every week
 				</h3>
 				<Button
-					variant='primary'
+					variant="primary"
 					className={styles.addButton}
-					onClick={handleAddClicked}>
+					onClick={handleAddClicked}
+				>
 					Add
 				</Button>
 			</div>
 			<div>
-				{incomes.map(income => (
+				{incomes.map((income) => (
 					<Income
 						key={income.name}
 						income={income}

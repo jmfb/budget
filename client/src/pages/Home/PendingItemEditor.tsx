@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
 	Modal,
 	Button,
 	Buttons,
 	Input,
 	CurrencyInput,
-	CategorySelect
-} from '~/components';
-import { IncomeSelect } from './IncomeSelect';
-import { ExpenseSelect } from './ExpenseSelect';
-import { IPendingItem, IIncome, IExpense } from '~/models';
+	CategorySelect,
+} from "~/components";
+import { IncomeSelect } from "./IncomeSelect";
+import { ExpenseSelect } from "./ExpenseSelect";
+import { IPendingItem, IIncome, IExpense } from "~/models";
 
 export interface IPendingItemEditorProps {
 	incomes: IIncome[];
@@ -34,18 +34,18 @@ export function PendingItemEditor({
 	deletePendingItem,
 	clearPendingItemSave,
 	onSave,
-	onCancel
+	onCancel,
 }: IPendingItemEditorProps) {
-	const [name, setName] = useState(existingPendingItem?.name ?? '');
+	const [name, setName] = useState(existingPendingItem?.name ?? "");
 	const [amount, setAmount] = useState(existingPendingItem?.amount ?? 0);
 	const [category, setCategory] = useState(
-		existingPendingItem?.category ?? ''
+		existingPendingItem?.category ?? "",
 	);
 	const [expenseName, setExpenseName] = useState(
-		existingPendingItem?.expenseName ?? ''
+		existingPendingItem?.expenseName ?? "",
 	);
 	const [incomeName, setIncomeName] = useState(
-		existingPendingItem?.incomeName ?? ''
+		existingPendingItem?.incomeName ?? "",
 	);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [isAddingExpense, setIsAddingExpense] = useState(false);
@@ -101,16 +101,17 @@ export function PendingItemEditor({
 			onClose={onCancel}
 			title={
 				existingPendingItem
-					? 'Edit Pending Transaction'
-					: 'New Pending Transaction'
+					? "Edit Pending Transaction"
+					: "New Pending Transaction"
 			}
 			deleteButton={
 				existingPendingItem && (
 					<Button
-						variant='danger'
+						variant="danger"
 						onClick={handleDeleteClicked}
 						isDisabled={isModificationInProgress}
-						isProcessing={isDeleting}>
+						isProcessing={isDeleting}
+					>
 						Delete
 					</Button>
 				)
@@ -118,46 +119,37 @@ export function PendingItemEditor({
 			buttons={
 				<Buttons>
 					<Button
-						variant='default'
+						variant="default"
 						onClick={onCancel}
-						isDisabled={isModificationInProgress}>
+						isDisabled={isModificationInProgress}
+					>
 						Cancel
 					</Button>
 					<Button
-						variant='primary'
+						variant="primary"
 						onClick={handleSaveClicked}
 						isDisabled={isModificationInProgress}
-						isProcessing={isSavingPendingItem}>
+						isProcessing={isSavingPendingItem}
+					>
 						Save
 					</Button>
 				</Buttons>
-			}>
-			<Input
-				name='Name'
-				autoFocus
-				value={name}
-				onChange={setName}
-			/>
-			<CurrencyInput
-				name='Amount'
-				value={amount}
-				onChange={setAmount}
-			/>
+			}
+		>
+			<Input name="Name" autoFocus value={name} onChange={setName} />
+			<CurrencyInput name="Amount" value={amount} onChange={setAmount} />
 			{!showExpenseSelect && !showIncomeSelect && !showCategorySelect && (
 				<Buttons>
-					<Button
-						variant='default'
-						onClick={handleAddExpenseClicked}>
+					<Button variant="default" onClick={handleAddExpenseClicked}>
 						Expense
 					</Button>
-					<Button
-						variant='default'
-						onClick={handleAddIncomeClicked}>
+					<Button variant="default" onClick={handleAddIncomeClicked}>
 						Income
 					</Button>
 					<Button
-						variant='default'
-						onClick={handleAddCategoryClicked}>
+						variant="default"
+						onClick={handleAddCategoryClicked}
+					>
 						Category
 					</Button>
 				</Buttons>

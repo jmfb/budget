@@ -1,15 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
 	server: {
 		host: "localbudget.buysse.link",
 		port: 8099,
 		https: {
-			cert: 'c:/save/keys/LocalBudgetPublic.pem',
-			key: 'c:/save/keys/LocalBudgetPrivate.pem',
+			cert: "c:/save/keys/LocalBudgetPublic.pem",
+			key: "c:/save/keys/LocalBudgetPrivate.pem",
 		},
 		strictPort: true,
 	},
@@ -19,7 +19,12 @@ export default defineConfig({
 			output: {
 				manualChunks: {
 					react: ["react", "react-dom", "react-router-dom"],
-					redux: ["@reduxjs/toolkit", "react-redux", "redux", "redux-thunk"],
+					redux: [
+						"@reduxjs/toolkit",
+						"react-redux",
+						"redux",
+						"redux-thunk",
+					],
 				},
 			},
 		},

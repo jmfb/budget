@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IPendingItem } from '~/models';
+import { createSlice } from "@reduxjs/toolkit";
+import { IPendingItem } from "~/models";
 import {
 	refreshPendingItems,
 	savePendingItem,
 	deletePendingItem,
-	downloadPendingItems
-} from './pendingItems.actions';
+	downloadPendingItems,
+} from "./pendingItems.actions";
 
 export interface IPendingItemsState {
 	version: number;
@@ -17,34 +17,34 @@ export interface IPendingItemsState {
 }
 
 const initialState: IPendingItemsState = {
-	version: JSON.parse(localStorage.getItem('pending-items-version')) ?? null,
-	pendingItems: JSON.parse(localStorage.getItem('pending-items')) ?? [],
+	version: JSON.parse(localStorage.getItem("pending-items-version")) ?? null,
+	pendingItems: JSON.parse(localStorage.getItem("pending-items")) ?? [],
 	isLoading: false,
 	isSaving: false,
 	wasSuccessful: false,
-	isDownloading: false
+	isDownloading: false,
 };
 
 function updateLocalStorage(state: IPendingItemsState) {
 	localStorage.setItem(
-		'pending-items-version',
-		JSON.stringify(state.version)
+		"pending-items-version",
+		JSON.stringify(state.version),
 	);
-	localStorage.setItem('pending-items', JSON.stringify(state.pendingItems));
+	localStorage.setItem("pending-items", JSON.stringify(state.pendingItems));
 }
 
 const slice = createSlice({
-	name: 'pendingItems',
+	name: "pendingItems",
 	initialState,
 	reducers: {
 		clearSave(state) {
 			state.isSaving = false;
 			state.wasSuccessful = false;
-		}
+		},
 	},
-	extraReducers: builder =>
+	extraReducers: (builder) =>
 		builder
-			.addCase(refreshPendingItems.pending, state => {
+			.addCase(refreshPendingItems.pending, (state) => {
 				state.isLoading = true;
 			})
 			.addCase(refreshPendingItems.fulfilled, (state, action) => {
@@ -55,10 +55,10 @@ const slice = createSlice({
 					updateLocalStorage(state);
 				}
 			})
-			.addCase(refreshPendingItems.rejected, state => {
+			.addCase(refreshPendingItems.rejected, (state) => {
 				state.isLoading = false;
 			})
-			.addCase(savePendingItem.pending, state => {
+			.addCase(savePendingItem.pending, (state) => {
 				state.isSaving = true;
 			})
 			.addCase(savePendingItem.fulfilled, (state, action) => {
@@ -66,7 +66,7 @@ const slice = createSlice({
 				state.wasSuccessful = true;
 				const updatedPendingItem = action.meta.arg;
 				const index = state.pendingItems.findIndex(
-					pendingItem => pendingItem.id === updatedPendingItem.id
+					(pendingItem) => pendingItem.id === updatedPendingItem.id,
 				);
 				if (index === -1) {
 					state.pendingItems.push(updatedPendingItem);
@@ -76,10 +76,10 @@ const slice = createSlice({
 				state.version = action.payload;
 				updateLocalStorage(state);
 			})
-			.addCase(savePendingItem.rejected, state => {
+			.addCase(savePendingItem.rejected, (state) => {
 				state.isSaving = false;
 			})
-			.addCase(deletePendingItem.pending, state => {
+			.addCase(deletePendingItem.pending, (state) => {
 				state.isSaving = true;
 			})
 			.addCase(deletePendingItem.fulfilled, (state, action) => {
@@ -87,24 +87,24 @@ const slice = createSlice({
 				state.wasSuccessful = true;
 				const deletedPendingItem = action.meta.arg;
 				state.pendingItems = state.pendingItems.filter(
-					pendingItem => pendingItem.id !== deletedPendingItem.id
+					(pendingItem) => pendingItem.id !== deletedPendingItem.id,
 				);
 				state.version = action.payload;
 				updateLocalStorage(state);
 			})
-			.addCase(deletePendingItem.rejected, state => {
+			.addCase(deletePendingItem.rejected, (state) => {
 				state.isSaving = false;
 			})
 
-			.addCase(downloadPendingItems.pending, state => {
+			.addCase(downloadPendingItems.pending, (state) => {
 				state.isDownloading = true;
 			})
-			.addCase(downloadPendingItems.fulfilled, state => {
+			.addCase(downloadPendingItems.fulfilled, (state) => {
 				state.isDownloading = false;
 			})
-			.addCase(downloadPendingItems.rejected, state => {
+			.addCase(downloadPendingItems.rejected, (state) => {
 				state.isDownloading = false;
-			})
+			}),
 });
 
 export const pendingItemsSlice = {
@@ -114,6 +114,6 @@ export const pendingItemsSlice = {
 		refreshPendingItems,
 		savePendingItem,
 		deletePendingItem,
-		downloadPendingItems
-	}
+		downloadPendingItems,
+	},
 };

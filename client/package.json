@@ -42,7 +42,14 @@
 		"vite-tsconfig-paths": "^5.0.1"
 	},
 	"dependencies": {
+		"@csstools/normalize.css": "^12.1.1",
 		"@reduxjs/toolkit": "^1.9.5",
+		"@storybook/addon-actions": "^8.6.12",
+		"@storybook/addon-essentials": "^8.6.12",
+		"@storybook/addon-links": "^8.6.12",
+		"@storybook/react": "^8.6.12",
+		"@storybook/react-vite": "^8.6.12",
+		"@storybook/test": "^8.6.12",
 		"caniuse-lite": "^1.0.30001653",
 		"clsx": "^2.1.1",
 		"content-disposition": "^0.5.4",

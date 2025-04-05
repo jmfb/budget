@@ -1,7 +1,7 @@
-import Select from 'react-select';
-import { IExpense } from '~/models';
-import { budgetService } from '~/services';
-import styles from './ExpenseSelect.module.css';
+import Select from "react-select";
+import { IExpense } from "~/models";
+import { budgetService } from "~/services";
+import styles from "./ExpenseSelect.module.css";
 
 export interface IExpenseSelectProps {
 	expenses: IExpense[];
@@ -12,17 +12,17 @@ export interface IExpenseSelectProps {
 export function ExpenseSelect({
 	expenses,
 	expenseName,
-	onChange
+	onChange,
 }: IExpenseSelectProps) {
-	const options = expenses.map(expense => ({
+	const options = expenses.map((expense) => ({
 		value: expense,
-		label: `${expense.name} - ${budgetService.format(expense.amount)}`
+		label: `${expense.name} - ${budgetService.format(expense.amount)}`,
 	}));
 	const selectedOption =
-		options.find(option => option.value.name === expenseName) ?? null;
+		options.find((option) => option.value.name === expenseName) ?? null;
 
 	const handleChange = (option: { value: IExpense }) => {
-		onChange(option?.value.name ?? '');
+		onChange(option?.value.name ?? "");
 	};
 
 	return (
@@ -30,7 +30,7 @@ export function ExpenseSelect({
 			Expense
 			<Select
 				isClearable
-				placeholder='Select expense...'
+				placeholder="Select expense..."
 				options={options}
 				value={selectedOption}
 				onChange={handleChange}

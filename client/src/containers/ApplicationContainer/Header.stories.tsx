@@ -1,10 +1,10 @@
-import { BrowserRouter } from 'react-router-dom';
-import { Header } from './Header';
-import '~/index.module.css';
+import { BrowserRouter } from "react-router-dom";
+import { Header } from "./Header";
+import "~/index.module.css";
 
 export default {
-	title: 'Containers/Application/Header',
-	component: Header
+	title: "Containers/Application/Header",
+	component: Header,
 };
 
 function Template() {

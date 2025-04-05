@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Button } from '~/components';
-import { IIncome } from '~/models';
-import { budgetService } from '~/services';
-import styles from './Income.module.css';
+import { useState, useEffect } from "react";
+import { Button } from "~/components";
+import { IIncome } from "~/models";
+import { budgetService } from "~/services";
+import styles from "./Income.module.css";
 
 export interface IIncomeProps {
 	income: IIncome;
@@ -17,12 +17,12 @@ export function Income({
 	isSavingIncome,
 	deleteIncome,
 	clearIncomeSave,
-	onEdit
+	onEdit,
 }: IIncomeProps) {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const { name, amount, weeksInterval } = income;
 	const interval =
-		weeksInterval === 1 ? 'every week' : `every ${weeksInterval} weeks`;
+		weeksInterval === 1 ? "every week" : `every ${weeksInterval} weeks`;
 
 	useEffect(() => {
 		if (!isSavingIncome && isDeleting) {
@@ -42,16 +42,18 @@ export function Income({
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
 			<Button
-				variant='default'
+				variant="default"
 				className={styles.editButton}
-				onClick={onEdit}>
+				onClick={onEdit}
+			>
 				Edit
 			</Button>
 			<Button
-				variant='danger'
+				variant="danger"
 				onClick={handleDeleteClicked}
 				isProcessing={isDeleting}
-				isDisabled={isSavingIncome}>
+				isDisabled={isSavingIncome}
+			>
 				Delete
 			</Button>
 		</div>

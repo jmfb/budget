@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { Switch } from '~/components';
-import { PendingItems } from './PendingItems';
-import { Transaction } from './Transaction';
-import { TransactionEditorContainer } from './TransactionEditorContainer';
-import { ITransaction, IIncome, IExpense } from '~/models';
-import styles from './Transactions.module.css';
+import { useState } from "react";
+import { Switch } from "~/components";
+import { PendingItems } from "./PendingItems";
+import { Transaction } from "./Transaction";
+import { TransactionEditorContainer } from "./TransactionEditorContainer";
+import { ITransaction, IIncome, IExpense } from "~/models";
+import styles from "./Transactions.module.css";
 
 export interface ITransactionsProps {
-	variant: 'home' | 'search';
+	variant: "home" | "search";
 	onlyShowNewItems: boolean;
 	transactions: ITransaction[];
 	incomes: IIncome[];
@@ -25,7 +25,7 @@ export function Transactions({
 	expenses,
 	expenseTransactions,
 	includePendingItems,
-	setOnlyShowNewItems
+	setOnlyShowNewItems,
 }: ITransactionsProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingTransaction, setExistingTransaction] =
@@ -33,11 +33,11 @@ export function Transactions({
 
 	const transactionsByDate = transactions
 		.filter(
-			transaction =>
+			(transaction) =>
 				!onlyShowNewItems ||
 				(!transaction.expenseName &&
 					!transaction.incomeName &&
-					!transaction.category)
+					!transaction.category),
 		)
 		.reduce(
 			(map, transaction) => {
@@ -49,7 +49,7 @@ export function Transactions({
 				}
 				return map;
 			},
-			{} as Record<string, ITransaction[]>
+			{} as Record<string, ITransaction[]>,
 		);
 
 	const createEditClickedHandler = (transaction: ITransaction) => () => {
@@ -65,24 +65,25 @@ export function Transactions({
 	return (
 		<div>
 			{includePendingItems && <PendingItems />}
-			{variant === 'home' && (
+			{variant === "home" && (
 				<div className={styles.onlyShowNewItems}>
 					<Switch
 						checked={onlyShowNewItems}
-						onChange={setOnlyShowNewItems}>
+						onChange={setOnlyShowNewItems}
+					>
 						Only show new items
 					</Switch>
 				</div>
 			)}
 			{Object.keys(transactionsByDate)
 				.sort((a, b) => -a.localeCompare(b))
-				.map(date => (
+				.map((date) => (
 					<div key={date}>
 						<div className={styles.date}>{date}</div>
 						{transactionsByDate[date]
 							.sort((a, b) => a.id - b.id)
 							.sort((a, b) => a.amount - b.amount)
-							.map(transaction => (
+							.map((transaction) => (
 								<Transaction
 									key={transaction.id}
 									transaction={transaction}
@@ -90,7 +91,7 @@ export function Transactions({
 									expenses={expenses}
 									expenseTransactions={expenseTransactions}
 									onEdit={createEditClickedHandler(
-										transaction
+										transaction,
 									)}
 								/>
 							))}

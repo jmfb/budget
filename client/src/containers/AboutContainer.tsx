@@ -4,9 +4,9 @@ import {
 	transactionsSlice,
 	pendingItemsSlice,
 	expensesSlice,
-	incomesSlice
-} from '~/redux';
-import { About } from '~/pages/About/About';
+	incomesSlice,
+} from "~/redux";
+import { About } from "~/pages/About/About";
 
 export default function AboutContainer() {
 	const { downloadTransactions } = useActions(transactionsSlice);
@@ -14,16 +14,16 @@ export default function AboutContainer() {
 	const { downloadExpenses } = useActions(expensesSlice);
 	const { downloadIncomes } = useActions(incomesSlice);
 	const isDownloadingTransactions = useAppSelector(
-		state => state.transactions.isDownloading
+		(state) => state.transactions.isDownloading,
 	);
 	const isDownloadingPendingItems = useAppSelector(
-		state => state.pendingItems.isDownloading
+		(state) => state.pendingItems.isDownloading,
 	);
 	const isDownloadingExpenses = useAppSelector(
-		state => state.expenses.isDownloading
+		(state) => state.expenses.isDownloading,
 	);
 	const isDownloadingIncomes = useAppSelector(
-		state => state.incomes.isDownloading
+		(state) => state.incomes.isDownloading,
 	);
 	return (
 		<About

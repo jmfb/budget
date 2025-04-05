@@ -1,12 +1,12 @@
-import { PageLoading } from '~/components';
-import { WeekView } from './WeekView';
-import { BudgetView } from './BudgetView';
-import { Transactions } from './Transactions';
-import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
-import { IWeekState } from '~/redux';
-import { dateService } from '~/services';
-import { clsx } from 'clsx';
-import styles from './Home.module.css';
+import { PageLoading } from "~/components";
+import { WeekView } from "./WeekView";
+import { BudgetView } from "./BudgetView";
+import { Transactions } from "./Transactions";
+import { IIncome, IExpense, ITransaction, IPendingItem } from "~/models";
+import { IWeekState } from "~/redux";
+import { dateService } from "~/services";
+import { clsx } from "clsx";
+import styles from "./Home.module.css";
 
 export interface IHomeProps {
 	onlyShowNewItems: boolean;
@@ -29,7 +29,7 @@ export function Home({
 	expenseTransactions,
 	weekOf,
 	setWeekOf,
-	setOnlyShowNewItems
+	setOnlyShowNewItems,
 }: IHomeProps) {
 	const week = weeklyTransactions[weekOf];
 	const isLoadingWeek = week === undefined || week.isLoading;
@@ -37,14 +37,14 @@ export function Home({
 
 	return (
 		<>
-			<div className={clsx('responsive', styles.fixedTop)}>
+			<div className={clsx("responsive", styles.fixedTop)}>
 				<WeekView
 					weekOf={weekOf}
 					weeklyTransactions={weeklyTransactions}
 					setWeekOf={setWeekOf}
 				/>
 				{isLoadingWeek ? (
-					<PageLoading message='Loading transactions...' />
+					<PageLoading message="Loading transactions..." />
 				) : (
 					<BudgetView
 						incomes={incomes}
@@ -64,7 +64,7 @@ export function Home({
 						expenseTransactions={expenseTransactions}
 						includePendingItems={includePendingItems}
 						setOnlyShowNewItems={setOnlyShowNewItems}
-						variant='home'
+						variant="home"
 						transactions={week.transactions}
 					/>
 				</div>

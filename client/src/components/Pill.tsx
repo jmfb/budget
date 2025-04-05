@@ -1,8 +1,8 @@
 import { clsx } from "clsx";
-import styles from './Pill.module.css';
+import styles from "./Pill.module.css";
 
 export interface IPillProps {
-	type: 'info' | 'danger' | 'success' | 'new';
+	type: "info" | "danger" | "success" | "new";
 	className?: string;
 	children?: React.ReactNode;
 }

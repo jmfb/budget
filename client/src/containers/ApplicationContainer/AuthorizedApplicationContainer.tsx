@@ -1,8 +1,8 @@
-import { lazy, useEffect } from 'react';
-import { Navigate, Routes, Route } from 'react-router-dom';
-import { Header } from './Header';
-import { NewerVersionPrompt } from './NewerVersionPrompt';
-import { IIndexModel } from '~/models';
+import { lazy, useEffect } from "react";
+import { Navigate, Routes, Route } from "react-router-dom";
+import { Header } from "./Header";
+import { NewerVersionPrompt } from "./NewerVersionPrompt";
+import { IIndexModel } from "~/models";
 import {
 	useActions,
 	useAppSelector,
@@ -10,74 +10,74 @@ import {
 	expensesSlice,
 	incomesSlice,
 	pendingItemsSlice,
-	transactionsSlice
-} from '~/redux';
-import { useInterval } from '~/hooks';
-import { clsx } from 'clsx';
-import styles from './AuthorizedApplicationContainer.module.css';
+	transactionsSlice,
+} from "~/redux";
+import { useInterval } from "~/hooks";
+import { clsx } from "clsx";
+import styles from "./AuthorizedApplicationContainer.module.css";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncHomeContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'HomeContainer' */ '~/containers/HomeContainer'
-		)
+			/* webpackChunkName: 'HomeContainer' */ "~/containers/HomeContainer"
+		),
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncStatisticsContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'StatisticsContainer' */ '~/containers/StatisticsContainer'
-		)
+			/* webpackChunkName: 'StatisticsContainer' */ "~/containers/StatisticsContainer"
+		),
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncIncomesContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'IncomesContainer' */ '~/containers/IncomesContainer'
-		)
+			/* webpackChunkName: 'IncomesContainer' */ "~/containers/IncomesContainer"
+		),
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncExpensesContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'ExpensesContainer' */ '~/containers/ExpensesContainer'
-		)
+			/* webpackChunkName: 'ExpensesContainer' */ "~/containers/ExpensesContainer"
+		),
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncUploadsContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'UploadsContainer' */ '~/containers/UploadsContainer'
-		)
+			/* webpackChunkName: 'UploadsContainer' */ "~/containers/UploadsContainer"
+		),
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncYearlyExpensesContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'YearlyExpensesContainer' */ '~/containers/YearlyExpensesContainer'
-		)
+			/* webpackChunkName: 'YearlyExpensesContainer' */ "~/containers/YearlyExpensesContainer"
+		),
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncSignOutContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'SignOutContainer' */ '~/containers/SignOutContainer'
-		)
+			/* webpackChunkName: 'SignOutContainer' */ "~/containers/SignOutContainer"
+		),
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncAboutContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'AboutContainer' */ '~/containers/AboutContainer'
-		)
+			/* webpackChunkName: 'AboutContainer' */ "~/containers/AboutContainer"
+		),
 );
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncSearchContainer = lazy(
 	() =>
 		import(
-			/* webpackChunkName: 'SearchContainer' */ '~/containers/SearchContainer'
-		)
+			/* webpackChunkName: 'SearchContainer' */ "~/containers/SearchContainer"
+		),
 );
 
 export interface IAuthorizedApplicationContainerProps {
@@ -85,7 +85,7 @@ export interface IAuthorizedApplicationContainerProps {
 }
 
 export function AuthorizedApplicationContainer({
-	indexModel
+	indexModel,
 }: IAuthorizedApplicationContainerProps) {
 	const { heartbeat } = useActions(diagnosticsSlice);
 	const { refreshExpenses } = useActions(expensesSlice);
@@ -93,10 +93,10 @@ export function AuthorizedApplicationContainer({
 	const { refreshPendingItems } = useActions(pendingItemsSlice);
 	const { refreshTransactions } = useActions(transactionsSlice);
 	const bundleVersion = useAppSelector(
-		state => state.diagnostics.bundleVersion
+		(state) => state.diagnostics.bundleVersion,
 	);
 	const serverBundleVersion = useAppSelector(
-		state => state.diagnostics.serverBundleVersion
+		(state) => state.diagnostics.serverBundleVersion,
 	);
 
 	useEffect(() => {
@@ -117,49 +117,43 @@ export function AuthorizedApplicationContainer({
 	return (
 		<>
 			<Header />
-			<main className={clsx('responsive', styles.main)}>
+			<main className={clsx("responsive", styles.main)}>
 				<section>
 					<Routes>
+						<Route path="/" element={<AsyncHomeContainer />} />
 						<Route
-							path='/'
-							element={<AsyncHomeContainer />}
-						/>
-						<Route
-							path='/statistics'
+							path="/statistics"
 							element={<AsyncStatisticsContainer />}
 						/>
 						<Route
-							path='/incomes'
+							path="/incomes"
 							element={<AsyncIncomesContainer />}
 						/>
 						<Route
-							path='/expenses'
+							path="/expenses"
 							element={<AsyncExpensesContainer />}
 						/>
 						<Route
-							path='/uploads'
+							path="/uploads"
 							element={<AsyncUploadsContainer />}
 						/>
 						<Route
-							path='/yearly-expenses/:expense'
+							path="/yearly-expenses/:expense"
 							element={<AsyncYearlyExpensesContainer />}
 						/>
 						<Route
-							path='/sign-out'
+							path="/sign-out"
 							element={<AsyncSignOutContainer />}
 						/>
 						<Route
-							path='/about'
+							path="/about"
 							element={<AsyncAboutContainer />}
 						/>
 						<Route
-							path='/search'
+							path="/search"
 							element={<AsyncSearchContainer />}
 						/>
-						<Route
-							path='*'
-							element={<Navigate to='/' />}
-						/>
+						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
 					<NewerVersionPrompt
 						bundleVersion={bundleVersion}

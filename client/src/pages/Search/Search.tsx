@@ -1,7 +1,7 @@
-import { Input, PageLoading } from '~/components';
-import { Transactions } from '~/pages/Home/Transactions';
-import { IExpense, IIncome, ITransaction } from '~/models';
-import styles from './Search.module.css';
+import { Input, PageLoading } from "~/components";
+import { Transactions } from "~/pages/Home/Transactions";
+import { IExpense, IIncome, ITransaction } from "~/models";
+import styles from "./Search.module.css";
 
 export interface ISearchProps {
 	searchQuery: string;
@@ -20,7 +20,7 @@ export function Search({
 	expenses,
 	expenseTransactions,
 	transactions,
-	onUpdateSearch
+	onUpdateSearch,
 }: ISearchProps) {
 	if (isLoading) {
 		return <PageLoading />;
@@ -29,14 +29,14 @@ export function Search({
 	return (
 		<div className={styles.root}>
 			<Input
-				name=''
+				name=""
 				autoFocus
-				placeholder='Search for transactions...'
+				placeholder="Search for transactions..."
 				value={searchQuery}
 				onChange={onUpdateSearch}
 			/>
 			{!!searchQuery && transactions.length === 0 && (
-				<div className={styles['no-results']}>
+				<div className={styles["no-results"]}>
 					No transactions matched your search.
 				</div>
 			)}
@@ -45,7 +45,7 @@ export function Search({
 				incomes={incomes}
 				expenses={expenses}
 				expenseTransactions={expenseTransactions}
-				variant='search'
+				variant="search"
 				onlyShowNewItems={false}
 				setOnlyShowNewItems={undefined}
 				includePendingItems={false}

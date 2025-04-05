@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { TransactionEditor } from './TransactionEditor';
-import { ITransaction } from '~/models';
-import { useActions, useAppSelector, transactionsSlice } from '~/redux';
+import { useState, useEffect } from "react";
+import { TransactionEditor } from "./TransactionEditor";
+import { ITransaction } from "~/models";
+import { useActions, useAppSelector, transactionsSlice } from "~/redux";
 
 export interface ITransactionEditorContainerProps {
 	transaction: ITransaction;
@@ -10,21 +10,21 @@ export interface ITransactionEditorContainerProps {
 
 export function TransactionEditorContainer({
 	transaction,
-	onClose
+	onClose,
 }: ITransactionEditorContainerProps) {
 	const {
 		saveTransaction,
 		deleteTransaction,
-		clearSave: clearTransactionSave
+		clearSave: clearTransactionSave,
 	} = useActions(transactionsSlice);
 
-	const incomes = useAppSelector(state => state.incomes.incomes);
-	const expenses = useAppSelector(state => state.expenses.expenses);
+	const incomes = useAppSelector((state) => state.incomes.incomes);
+	const expenses = useAppSelector((state) => state.expenses.expenses);
 	const isSavingTransaction = useAppSelector(
-		state => state.transactions.isSaving
+		(state) => state.transactions.isSaving,
 	);
 	const savingTransactionSuccess = useAppSelector(
-		state => state.transactions.wasSuccessful
+		(state) => state.transactions.wasSuccessful,
 	);
 
 	const [isSaving, setIsSaving] = useState(false);

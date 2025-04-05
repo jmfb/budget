@@ -1,12 +1,12 @@
-import { Incomes } from '~/pages';
-import { useActions, useAppSelector, incomesSlice } from '~/redux';
+import { Incomes } from "~/pages";
+import { useActions, useAppSelector, incomesSlice } from "~/redux";
 
 export default function IncomesContainer() {
 	const { saveIncome, deleteIncome, clearSave } = useActions(incomesSlice);
-	const incomes = useAppSelector(state => state.incomes.incomes);
-	const isSavingIncome = useAppSelector(state => state.incomes.isSaving);
+	const incomes = useAppSelector((state) => state.incomes.incomes);
+	const isSavingIncome = useAppSelector((state) => state.incomes.isSaving);
 	const savingIncomeSuccess = useAppSelector(
-		state => state.incomes.wasSuccessful
+		(state) => state.incomes.wasSuccessful,
 	);
 
 	return (

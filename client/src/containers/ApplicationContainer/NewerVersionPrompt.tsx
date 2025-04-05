@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Button } from '~/components';
-import styles from './NewerVersionPrompt.module.css';
+import { useState } from "react";
+import { Button } from "~/components";
+import styles from "./NewerVersionPrompt.module.css";
 
 export interface INewerVersionPromptProps {
 	bundleVersion: string;
@@ -11,7 +11,7 @@ export interface INewerVersionPromptProps {
 export function NewerVersionPrompt({
 	bundleVersion,
 	serverBundleVersion,
-	onClickRefresh
+	onClickRefresh,
 }: INewerVersionPromptProps) {
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -34,11 +34,12 @@ export function NewerVersionPrompt({
 				</div>
 			</div>
 			<Button
-				variant='primary'
+				variant="primary"
 				isDisabled={isRefreshing}
 				isProcessing={isRefreshing}
 				className={styles.refresh}
-				onClick={handleRefreshClicked}>
+				onClick={handleRefreshClicked}
+			>
 				Refresh
 			</Button>
 		</div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
 	Modal,
 	Button,
@@ -7,9 +7,9 @@ import {
 	CurrencyInput,
 	NumberInput,
 	Checkbox,
-	CategorySelect
-} from '~/components';
-import { IExpense } from '~/models';
+	CategorySelect,
+} from "~/components";
+import { IExpense } from "~/models";
 
 export interface IExpenseEditorProps {
 	existingExpense: IExpense;
@@ -24,16 +24,16 @@ export function ExpenseEditor({
 	isSavingExpense,
 	mustRemainYearlyExpense,
 	onSave,
-	onCancel
+	onCancel,
 }: IExpenseEditorProps) {
-	const [name, setName] = useState(existingExpense?.name ?? '');
+	const [name, setName] = useState(existingExpense?.name ?? "");
 	const [amount, setAmount] = useState(existingExpense?.amount ?? 0);
 	const [monthsInterval, setMonthsInterval] = useState(
-		existingExpense?.monthsInterval ?? 1
+		existingExpense?.monthsInterval ?? 1,
 	);
-	const [category, setCategory] = useState(existingExpense?.category ?? '');
+	const [category, setCategory] = useState(existingExpense?.category ?? "");
 	const [isDistributed, setIsDistributed] = useState(
-		existingExpense?.isDistributed ?? false
+		existingExpense?.isDistributed ?? false,
 	);
 
 	const handleIsDistributedChanged = (value: boolean) => {
@@ -57,34 +57,32 @@ export function ExpenseEditor({
 	return (
 		<Modal
 			onClose={onCancel}
-			title={existingExpense ? name : 'New Expense'}
+			title={existingExpense ? name : "New Expense"}
 			buttons={
 				<Buttons>
 					<Button
-						variant='default'
+						variant="default"
 						onClick={onCancel}
-						isDisabled={isSavingExpense}>
+						isDisabled={isSavingExpense}
+					>
 						Cancel
 					</Button>
 					<Button
-						variant='primary'
+						variant="primary"
 						onClick={handleSaveClicked}
 						isDisabled={!isValid || isSavingExpense}
-						isProcessing={isSavingExpense}>
+						isProcessing={isSavingExpense}
+					>
 						Save
 					</Button>
 				</Buttons>
-			}>
+			}
+		>
 			{!existingExpense && (
-				<Input
-					name='Name'
-					autoFocus
-					value={name}
-					onChange={setName}
-				/>
+				<Input name="Name" autoFocus value={name} onChange={setName} />
 			)}
 			<CurrencyInput
-				name='Amount'
+				name="Amount"
 				autoFocus={!!existingExpense}
 				value={amount}
 				onChange={setAmount}
@@ -92,23 +90,20 @@ export function ExpenseEditor({
 			{!mustRemainYearlyExpense && (
 				<>
 					<Checkbox
-						name='Is Distributed Over Entire Year?'
+						name="Is Distributed Over Entire Year?"
 						value={isDistributed}
 						onChange={handleIsDistributedChanged}
 					/>
 					{!isDistributed && (
 						<NumberInput
-							name='Months Interval'
+							name="Months Interval"
 							value={monthsInterval}
 							onChange={setMonthsInterval}
 						/>
 					)}
 				</>
 			)}
-			<CategorySelect
-				category={category}
-				onChange={setCategory}
-			/>
+			<CategorySelect category={category} onChange={setCategory} />
 		</Modal>
 	);
 }

@@ -47,7 +47,7 @@ export interface IGetExpensesResponse {
 
 export enum TransactionSource {
 	Bank = 0,
-	CapitalOne = 1
+	CapitalOne = 1,
 }
 
 export interface ITransaction {

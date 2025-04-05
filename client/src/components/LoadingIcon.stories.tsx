@@ -1,9 +1,9 @@
-import { LoadingIcon } from './LoadingIcon';
-import '~/index.module.css';
+import { LoadingIcon } from "./LoadingIcon";
+import "~/index.module.css";
 
 export default {
-	title: 'Components/LoadingIcon',
-	component: LoadingIcon
+	title: "Components/LoadingIcon",
+	component: LoadingIcon,
 };
 
 function Template() {

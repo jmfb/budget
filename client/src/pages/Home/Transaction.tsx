@@ -1,7 +1,7 @@
-import { Pill } from '~/components';
-import { ITransaction, IIncome, IExpense } from '~/models';
-import { budgetService } from '~/services';
-import styles from './Transaction.module.css';
+import { Pill } from "~/components";
+import { ITransaction, IIncome, IExpense } from "~/models";
+import { budgetService } from "~/services";
+import styles from "./Transaction.module.css";
 
 export interface ITransactionProps {
 	transaction: ITransaction;
@@ -16,7 +16,7 @@ export function Transaction({
 	incomes,
 	expenses,
 	expenseTransactions,
-	onEdit
+	onEdit,
 }: ITransactionProps) {
 	const { amount, description, category, note, expenseName, incomeName } =
 		transaction;
@@ -24,12 +24,10 @@ export function Transaction({
 		transaction,
 		incomes,
 		expenses,
-		expenseTransactions
+		expenseTransactions,
 	);
 	return (
-		<div
-			className={styles.root}
-			onClick={onEdit}>
+		<div className={styles.root} onClick={onEdit}>
 			<div className={styles.row}>
 				<span className={styles.amount}>
 					{budgetService.format(amount)}
@@ -46,30 +44,22 @@ export function Transaction({
 				)}
 				{note && <span className={styles.note}>{note}</span>}
 				{!incomeName && !expenseName && !category && (
-					<Pill
-						className={styles.pill}
-						type='new'>
+					<Pill className={styles.pill} type="new">
 						New!
 					</Pill>
 				)}
 				{!incomeName && !expenseName && category && (
-					<Pill
-						className={styles.pill}
-						type='info'>
+					<Pill className={styles.pill} type="info">
 						{category}
 					</Pill>
 				)}
 				{incomeName && (
-					<Pill
-						className={styles.pill}
-						type='success'>
+					<Pill className={styles.pill} type="success">
 						{incomeName}
 					</Pill>
 				)}
 				{expenseName && (
-					<Pill
-						className={styles.pill}
-						type='danger'>
+					<Pill className={styles.pill} type="danger">
 						{expenseName}
 					</Pill>
 				)}

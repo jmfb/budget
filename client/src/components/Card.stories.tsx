@@ -1,10 +1,10 @@
-import { Card, ICardProps } from './Card';
-import { Button } from './Button';
-import '~/index.module.css';
+import { Card, ICardProps } from "./Card";
+import { Button } from "./Button";
+import "~/index.module.css";
 
 export default {
-	title: 'Components/Card',
-	component: Card
+	title: "Components/Card",
+	component: Card,
 };
 
 function Template(props: ICardProps) {
@@ -12,9 +12,7 @@ function Template(props: ICardProps) {
 		<Card {...props}>
 			<h2>Example</h2>
 			<div>This is a card</div>
-			<Button
-				variant='primary'
-				onClick={() => console.log('click')}>
+			<Button variant="primary" onClick={() => console.log("click")}>
 				OK
 			</Button>
 		</Card>

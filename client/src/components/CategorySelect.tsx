@@ -1,5 +1,5 @@
-import Creatable from 'react-select/creatable';
-import styles from './CategorySelect.module.css';
+import Creatable from "react-select/creatable";
+import styles from "./CategorySelect.module.css";
 
 export interface ICategorySelectProps {
 	category: string;
@@ -10,37 +10,37 @@ export interface ICategorySelectProps {
 export function CategorySelect({
 	category,
 	autoFocus,
-	onChange
+	onChange,
 }: ICategorySelectProps) {
 	const options = [
 		// Well-Known Recurring Expenses
-		'Car',
-		'Holidays',
-		'Home',
-		'Internet',
-		'Karate',
+		"Car",
+		"Holidays",
+		"Home",
+		"Internet",
+		"Karate",
 		// Well-Known Incomes
-		'Direct Supply',
+		"Direct Supply",
 		// Common Expense Categories
-		'Merchandise',
-		'Dining',
-		'Groceries',
-		'Liquor',
-		'Entertainment',
-		'Pets',
-		'Taxes',
-		'Cash'
+		"Merchandise",
+		"Dining",
+		"Groceries",
+		"Liquor",
+		"Entertainment",
+		"Pets",
+		"Taxes",
+		"Cash",
 	]
 		.sort((a, b) => a.localeCompare(b))
-		.map(categoryName => ({ value: categoryName, label: categoryName }));
-	let selectedOption = options.find(option => option.value === category);
+		.map((categoryName) => ({ value: categoryName, label: categoryName }));
+	let selectedOption = options.find((option) => option.value === category);
 	if (!selectedOption && category) {
 		selectedOption = { value: category, label: category };
 		options.push(selectedOption);
 	}
 
 	const handleChange = (option: { value: string }) => {
-		onChange(option?.value ?? '');
+		onChange(option?.value ?? "");
 	};
 
 	return (
@@ -48,7 +48,7 @@ export function CategorySelect({
 			Category
 			<Creatable
 				isClearable
-				placeholder='Select category...'
+				placeholder="Select category..."
 				options={options}
 				autoFocus={autoFocus}
 				value={selectedOption}

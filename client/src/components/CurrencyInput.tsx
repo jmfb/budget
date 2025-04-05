@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Input } from './Input';
-import { budgetService } from '~/services';
+import { useState } from "react";
+import { Input } from "./Input";
+import { budgetService } from "~/services";
 
 export interface ICurrencyInputProps {
 	name: string;
@@ -14,7 +14,7 @@ function toString(value: number) {
 }
 
 function parse(value: string) {
-	const cleanValue = (value ?? '').replace(/\,/g, '');
+	const cleanValue = (value ?? "").replace(/\,/g, "");
 	const result = Number.parseFloat(cleanValue);
 	return Number.isNaN(result) ? 0 : result;
 }
@@ -23,10 +23,10 @@ export function CurrencyInput({
 	name,
 	value,
 	autoFocus,
-	onChange
+	onChange,
 }: ICurrencyInputProps) {
 	const [textValue, setTextValue] = useState(
-		value === 0 ? '' : toString(value)
+		value === 0 ? "" : toString(value),
 	);
 
 	const handleTextChanged = (newTextValue: string) => {
@@ -46,7 +46,7 @@ export function CurrencyInput({
 			name={name}
 			autoFocus={autoFocus}
 			value={textValue}
-			placeholder='0.00'
+			placeholder="0.00"
 			onChange={handleTextChanged}
 			onBlur={handleBlurred}
 		/>

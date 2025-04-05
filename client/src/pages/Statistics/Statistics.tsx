@@ -1,11 +1,11 @@
-import { PageLoading } from '~/components';
-import { Week } from './Week';
-import { ExpenseBudget } from './ExpenseBudget';
-import { IIncome, IExpense, IPendingItem, ITransaction } from '~/models';
-import { budgetService } from '~/services';
-import { IWeekState } from '~/redux';
-import { clsx } from 'clsx';
-import styles from './Statistics.module.css';
+import { PageLoading } from "~/components";
+import { Week } from "./Week";
+import { ExpenseBudget } from "./ExpenseBudget";
+import { IIncome, IExpense, IPendingItem, ITransaction } from "~/models";
+import { budgetService } from "~/services";
+import { IWeekState } from "~/redux";
+import { clsx } from "clsx";
+import styles from "./Statistics.module.css";
 
 export interface IStatisticsProps {
 	incomes: IIncome[];
@@ -22,15 +22,15 @@ export function Statistics({
 	pendingItems,
 	weeks,
 	allWeeksInYear,
-	expenseTransactions
+	expenseTransactions,
 }: IStatisticsProps) {
 	const isLoading =
 		!incomes ||
 		!expenses ||
-		weeks.some(week => week === undefined || week.isLoading) ||
-		allWeeksInYear.some(week => week === undefined || week.isLoading);
+		weeks.some((week) => week === undefined || week.isLoading) ||
+		allWeeksInYear.some((week) => week === undefined || week.isLoading);
 	if (isLoading) {
-		return <PageLoading message='Loading transactions' />;
+		return <PageLoading message="Loading transactions" />;
 	}
 
 	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
@@ -40,22 +40,22 @@ export function Statistics({
 			index === 0 ? pendingItems : [],
 			incomes,
 			expenses,
-			expenseTransactions
-		)
+			expenseTransactions,
+		),
 	);
-	const extraIncomes = weeks.map(week =>
-		budgetService.getExtraIncome(week.transactions, incomes, expenses)
+	const extraIncomes = weeks.map((week) =>
+		budgetService.getExtraIncome(week.transactions, incomes, expenses),
 	);
 	const totalExtraIncome = extraIncomes.reduce(
 		(total, extraIncome) => total + extraIncome,
-		0
+		0,
 	);
 	const remainingBudgets = totalSpends.map(
-		totalSpend => weeklyBudget - totalSpend
+		(totalSpend) => weeklyBudget - totalSpend,
 	);
 	const totalRemainingBudget = remainingBudgets.reduce(
 		(total, remainingBudget) => total + remainingBudget,
-		0
+		0,
 	);
 	const maxUnderBudget = Math.max(0, ...remainingBudgets);
 	const maxOverBudget = Math.min(0, ...remainingBudgets);
@@ -69,9 +69,9 @@ export function Statistics({
 				index === 0 ? pendingItems : [],
 				incomes,
 				expenses,
-				expenseTransactions
+				expenseTransactions,
 			) +
-			budgetService.getExtraIncome(week.transactions, incomes, expenses)
+			budgetService.getExtraIncome(week.transactions, incomes, expenses),
 	);
 	const yearTotal = weekTotals.reduce((sum, amount) => sum + amount, 0);
 
@@ -147,13 +147,13 @@ export function Statistics({
 				</>
 			)}
 			{expenses
-				.filter(expense => expense.isDistributed)
-				.map(expense => (
+				.filter((expense) => expense.isDistributed)
+				.map((expense) => (
 					<ExpenseBudget
 						key={expense.name}
 						expense={expense}
 						total={budgetService.getTotal(
-							expenseTransactions[expense.name]
+							expenseTransactions[expense.name],
 						)}
 					/>
 				))}

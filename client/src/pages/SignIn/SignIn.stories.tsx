@@ -1,9 +1,9 @@
-import { SignIn, ISignInProps } from './SignIn';
-import '~/index.module.css';
+import { SignIn, ISignInProps } from "./SignIn";
+import "~/index.module.css";
 
 export default {
-	title: 'Pages/SignIn/Page',
-	component: SignIn
+	title: "Pages/SignIn/Page",
+	component: SignIn,
 };
 
 function Template(props: ISignInProps) {
@@ -14,5 +14,5 @@ export const Default = Template.bind({});
 
 export const SigningIn = Template.bind({});
 SigningIn.args = {
-	isSigningIn: true
+	isSigningIn: true,
 };

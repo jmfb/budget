@@ -1,13 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { ITransaction } from '~/models';
+import { createSlice } from "@reduxjs/toolkit";
+import { ITransaction } from "~/models";
 import {
 	getTransactions,
 	refreshTransactions,
 	saveTransaction,
 	deleteTransaction,
-	downloadTransactions
-} from './transactions.actions';
-import { dateService } from '~/services';
+	downloadTransactions,
+} from "./transactions.actions";
+import { dateService } from "~/services";
 
 export interface IWeekState {
 	version: number;
@@ -23,26 +23,26 @@ export interface ITransactionsState {
 }
 
 const initialState: ITransactionsState = {
-	weeks: JSON.parse(localStorage.getItem('weeks')) ?? {},
+	weeks: JSON.parse(localStorage.getItem("weeks")) ?? {},
 	isSaving: false,
 	wasSuccessful: false,
-	isDownloading: false
+	isDownloading: false,
 };
 
 function updateLocalStorage(state: ITransactionsState) {
-	localStorage.setItem('weeks', JSON.stringify(state.weeks));
+	localStorage.setItem("weeks", JSON.stringify(state.weeks));
 }
 
 const slice = createSlice({
-	name: 'transactions',
+	name: "transactions",
 	initialState,
 	reducers: {
 		clearSave(state) {
 			state.isSaving = false;
 			state.wasSuccessful = false;
-		}
+		},
 	},
-	extraReducers: builder =>
+	extraReducers: (builder) =>
 		builder
 			.addCase(getTransactions.pending, (state, action) => {
 				const weekOf = action.meta.arg;
@@ -53,7 +53,7 @@ const slice = createSlice({
 					state.weeks[weekOf] = {
 						version: null,
 						transactions: [],
-						isLoading: true
+						isLoading: true,
 					};
 				}
 			})
@@ -68,7 +68,7 @@ const slice = createSlice({
 				state.weeks[action.meta.arg].isLoading = false;
 			})
 
-			.addCase(saveTransaction.pending, state => {
+			.addCase(saveTransaction.pending, (state) => {
 				state.isSaving = true;
 			})
 			.addCase(saveTransaction.fulfilled, (state, action) => {
@@ -76,7 +76,7 @@ const slice = createSlice({
 				state.wasSuccessful = true;
 				const updatedTransaction = action.meta.arg;
 				const weekOf = dateService.getStartOfWeek(
-					updatedTransaction.date
+					updatedTransaction.date,
 				);
 				const week = state.weeks[weekOf];
 				// If we load a transaction outside of the 53 week cache, it does
@@ -86,9 +86,9 @@ const slice = createSlice({
 				}
 
 				const index = week.transactions.findIndex(
-					transaction =>
+					(transaction) =>
 						transaction.date === updatedTransaction.date &&
-						transaction.id === updatedTransaction.id
+						transaction.id === updatedTransaction.id,
 				);
 				if (index === -1) {
 					week.transactions.push(updatedTransaction);
@@ -98,10 +98,10 @@ const slice = createSlice({
 				week.version = action.payload;
 				updateLocalStorage(state);
 			})
-			.addCase(saveTransaction.rejected, state => {
+			.addCase(saveTransaction.rejected, (state) => {
 				state.isSaving = false;
 			})
-			.addCase(deleteTransaction.pending, state => {
+			.addCase(deleteTransaction.pending, (state) => {
 				state.isSaving = true;
 			})
 			.addCase(deleteTransaction.fulfilled, (state, action) => {
@@ -109,30 +109,30 @@ const slice = createSlice({
 				state.wasSuccessful = true;
 				const deletedTransaction = action.meta.arg;
 				const weekOf = dateService.getStartOfWeek(
-					deletedTransaction.date
+					deletedTransaction.date,
 				);
 				const week = state.weeks[weekOf];
 				week.transactions = week.transactions.filter(
-					transaction =>
+					(transaction) =>
 						transaction.date !== deletedTransaction.date ||
-						transaction.id !== deletedTransaction.id
+						transaction.id !== deletedTransaction.id,
 				);
 				week.version = action.payload;
 				updateLocalStorage(state);
 			})
-			.addCase(deleteTransaction.rejected, state => {
+			.addCase(deleteTransaction.rejected, (state) => {
 				state.isSaving = false;
 			})
 
-			.addCase(downloadTransactions.pending, state => {
+			.addCase(downloadTransactions.pending, (state) => {
 				state.isDownloading = true;
 			})
-			.addCase(downloadTransactions.fulfilled, state => {
+			.addCase(downloadTransactions.fulfilled, (state) => {
 				state.isDownloading = false;
 			})
-			.addCase(downloadTransactions.rejected, state => {
+			.addCase(downloadTransactions.rejected, (state) => {
 				state.isDownloading = false;
-			})
+			}),
 });
 
 export const transactionsSlice = {
@@ -143,6 +143,6 @@ export const transactionsSlice = {
 		refreshTransactions,
 		saveTransaction,
 		deleteTransaction,
-		downloadTransactions
-	}
+		downloadTransactions,
+	},
 };

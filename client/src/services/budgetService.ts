@@ -5,9 +5,9 @@ import {
 	ICapitalOneRecord,
 	ITransaction,
 	IPendingItem,
-	TransactionSource
-} from '~/models';
-import * as dateService from './dateService';
+	TransactionSource,
+} from "~/models";
+import * as dateService from "./dateService";
 
 const weeksPerYear = 52;
 const monthsPerYear = 12;
@@ -28,7 +28,7 @@ export function getWeeklyIncomes(incomes: IIncome[]) {
 export function getTotalMonthlyIncomes(incomes: IIncome[]) {
 	return incomes.reduce(
 		(total, income) => total + getMonthlyIncome(income),
-		0
+		0,
 	);
 }
 
@@ -43,7 +43,7 @@ export function getWeeklyExpenses(expenses: IExpense[]) {
 export function getTotalMonthlyExpenses(expenses: IExpense[]) {
 	return expenses.reduce(
 		(total, expense) => total + getMonthlyExpense(expense),
-		0
+		0,
 	);
 }
 
@@ -53,7 +53,7 @@ export function getMonthlyExpense(expense: IExpense) {
 
 export function getTotalPendingSpend(pendingItems: IPendingItem[]) {
 	return pendingItems
-		.filter(item => !item.expenseName && !item.incomeName)
+		.filter((item) => !item.expenseName && !item.incomeName)
 		.reduce((total, item) => total + item.amount, 0);
 }
 
@@ -63,8 +63,8 @@ export function round(value: number) {
 
 export function format(value: number) {
 	return new Intl.NumberFormat(undefined, {
-		style: 'currency',
-		currency: 'USD'
+		style: "currency",
+		currency: "USD",
 	}).format(value);
 }
 
@@ -74,7 +74,7 @@ export function getTotal(transactions: ITransaction[]) {
 
 export function getExpenseTotal(
 	expenseTransactions: Record<string, ITransaction[]>,
-	transaction: ITransaction
+	transaction: ITransaction,
 ) {
 	if (!transaction.expenseName) {
 		return 0;
@@ -84,9 +84,9 @@ export function getExpenseTotal(
 		return 0;
 	}
 	const priorTransactions = transactions.filter(
-		prior =>
+		(prior) =>
 			prior.date < transaction.date ||
-			(prior.date === transaction.date && prior.id < transaction.id)
+			(prior.date === transaction.date && prior.id < transaction.id),
 	);
 	return getTotal(priorTransactions);
 }
@@ -95,13 +95,13 @@ export function getTransactionAmount(
 	transaction: ITransaction,
 	incomes: IIncome[],
 	expenses: IExpense[],
-	expenseTransactions: Record<string, ITransaction[]>
+	expenseTransactions: Record<string, ITransaction[]>,
 ) {
 	const income = incomes.find(
-		income => income.name === transaction.incomeName
+		(income) => income.name === transaction.incomeName,
 	);
 	const expense = expenses.find(
-		expense => expense.name === transaction.expenseName
+		(expense) => expense.name === transaction.expenseName,
 	);
 	const expenseTotal = getExpenseTotal(expenseTransactions, transaction);
 	const expenseTotalWithAmount = expenseTotal + transaction.amount;
@@ -126,7 +126,7 @@ export function getTotalSpend(
 	pendingItems: IPendingItem[],
 	incomes: IIncome[],
 	expenses: IExpense[],
-	expenseTransactions: Record<string, ITransaction[]>
+	expenseTransactions: Record<string, ITransaction[]>,
 ) {
 	if (!transactions) {
 		return 0;
@@ -138,7 +138,7 @@ export function getTotalSpend(
 			transaction,
 			incomes,
 			expenses,
-			expenseTransactions
+			expenseTransactions,
 		);
 		if (amount > 0) {
 			transactionTotal += amount;
@@ -150,16 +150,16 @@ export function getTotalSpend(
 export function getExtraIncome(
 	transactions: ITransaction[],
 	incomes: IIncome[],
-	expenses: IExpense[]
+	expenses: IExpense[],
 ) {
 	if (!transactions) {
 		return 0;
 	}
 	return transactions
-		.map(transaction =>
-			getTransactionAmount(transaction, incomes, expenses, {})
+		.map((transaction) =>
+			getTransactionAmount(transaction, incomes, expenses, {}),
 		)
-		.filter(amount => amount < 0)
+		.filter((amount) => amount < 0)
 		.reduce((total, amount) => total - amount, 0);
 }
 
@@ -167,22 +167,22 @@ export function getDiscrepancy(
 	transaction: ITransaction,
 	incomes: IIncome[],
 	expenses: IExpense[],
-	expenseTransactions: Record<string, ITransaction[]>
+	expenseTransactions: Record<string, ITransaction[]>,
 ) {
 	const income = incomes.find(
-		income => income.name === transaction.incomeName
+		(income) => income.name === transaction.incomeName,
 	);
 	if (income) {
 		return income.amount + transaction.amount;
 	}
 	const expense = expenses.find(
-		expense => expense.name === transaction.expenseName
+		(expense) => expense.name === transaction.expenseName,
 	);
 	if (expense) {
 		if (expense.isDistributed) {
 			const expenseTotal = getExpenseTotal(
 				expenseTransactions,
-				transaction
+				transaction,
 			);
 			const expenseTotalWithAmount = expenseTotal + transaction.amount;
 			if (expenseTotal > expense.amount) {
@@ -222,7 +222,7 @@ export function parseBankRecord(record: string[]): IBankRecord {
 		memo: record[5],
 		credit: Number.parseFloat(record[6]),
 		debit: Number.parseFloat(record[7]),
-		rawText: record.join(',')
+		rawText: record.join(","),
 	};
 }
 
@@ -235,12 +235,12 @@ export function parseCapitalOneRecord(record: string[]): ICapitalOneRecord {
 		category: record[4],
 		debit: Number.parseFloat(record[5]),
 		credit: Number.parseFloat(record[6]),
-		rawText: record.join(',')
+		rawText: record.join(","),
 	};
 }
 
 export function convertBankRecordToTransaction(
-	record: IBankRecord
+	record: IBankRecord,
 ): ITransaction {
 	const { date, description, category, debit, credit, rawText } = record;
 	return {
@@ -251,15 +251,15 @@ export function convertBankRecordToTransaction(
 		amount: -(credit || debit),
 		originalCategory: category,
 		description,
-		category: '',
-		note: '',
-		expenseName: '',
-		incomeName: ''
+		category: "",
+		note: "",
+		expenseName: "",
+		incomeName: "",
 	};
 }
 
 export function convertCapitalOneRecordToTransaction(
-	record: ICapitalOneRecord
+	record: ICapitalOneRecord,
 ): ITransaction {
 	const { transactionDate, description, category, debit, credit, rawText } =
 		record;
@@ -271,10 +271,10 @@ export function convertCapitalOneRecordToTransaction(
 		amount: Number.isNaN(debit) ? -credit : debit,
 		originalCategory: category,
 		description,
-		category: '',
-		note: '',
-		expenseName: '',
-		incomeName: ''
+		category: "",
+		note: "",
+		expenseName: "",
+		incomeName: "",
 	};
 }
 
@@ -286,7 +286,7 @@ function isSameAmount(first: number, second: number) {
 }
 
 function getFundamentalDescription(value: string) {
-	return value.toLowerCase().replace(/\s/g, '');
+	return value.toLowerCase().replace(/\s/g, "");
 }
 
 function isSameDescription(first: string, second: string) {
@@ -305,14 +305,14 @@ export function isSameTransaction(first: ITransaction, second: ITransaction) {
 
 export function matchesTransaction(
 	searchQuery: string,
-	transaction: ITransaction
+	transaction: ITransaction,
 ) {
 	const strings = [
 		transaction.category,
 		transaction.note,
 		transaction.incomeName,
 		transaction.expenseName,
-		transaction.description
+		transaction.description,
 	];
 	const numbers = [transaction.amount];
 	return (
@@ -322,7 +322,7 @@ export function matchesTransaction(
 }
 
 function matchesStrings(searchQuery: string, values: string[]) {
-	return values.some(value => matchesString(searchQuery, value));
+	return values.some((value) => matchesString(searchQuery, value));
 }
 
 function matchesString(searchQuery: string, value: string) {
@@ -343,7 +343,7 @@ function matchesNumbers(searchQuery: string, values: number[]) {
 	if (Number.isNaN(numberSearch)) {
 		return false;
 	}
-	return values.some(value => matchesNumber(numberSearch, value));
+	return values.some((value) => matchesNumber(numberSearch, value));
 }
 
 function matchesNumber(numberSearch: number, value: number) {

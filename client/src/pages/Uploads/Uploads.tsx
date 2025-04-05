@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { FileInput, PageLoading, Button } from '~/components';
-import { budgetService } from '~/services';
-import { ITransaction } from '~/models';
-import styles from './Uploads.module.css';
+import React, { useEffect, useState } from "react";
+import { FileInput, PageLoading, Button } from "~/components";
+import { budgetService } from "~/services";
+import { ITransaction } from "~/models";
+import styles from "./Uploads.module.css";
 
 export interface IUploadsProps {
 	isReadingFile: boolean;
@@ -37,7 +37,7 @@ export function Uploads({
 	parseCsv,
 	mergeTransaction,
 	clearUpload,
-	clearLogs
+	clearLogs,
 }: IUploadsProps) {
 	const [isMergingBank, setIsMergingBank] = useState(false);
 	const [isMergingCapitalOne, setIsMergingCapitalOne] = useState(false);
@@ -96,7 +96,7 @@ export function Uploads({
 					const bankRecord = budgetService.parseBankRecord(csvRecord);
 					const transaction =
 						budgetService.convertBankRecordToTransaction(
-							bankRecord
+							bankRecord,
 						);
 					if (budgetService.isCapitalOneDebit(transaction)) {
 						setUploadIndex(uploadIndex + 1);
@@ -108,7 +108,7 @@ export function Uploads({
 						budgetService.parseCapitalOneRecord(csvRecord);
 					const transaction =
 						budgetService.convertCapitalOneRecordToTransaction(
-							capitalOneRecord
+							capitalOneRecord,
 						);
 					if (budgetService.isCapitalOneCredit(transaction)) {
 						setUploadIndex(uploadIndex + 1);
@@ -134,34 +134,37 @@ export function Uploads({
 				<div className={styles.uploadButtons}>
 					<div className={styles.bankButton}>
 						<FileInput
-							variant='default'
-							accept='*.csv'
-							onClick={handleUploadBank}>
+							variant="default"
+							accept="*.csv"
+							onClick={handleUploadBank}
+						>
 							Upload Bank Export
 						</FileInput>
 					</div>
 					<div className={styles.capitalOneButton}>
 						<FileInput
-							variant='default'
-							accept='*.csv'
-							onClick={handleUploadCapitalOne}>
+							variant="default"
+							accept="*.csv"
+							onClick={handleUploadCapitalOne}
+						>
 							Upload Capital One Export
 						</FileInput>
 					</div>
 				</div>
 			)}
-			{isReadingFile && <PageLoading message='Loading export file' />}
-			{isParsingCsv && <PageLoading message='Parsing csv records' />}
+			{isReadingFile && <PageLoading message="Loading export file" />}
+			{isParsingCsv && <PageLoading message="Parsing csv records" />}
 			{isMerging && (
 				<>
 					<div className={styles.mergeRow}>
 						<Button
-							variant='primary'
+							variant="primary"
 							isDisabled={
 								isLoading || !parsingCsvSuccess || isUploading
 							}
 							isProcessing={isUploading}
-							onClick={handleMergeClicked}>
+							onClick={handleMergeClicked}
+						>
 							Merge Transactions
 						</Button>
 						{parsingCsvSuccess && !isUploading && (
@@ -187,10 +190,11 @@ export function Uploads({
 					<div className={styles.logsHeader}>
 						<h3>Logs</h3>
 						<Button
-							variant='primary'
+							variant="primary"
 							onClick={handleClearClicked}
 							isDisabled={isUploading}
-							className={styles.clearButton}>
+							className={styles.clearButton}
+						>
 							Clear
 						</Button>
 					</div>

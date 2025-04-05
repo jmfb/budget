@@ -1,6 +1,6 @@
-import { ITransaction } from '~/models';
-import { budgetService } from '~/services';
-import styles from './ExpenseTransaction.module.css';
+import { ITransaction } from "~/models";
+import { budgetService } from "~/services";
+import styles from "./ExpenseTransaction.module.css";
 
 export interface IExpenseTransactionProps {
 	transaction: ITransaction;

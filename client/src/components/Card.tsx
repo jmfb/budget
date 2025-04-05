@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import styles from './Card.module.css';
+import styles from "./Card.module.css";
 
 export interface ICardProps {
 	className?: string;
