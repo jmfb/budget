@@ -43,14 +43,7 @@ Store the Client Secret in BitWarden.
 Add the following entry to your hosts file: `C:\Windows\System32\drivers\etc\hosts`
 ```
 127.0.0.1 localbudget.buysse.link
-```
-
-Generate a TokenSecret and store it in BitWarden.
-
-Get the following secrets from BitWarden and run in powershell to setup local environment variables.
-```PowerShell
-[Environment]::SetEnvironmentVariable("BudgetAuthClientSecret", "TODO", [EnvironmentVariableTarget]::Machine)
-[Environment]::SetEnvironmentVariable("BudgetTokenSecret", "TODO", [EnvironmentVariableTarget]::Machine)
+127.0.0.1 localbudget-api.buysse.link
 ```
 
 ## Development

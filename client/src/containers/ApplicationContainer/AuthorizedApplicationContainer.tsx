@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from 'react';
+import { lazy, useEffect } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
 import { Header } from './Header';
 import { NewerVersionPrompt } from './NewerVersionPrompt';
@@ -13,7 +13,7 @@ import {
 	transactionsSlice
 } from '~/redux';
 import { useInterval } from '~/hooks';
-import cx from 'classnames';
+import { clsx } from 'clsx';
 import styles from './AuthorizedApplicationContainer.module.css';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -117,7 +117,7 @@ export function AuthorizedApplicationContainer({
 	return (
 		<>
 			<Header />
-			<main className={cx('responsive', styles.main)}>
+			<main className={clsx('responsive', styles.main)}>
 				<section>
 					<Routes>
 						<Route

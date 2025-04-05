@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { TransactionEditor } from './TransactionEditor';
 import { ITransaction } from '~/models';
 import { useActions, useAppSelector, transactionsSlice } from '~/redux';

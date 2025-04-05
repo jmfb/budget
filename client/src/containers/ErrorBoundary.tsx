@@ -1,4 +1,4 @@
-import React, { ErrorInfo } from 'react';
+import { ErrorInfo } from 'react';
 import { connect } from 'react-redux';
 import { ErrorView } from '~/pages';
 import { IErrorReport } from '~/models';

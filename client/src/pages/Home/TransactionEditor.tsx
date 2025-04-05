@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Button, Buttons, Input, CategorySelect } from '~/components';
 import { IncomeSelect } from './IncomeSelect';
 import { ExpenseSelect } from './ExpenseSelect';

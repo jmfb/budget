@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, IButtonProps } from './Button';
 import '~/index.module.css';
 

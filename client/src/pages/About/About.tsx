@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { MdExitToApp, MdDownload } from 'react-icons/md';
 import { Button } from '~/components';

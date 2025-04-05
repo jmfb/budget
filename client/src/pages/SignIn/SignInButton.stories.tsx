@@ -1,4 +1,3 @@
-import React from 'react';
 import { SignInButton, ISignInButtonProps } from './SignInButton';
 import '~/index.module.css';
 

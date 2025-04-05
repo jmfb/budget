@@ -1,4 +1,3 @@
-import React from 'react';
 import { ITransaction } from '~/models';
 import { budgetService } from '~/services';
 import styles from './ExpenseTransaction.module.css';

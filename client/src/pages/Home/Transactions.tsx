@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Switch } from '~/components';
 import { PendingItems } from './PendingItems';
 import { Transaction } from './Transaction';

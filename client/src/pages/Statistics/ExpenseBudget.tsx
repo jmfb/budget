@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { IExpense } from '~/models';
 import { budgetService } from '~/services';
-import cx from 'classnames';
+import { clsx } from 'clsx';
 import styles from './ExpenseBudget.module.css';
 
 export interface IExpenseBudgetProps {
@@ -17,7 +16,7 @@ export function ExpenseBudget({ expense, total }: IExpenseBudgetProps) {
 			to={`/yearly-expenses/${encodeURIComponent(expense.name)}`}>
 			Remaining {expense.name} Budget
 			<span
-				className={cx(
+				className={clsx(
 					styles.net,
 					expense.amount >= total && styles.gain,
 					expense.amount < total && styles.loss

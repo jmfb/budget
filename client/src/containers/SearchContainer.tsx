@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search } from '~/pages';
 import { useAppSelector, getExpenseTransactions } from '~/redux';
 import { budgetService } from '~/services';

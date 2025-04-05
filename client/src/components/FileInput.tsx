@@ -1,7 +1,6 @@
-import React from 'react';
 import { LoadingIcon } from './LoadingIcon';
 import { ButtonVariant } from './Button';
-import cx from 'classnames';
+import { clsx } from "clsx";
 import styles from './FileInput.module.css';
 import buttonStyles from './Button.module.css';
 
@@ -36,7 +35,7 @@ export function FileInput({
 				onChange={handleInputChanged}
 			/>
 			<div
-				className={cx(
+				className={clsx(
 					buttonStyles.button,
 					buttonStyles[variant ?? 'default'],
 					styles.button,

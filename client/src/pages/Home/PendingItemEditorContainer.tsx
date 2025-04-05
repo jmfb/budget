@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { PendingItemEditor } from './PendingItemEditor';
 import { IPendingItem } from '~/models';
 import { useActions, useAppSelector, pendingItemsSlice } from '~/redux';

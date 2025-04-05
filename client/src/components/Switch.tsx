@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import ReactSwitch from 'react-switch';
 import styles from './Switch.module.css';
 

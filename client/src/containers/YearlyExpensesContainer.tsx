@@ -1,5 +1,4 @@
-import React from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { YearlyExpenses } from '~/pages';
 import { useActions, useAppSelector, expensesSlice } from '~/redux';
 import { dateService } from '~/services';

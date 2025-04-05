@@ -1,4 +1,3 @@
-import React from 'react';
 import { budgetService } from '~/services';
 import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
 import styles from './BudgetView.module.css';

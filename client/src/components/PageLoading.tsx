@@ -1,4 +1,3 @@
-import React from 'react';
 import { LoadingIcon } from './LoadingIcon';
 import styles from './PageLoading.module.css';
 

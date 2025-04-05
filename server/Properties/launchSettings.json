@@ -3,10 +3,9 @@
 		"Budget.Server": {
 			"commandName": "Project",
 			"launchBrowser": false,
-			"applicationUrl": "http://localbudget.buysse.link",
+			"applicationUrl": "https://localbudget-api.buysse.link",
 			"environmentVariables": {
-				"ASPNETCORE_ENVIRONMENT": "Development",
-				"ASPNETCORE_HTTP_PORTS": 80
+				"ASPNETCORE_ENVIRONMENT": "Development"
 			}
 		}
 	}

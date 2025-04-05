@@ -1,7 +1,6 @@
-import React from 'react';
 import { IconType } from 'react-icons';
 import { LoadingIcon } from './LoadingIcon';
-import cx from 'classnames';
+import { clsx } from "clsx";
 import styles from './Button.module.css';
 
 export type ButtonVariant = 'primary' | 'default' | 'danger';
@@ -32,14 +31,14 @@ export function Button({
 		<button
 			onClick={onClick}
 			autoFocus={autoFocus}
-			className={cx(
+			className={clsx(
 				styles.button,
 				styles[variant ?? 'default'],
 				className
 			)}
 			disabled={isDisabled}>
 			<div
-				className={cx(
+				className={clsx(
 					styles.children,
 					isProcessing && styles.processing
 				)}>

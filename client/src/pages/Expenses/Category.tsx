@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card } from '~/components';
 import { Expense } from './Expense';
 import { IExpense } from '~/models';

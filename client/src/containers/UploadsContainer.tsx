@@ -1,4 +1,3 @@
-import React from 'react';
 import { Uploads } from '~/pages';
 import { useActions, useAppSelector, budgetSlice } from '~/redux';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Incomes } from '~/pages';
 import { useActions, useAppSelector, incomesSlice } from '~/redux';
 

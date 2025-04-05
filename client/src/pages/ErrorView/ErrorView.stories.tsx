@@ -1,4 +1,3 @@
-import React from 'react';
 import { ErrorView, IErrorViewProps } from './ErrorView';
 import '~/index.module.css';
 

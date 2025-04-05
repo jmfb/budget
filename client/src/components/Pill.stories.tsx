@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pill, IPillProps } from './Pill';
 import '~/index.module.css';
 

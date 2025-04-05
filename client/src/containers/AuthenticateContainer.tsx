@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import { PageLoading } from '~/components';
 import { useActions, useAppSelector, authSlice } from '~/redux';

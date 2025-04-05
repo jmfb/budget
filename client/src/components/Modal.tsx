@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import ReactModal from 'react-modal';
 import styles from './Modal.module.css';
 

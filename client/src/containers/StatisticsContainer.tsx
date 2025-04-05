@@ -1,4 +1,3 @@
-import React from 'react';
 import { Statistics } from '~/pages';
 import { dateService } from '~/services';
 import { useAppSelector, getExpenseTransactions } from '~/redux';

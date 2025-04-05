@@ -1,11 +1,10 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
-import cx from 'classnames';
+import { clsx } from 'clsx';
 import styles from './Header.module.css';
 
 export function Header() {
 	return (
-		<header className={cx('responsive', styles.root)}>
+		<header className={clsx('responsive', styles.root)}>
 			<nav className={styles.links}>
 				<div className={styles.left}>
 					<NavLink

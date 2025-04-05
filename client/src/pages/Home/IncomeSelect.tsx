@@ -1,4 +1,3 @@
-import React from 'react';
 import Select from 'react-select';
 import { IIncome } from '~/models';
 import { budgetService } from '~/services';

@@ -1,5 +1,4 @@
-import React from 'react';
-import cx from 'classnames';
+import { clsx } from 'clsx';
 import styles from './SignInButton.module.css';
 
 export interface ISignInButtonProps {
@@ -23,7 +22,7 @@ export function SignInButton({
 
 	return (
 		<div
-			className={cx(
+			className={clsx(
 				styles.root,
 				styles[type],
 				isDisabled && styles.disabled,

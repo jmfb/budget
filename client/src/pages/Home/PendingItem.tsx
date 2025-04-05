@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pill } from '~/components';
 import { IPendingItem } from '~/models';
 import { budgetService } from '~/services';

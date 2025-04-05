@@ -1,5 +1,4 @@
-import React from 'react';
-import cx from 'classnames';
+import { clsx } from "clsx";
 import styles from './Pill.module.css';
 
 export interface IPillProps {
@@ -10,7 +9,7 @@ export interface IPillProps {
 
 export function Pill({ type, className, children }: IPillProps) {
 	return (
-		<div className={cx(styles.root, styles[type], className)}>
+		<div className={clsx(styles.root, styles[type], className)}>
 			{children}
 		</div>
 	);

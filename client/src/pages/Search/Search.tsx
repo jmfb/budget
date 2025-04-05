@@ -1,4 +1,3 @@
-import React from 'react';
 import { Input, PageLoading } from '~/components';
 import { Transactions } from '~/pages/Home/Transactions';
 import { IExpense, IIncome, ITransaction } from '~/models';

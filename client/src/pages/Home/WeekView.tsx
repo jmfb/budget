@@ -1,9 +1,8 @@
-import React from 'react';
 import { MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import { Button } from '~/components';
 import { dateService } from '~/services';
 import { IWeekState } from '~/redux';
-import cx from 'classnames';
+import { clsx } from 'clsx';
 import styles from './WeekView.module.css';
 
 export interface IWeekViewProps {
@@ -48,7 +47,7 @@ export function WeekView({
 					{daysOfWeek.map(dayOfWeek => (
 						<div
 							key={dayOfWeek.day}
-							className={cx(
+							className={clsx(
 								styles.dayOfWeek,
 								dayOfWeek.isPast && styles.past,
 								dayOfWeek.isToday && styles.today,
@@ -62,7 +61,7 @@ export function WeekView({
 					{daysOfWeek.map(dayOfWeek => (
 						<div
 							key={dayOfWeek.day}
-							className={cx(
+							className={clsx(
 								styles.dayOfWeek,
 								dayOfWeek.isPast && styles.past,
 								dayOfWeek.isToday && styles.today,

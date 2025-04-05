@@ -1,4 +1,3 @@
-import React from 'react';
 import { PageLoading, IPageLoadingProps } from './PageLoading';
 import '~/index.module.css';
 

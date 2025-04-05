@@ -1,11 +1,10 @@
-import React from 'react';
 import { PageLoading } from '~/components';
 import { Week } from './Week';
 import { ExpenseBudget } from './ExpenseBudget';
 import { IIncome, IExpense, IPendingItem, ITransaction } from '~/models';
 import { budgetService } from '~/services';
 import { IWeekState } from '~/redux';
-import cx from 'classnames';
+import { clsx } from 'clsx';
 import styles from './Statistics.module.css';
 
 export interface IStatisticsProps {
@@ -132,7 +131,7 @@ export function Statistics({
 					{netResult >= 0 && (
 						<div className={styles.row}>
 							Net Gain
-							<span className={cx(styles.net, styles.gain)}>
+							<span className={clsx(styles.net, styles.gain)}>
 								{budgetService.format(netResult)}
 							</span>
 						</div>
@@ -140,7 +139,7 @@ export function Statistics({
 					{netResult < 0 && (
 						<div className={styles.row}>
 							Net Loss
-							<span className={cx(styles.net, styles.loss)}>
+							<span className={clsx(styles.net, styles.loss)}>
 								{budgetService.format(-netResult)}
 							</span>
 						</div>

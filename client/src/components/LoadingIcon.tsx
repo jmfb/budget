@@ -1,5 +1,4 @@
-import React from 'react';
-import cx from 'classnames';
+import { clsx } from "clsx";
 import styles from './LoadingIcon.module.css';
 
 export function LoadingIcon() {
@@ -18,7 +17,7 @@ export function LoadingIcon() {
 		<svg
 			viewBox='0 0 58 58'
 			xmlns='http://www.w3.org/2000/svg'
-			className={cx(styles.loadingIcon, 'loading-icon')}>
+			className={clsx(styles.loadingIcon, 'loading-icon')}>
 			<g
 				fill='none'
 				fillRule='evenodd'

@@ -1,4 +1,3 @@
-import React from 'react';
 import { PageLoading } from '~/components';
 import { WeekView } from './WeekView';
 import { BudgetView } from './BudgetView';
@@ -6,7 +5,7 @@ import { Transactions } from './Transactions';
 import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
 import { IWeekState } from '~/redux';
 import { dateService } from '~/services';
-import cx from 'classnames';
+import { clsx } from 'clsx';
 import styles from './Home.module.css';
 
 export interface IHomeProps {
@@ -38,7 +37,7 @@ export function Home({
 
 	return (
 		<>
-			<div className={cx('responsive', styles.fixedTop)}>
+			<div className={clsx('responsive', styles.fixedTop)}>
 				<WeekView
 					weekOf={weekOf}
 					weeklyTransactions={weeklyTransactions}

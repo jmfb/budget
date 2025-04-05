@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { PageLoading, Pill, Button } from '~/components';
 import { ExpenseEditor } from '~/pages/Expenses/ExpenseEditor';
 import { ExpenseTransaction } from './ExpenseTransaction';
