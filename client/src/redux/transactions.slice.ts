@@ -10,7 +10,6 @@ import {
 import { dateService } from "~/services";
 
 export interface IWeekState {
-	version: number | null;
 	transactions: ITransaction[];
 	isLoading: boolean;
 }
@@ -23,15 +22,11 @@ export interface ITransactionsState {
 }
 
 const initialState: ITransactionsState = {
-	weeks: JSON.parse(localStorage.getItem("weeks") ?? "") ?? {},
+	weeks: {},
 	isSaving: false,
 	wasSuccessful: false,
 	isDownloading: false,
 };
-
-function updateLocalStorage(state: ITransactionsState) {
-	localStorage.setItem("weeks", JSON.stringify(state.weeks));
-}
 
 const slice = createSlice({
 	name: "transactions",
@@ -51,7 +46,6 @@ const slice = createSlice({
 					week.isLoading = true;
 				} else {
 					state.weeks[weekOf] = {
-						version: null,
 						transactions: [],
 						isLoading: true,
 					};
@@ -60,9 +54,7 @@ const slice = createSlice({
 			.addCase(getTransactions.fulfilled, (state, action) => {
 				const week = state.weeks[action.meta.arg];
 				week.isLoading = false;
-				week.version = action.payload.version;
 				week.transactions = action.payload.transactions;
-				updateLocalStorage(state);
 			})
 			.addCase(getTransactions.rejected, (state, action) => {
 				state.weeks[action.meta.arg].isLoading = false;
@@ -95,8 +87,6 @@ const slice = createSlice({
 				} else {
 					week.transactions[index] = updatedTransaction;
 				}
-				week.version = action.payload;
-				updateLocalStorage(state);
 			})
 			.addCase(saveTransaction.rejected, (state) => {
 				state.isSaving = false;
@@ -117,8 +107,6 @@ const slice = createSlice({
 						transaction.date !== deletedTransaction.date ||
 						transaction.id !== deletedTransaction.id,
 				);
-				week.version = action.payload;
-				updateLocalStorage(state);
 			})
 			.addCase(deleteTransaction.rejected, (state) => {
 				state.isSaving = false;

@@ -8,7 +8,6 @@ import {
 } from "./pendingItems.actions";
 
 export interface IPendingItemsState {
-	version: number;
 	pendingItems: IPendingItem[];
 	isLoading: boolean;
 	isSaving: boolean;
@@ -17,22 +16,12 @@ export interface IPendingItemsState {
 }
 
 const initialState: IPendingItemsState = {
-	version:
-		JSON.parse(localStorage.getItem("pending-items-version") ?? "") ?? null,
-	pendingItems: JSON.parse(localStorage.getItem("pending-items") ?? "") ?? [],
+	pendingItems: [],
 	isLoading: false,
 	isSaving: false,
 	wasSuccessful: false,
 	isDownloading: false,
 };
-
-function updateLocalStorage(state: IPendingItemsState) {
-	localStorage.setItem(
-		"pending-items-version",
-		JSON.stringify(state.version),
-	);
-	localStorage.setItem("pending-items", JSON.stringify(state.pendingItems));
-}
 
 const slice = createSlice({
 	name: "pendingItems",
@@ -51,9 +40,7 @@ const slice = createSlice({
 			.addCase(refreshPendingItems.fulfilled, (state, action) => {
 				state.isLoading = false;
 				if (action.payload) {
-					state.version = action.payload.version;
 					state.pendingItems = action.payload.pendingItems;
-					updateLocalStorage(state);
 				}
 			})
 			.addCase(refreshPendingItems.rejected, (state) => {
@@ -74,8 +61,6 @@ const slice = createSlice({
 				} else {
 					state.pendingItems[index] = updatedPendingItem;
 				}
-				state.version = action.payload;
-				updateLocalStorage(state);
 			})
 			.addCase(savePendingItem.rejected, (state) => {
 				state.isSaving = false;
@@ -90,8 +75,6 @@ const slice = createSlice({
 				state.pendingItems = state.pendingItems.filter(
 					(pendingItem) => pendingItem.id !== deletedPendingItem.id,
 				);
-				state.version = action.payload;
-				updateLocalStorage(state);
 			})
 			.addCase(deletePendingItem.rejected, (state) => {
 				state.isSaving = false;

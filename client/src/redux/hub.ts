@@ -24,13 +24,19 @@ function getStandardHeaders(accessToken?: string) {
 	return getHeaders("application/json", accessToken);
 }
 
-function formatUri(endpoint: string, query?: Record<string, string>) {
-	return query ? `${endpoint}?${new URLSearchParams(query)}` : endpoint;
+function formatUri(
+	baseUrl: string | undefined,
+	endpoint: string,
+	query: Record<string, string> | undefined,
+) {
+	const fullUrl = baseUrl ? `${baseUrl}${endpoint}` : endpoint;
+	return query ? `${fullUrl}?${new URLSearchParams(query)}` : fullUrl;
 }
 
 type HttpMethod = "GET" | "PUT" | "POST" | "PATCH" | "DELETE";
 
 interface IFetchRequest {
+	baseUrl?: string;
 	endpoint: string;
 	query?: Record<string, string>;
 	accessToken?: string;
@@ -39,8 +45,8 @@ interface IFetchRequest {
 }
 
 export async function get<T>(request: IFetchRequest) {
-	const { endpoint, query, accessToken, method, body } = request;
-	const response = await fetch(formatUri(endpoint, query), {
+	const { baseUrl, endpoint, query, accessToken, method, body } = request;
+	const response = await fetch(formatUri(baseUrl, endpoint, query), {
 		method: method ?? "GET",
 		headers: getStandardHeaders(accessToken),
 		body: body ? JSON.stringify(body) : undefined,
@@ -50,8 +56,8 @@ export async function get<T>(request: IFetchRequest) {
 }
 
 export async function getOrDefault<T>(request: IFetchRequest) {
-	const { endpoint, query, accessToken, method, body } = request;
-	const response = await fetch(formatUri(endpoint, query), {
+	const { baseUrl, endpoint, query, accessToken, method, body } = request;
+	const response = await fetch(formatUri(baseUrl, endpoint, query), {
 		method: method ?? "GET",
 		headers: getStandardHeaders(accessToken),
 		body: body ? JSON.stringify(body) : undefined,
@@ -64,8 +70,8 @@ export async function getOrDefault<T>(request: IFetchRequest) {
 }
 
 export async function send(request: IFetchRequest) {
-	const { endpoint, query, accessToken, method, body } = request;
-	const response = await fetch(formatUri(endpoint, query), {
+	const { baseUrl, endpoint, query, accessToken, method, body } = request;
+	const response = await fetch(formatUri(baseUrl, endpoint, query), {
 		method: method ?? "GET",
 		headers: getStandardHeaders(accessToken),
 		body: body ? JSON.stringify(body) : undefined,
@@ -74,8 +80,8 @@ export async function send(request: IFetchRequest) {
 }
 
 export async function download(request: IFetchRequest) {
-	const { endpoint, query, accessToken, method, body } = request;
-	const response = await fetch(formatUri(endpoint, query), {
+	const { baseUrl, endpoint, query, accessToken, method, body } = request;
+	const response = await fetch(formatUri(baseUrl, endpoint, query), {
 		method: method ?? "GET",
 		headers: getHeaders("*/*", accessToken),
 		body: body ? JSON.stringify(body) : undefined,

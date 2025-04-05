@@ -27,7 +27,6 @@ const slice = createSlice({
 	reducers: {
 		signOut(state) {
 			Object.assign(state, initialState);
-			localStorage.clear();
 		},
 	},
 	extraReducers: (builder) =>

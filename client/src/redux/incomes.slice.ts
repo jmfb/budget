@@ -8,7 +8,6 @@ import {
 } from "./incomes.actions";
 
 export interface IIncomesState {
-	version: number;
 	incomes: IIncome[];
 	isLoading: boolean;
 	isSaving: boolean;
@@ -17,18 +16,12 @@ export interface IIncomesState {
 }
 
 const initialState: IIncomesState = {
-	version: JSON.parse(localStorage.getItem("incomes-version") ?? "") ?? null,
-	incomes: JSON.parse(localStorage.getItem("incomes") ?? "") ?? [],
+	incomes: [],
 	isLoading: false,
 	isSaving: false,
 	wasSuccessful: false,
 	isDownloading: false,
 };
-
-function updateLocalStorage(state: IIncomesState) {
-	localStorage.setItem("incomes-version", JSON.stringify(state.version));
-	localStorage.setItem("incomes", JSON.stringify(state.incomes));
-}
 
 const slice = createSlice({
 	name: "incomes",
@@ -47,9 +40,7 @@ const slice = createSlice({
 			.addCase(refreshIncomes.fulfilled, (state, action) => {
 				state.isLoading = false;
 				if (action.payload) {
-					state.version = action.payload.version;
 					state.incomes = action.payload.incomes;
-					updateLocalStorage(state);
 				}
 			})
 			.addCase(refreshIncomes.rejected, (state) => {
@@ -70,8 +61,6 @@ const slice = createSlice({
 				} else {
 					state.incomes[index] = updatedIncome;
 				}
-				state.version = action.payload;
-				updateLocalStorage(state);
 			})
 			.addCase(saveIncome.rejected, (state) => {
 				state.isSaving = false;
@@ -86,8 +75,6 @@ const slice = createSlice({
 				state.incomes = state.incomes.filter(
 					(income) => income.name !== deletedIncome.name,
 				);
-				state.version = action.payload;
-				updateLocalStorage(state);
 			})
 			.addCase(deleteIncome.rejected, (state) => {
 				state.isSaving = false;

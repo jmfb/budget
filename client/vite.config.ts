@@ -6,7 +6,7 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 export default defineConfig({
 	server: {
 		host: "localbudget.buysse.link",
-		port: 8099,
+		port: 6001,
 		https: {
 			cert: "c:/save/keys/LocalBudgetPublic.pem",
 			key: "c:/save/keys/LocalBudgetPrivate.pem",
