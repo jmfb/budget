@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 import { IconType } from "react-icons";
 import { LoadingIcon } from "./LoadingIcon";
 import { clsx } from "clsx";
