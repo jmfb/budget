@@ -4,6 +4,7 @@
 		"baseUrl": ".",
 		"esModuleInterop": true,
 		"jsx": "react-jsx",
+		"strict": true,
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"module": "esnext",
 		"moduleResolution": "bundler",
@@ -11,6 +12,7 @@
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"paths": {
 			"~/*": ["./src/*"]
 		},
