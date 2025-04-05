@@ -5,6 +5,11 @@ export function getCurrentYear() {
 	return today.getFullYear();
 }
 
+export function getYear(date: string) {
+	const parsedDate = parse(date);
+	return parsedDate.getFullYear();
+}
+
 export function getStartOfWeek(date: string) {
 	const value = parse(date);
 	value.setDate(value.getDate() - value.getDay());

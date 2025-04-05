@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import * as hub from "./auth.hub";
+import { authHub } from "~/api";
 
 export const readLocalStorage = createAsyncThunk(
 	"auth/readLocalStorage",
@@ -20,7 +20,7 @@ export const readLocalStorage = createAsyncThunk(
 export const getAuthenticationUrl = createAsyncThunk(
 	"auth/getAuthenticationUrl",
 	async () => {
-		const url = await hub.getAuthenticationUrl();
+		const url = await authHub.getAuthenticationUrl();
 		window.location.href = url;
 		return url;
 	},
@@ -29,7 +29,7 @@ export const getAuthenticationUrl = createAsyncThunk(
 export const authenticate = createAsyncThunk(
 	"auth/authenticate",
 	async (code: string) => {
-		const { email, accessToken } = await hub.signIn(code);
+		const { email, accessToken } = await authHub.signIn(code);
 		localStorage.setItem("email", email);
 		localStorage.setItem("accessToken", accessToken);
 		return { email, accessToken };

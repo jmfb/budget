@@ -1,93 +1,55 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IPendingItem } from "~/models";
-import {
-	refreshPendingItems,
-	savePendingItem,
-	deletePendingItem,
-	downloadPendingItems,
-} from "./pendingItems.actions";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IPendingItem, IRetireCategoryRequest } from "~/models";
+import { getPendingItems } from "./pendingItems.actions";
 
 export interface IPendingItemsState {
-	pendingItems: IPendingItem[];
 	isLoading: boolean;
-	isSaving: boolean;
-	wasSuccessful: boolean;
-	isDownloading: boolean;
+	pendingItems: IPendingItem[];
 }
 
 const initialState: IPendingItemsState = {
+	isLoading: true,
 	pendingItems: [],
-	isLoading: false,
-	isSaving: false,
-	wasSuccessful: false,
-	isDownloading: false,
 };
 
 const slice = createSlice({
 	name: "pendingItems",
 	initialState,
 	reducers: {
-		clearSave(state) {
-			state.isSaving = false;
-			state.wasSuccessful = false;
+		createPendingItem(state, action: PayloadAction<IPendingItem>) {
+			const pendingItem = action.payload;
+			state.pendingItems.push(pendingItem);
+		},
+		updatePendingItem(state, action: PayloadAction<IPendingItem>) {
+			const pendingItem = action.payload;
+			const index = state.pendingItems.findIndex(
+				(other) => other.id === pendingItem.id,
+			);
+			state.pendingItems[index] = pendingItem;
+		},
+		deletePendingItem(state, action: PayloadAction<number>) {
+			const id = action.payload;
+			state.pendingItems = state.pendingItems.filter(
+				(pendingItem) => pendingItem.id !== id,
+			);
+		},
+		retireCategory(state, action: PayloadAction<IRetireCategoryRequest>) {
+			const { retireId, replacementId } = action.payload;
+			for (const pendingItem of state.pendingItems) {
+				if (pendingItem.categoryId === retireId) {
+					pendingItem.categoryId = replacementId;
+				}
+			}
 		},
 	},
 	extraReducers: (builder) =>
 		builder
-			.addCase(refreshPendingItems.pending, (state) => {
-				state.isLoading = true;
-			})
-			.addCase(refreshPendingItems.fulfilled, (state, action) => {
+			.addCase(getPendingItems.fulfilled, (state, action) => {
 				state.isLoading = false;
-				if (action.payload) {
-					state.pendingItems = action.payload.pendingItems;
-				}
+				state.pendingItems = action.payload;
 			})
-			.addCase(refreshPendingItems.rejected, (state) => {
+			.addCase(getPendingItems.rejected, (state) => {
 				state.isLoading = false;
-			})
-			.addCase(savePendingItem.pending, (state) => {
-				state.isSaving = true;
-			})
-			.addCase(savePendingItem.fulfilled, (state, action) => {
-				state.isSaving = false;
-				state.wasSuccessful = true;
-				const updatedPendingItem = action.meta.arg;
-				const index = state.pendingItems.findIndex(
-					(pendingItem) => pendingItem.id === updatedPendingItem.id,
-				);
-				if (index === -1) {
-					state.pendingItems.push(updatedPendingItem);
-				} else {
-					state.pendingItems[index] = updatedPendingItem;
-				}
-			})
-			.addCase(savePendingItem.rejected, (state) => {
-				state.isSaving = false;
-			})
-			.addCase(deletePendingItem.pending, (state) => {
-				state.isSaving = true;
-			})
-			.addCase(deletePendingItem.fulfilled, (state, action) => {
-				state.isSaving = false;
-				state.wasSuccessful = true;
-				const deletedPendingItem = action.meta.arg;
-				state.pendingItems = state.pendingItems.filter(
-					(pendingItem) => pendingItem.id !== deletedPendingItem.id,
-				);
-			})
-			.addCase(deletePendingItem.rejected, (state) => {
-				state.isSaving = false;
-			})
-
-			.addCase(downloadPendingItems.pending, (state) => {
-				state.isDownloading = true;
-			})
-			.addCase(downloadPendingItems.fulfilled, (state) => {
-				state.isDownloading = false;
-			})
-			.addCase(downloadPendingItems.rejected, (state) => {
-				state.isDownloading = false;
 			}),
 });
 
@@ -95,9 +57,6 @@ export const pendingItemsSlice = {
 	...slice,
 	actions: {
 		...slice.actions,
-		refreshPendingItems,
-		savePendingItem,
-		deletePendingItem,
-		downloadPendingItems,
+		getPendingItems,
 	},
 };

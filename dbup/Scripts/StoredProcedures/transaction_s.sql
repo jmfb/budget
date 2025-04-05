@@ -9,6 +9,7 @@ returns table (
 	amount money,
 	original_category text,
 	category_id int,
+	description text,
 	note text,
 	expense_id int,
 	income_id int
@@ -24,6 +25,7 @@ select
 	transactions.amount,
 	transactions.original_category,
 	transactions.category_id,
+	transactions.description,
 	transactions.note,
 	transactions.expense_id,
 	transactions.income_id

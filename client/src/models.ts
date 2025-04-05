@@ -88,6 +88,7 @@ export interface ITransaction {
 	amount: number;
 	originalCategory: string;
 	categoryId: number | null;
+	description: string;
 	note: string;
 	expenseId: number | null;
 	incomeId: number | null;
@@ -105,6 +106,7 @@ export interface ICreateTransactionRequest {
 	amount: number;
 	originalCategory: string;
 	categoryId: number | null;
+	description: string;
 	note: string;
 	expenseId: number | null;
 	incomeId: number | null;
@@ -117,6 +119,7 @@ export interface IUpdateTransactionRequest {
 	amount: number;
 	originalCategory: string;
 	categoryId: number | null;
+	description: string;
 	note: string;
 	expenseId: number | null;
 	incomeId: number | null;

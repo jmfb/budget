@@ -6,6 +6,7 @@ import { expensesSlice } from "./expenses.slice";
 import { incomesSlice } from "./incomes.slice";
 import { pendingItemsSlice } from "./pendingItems.slice";
 import { transactionsSlice } from "./transactions.slice";
+import { categoriesSlice } from "./categories.slice";
 import { IState } from "./IState";
 
 export function createStore() {
@@ -18,6 +19,7 @@ export function createStore() {
 			[incomesSlice.name]: incomesSlice.reducer,
 			[pendingItemsSlice.name]: pendingItemsSlice.reducer,
 			[transactionsSlice.name]: transactionsSlice.reducer,
+			[categoriesSlice.name]: categoriesSlice.reducer,
 		},
 	});
 }

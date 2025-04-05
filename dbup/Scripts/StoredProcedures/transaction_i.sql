@@ -5,6 +5,7 @@ create or replace function budget.transaction_i (
 	p_amount money,
 	p_original_category text,
 	p_category_id int,
+	p_description text,
 	p_note text,
 	p_expense_id int,
 	p_income_id int
@@ -22,6 +23,7 @@ insert into budget.transactions (
 	amount,
 	original_category,
 	category_id,
+	description,
 	note,
 	expense_id,
 	income_id
@@ -32,6 +34,7 @@ insert into budget.transactions (
 	p_amount,
 	p_original_category,
 	p_category_id,
+	p_description,
 	p_note,
 	p_expense_id,
 	p_income_id

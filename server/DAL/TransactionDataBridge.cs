@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Budget.Server.Contracts.DataContracts;
 using Budget.Server.DAL.Bindings;
-using Budget.Server.Models;
 using Budget.Server.Options;
 using Dapper;
 using Microsoft.Extensions.Options;
@@ -32,6 +31,7 @@ public interface ITransactionDataBridge
 		decimal amount,
 		string originalCategory,
 		int? categoryId,
+		string description,
 		string note,
 		int? expenseId,
 		int? incomeId,
@@ -46,6 +46,7 @@ public interface ITransactionDataBridge
 		decimal amount,
 		string originalCategory,
 		int? categoryId,
+		string description,
 		string note,
 		int? expenseId,
 		int? incomeId,
@@ -115,6 +116,7 @@ public class TransactionDataBridge(
 		decimal amount,
 		string originalCategory,
 		int? categoryId,
+		string description,
 		string note,
 		int? expenseId,
 		int? incomeId,
@@ -134,6 +136,7 @@ public class TransactionDataBridge(
 					p_amount = MoneyParameter.Create(amount),
 					p_original_category = originalCategory,
 					p_category_id = categoryId,
+					p_description = description,
 					p_note = note,
 					p_expense_id = expenseId,
 					p_income_id = incomeId,
@@ -152,6 +155,7 @@ public class TransactionDataBridge(
 		decimal amount,
 		string originalCategory,
 		int? categoryId,
+		string description,
 		string note,
 		int? expenseId,
 		int? incomeId,
@@ -172,6 +176,7 @@ public class TransactionDataBridge(
 					p_amount = MoneyParameter.Create(amount),
 					p_original_category = originalCategory,
 					p_category_id = categoryId,
+					p_description = description,
 					p_note = note,
 					p_expense_id = expenseId,
 					p_income_id = incomeId,

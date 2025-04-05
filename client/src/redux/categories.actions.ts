@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IState } from "./IState";
-import { pendingItemsHub } from "~/api";
+import { categoriesHub } from "~/api";
 
-export const getPendingItems = createAsyncThunk(
-	"pendingItems/getPendingItems",
+export const getCategories = createAsyncThunk(
+	"categories/getCategories",
 	async (_, { getState }) => {
 		const {
 			auth: { accessToken },
 		} = getState() as IState;
-		return await pendingItemsHub.getPendingItems(accessToken);
+		return await categoriesHub.getCategories(accessToken);
 	},
 );

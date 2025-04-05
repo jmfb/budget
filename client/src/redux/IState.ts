@@ -5,6 +5,7 @@ import { IExpensesState } from "./expenses.slice";
 import { IIncomesState } from "./incomes.slice";
 import { IPendingItemsState } from "./pendingItems.slice";
 import { ITransactionsState } from "./transactions.slice";
+import { ICategoriesState } from "./categories.slice";
 
 export interface IState {
 	error: IErrorState;
@@ -14,4 +15,5 @@ export interface IState {
 	incomes: IIncomesState;
 	pendingItems: IPendingItemsState;
 	transactions: ITransactionsState;
+	categories: ICategoriesState;
 }

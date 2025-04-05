@@ -1,93 +1,72 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IExpense } from "~/models";
-import {
-	refreshExpenses,
-	saveExpense,
-	deleteExpense,
-	downloadExpenses,
-} from "./expenses.actions";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IExpense, IRetireCategoryRequest } from "~/models";
+import { getExpenses } from "./expenses.actions";
 
 export interface IExpensesState {
-	expenses: IExpense[];
 	isLoading: boolean;
-	isSaving: boolean;
-	wasSuccessful: boolean;
-	isDownloading: boolean;
+	expenses: IExpense[];
+	expenseById: Record<number, IExpense>;
 }
 
 const initialState: IExpensesState = {
+	isLoading: true,
 	expenses: [],
-	isLoading: false,
-	isSaving: false,
-	wasSuccessful: false,
-	isDownloading: false,
+	expenseById: {},
 };
 
 const slice = createSlice({
 	name: "expenses",
 	initialState,
 	reducers: {
-		clearSave(state) {
-			state.isSaving = false;
-			state.wasSuccessful = false;
+		createExpense(state, action: PayloadAction<IExpense>) {
+			const expense = action.payload;
+			state.expenses.push(expense);
+			state.expenseById[expense.id] = expense;
+		},
+		updateExpense(state, action: PayloadAction<IExpense>) {
+			const expense = action.payload;
+			const index = state.expenses.findIndex(
+				(other) => other.id === expense.id,
+			);
+			state.expenses[index] = expense;
+			state.expenseById[expense.id] = expense;
+		},
+		deleteExpense(state, action: PayloadAction<number>) {
+			const id = action.payload;
+			state.expenses = state.expenses.filter(
+				(expense) => expense.id !== id,
+			);
+			delete state.expenseById[id];
+		},
+		retireCategory(state, action: PayloadAction<IRetireCategoryRequest>) {
+			const { retireId, replacementId } = action.payload;
+			for (const expense of state.expenses) {
+				if (expense.categoryId === retireId) {
+					expense.categoryId = replacementId;
+				}
+			}
 		},
 	},
 	extraReducers: (builder) =>
 		builder
-			.addCase(refreshExpenses.pending, (state) => {
+			.addCase(getExpenses.pending, (state) => {
 				state.isLoading = true;
+				state.expenses = [];
+				state.expenseById = {};
 			})
-			.addCase(refreshExpenses.fulfilled, (state, action) => {
+			.addCase(getExpenses.fulfilled, (state, action) => {
 				state.isLoading = false;
-				if (action.payload) {
-					state.expenses = action.payload.expenses;
-				}
-			})
-			.addCase(refreshExpenses.rejected, (state) => {
-				state.isLoading = false;
-			})
-			.addCase(saveExpense.pending, (state) => {
-				state.isSaving = true;
-			})
-			.addCase(saveExpense.fulfilled, (state, action) => {
-				state.isSaving = false;
-				state.wasSuccessful = true;
-				const updatedExpense = action.meta.arg;
-				const index = state.expenses.findIndex(
-					(expense) => expense.name === updatedExpense.name,
-				);
-				if (index === -1) {
-					state.expenses.push(updatedExpense);
-				} else {
-					state.expenses[index] = updatedExpense;
-				}
-			})
-			.addCase(saveExpense.rejected, (state) => {
-				state.isSaving = false;
-			})
-			.addCase(deleteExpense.pending, (state) => {
-				state.isSaving = true;
-			})
-			.addCase(deleteExpense.fulfilled, (state, action) => {
-				state.isSaving = false;
-				state.wasSuccessful = true;
-				const deletedExpense = action.meta.arg;
-				state.expenses = state.expenses.filter(
-					(expense) => expense.name !== deletedExpense.name,
+				state.expenses = action.payload;
+				state.expenseById = state.expenses.reduce(
+					(map, expense) => {
+						map[expense.id] = expense;
+						return map;
+					},
+					{} as Record<number, IExpense>,
 				);
 			})
-			.addCase(deleteExpense.rejected, (state) => {
-				state.isSaving = false;
-			})
-
-			.addCase(downloadExpenses.pending, (state) => {
-				state.isDownloading = true;
-			})
-			.addCase(downloadExpenses.fulfilled, (state) => {
-				state.isDownloading = false;
-			})
-			.addCase(downloadExpenses.rejected, (state) => {
-				state.isDownloading = false;
+			.addCase(getExpenses.rejected, (state) => {
+				state.isLoading = false;
 			}),
 });
 
@@ -95,9 +74,6 @@ export const expensesSlice = {
 	...slice,
 	actions: {
 		...slice.actions,
-		refreshExpenses,
-		saveExpense,
-		deleteExpense,
-		downloadExpenses,
+		getExpenses,
 	},
 };

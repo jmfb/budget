@@ -21,16 +21,16 @@ export const getExpenseTransactions = createSelector(
 	getCurrentYearTransactions,
 	(transactions) =>
 		transactions
-			.filter((transaction) => !!transaction.expenseName)
+			.filter((transaction) => transaction.expenseId !== null)
 			.reduce(
 				(map, transaction) => {
-					if (map[transaction.expenseName]) {
-						map[transaction.expenseName].push(transaction);
+					if (map[transaction.expenseId!]) {
+						map[transaction.expenseId!].push(transaction);
 					} else {
-						map[transaction.expenseName] = [transaction];
+						map[transaction.expenseId!] = [transaction];
 					}
 					return map;
 				},
-				{} as Record<string, ITransaction[]>,
+				{} as Record<number, ITransaction[]>,
 			),
 );

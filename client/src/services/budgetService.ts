@@ -6,6 +6,7 @@ import {
 	ITransaction,
 	IPendingItem,
 	TransactionSource,
+	ICreateTransactionRequest,
 } from "~/models";
 import * as dateService from "./dateService";
 
@@ -165,19 +166,15 @@ export function getExtraIncome(
 
 export function getDiscrepancy(
 	transaction: ITransaction,
-	incomes: IIncome[],
-	expenses: IExpense[],
+	incomeById: Record<number, IIncome>,
+	expenseById: Record<number, IExpense>,
 	expenseTransactions: Record<string, ITransaction[]>,
 ) {
-	const income = incomes.find(
-		(income) => income.name === transaction.incomeName,
-	);
+	const income = incomeById[transaction.incomeId ?? 0];
 	if (income) {
 		return income.amount + transaction.amount;
 	}
-	const expense = expenses.find(
-		(expense) => expense.name === transaction.expenseName,
-	);
+	const expense = expenseById[transaction.expenseId ?? 0];
 	if (expense) {
 		if (expense.isDistributed) {
 			const expenseTotal = getExpenseTotal(
@@ -246,15 +243,15 @@ export function convertBankRecordToTransaction(
 	return {
 		date,
 		id: 0,
-		source: TransactionSource.Bank,
+		sourceId: TransactionSource.Bank,
 		rawText,
 		amount: -(credit || debit),
 		originalCategory: category,
 		description,
-		category: "",
+		categoryId: null,
 		note: "",
-		expenseName: "",
-		incomeName: "",
+		expenseId: null,
+		incomeId: null,
 	};
 }
 
@@ -266,15 +263,15 @@ export function convertCapitalOneRecordToTransaction(
 	return {
 		date: transactionDate,
 		id: 0,
-		source: TransactionSource.CapitalOne,
+		sourceId: TransactionSource.CapitalOne,
 		rawText,
 		amount: Number.isNaN(debit) ? -credit : debit,
 		originalCategory: category,
 		description,
-		category: "",
+		categoryId: null,
 		note: "",
-		expenseName: "",
-		incomeName: "",
+		expenseId: null,
+		incomeId: null,
 	};
 }
 
@@ -295,9 +292,12 @@ function isSameDescription(first: string, second: string) {
 	);
 }
 
-export function isSameTransaction(first: ITransaction, second: ITransaction) {
+export function isSameTransaction(
+	first: ICreateTransactionRequest,
+	second: ITransaction,
+) {
 	return (
-		first.source === second.source &&
+		first.sourceId === second.sourceId &&
 		isSameAmount(first.amount, second.amount) &&
 		isSameDescription(first.description, second.description)
 	);

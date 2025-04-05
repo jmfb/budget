@@ -1,93 +1,62 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IIncome } from "~/models";
-import {
-	refreshIncomes,
-	saveIncome,
-	deleteIncome,
-	downloadIncomes,
-} from "./incomes.actions";
+import { getIncomes } from "./incomes.actions";
 
 export interface IIncomesState {
-	incomes: IIncome[];
 	isLoading: boolean;
-	isSaving: boolean;
-	wasSuccessful: boolean;
-	isDownloading: boolean;
+	incomes: IIncome[];
+	incomeById: Record<number, IIncome>;
 }
 
 const initialState: IIncomesState = {
+	isLoading: true,
 	incomes: [],
-	isLoading: false,
-	isSaving: false,
-	wasSuccessful: false,
-	isDownloading: false,
+	incomeById: {},
 };
 
 const slice = createSlice({
 	name: "incomes",
 	initialState,
 	reducers: {
-		clearSave(state) {
-			state.isSaving = false;
-			state.wasSuccessful = false;
+		createIncome(state, action: PayloadAction<IIncome>) {
+			const income = action.payload;
+			state.incomes.push(income);
+			state.incomeById[income.id] = income;
+		},
+		updateIncome(state, action: PayloadAction<IIncome>) {
+			const income = action.payload;
+			const index = state.incomes.findIndex(
+				(other) => other.id === income.id,
+			);
+			state.incomes[index] = income;
+			state.incomeById[income.id] = income;
+		},
+		deleteIncome(state, action: PayloadAction<number>) {
+			const id = action.payload;
+			state.incomes = state.incomes.filter((income) => income.id !== id);
+			delete state.incomeById[id];
 		},
 	},
 	extraReducers: (builder) =>
 		builder
-			.addCase(refreshIncomes.pending, (state) => {
+			.addCase(getIncomes.pending, (state) => {
 				state.isLoading = true;
+				state.incomes = [];
+				state.incomeById = {};
 			})
-			.addCase(refreshIncomes.fulfilled, (state, action) => {
+			.addCase(getIncomes.fulfilled, (state, action) => {
 				state.isLoading = false;
-				if (action.payload) {
-					state.incomes = action.payload.incomes;
-				}
-			})
-			.addCase(refreshIncomes.rejected, (state) => {
-				state.isLoading = false;
-			})
-			.addCase(saveIncome.pending, (state) => {
-				state.isSaving = true;
-			})
-			.addCase(saveIncome.fulfilled, (state, action) => {
-				state.isSaving = false;
-				state.wasSuccessful = true;
-				const updatedIncome = action.meta.arg;
-				const index = state.incomes.findIndex(
-					(income) => income.name === updatedIncome.name,
-				);
-				if (index === -1) {
-					state.incomes.push(updatedIncome);
-				} else {
-					state.incomes[index] = updatedIncome;
-				}
-			})
-			.addCase(saveIncome.rejected, (state) => {
-				state.isSaving = false;
-			})
-			.addCase(deleteIncome.pending, (state) => {
-				state.isSaving = true;
-			})
-			.addCase(deleteIncome.fulfilled, (state, action) => {
-				state.isSaving = false;
-				state.wasSuccessful = true;
-				const deletedIncome = action.meta.arg;
-				state.incomes = state.incomes.filter(
-					(income) => income.name !== deletedIncome.name,
+				state.incomes = action.payload;
+				state.incomeById = state.incomes.reduce(
+					(map, income) => {
+						map[income.id] = income;
+						return map;
+					},
+					{} as Record<number, IIncome>,
 				);
 			})
-			.addCase(deleteIncome.rejected, (state) => {
-				state.isSaving = false;
-			})
-
-			.addCase(downloadIncomes.pending, (state) => {
-				state.isDownloading = true;
-			})
-			.addCase(downloadIncomes.fulfilled, (state) => {
-				state.isDownloading = false;
-			})
-			.addCase(downloadIncomes.rejected, (state) => {
-				state.isDownloading = false;
+			.addCase(getIncomes.rejected, (state) => {
+				state.isLoading = false;
 			}),
 });
 
@@ -95,9 +64,6 @@ export const incomesSlice = {
 	...slice,
 	actions: {
 		...slice.actions,
-		refreshIncomes,
-		saveIncome,
-		deleteIncome,
-		downloadIncomes,
+		getIncomes,
 	},
 };

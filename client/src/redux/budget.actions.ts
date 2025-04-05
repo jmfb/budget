@@ -1,9 +1,10 @@
 import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import { ITransaction } from "~/models";
+import { ICreateTransactionRequest, ITransaction } from "~/models";
 import { IState } from "./IState";
 import { dateService, budgetService } from "~/services";
-import { deletePendingItem } from "./pendingItems.actions";
-import { saveTransaction } from "./transactions.actions";
+import { pendingItemsHub, transactionsHub } from "~/api";
+import { pendingItemsSlice } from "./pendingItems.slice";
+import { transactionsSlice } from "./transactions.slice";
 import { parse } from "csv-parse";
 
 export const getAllText = createAsyncThunk(
@@ -54,21 +55,21 @@ export const matchedTransaction = createAction<ITransaction>(
 
 export const mergeTransaction = createAsyncThunk(
 	"budget/mergeTransaction",
-	async (transaction: ITransaction, { getState, dispatch }) => {
+	async (transaction: ICreateTransactionRequest, { getState, dispatch }) => {
 		const {
+			auth: { accessToken },
 			pendingItems: { pendingItems },
-			transactions: { weeks },
+			transactions: { years, transactions },
 			budget: { matchedTransactions },
 		} = getState() as IState;
 		const logs = [];
 		logs.push("=".repeat(60));
 		logs.push(JSON.stringify(transaction, null, 4));
-		const weekOf = dateService.getStartOfWeek(transaction.date);
-		const week = weeks[weekOf];
-		if (!week) {
-			logs.push("Skipping transaction; not within 53 week cache");
+		const year = dateService.getYear(transaction.date);
+		if (!years.includes(year)) {
+			logs.push("Skipping transaction; year not loaded");
 		} else {
-			const dailyTransactions = week.transactions.filter(
+			const dailyTransactions = transactions.filter(
 				({ date }) => date === transaction.date,
 			);
 			const existingTransaction = dailyTransactions.find(
@@ -86,23 +87,40 @@ export const mergeTransaction = createAsyncThunk(
 				if (matchingPendingItem) {
 					logs.push("Found matching pending item");
 					logs.push(JSON.stringify(matchingPendingItem, null, 4));
-					await dispatch(deletePendingItem(matchingPendingItem));
+					await pendingItemsHub.deletePendingItem(
+						accessToken,
+						matchingPendingItem.id,
+					);
+					dispatch(
+						pendingItemsSlice.actions.deletePendingItem(
+							matchingPendingItem.id,
+						),
+					);
 				}
 
-				const maxId = Math.max(
-					0,
-					...dailyTransactions.map(({ id }) => id),
-				);
-				const newTransaction = {
+				const newTransactionRequest = {
 					...transaction,
-					id: maxId + 1,
-					category: matchingPendingItem?.category ?? "",
-					expenseName: matchingPendingItem?.expenseName ?? "",
-					incomeName: matchingPendingItem?.incomeName ?? "",
+					categoryId: matchingPendingItem?.categoryId ?? null,
+					expenseId: matchingPendingItem?.expenseId ?? null,
+					incomeId: matchingPendingItem?.incomeId ?? null,
 					note: matchingPendingItem?.name ?? "",
 				};
+				const newTransactionId =
+					await transactionsHub.createTransaction(
+						accessToken,
+						newTransactionRequest,
+					);
+				const newTransaction = await transactionsHub.getTransaction(
+					accessToken,
+					newTransactionId,
+				);
+				if (newTransaction === null) {
+					throw new Error("Missing transaction after creation");
+				}
+				dispatch(
+					transactionsSlice.actions.createTransaction(newTransaction),
+				);
 				dispatch(matchedTransaction(newTransaction));
-				await dispatch(saveTransaction(newTransaction));
 			} else {
 				dispatch(matchedTransaction(existingTransaction));
 				logs.push("Skipping transaction");
