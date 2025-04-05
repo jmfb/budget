@@ -1,11 +1,11 @@
-import { PureComponent, ErrorInfo } from "react";
+import { ReactNode, PureComponent, ErrorInfo } from "react";
 import { connect } from "react-redux";
 import { ErrorView } from "~/pages";
 import { IErrorReport } from "~/models";
 import { IState, errorSlice } from "~/redux";
 
 interface IErrorBoundaryOwnProps {
-	children?: JSX.Element;
+	children?: ReactNode;
 }
 
 interface IErrorBoundaryStateProps {
@@ -56,6 +56,7 @@ class ErrorBoundary extends PureComponent<
 	}
 
 	static getDerivedStateFromError(error: Error) {
+		void error;
 		return {
 			hasBoundaryError: true,
 		};
@@ -65,7 +66,7 @@ class ErrorBoundary extends PureComponent<
 		const { reportError } = this.props;
 		reportError({
 			action: "componentDidCatch",
-			context: errorInfo.componentStack,
+			context: errorInfo.componentStack ?? "",
 			message: error.message,
 		});
 	}
@@ -95,7 +96,6 @@ class ErrorBoundary extends PureComponent<
 	};
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const ErrorBoundaryContainer = connect<
 	IErrorBoundaryStateProps,
 	IErrorBoundaryDispatchProps

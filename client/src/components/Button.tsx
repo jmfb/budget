@@ -19,7 +19,6 @@ export interface IButtonProps {
 
 export function Button({
 	className,
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	icon: Icon,
 	variant,
 	onClick,

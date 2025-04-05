@@ -14,7 +14,7 @@ function toString(value: number) {
 }
 
 function parse(value: string) {
-	const cleanValue = (value ?? "").replace(/\,/g, "");
+	const cleanValue = (value ?? "").replace(/,/g, "");
 	const result = Number.parseFloat(cleanValue);
 	return Number.isNaN(result) ? 0 : result;
 }

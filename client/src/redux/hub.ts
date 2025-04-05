@@ -35,7 +35,7 @@ interface IFetchRequest {
 	query?: Record<string, string>;
 	accessToken?: string;
 	method?: HttpMethod;
-	body?: {};
+	body?: object;
 }
 
 export async function get<T>(request: IFetchRequest) {

@@ -5,15 +5,11 @@ import * as hub from "./pendingItems.hub";
 
 export const refreshPendingItems = createAsyncThunk(
 	"pendingItems/refreshPendingItems",
-	async (version: number, { getState }) => {
+	async (_, { getState }) => {
 		const {
 			auth: { accessToken },
-			pendingItems: { version: storeVersion },
 		} = getState() as IState;
-		const newVersion = version ?? (await hub.getVersion(accessToken));
-		return newVersion === storeVersion
-			? null
-			: await hub.getPendingItems(accessToken);
+		return await hub.getPendingItems(accessToken);
 	},
 );
 
@@ -39,7 +35,7 @@ export const deletePendingItem = createAsyncThunk(
 
 export const downloadPendingItems = createAsyncThunk(
 	"pendingItems/downloadPendingItems",
-	async (request, { getState }) => {
+	async (_, { getState }) => {
 		const {
 			auth: { accessToken },
 		} = getState() as IState;

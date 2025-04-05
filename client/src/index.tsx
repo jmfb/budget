@@ -4,38 +4,26 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PageLoading } from "~/components";
 import { ErrorBoundaryContainer } from "~/containers/ErrorBoundary";
-import { IIndexModel } from "./models";
 import { createStore } from "~/redux";
 import "@csstools/normalize.css";
 import "./index.module.css";
 
 function start() {
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const AsyncSignInContainer = lazy(
-		() =>
-			import(
-				/* webpackChunkName: 'SignInContainer' */ "~/containers/SignInContainer"
-			),
+		() => import("~/containers/SignInContainer"),
 	);
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const AsyncAuthenticateContainer = lazy(
-		() =>
-			import(
-				/* webpackChunkName: 'AuthenticateContainer' */ "~/containers/AuthenticateContainer"
-			),
+		() => import("~/containers/AuthenticateContainer"),
 	);
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const AsyncApplicationContainer = lazy(
-		() =>
-			import(
-				/* webpackChunkName: 'ApplicationContainer' */ "~/containers/ApplicationContainer"
-			),
+		() => import("~/containers/ApplicationContainer"),
 	);
 
 	const store = createStore();
 	const rootContainer = document.getElementById("root");
-	const indexModelJson = rootContainer.getAttribute("data-initial-state");
-	const indexModel: IIndexModel = JSON.parse(indexModelJson);
+	if (!rootContainer) {
+		throw new Error("Missing root element");
+	}
 	const rootElement = (
 		<Provider store={store}>
 			<BrowserRouter>
@@ -52,11 +40,7 @@ function start() {
 							/>
 							<Route
 								path="*"
-								element={
-									<AsyncApplicationContainer
-										indexModel={indexModel}
-									/>
-								}
+								element={<AsyncApplicationContainer />}
 							/>
 						</Routes>
 					</Suspense>

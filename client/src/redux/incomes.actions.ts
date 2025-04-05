@@ -5,15 +5,11 @@ import * as hub from "./incomes.hub";
 
 export const refreshIncomes = createAsyncThunk(
 	"incomes/refreshIncomes",
-	async (version: number, { getState }) => {
+	async (_, { getState }) => {
 		const {
 			auth: { accessToken },
-			incomes: { version: storeVersion },
 		} = getState() as IState;
-		const newVersion = version ?? (await hub.getVersion(accessToken));
-		return newVersion === storeVersion
-			? null
-			: await hub.getIncomes(accessToken);
+		return await hub.getIncomes(accessToken);
 	},
 );
 
@@ -39,7 +35,7 @@ export const deleteIncome = createAsyncThunk(
 
 export const downloadIncomes = createAsyncThunk(
 	"incomes/downloadIncomes",
-	async (request, { getState }) => {
+	async (_, { getState }) => {
 		const {
 			auth: { accessToken },
 		} = getState() as IState;

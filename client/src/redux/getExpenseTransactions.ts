@@ -5,7 +5,7 @@ import { IState } from "./IState";
 const getWeeks = (state: IState) => state.transactions.weeks;
 
 const getAllTransactions = createSelector(getWeeks, (weeks) =>
-	Object.entries(weeks).flatMap(([weekOf, week]) => week.transactions),
+	Object.entries(weeks).flatMap(([, week]) => week.transactions),
 );
 
 const getCurrentYearTransactions = createSelector(

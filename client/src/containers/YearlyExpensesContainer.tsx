@@ -25,7 +25,7 @@ export default function YearlyExpensesContainer() {
 	const year = dateService.getCurrentYear();
 	const startOfYear = `${year}-01-01`;
 	const yearlyExpenses = Object.entries(weeklyTransactions).flatMap(
-		([weekOf, week]) =>
+		([, week]) =>
 			week.transactions.filter(
 				(transaction) =>
 					transaction.expenseName === expenseName &&
@@ -35,7 +35,7 @@ export default function YearlyExpensesContainer() {
 
 	return (
 		<YearlyExpenses
-			expense={expense}
+			expense={expense!}
 			yearlyExpenses={yearlyExpenses}
 			isSavingExpense={isSavingExpense}
 			savingExpenseSuccess={savingExpenseSuccess}

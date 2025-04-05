@@ -1,4 +1,4 @@
-import { AnyAction, createAsyncThunk, ThunkDispatch } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ITransaction } from "~/models";
 import { IState } from "./IState";
 import * as hub from "./transactions.hub";
@@ -13,49 +13,13 @@ export const getTransactions = createAsyncThunk(
 	},
 );
 
-interface ILoadWeekResult {
-	weekOf: string;
-	wasSuccessful: boolean;
-}
-
-async function loadWeek(
-	weekOf: string,
-	dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
-) {
-	try {
-		await dispatch(getTransactions(weekOf));
-		return { weekOf, wasSuccessful: true };
-	} catch (error) {
-		return { weekOf, wasSuccessful: false };
-	}
-}
-
 export const refreshTransactions = createAsyncThunk(
 	"transactions/refreshTransactions",
-	async (weekVersions: Record<string, number>, { getState, dispatch }) => {
+	async (_, { getState }) => {
 		const {
-			transactions: { weeks },
+			auth: { accessToken },
 		} = getState() as IState;
-		const weeksToGet = Object.entries(weekVersions)
-			.filter(([weekOf, version]) => weeks[weekOf]?.version !== version)
-			.map(([weekOf]) => weekOf)
-			.reverse();
-
-		const maxConcurrent = 10;
-		const initialWeeks = weeksToGet.slice(0, maxConcurrent);
-		const pendingWeeks = weeksToGet.slice(maxConcurrent);
-		const currentRequests = new Map<string, Promise<ILoadWeekResult>>(
-			initialWeeks.map((weekOf) => [weekOf, loadWeek(weekOf, dispatch)]),
-		);
-		for (const weekOf of pendingWeeks) {
-			const result = await Promise.any(currentRequests.values());
-			currentRequests.delete(result.weekOf);
-			if (!result.wasSuccessful) {
-				break;
-			}
-			currentRequests.set(weekOf, loadWeek(weekOf, dispatch));
-		}
-		await Promise.all(currentRequests.values());
+		await hub.getTransactions(accessToken, "TODO");
 	},
 );
 
@@ -81,7 +45,7 @@ export const deleteTransaction = createAsyncThunk(
 
 export const downloadTransactions = createAsyncThunk(
 	"transactions/downloadTransactions",
-	async (request, { getState }) => {
+	async (_, { getState }) => {
 		const {
 			auth: { accessToken },
 		} = getState() as IState;

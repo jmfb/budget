@@ -4,14 +4,6 @@ export interface IErrorReport {
 	message: string;
 }
 
-export interface IIndexModel {
-	bundleVersion: string;
-	expensesVersion: number;
-	incomesVersion: number;
-	pendingItemsVersion: number;
-	weekVersions: Record<string, number>;
-}
-
 export interface ISignedInModel {
 	accessToken: string;
 	email: string;

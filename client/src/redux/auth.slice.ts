@@ -7,7 +7,7 @@ import {
 
 export interface IAuthState {
 	email?: string;
-	accessToken?: string;
+	accessToken: string;
 	redirectToSignIn: boolean;
 	isSigningIn: boolean;
 	url?: string;
@@ -15,7 +15,7 @@ export interface IAuthState {
 
 const initialState: IAuthState = {
 	email: undefined,
-	accessToken: undefined,
+	accessToken: "",
 	redirectToSignIn: false,
 	isSigningIn: false,
 	url: undefined,

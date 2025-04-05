@@ -11,7 +11,7 @@
 		"typescript-ci": "tsc --noEmit",
 		"prettier-ci": "prettier --check .",
 		"prettier-write": "prettier --write .",
-		"lint-ci": "eslint './Scripts/Source/**/*.{js,jsx,ts,tsx}'"
+		"lint-ci": "eslint './src/**/*.{js,jsx,ts,tsx}'"
 	},
 	"engines": {
 		"node": "22.14.0"
