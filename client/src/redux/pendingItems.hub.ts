@@ -1,58 +1,60 @@
-import { get, getOrDefault, download } from "./hub";
-import { IPendingItem, IGetPendingItemsResponse } from "~/models";
+import { get, getOrDefault, send } from "./hub";
+import {
+	IPendingItem,
+	ICreatePendingItemRequest,
+	IUpdatePendingItemRequest,
+} from "~/models";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
-export async function getVersion(accessToken: string) {
-	return await get<number>({
-		baseUrl,
-		endpoint: "/api/pending-items/version",
-		accessToken,
-	});
-}
-
 export async function getPendingItems(accessToken: string) {
-	return await get<IGetPendingItemsResponse>({
+	return await get<IPendingItem[]>({
 		baseUrl,
-		endpoint: "/api/pending-items",
 		accessToken,
+		endpoint: "/api/pending-items",
 	});
 }
 
 export async function getPendingItem(accessToken: string, id: number) {
 	return await getOrDefault<IPendingItem>({
 		baseUrl,
-		endpoint: `/api/pending-items/${id}`,
 		accessToken,
+		endpoint: `/api/pending-items/${id}`,
 	});
 }
 
-export async function putPendingItem(
+export async function createPendingItem(
 	accessToken: string,
-	pendingItem: IPendingItem,
+	request: ICreatePendingItemRequest,
 ) {
 	return await get<number>({
 		baseUrl,
-		endpoint: "/api/pending-items",
-		method: "PUT",
 		accessToken,
-		body: pendingItem,
+		endpoint: "/api/pending-items",
+		method: "POST",
+		body: request,
+	});
+}
+
+export async function updatePendingItem(
+	accessToken: string,
+	id: number,
+	request: IUpdatePendingItemRequest,
+) {
+	await send({
+		baseUrl,
+		accessToken,
+		endpoint: `/api/pending-items/${id}`,
+		method: "PUT",
+		body: request,
 	});
 }
 
 export async function deletePendingItem(accessToken: string, id: number) {
-	return await get<number>({
+	await send({
 		baseUrl,
+		accessToken,
 		endpoint: `/api/pending-items/${id}`,
 		method: "DELETE",
-		accessToken,
-	});
-}
-
-export async function downloadPendingItems(accessToken: string) {
-	await download({
-		baseUrl,
-		endpoint: "/api/pending-items/download",
-		accessToken,
 	});
 }

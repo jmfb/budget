@@ -1,55 +1,57 @@
-import { get, getOrDefault, download } from "./hub";
-import { IIncome, IGetIncomesResponse } from "~/models";
+import { get, getOrDefault, send } from "./hub";
+import { IIncome, ICreateIncomeRequest, IUpdateIncomeRequest } from "~/models";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
-export async function getVersion(accessToken: string) {
-	return await get<number>({
+export async function getIncomes(accessToken: string, year: number) {
+	return await get<IIncome[]>({
 		baseUrl,
-		endpoint: "/api/incomes/version",
 		accessToken,
-	});
-}
-
-export async function getIncomes(accessToken: string) {
-	return await get<IGetIncomesResponse>({
-		baseUrl,
 		endpoint: "/api/incomes",
-		accessToken,
+		query: { year: year.toString() },
 	});
 }
 
-export async function getIncome(accessToken: string, name: string) {
+export async function getIncome(accessToken: string, id: number) {
 	return await getOrDefault<IIncome>({
 		baseUrl,
-		endpoint: `/api/incomes/${encodeURIComponent(name)}`,
 		accessToken,
+		endpoint: `/api/incomes/${id}`,
 	});
 }
 
-export async function putIncome(accessToken: string, income: IIncome) {
+export async function createIncome(
+	accessToken: string,
+	request: ICreateIncomeRequest,
+) {
 	return await get<number>({
 		baseUrl,
-		endpoint: "/api/incomes",
+		accessToken,
+		endpoint: `/api/incomes`,
+		method: "POST",
+		body: request,
+	});
+}
+
+export async function updateIncome(
+	accessToken: string,
+	id: number,
+	request: IUpdateIncomeRequest,
+) {
+	await send({
+		baseUrl,
+		accessToken,
+		endpoint: `/api/incomes/${id}`,
 		method: "PUT",
-		accessToken,
-		body: income,
+		body: request,
 	});
 }
 
-export async function deleteIncome(accessToken: string, name: string) {
+export async function deleteIncome(accessToken: string, id: number) {
 	return await get<number>({
 		baseUrl,
-		endpoint: `/api/incomes/${encodeURIComponent(name)}`,
+		accessToken,
+		endpoint: `/api/incomes/${id}`,
 		method: "DELETE",
-		accessToken,
-	});
-}
-
-export async function downloadIncomes(accessToken: string) {
-	await download({
-		baseUrl,
-		endpoint: "/api/incomes/download",
-		accessToken,
 	});
 }

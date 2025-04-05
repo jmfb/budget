@@ -1,55 +1,61 @@
-import { get, getOrDefault, download } from "./hub";
-import { IExpense, IGetExpensesResponse } from "~/models";
+import { get, getOrDefault, send } from "./hub";
+import {
+	IExpense,
+	ICreateExpenseRequest,
+	IUpdateExpenseRequest,
+} from "~/models";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
-export async function getVersion(accessToken: string) {
-	return await get<number>({
+export async function getExpenses(accessToken: string, year: number) {
+	return await get<IExpense[]>({
 		baseUrl,
-		endpoint: "/api/expenses/version",
 		accessToken,
-	});
-}
-
-export async function getExpenses(accessToken: string) {
-	return await get<IGetExpensesResponse>({
-		baseUrl,
 		endpoint: "/api/expenses",
-		accessToken,
+		query: { year: year.toString() },
 	});
 }
 
-export async function getExpense(accessToken: string, name: string) {
+export async function getExpense(accessToken: string, id: number) {
 	return await getOrDefault<IExpense>({
 		baseUrl,
-		endpoint: `/api/expenses/${encodeURIComponent(name)}`,
 		accessToken,
+		endpoint: `/api/expenses/${id}`,
 	});
 }
 
-export async function putExpense(accessToken: string, expense: IExpense) {
+export async function createExpense(
+	accessToken: string,
+	request: ICreateExpenseRequest,
+) {
 	return await get<number>({
 		baseUrl,
+		accessToken,
 		endpoint: "/api/expenses",
+		method: "POST",
+		body: request,
+	});
+}
+
+export async function updateExpense(
+	accessToken: string,
+	id: number,
+	request: IUpdateExpenseRequest,
+) {
+	await send({
+		baseUrl,
+		accessToken,
+		endpoint: `/api/expenses/${id}`,
 		method: "PUT",
-		accessToken,
-		body: expense,
+		body: request,
 	});
 }
 
-export async function deleteExpense(accessToken: string, name: string) {
-	return await get<number>({
+export async function deleteExpense(accessToken: string, id: number) {
+	await send({
 		baseUrl,
-		endpoint: `/api/expenses/${encodeURIComponent(name)}`,
+		accessToken,
+		endpoint: `/api/expenses/${id}`,
 		method: "DELETE",
-		accessToken,
-	});
-}
-
-export async function downloadExpenses(accessToken: string) {
-	await download({
-		baseUrl,
-		endpoint: "/api/expenses/download",
-		accessToken,
 	});
 }
