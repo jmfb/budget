@@ -11,10 +11,7 @@ export interface IExpenseBudgetProps {
 
 export function ExpenseBudget({ expense, total }: IExpenseBudgetProps) {
 	return (
-		<Link
-			className={styles.root}
-			to={`/yearly-expenses/${encodeURIComponent(expense.name)}`}
-		>
+		<Link className={styles.root} to={`/yearly-expenses/${expense.id}`}>
 			Remaining {expense.name} Budget
 			<span
 				className={clsx(
