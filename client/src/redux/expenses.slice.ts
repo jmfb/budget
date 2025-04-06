@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IExpense, IRetireCategoryRequest } from "~/models";
-import { getExpenses } from "./expenses.actions";
+import { getExpenses } from "./expenses.thunks";
 
 export interface IExpensesState {
 	isLoading: boolean;

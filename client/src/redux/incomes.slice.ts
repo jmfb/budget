@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IIncome } from "~/models";
-import { getIncomes } from "./incomes.actions";
+import { getIncomes } from "./incomes.thunks";
 
 export interface IIncomesState {
 	isLoading: boolean;

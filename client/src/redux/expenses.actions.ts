@@ -1,19 +1,8 @@
-import { bindActionCreators, createAsyncThunk } from "@reduxjs/toolkit";
-import { IState } from "./IState";
+import { bindActionCreators } from "@reduxjs/toolkit";
 import { expensesHub } from "~/api";
 import { ICreateExpenseRequest, IUpdateExpenseRequest } from "~/models";
 import { IAsyncActionOptions } from "./IAsyncActionOptions";
 import { expensesSlice } from "./expenses.slice";
-
-export const getExpenses = createAsyncThunk(
-	"expenses/getExpenses",
-	async (year: number, { getState }) => {
-		const {
-			auth: { accessToken },
-		} = getState() as IState;
-		return await expensesHub.getExpenses(accessToken, year);
-	},
-);
 
 export async function createExpense(
 	request: ICreateExpenseRequest,

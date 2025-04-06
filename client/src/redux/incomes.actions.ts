@@ -1,19 +1,8 @@
-import { bindActionCreators, createAsyncThunk } from "@reduxjs/toolkit";
-import { IState } from "./IState";
+import { bindActionCreators } from "@reduxjs/toolkit";
 import { incomesHub } from "~/api";
 import { ICreateIncomeRequest, IUpdateIncomeRequest } from "~/models";
 import { IAsyncActionOptions } from "./IAsyncActionOptions";
 import { incomesSlice } from "./incomes.slice";
-
-export const getIncomes = createAsyncThunk(
-	"incomes/getIncomes",
-	async (year: number, { getState }) => {
-		const {
-			auth: { accessToken },
-		} = getState() as IState;
-		return await incomesHub.getIncomes(accessToken, year);
-	},
-);
 
 export async function createIncome(
 	request: ICreateIncomeRequest,

@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getAuthenticationUrl, authenticate } from "./auth.actions";
-import { getAllText, parseCsv, mergeTransaction } from "./budget.actions";
-import { getCategories } from "./categories.actions";
-import { getExpenses } from "./expenses.actions";
-import { getIncomes } from "./incomes.actions";
+import { getAuthenticationUrl, authenticate } from "./auth.thunks";
+import { getAllText, parseCsv, mergeTransaction } from "./budget.thunks";
+import { getCategories } from "./categories.thunks";
+import { getExpenses } from "./expenses.thunks";
+import { getIncomes } from "./incomes.thunks";
 import {
 	getPreviousYear,
 	getRestOfCurrentYear,
 	getCurrentWeek,
-} from "./transactions.actions";
+} from "./transactions.thunks";
 import { IErrorReport } from "~/models";
 
 export interface IErrorState {

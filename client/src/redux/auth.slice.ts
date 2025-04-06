@@ -3,7 +3,7 @@ import {
 	readLocalStorage,
 	getAuthenticationUrl,
 	authenticate,
-} from "./auth.actions";
+} from "./auth.thunks";
 
 export interface IAuthState {
 	email: string | null | undefined;

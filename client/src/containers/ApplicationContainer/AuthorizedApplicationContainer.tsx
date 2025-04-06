@@ -7,6 +7,7 @@ import {
 	incomesSlice,
 	pendingItemsSlice,
 	transactionsSlice,
+	categoriesSlice,
 } from "~/redux";
 import { dateService } from "~/services";
 import { clsx } from "clsx";
@@ -35,6 +36,7 @@ const AsyncAboutContainer = lazy(() => import("~/containers/AboutContainer"));
 const AsyncSearchContainer = lazy(() => import("~/containers/SearchContainer"));
 
 export function AuthorizedApplicationContainer() {
+	const { getCategories } = useActions(categoriesSlice);
 	const { getExpenses } = useActions(expensesSlice);
 	const { getIncomes } = useActions(incomesSlice);
 	const { getPendingItems } = useActions(pendingItemsSlice);
@@ -43,6 +45,7 @@ export function AuthorizedApplicationContainer() {
 
 	useEffect(() => {
 		const year = dateService.getCurrentYear();
+		getCategories();
 		getExpenses(year);
 		getIncomes(year);
 		getPendingItems();

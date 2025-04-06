@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IPendingItem, IRetireCategoryRequest } from "~/models";
-import { getPendingItems } from "./pendingItems.actions";
+import { getPendingItems } from "./pendingItems.thunks";
 
 export interface IPendingItemsState {
 	isLoading: boolean;

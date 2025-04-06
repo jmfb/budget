@@ -4,7 +4,7 @@ import {
 	parseCsv,
 	mergeTransaction,
 	matchedTransaction,
-} from "./budget.actions";
+} from "./budget.thunks";
 import { ITransaction } from "~/models";
 
 export interface IBudgetState {

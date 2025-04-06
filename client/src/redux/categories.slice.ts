@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ICategory } from "~/models";
-import { getCategories } from "./categories.actions";
+import { getCategories } from "./categories.thunks";
 
 export interface ICategoriesState {
 	isLoading: boolean;
@@ -46,6 +46,13 @@ const slice = createSlice({
 			.addCase(getCategories.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.categories = action.payload;
+				state.categoryById = state.categories.reduce(
+					(map, category) => {
+						map[category.id] = category;
+						return map;
+					},
+					{} as Record<number, ICategory>,
+				);
 			})
 			.addCase(getCategories.rejected, (state) => {
 				state.isLoading = false;

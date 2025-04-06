@@ -4,7 +4,7 @@ import {
 	getPreviousYear,
 	getRestOfCurrentYear,
 	getCurrentWeek,
-} from "./transactions.actions";
+} from "./transactions.thunks";
 
 export interface ITransactionsState {
 	isLoading: boolean;

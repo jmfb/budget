@@ -1,19 +1,8 @@
-import { bindActionCreators, createAsyncThunk } from "@reduxjs/toolkit";
-import { IState } from "./IState";
+import { bindActionCreators } from "@reduxjs/toolkit";
 import { pendingItemsHub } from "~/api";
 import { ICreatePendingItemRequest, IUpdatePendingItemRequest } from "~/models";
 import { pendingItemsSlice } from "./pendingItems.slice";
 import { IAsyncActionOptions } from "./IAsyncActionOptions";
-
-export const getPendingItems = createAsyncThunk(
-	"pendingItems/getPendingItems",
-	async (_, { getState }) => {
-		const {
-			auth: { accessToken },
-		} = getState() as IState;
-		return await pendingItemsHub.getPendingItems(accessToken);
-	},
-);
 
 export async function createPendingItem(
 	request: ICreatePendingItemRequest,

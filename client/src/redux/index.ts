@@ -14,8 +14,6 @@ export * from "./pendingItems.slice";
 export * from "./transactions.slice";
 export * from "./categories.slice";
 export * from "./getExpenseTransactions";
-export * as authActions from "./auth.actions";
-export * as budgetActions from "./budget.actions";
 export * as categoriesActions from "./categories.actions";
 export * as expensesActions from "./expenses.actions";
 export * as incomesActions from "./incomes.actions";

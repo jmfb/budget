@@ -10,7 +10,21 @@ import { dateService } from "~/services";
 
 export default function HomeContainer() {
 	const { setOnlyShowNewItems } = useActions(budgetSlice);
-	const isLoading = useAppSelector((state) => state.transactions.isLoading);
+
+	const isLoadingTransactions = useAppSelector(
+		(state) => state.transactions.isLoading,
+	);
+	const isLoadingCategories = useAppSelector(
+		(state) => state.categories.isLoading,
+	);
+	const isLoadingIncomes = useAppSelector((state) => state.incomes.isLoading);
+	const isLoadingExpenses = useAppSelector(
+		(state) => state.expenses.isLoading,
+	);
+	const isLoadingPendingItems = useAppSelector(
+		(state) => state.pendingItems.isLoading,
+	);
+
 	const onlyShowNewItems = useAppSelector(
 		(state) => state.budget.onlyShowNewItems,
 	);
@@ -38,6 +52,13 @@ export default function HomeContainer() {
 			),
 		[transactions, weekOf],
 	);
+
+	const isLoading =
+		isLoadingTransactions ||
+		isLoadingCategories ||
+		isLoadingIncomes ||
+		isLoadingExpenses ||
+		isLoadingPendingItems;
 
 	return (
 		<Home
