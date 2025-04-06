@@ -1,29 +1,31 @@
 import { Pill } from "~/components";
-import { ITransaction, IIncome, IExpense } from "~/models";
+import { ITransaction, IIncome, IExpense, ICategory } from "~/models";
 import { budgetService } from "~/services";
 import styles from "./Transaction.module.css";
 
 export interface ITransactionProps {
 	transaction: ITransaction;
-	incomes: IIncome[];
-	expenses: IExpense[];
+	categoryById: Record<number, ICategory>;
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
 	expenseTransactions: Record<string, ITransaction[]>;
 	onEdit(): void;
 }
 
 export function Transaction({
 	transaction,
-	incomes,
-	expenses,
+	categoryById,
+	incomeById,
+	expenseById,
 	expenseTransactions,
 	onEdit,
 }: ITransactionProps) {
-	const { amount, description, category, note, expenseName, incomeName } =
+	const { amount, description, categoryId, note, expenseId, incomeId } =
 		transaction;
 	const discrepancy = budgetService.getDiscrepancy(
 		transaction,
-		incomes,
-		expenses,
+		incomeById,
+		expenseById,
 		expenseTransactions,
 	);
 	return (
@@ -43,24 +45,28 @@ export function Transaction({
 					</span>
 				)}
 				{note && <span className={styles.note}>{note}</span>}
-				{!incomeName && !expenseName && !category && (
-					<Pill className={styles.pill} type="new">
-						New!
-					</Pill>
-				)}
-				{!incomeName && !expenseName && category && (
-					<Pill className={styles.pill} type="info">
-						{category}
-					</Pill>
-				)}
-				{incomeName && (
+				{incomeId === null &&
+					expenseId === null &&
+					categoryId === null && (
+						<Pill className={styles.pill} type="new">
+							New!
+						</Pill>
+					)}
+				{incomeId === null &&
+					expenseId === null &&
+					categoryId !== null && (
+						<Pill className={styles.pill} type="info">
+							{categoryById[categoryId].name}
+						</Pill>
+					)}
+				{incomeId !== null && (
 					<Pill className={styles.pill} type="success">
-						{incomeName}
+						{incomeById[incomeId].name}
 					</Pill>
 				)}
-				{expenseName && (
+				{expenseId !== null && (
 					<Pill className={styles.pill} type="danger">
-						{expenseName}
+						{expenseById[expenseId].name}
 					</Pill>
 				)}
 			</div>

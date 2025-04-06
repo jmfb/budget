@@ -3,16 +3,17 @@ import { Switch } from "~/components";
 import { PendingItems } from "./PendingItems";
 import { Transaction } from "./Transaction";
 import { TransactionEditorContainer } from "./TransactionEditorContainer";
-import { ITransaction, IIncome, IExpense } from "~/models";
+import { ITransaction, IIncome, IExpense, ICategory } from "~/models";
 import styles from "./Transactions.module.css";
 
 export interface ITransactionsProps {
 	variant: "home" | "search";
 	onlyShowNewItems: boolean;
 	transactions: ITransaction[];
-	incomes: IIncome[];
-	expenses: IExpense[];
-	expenseTransactions: Record<string, ITransaction[]>;
+	categoryById: Record<number, ICategory>;
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
+	expenseTransactions: Record<number, ITransaction[]>;
 	includePendingItems: boolean;
 	setOnlyShowNewItems(value: boolean): void;
 }
@@ -21,8 +22,9 @@ export function Transactions({
 	variant,
 	onlyShowNewItems,
 	transactions,
-	incomes,
-	expenses,
+	categoryById,
+	incomeById,
+	expenseById,
 	expenseTransactions,
 	includePendingItems,
 	setOnlyShowNewItems,
@@ -35,9 +37,9 @@ export function Transactions({
 		.filter(
 			(transaction) =>
 				!onlyShowNewItems ||
-				(!transaction.expenseName &&
-					!transaction.incomeName &&
-					!transaction.category),
+				(transaction.expenseId === null &&
+					transaction.incomeId === null &&
+					transaction.categoryId === null),
 		)
 		.reduce(
 			(map, transaction) => {
@@ -87,8 +89,9 @@ export function Transactions({
 								<Transaction
 									key={transaction.id}
 									transaction={transaction}
-									incomes={incomes}
-									expenses={expenses}
+									categoryById={categoryById}
+									incomeById={incomeById}
+									expenseById={expenseById}
 									expenseTransactions={expenseTransactions}
 									onEdit={createEditClickedHandler(
 										transaction,

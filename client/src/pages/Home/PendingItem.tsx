@@ -1,15 +1,24 @@
 import { Pill } from "~/components";
-import { IPendingItem } from "~/models";
+import { ICategory, IExpense, IIncome, IPendingItem } from "~/models";
 import { budgetService } from "~/services";
 import styles from "./PendingItem.module.css";
 
 export interface IPendingItemProps {
 	pendingItem: IPendingItem;
+	categoryById: Record<number, ICategory>;
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
 	onEdit(): void;
 }
 
-export function PendingItem({ pendingItem, onEdit }: IPendingItemProps) {
-	const { name, amount, category, incomeName, expenseName } = pendingItem;
+export function PendingItem({
+	pendingItem,
+	categoryById,
+	incomeById,
+	expenseById,
+	onEdit,
+}: IPendingItemProps) {
+	const { name, amount, categoryId, incomeId, expenseId } = pendingItem;
 	return (
 		<div className={styles.root} onClick={onEdit}>
 			<div className={styles.row}>
@@ -17,24 +26,28 @@ export function PendingItem({ pendingItem, onEdit }: IPendingItemProps) {
 					{budgetService.format(amount)}
 				</span>
 				<span className={styles.name}>{name}</span>
-				{!incomeName && !expenseName && !category && (
-					<Pill className={styles.pill} type="new">
-						New!
-					</Pill>
-				)}
-				{!incomeName && !expenseName && category && (
-					<Pill className={styles.pill} type="info">
-						{category}
-					</Pill>
-				)}
-				{incomeName && (
+				{incomeId === null &&
+					expenseId === null &&
+					categoryId === null && (
+						<Pill className={styles.pill} type="new">
+							New!
+						</Pill>
+					)}
+				{incomeId === null &&
+					expenseId === null &&
+					categoryId !== null && (
+						<Pill className={styles.pill} type="info">
+							{categoryById[categoryId].name}
+						</Pill>
+					)}
+				{incomeId !== null && (
 					<Pill className={styles.pill} type="success">
-						{incomeName}
+						{incomeById[incomeId].name}
 					</Pill>
 				)}
-				{expenseName && (
+				{expenseId !== null && (
 					<Pill className={styles.pill} type="danger">
-						{expenseName}
+						{expenseById[expenseId].name}
 					</Pill>
 				)}
 			</div>

@@ -13,6 +13,11 @@ export function PendingItems() {
 	const pendingItems = useAppSelector(
 		(state) => state.pendingItems.pendingItems,
 	);
+	const categoryById = useAppSelector(
+		(state) => state.categories.categoryById,
+	);
+	const incomeById = useAppSelector((state) => state.incomes.incomeById);
+	const expenseById = useAppSelector((state) => state.expenses.expenseById);
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [existingPendingItem, setExistingPendingItem] =
@@ -58,6 +63,9 @@ export function PendingItems() {
 				.map((pendingItem) => (
 					<PendingItem
 						key={pendingItem.id}
+						categoryById={categoryById}
+						incomeById={incomeById}
+						expenseById={expenseById}
 						pendingItem={pendingItem}
 						onEdit={createEditClickedHandler(pendingItem)}
 					/>

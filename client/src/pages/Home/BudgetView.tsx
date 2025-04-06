@@ -3,32 +3,35 @@ import { IIncome, IExpense, ITransaction, IPendingItem } from "~/models";
 import styles from "./BudgetView.module.css";
 
 export interface IBudgetViewProps {
-	incomes: IIncome[];
-	expenses: IExpense[];
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
 	transactions: ITransaction[];
 	pendingItems: IPendingItem[];
 	expenseTransactions: Record<string, ITransaction[]>;
 }
 
 export function BudgetView({
-	incomes,
-	expenses,
+	incomeById,
+	expenseById,
 	transactions,
 	pendingItems,
 	expenseTransactions,
 }: IBudgetViewProps) {
-	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
+	const weeklyBudget = budgetService.getWeeklyBudget(
+		Object.values(incomeById),
+		Object.values(expenseById),
+	);
 	const totalSpend = budgetService.getTotalSpend(
 		transactions,
 		pendingItems,
-		incomes,
-		expenses,
+		incomeById,
+		expenseById,
 		expenseTransactions,
 	);
 	const extraIncome = budgetService.getExtraIncome(
 		transactions,
-		incomes,
-		expenses,
+		incomeById,
+		expenseById,
 	);
 	const remainingBudget = weeklyBudget - totalSpend;
 	return (

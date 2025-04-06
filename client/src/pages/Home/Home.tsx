@@ -2,15 +2,22 @@ import { PageLoading } from "~/components";
 import { WeekView } from "./WeekView";
 import { BudgetView } from "./BudgetView";
 import { Transactions } from "./Transactions";
-import { IIncome, IExpense, ITransaction, IPendingItem } from "~/models";
+import {
+	IIncome,
+	IExpense,
+	ITransaction,
+	IPendingItem,
+	ICategory,
+} from "~/models";
 import { dateService } from "~/services";
 import { clsx } from "clsx";
 import styles from "./Home.module.css";
 
 export interface IHomeProps {
 	onlyShowNewItems: boolean;
-	incomes: IIncome[];
-	expenses: IExpense[];
+	categoryById: Record<number, ICategory>;
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
 	pendingItems: IPendingItem[];
 	isLoading: boolean;
 	week: ITransaction[];
@@ -22,8 +29,9 @@ export interface IHomeProps {
 
 export function Home({
 	onlyShowNewItems,
-	incomes,
-	expenses,
+	categoryById,
+	incomeById,
+	expenseById,
 	pendingItems,
 	isLoading,
 	week,
@@ -42,8 +50,8 @@ export function Home({
 					<PageLoading message="Loading transactions..." />
 				) : (
 					<BudgetView
-						incomes={incomes}
-						expenses={expenses}
+						incomeById={incomeById}
+						expenseById={expenseById}
 						expenseTransactions={expenseTransactions}
 						pendingItems={includePendingItems ? pendingItems : []}
 						transactions={week}
@@ -54,8 +62,9 @@ export function Home({
 				<div className={styles.scrollingBottom}>
 					<Transactions
 						onlyShowNewItems={onlyShowNewItems}
-						incomes={incomes}
-						expenses={expenses}
+						categoryById={categoryById}
+						incomeById={incomeById}
+						expenseById={expenseById}
 						expenseTransactions={expenseTransactions}
 						includePendingItems={includePendingItems}
 						setOnlyShowNewItems={setOnlyShowNewItems}
