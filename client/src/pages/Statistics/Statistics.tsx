@@ -3,7 +3,6 @@ import { Week } from "./Week";
 import { ExpenseBudget } from "./ExpenseBudget";
 import { IIncome, IExpense, IPendingItem, ITransaction } from "~/models";
 import { budgetService } from "~/services";
-import { IWeekState } from "~/redux";
 import { clsx } from "clsx";
 import styles from "./Statistics.module.css";
 
@@ -11,8 +10,9 @@ export interface IStatisticsProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	pendingItems: IPendingItem[];
-	weeks: IWeekState[];
-	allWeeksInYear: IWeekState[];
+	isLoading: boolean;
+	weeks: ITransaction[][];
+	allWeeksInYear: ITransaction[][];
 	expenseTransactions: Record<string, ITransaction[]>;
 }
 
@@ -20,15 +20,11 @@ export function Statistics({
 	incomes,
 	expenses,
 	pendingItems,
+	isLoading,
 	weeks,
 	allWeeksInYear,
 	expenseTransactions,
 }: IStatisticsProps) {
-	const isLoading =
-		!incomes ||
-		!expenses ||
-		weeks.some((week) => week === undefined || week.isLoading) ||
-		allWeeksInYear.some((week) => week === undefined || week.isLoading);
 	if (isLoading) {
 		return <PageLoading message="Loading transactions" />;
 	}
@@ -36,7 +32,7 @@ export function Statistics({
 	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
 	const totalSpends = weeks.map((week, index) =>
 		budgetService.getTotalSpend(
-			week.transactions,
+			week,
 			index === 0 ? pendingItems : [],
 			incomes,
 			expenses,
@@ -44,7 +40,7 @@ export function Statistics({
 		),
 	);
 	const extraIncomes = weeks.map((week) =>
-		budgetService.getExtraIncome(week.transactions, incomes, expenses),
+		budgetService.getExtraIncome(week, incomes, expenses),
 	);
 	const totalExtraIncome = extraIncomes.reduce(
 		(total, extraIncome) => total + extraIncome,
@@ -65,13 +61,13 @@ export function Statistics({
 		(week, index) =>
 			weeklyBudget -
 			budgetService.getTotalSpend(
-				week.transactions,
+				week,
 				index === 0 ? pendingItems : [],
 				incomes,
 				expenses,
 				expenseTransactions,
 			) +
-			budgetService.getExtraIncome(week.transactions, incomes, expenses),
+			budgetService.getExtraIncome(week, incomes, expenses),
 	);
 	const yearTotal = weekTotals.reduce((sum, amount) => sum + amount, 0);
 

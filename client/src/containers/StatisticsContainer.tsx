@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { ITransaction } from "~/models";
 
 export default function StatisticsContainer() {
+	const isLoading = useAppSelector((state) => state.transactions.isLoading);
 	const expenseTransactions = useAppSelector(getExpenseTransactions);
 	const transactions = useAppSelector(
 		(state) => state.transactions.transactions,
@@ -50,6 +51,7 @@ export default function StatisticsContainer() {
 			incomes={incomes}
 			expenses={expenses}
 			pendingItems={pendingItems}
+			isLoading={isLoading}
 			weeks={weeks}
 			allWeeksInYear={allWeeksInYear}
 			expenseTransactions={expenseTransactions}

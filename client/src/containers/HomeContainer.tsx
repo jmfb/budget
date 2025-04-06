@@ -14,8 +14,11 @@ export default function HomeContainer() {
 	const onlyShowNewItems = useAppSelector(
 		(state) => state.budget.onlyShowNewItems,
 	);
-	const incomes = useAppSelector((state) => state.incomes.incomes);
-	const expenses = useAppSelector((state) => state.expenses.expenses);
+	const categoryById = useAppSelector(
+		(state) => state.categories.categoryById,
+	);
+	const incomeById = useAppSelector((state) => state.incomes.incomeById);
+	const expenseById = useAppSelector((state) => state.expenses.expenseById);
 	const pendingItems = useAppSelector(
 		(state) => state.pendingItems.pendingItems,
 	);
@@ -39,8 +42,9 @@ export default function HomeContainer() {
 	return (
 		<Home
 			onlyShowNewItems={onlyShowNewItems}
-			incomes={incomes}
-			expenses={expenses}
+			categoryById={categoryById}
+			incomeById={incomeById}
+			expenseById={expenseById}
 			pendingItems={pendingItems}
 			isLoading={isLoading}
 			week={week}

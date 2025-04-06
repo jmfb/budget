@@ -1,13 +1,14 @@
 import { Input, PageLoading } from "~/components";
 import { Transactions } from "~/pages/Home/Transactions";
-import { IExpense, IIncome, ITransaction } from "~/models";
+import { ICategory, IExpense, IIncome, ITransaction } from "~/models";
 import styles from "./Search.module.css";
 
 export interface ISearchProps {
 	searchQuery: string;
 	isLoading: boolean;
-	incomes: IIncome[];
-	expenses: IExpense[];
+	categoryById: Record<number, ICategory>;
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
 	expenseTransactions: Record<string, ITransaction[]>;
 	transactions: ITransaction[];
 	onUpdateSearch(searchQuery: string): void;
@@ -16,8 +17,9 @@ export interface ISearchProps {
 export function Search({
 	searchQuery,
 	isLoading,
-	incomes,
-	expenses,
+	categoryById,
+	incomeById,
+	expenseById,
 	expenseTransactions,
 	transactions,
 	onUpdateSearch,
@@ -42,8 +44,9 @@ export function Search({
 			)}
 			<Transactions
 				transactions={transactions}
-				incomes={incomes}
-				expenses={expenses}
+				categoryById={categoryById}
+				incomeById={incomeById}
+				expenseById={expenseById}
 				expenseTransactions={expenseTransactions}
 				variant="search"
 				onlyShowNewItems={false}

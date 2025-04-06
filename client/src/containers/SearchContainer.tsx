@@ -11,9 +11,7 @@ export default function SearchContainer() {
 	const categoryById = useAppSelector(
 		(state) => state.categories.categoryById,
 	);
-	const incomes = useAppSelector((state) => state.incomes.incomes);
 	const incomeById = useAppSelector((state) => state.incomes.incomeById);
-	const expenses = useAppSelector((state) => state.expenses.expenses);
 	const expenseById = useAppSelector((state) => state.expenses.expenseById);
 	const expenseTransactions = useAppSelector(getExpenseTransactions);
 
@@ -40,8 +38,9 @@ export default function SearchContainer() {
 		<Search
 			searchQuery={searchQuery}
 			isLoading={isLoading}
-			incomes={incomes}
-			expenses={expenses}
+			categoryById={categoryById}
+			incomeById={incomeById}
+			expenseById={expenseById}
 			expenseTransactions={expenseTransactions}
 			transactions={matchingTransactions}
 			onUpdateSearch={setSearchQuery}
