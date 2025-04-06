@@ -12,7 +12,7 @@ namespace Budget.Server.Controllers;
 public class ExpensesController(IExpenseDataBridge dataBridge) : Controller
 {
 	[HttpGet]
-	public async Task<IActionResult> GetAllAsync(
+	public async Task<IActionResult> GetAll(
 		[FromQuery] int year,
 		CancellationToken cancellationToken
 	)
@@ -22,7 +22,7 @@ public class ExpensesController(IExpenseDataBridge dataBridge) : Controller
 	}
 
 	[HttpGet("{id:int}")]
-	public async Task<IActionResult> GetAsync(
+	public async Task<IActionResult> Get(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)
@@ -34,7 +34,7 @@ public class ExpensesController(IExpenseDataBridge dataBridge) : Controller
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateAsync(
+	public async Task<IActionResult> Create(
 		[FromBody] CreateExpenseRequest request,
 		CancellationToken cancellationToken
 	)
@@ -50,11 +50,11 @@ public class ExpensesController(IExpenseDataBridge dataBridge) : Controller
 			request.IsDistributed,
 			cancellationToken
 		);
-		return CreatedAtAction(nameof(GetAsync), new { id }, id);
+		return CreatedAtAction(nameof(Get), new { id }, id);
 	}
 
 	[HttpPut("{id:int}")]
-	public async Task<IActionResult> UpdateAsync(
+	public async Task<IActionResult> Update(
 		[FromRoute] int id,
 		[FromBody] UpdateExpenseRequest request,
 		CancellationToken cancellationToken
@@ -78,7 +78,7 @@ public class ExpensesController(IExpenseDataBridge dataBridge) : Controller
 	}
 
 	[HttpDelete("{id:int}")]
-	public async Task<IActionResult> DeleteAsync(
+	public async Task<IActionResult> Delete(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)

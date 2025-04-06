@@ -12,16 +12,14 @@ namespace Budget.Server.Controllers;
 public class CategoriesController(ICategoryDataBridge dataBridge) : Controller
 {
 	[HttpGet]
-	public async Task<IActionResult> GetAllAsync(
-		CancellationToken cancellationToken
-	)
+	public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
 	{
 		var categories = await dataBridge.GetAllAsync(cancellationToken);
 		return Ok(categories);
 	}
 
 	[HttpGet("{id:int}")]
-	public async Task<IActionResult> GetAsync(
+	public async Task<IActionResult> Get(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)
@@ -33,7 +31,7 @@ public class CategoriesController(ICategoryDataBridge dataBridge) : Controller
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateAsync(
+	public async Task<IActionResult> Create(
 		[FromBody] CreateCategoryRequest request,
 		CancellationToken cancellationToken
 	)
@@ -41,11 +39,11 @@ public class CategoriesController(ICategoryDataBridge dataBridge) : Controller
 		if (request == null)
 			return BadRequest("Body is required");
 		var id = await dataBridge.CreateAsync(request.Name, cancellationToken);
-		return CreatedAtAction(nameof(GetAsync), new { id }, id);
+		return CreatedAtAction(nameof(Get), new { id }, id);
 	}
 
 	[HttpPut("{id:int}")]
-	public async Task<IActionResult> UpdateAsync(
+	public async Task<IActionResult> Update(
 		[FromRoute] int id,
 		[FromBody] UpdateCategoryRequest request,
 		CancellationToken cancellationToken
@@ -61,7 +59,7 @@ public class CategoriesController(ICategoryDataBridge dataBridge) : Controller
 	}
 
 	[HttpDelete("{id:int}")]
-	public async Task<IActionResult> DeleteAsync(
+	public async Task<IActionResult> Delete(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)
@@ -74,7 +72,7 @@ public class CategoriesController(ICategoryDataBridge dataBridge) : Controller
 	}
 
 	[HttpPost("commands/retire")]
-	public async Task<IActionResult> RetireAsync(
+	public async Task<IActionResult> Retire(
 		[FromBody] RetireCategoryRequest request,
 		CancellationToken cancellationToken
 	)

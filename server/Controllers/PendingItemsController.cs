@@ -13,16 +13,14 @@ public class PendingItemsController(IPendingItemDataBridge dataBridge)
 	: Controller
 {
 	[HttpGet]
-	public async Task<IActionResult> GetAllAsync(
-		CancellationToken cancellationToken
-	)
+	public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
 	{
 		var pendingItems = await dataBridge.GetAllAsync(cancellationToken);
 		return Ok(pendingItems);
 	}
 
 	[HttpGet("{id:int}")]
-	public async Task<IActionResult> GetAsync(
+	public async Task<IActionResult> Get(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)
@@ -34,7 +32,7 @@ public class PendingItemsController(IPendingItemDataBridge dataBridge)
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateAsync(
+	public async Task<IActionResult> Create(
 		[FromBody] CreatePendingItemRequest request,
 		CancellationToken cancellationToken
 	)
@@ -49,11 +47,11 @@ public class PendingItemsController(IPendingItemDataBridge dataBridge)
 			request.IncomeId,
 			cancellationToken
 		);
-		return CreatedAtAction(nameof(GetAsync), new { id }, id);
+		return CreatedAtAction(nameof(Get), new { id }, id);
 	}
 
 	[HttpPut("{id:int}")]
-	public async Task<IActionResult> UpdateAsync(
+	public async Task<IActionResult> Update(
 		[FromRoute] int id,
 		[FromBody] UpdatePendingItemRequest request,
 		CancellationToken cancellationToken
@@ -77,7 +75,7 @@ public class PendingItemsController(IPendingItemDataBridge dataBridge)
 	}
 
 	[HttpDelete("{id:int}")]
-	public async Task<IActionResult> DeleteAsync(
+	public async Task<IActionResult> Delete(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)

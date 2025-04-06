@@ -12,7 +12,7 @@ namespace Budget.Server.Controllers;
 public class IncomesController(IIncomeDataBridge dataBridge) : Controller
 {
 	[HttpGet]
-	public async Task<IActionResult> GetAllAsync(
+	public async Task<IActionResult> GetAll(
 		[FromQuery] int year,
 		CancellationToken cancellationToken
 	)
@@ -22,7 +22,7 @@ public class IncomesController(IIncomeDataBridge dataBridge) : Controller
 	}
 
 	[HttpGet("{id:int}")]
-	public async Task<IActionResult> GetAsync(
+	public async Task<IActionResult> Get(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)
@@ -34,7 +34,7 @@ public class IncomesController(IIncomeDataBridge dataBridge) : Controller
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateAsync(
+	public async Task<IActionResult> Create(
 		[FromBody] CreateIncomeRequest request,
 		CancellationToken cancellationToken
 	)
@@ -48,11 +48,11 @@ public class IncomesController(IIncomeDataBridge dataBridge) : Controller
 			request.WeeksInterval,
 			cancellationToken
 		);
-		return CreatedAtAction(nameof(GetAsync), new { id }, id);
+		return CreatedAtAction(nameof(Get), new { id }, id);
 	}
 
 	[HttpPut("{id:int}")]
-	public async Task<IActionResult> UpdateAsync(
+	public async Task<IActionResult> Update(
 		[FromRoute] int id,
 		[FromBody] UpdateIncomeRequest request,
 		CancellationToken cancellationToken
@@ -74,7 +74,7 @@ public class IncomesController(IIncomeDataBridge dataBridge) : Controller
 	}
 
 	[HttpDelete("{id:int}")]
-	public async Task<IActionResult> DeleteAsync(
+	public async Task<IActionResult> Delete(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)

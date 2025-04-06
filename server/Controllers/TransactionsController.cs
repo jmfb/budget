@@ -15,7 +15,7 @@ public class TransactionsController(ITransactionDataBridge dataBridge)
 	: Controller
 {
 	[HttpGet]
-	public async Task<IActionResult> GetAllAsync(
+	public async Task<IActionResult> GetAll(
 		[FromQuery] DateOnly startDateInclusive,
 		[FromQuery] DateOnly endDateExclusive,
 		[FromQuery] int? pageSize,
@@ -49,7 +49,7 @@ public class TransactionsController(ITransactionDataBridge dataBridge)
 	}
 
 	[HttpGet("{id:int}")]
-	public async Task<IActionResult> GetAsync(
+	public async Task<IActionResult> Get(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)
@@ -61,7 +61,7 @@ public class TransactionsController(ITransactionDataBridge dataBridge)
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateAsync(
+	public async Task<IActionResult> Create(
 		[FromBody] CreateTransactionRequest request,
 		CancellationToken cancellationToken
 	)
@@ -81,11 +81,11 @@ public class TransactionsController(ITransactionDataBridge dataBridge)
 			request.IncomeId,
 			cancellationToken
 		);
-		return CreatedAtAction(nameof(GetAsync), new { id }, id);
+		return CreatedAtAction(nameof(Get), new { id }, id);
 	}
 
 	[HttpPut("{id:int}")]
-	public async Task<IActionResult> UpdateAsync(
+	public async Task<IActionResult> Update(
 		[FromRoute] int id,
 		[FromBody] UpdateTransactionRequest request,
 		CancellationToken cancellationToken
@@ -114,7 +114,7 @@ public class TransactionsController(ITransactionDataBridge dataBridge)
 	}
 
 	[HttpDelete("{id:int}")]
-	public async Task<IActionResult> DeleteAsync(
+	public async Task<IActionResult> Delete(
 		[FromRoute] int id,
 		CancellationToken cancellationToken
 	)

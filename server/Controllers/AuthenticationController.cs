@@ -15,7 +15,7 @@ public class AuthenticationController(
 		{ "jacob.buysse@gmail.com", "sarah.beth.zierke@gmail.com" };
 
 	[HttpGet("url")]
-	public async Task<string> GetAuthenticationUrlAsync(
+	public async Task<string> GetAuthenticationUrl(
 		[FromQuery] string redirectUrl
 	)
 	{
@@ -25,7 +25,7 @@ public class AuthenticationController(
 	}
 
 	[HttpGet("sign-in")]
-	public async Task<IActionResult> SignInAsync(
+	public async Task<IActionResult> SignIn(
 		[FromQuery] string redirectUrl,
 		[FromQuery] string authorizationCode
 	)

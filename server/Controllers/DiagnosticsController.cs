@@ -15,7 +15,7 @@ public class DiagnosticsController(IDiagnosticDataBridge dataBridge)
 
 	[Authorize]
 	[HttpGet("database")]
-	public async Task<IActionResult> GetDatabaseDiagnosticsAsync(
+	public async Task<IActionResult> GetDatabaseDiagnostics(
 		CancellationToken cancellationToken
 	)
 	{
