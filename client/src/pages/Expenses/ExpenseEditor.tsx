@@ -9,13 +9,13 @@ import {
 	Checkbox,
 	CategorySelect,
 } from "~/components";
-import { IExpense } from "~/models";
+import { IExpense, IUpdateExpenseRequest } from "~/models";
 
 export interface IExpenseEditorProps {
 	existingExpense: IExpense | null;
 	isSavingExpense: boolean;
 	mustRemainYearlyExpense?: boolean;
-	onSave(expense: IExpense): void;
+	onSave(expense: IUpdateExpenseRequest): void;
 	onCancel(): void;
 }
 
@@ -31,7 +31,9 @@ export function ExpenseEditor({
 	const [monthsInterval, setMonthsInterval] = useState(
 		existingExpense?.monthsInterval ?? 1,
 	);
-	const [category, setCategory] = useState(existingExpense?.category ?? "");
+	const [categoryId, setCategoryId] = useState(
+		existingExpense?.categoryId ?? null,
+	);
 	const [isDistributed, setIsDistributed] = useState(
 		existingExpense?.isDistributed ?? false,
 	);
@@ -44,13 +46,19 @@ export function ExpenseEditor({
 	};
 
 	const handleSaveClicked = () => {
-		onSave({ name, amount, monthsInterval, category, isDistributed });
+		onSave({
+			name,
+			amount,
+			monthsInterval,
+			categoryId: categoryId ?? 0,
+			isDistributed,
+		});
 	};
 
 	const isValidName = !!name;
 	const isValidAmount = amount > 0;
 	const isValidInterval = !isDistributed || monthsInterval === 12;
-	const isValidCategory = !!category;
+	const isValidCategory = categoryId !== null;
 	const isValid =
 		isValidName && isValidAmount && isValidInterval && isValidCategory;
 
@@ -78,9 +86,7 @@ export function ExpenseEditor({
 				</Buttons>
 			}
 		>
-			{!existingExpense && (
-				<Input name="Name" autoFocus value={name} onChange={setName} />
-			)}
+			<Input name="Name" autoFocus value={name} onChange={setName} />
 			<CurrencyInput
 				name="Amount"
 				autoFocus={!!existingExpense}
@@ -103,7 +109,7 @@ export function ExpenseEditor({
 					)}
 				</>
 			)}
-			<CategorySelect category={category} onChange={setCategory} />
+			<CategorySelect categoryId={categoryId} onChange={setCategoryId} />
 		</Modal>
 	);
 }

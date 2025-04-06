@@ -1,39 +1,26 @@
-import { useState, useEffect } from "react";
+import { useAsyncState } from "~/hooks";
 import { Button } from "~/components";
 import { IIncome } from "~/models";
 import { budgetService } from "~/services";
+import { incomesActions } from "~/redux";
 import styles from "./Income.module.css";
 
 export interface IIncomeProps {
 	income: IIncome;
-	isSavingIncome: boolean;
-	deleteIncome(income: IIncome): void;
-	clearIncomeSave(): void;
 	onEdit(): void;
 }
 
-export function Income({
-	income,
-	isSavingIncome,
-	deleteIncome,
-	clearIncomeSave,
-	onEdit,
-}: IIncomeProps) {
-	const [isDeleting, setIsDeleting] = useState(false);
+export function Income({ income, onEdit }: IIncomeProps) {
 	const { name, amount, weeksInterval } = income;
 	const interval =
 		weeksInterval === 1 ? "every week" : `every ${weeksInterval} weeks`;
 
-	useEffect(() => {
-		if (!isSavingIncome && isDeleting) {
-			setIsDeleting(false);
-			clearIncomeSave();
-		}
-	}, [isSavingIncome, isDeleting]);
+	const { isLoading: isDeleting, invoke: deleteIncome } = useAsyncState(
+		incomesActions.deleteIncome,
+	);
 
 	const handleDeleteClicked = () => {
-		setIsDeleting(true);
-		deleteIncome(income);
+		deleteIncome(income.id);
 	};
 
 	return (
@@ -52,7 +39,7 @@ export function Income({
 				variant="danger"
 				onClick={handleDeleteClicked}
 				isProcessing={isDeleting}
-				isDisabled={isSavingIncome}
+				isDisabled={isDeleting}
 			>
 				Delete
 			</Button>

@@ -7,12 +7,12 @@ import {
 	CurrencyInput,
 	NumberInput,
 } from "~/components";
-import { IIncome } from "~/models";
+import { IIncome, IUpdateIncomeRequest } from "~/models";
 
 export interface IIncomeEditorProps {
-	existingIncome: IIncome;
+	existingIncome: IIncome | null;
 	isSavingIncome: boolean;
-	onSave(income: IIncome): void;
+	onSave(income: IUpdateIncomeRequest): void;
 	onCancel(): void;
 }
 
@@ -56,9 +56,7 @@ export function IncomeEditor({
 				</Buttons>
 			}
 		>
-			{!existingIncome && (
-				<Input name="Name" autoFocus value={name} onChange={setName} />
-			)}
+			<Input name="Name" autoFocus value={name} onChange={setName} />
 			<CurrencyInput
 				name="Amount"
 				autoFocus={!!existingIncome}
