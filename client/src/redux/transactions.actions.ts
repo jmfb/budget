@@ -1,8 +1,14 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { bindActionCreators, createAsyncThunk } from "@reduxjs/toolkit";
 import { IState } from "./IState";
 import { transactionsHub } from "~/api";
-import { ITransaction } from "~/models";
+import {
+	ICreateTransactionRequest,
+	ITransaction,
+	IUpdateTransactionRequest,
+} from "~/models";
 import { dateService } from "~/services";
+import { IAsyncActionOptions } from "./IAsyncActionOptions";
+import { transactionsSlice } from "./transactions.slice";
 
 async function getAllTransactions(
 	accessToken: string,
@@ -74,3 +80,59 @@ export const getCurrentWeek = createAsyncThunk(
 		);
 	},
 );
+
+export async function createTransaction(
+	request: ICreateTransactionRequest,
+	{ getState, dispatch }: IAsyncActionOptions,
+) {
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(transactionsSlice.actions, dispatch);
+	const transactionId = await transactionsHub.createTransaction(
+		accessToken,
+		request,
+	);
+	const transaction = await transactionsHub.getTransaction(
+		accessToken,
+		transactionId,
+	);
+	if (transaction === null) {
+		throw new Error(
+			`Transaction ${transactionId} was not found after create`,
+		);
+	}
+	actions.createTransaction(transaction);
+}
+
+export async function updateTransaction(
+	parameters: { transactionId: number; request: IUpdateTransactionRequest },
+	{ getState, dispatch }: IAsyncActionOptions,
+) {
+	const { transactionId, request } = parameters;
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(transactionsSlice.actions, dispatch);
+	await transactionsHub.updateTransaction(
+		accessToken,
+		transactionId,
+		request,
+	);
+	const transaction = await transactionsHub.getTransaction(
+		accessToken,
+		transactionId,
+	);
+	if (transaction === null) {
+		throw new Error(
+			`Transaction ${transactionId} was not found after update`,
+		);
+	}
+	actions.updateTransaction(transaction);
+}
+
+export async function deleteTransaction(
+	transactionId: number,
+	{ getState, dispatch }: IAsyncActionOptions,
+) {
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(transactionsSlice.actions, dispatch);
+	await transactionsHub.deleteTransaction(accessToken, transactionId);
+	actions.deleteTransaction(transactionId);
+}
