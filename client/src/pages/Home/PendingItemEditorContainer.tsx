@@ -5,7 +5,7 @@ import { IPendingItem, IUpdatePendingItemRequest } from "~/models";
 import { useAppSelector, pendingItemsActions } from "~/redux";
 
 export interface IPendingItemEditorContainerProps {
-	existingPendingItem: IPendingItem;
+	existingPendingItem: IPendingItem | null;
 	onClose(): void;
 }
 

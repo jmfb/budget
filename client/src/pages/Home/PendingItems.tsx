@@ -69,7 +69,7 @@ export function PendingItems() {
 			)}
 			{isEditing && (
 				<PendingItemEditorContainer
-					existingPendingItem={existingPendingItem!}
+					existingPendingItem={existingPendingItem}
 					onClose={handleCloseEditor}
 				/>
 			)}
