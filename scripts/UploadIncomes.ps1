@@ -10,8 +10,6 @@ $headers = @{
 	"Content-Type" = "application/json"
 }
 
-[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
-
 $incomeByName = @{}
 
 foreach ($income in $incomes) {
@@ -25,7 +23,7 @@ foreach ($income in $incomes) {
 	}
 
 	Invoke-RestMethod `
-		"https://localbudget-api.buysse.link/api/incomes" `
+		"http://localbudget-api.buysse.link/api/incomes" `
 		-Method "POST" `
 		-Headers $headers `
 		-Body (ConvertTo-Json $request)
@@ -63,7 +61,7 @@ foreach ($year in $previousYears) {
 		}
 
 		Invoke-RestMethod `
-			"https://localbudget-api.buysse.link/api/incomes" `
+			"http://localbudget-api.buysse.link/api/incomes" `
 			-Method "POST" `
 			-Headers $headers `
 			-Body (ConvertTo-Json $request)

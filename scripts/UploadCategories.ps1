@@ -16,14 +16,12 @@ $headers = @{
 	"Content-Type" = "application/json"
 }
 
-[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
-
 foreach ($category in $distinctCategories) {
 	$request = @{
 		Name = $category
 	}
 	Invoke-RestMethod `
-		"https://localbudget-api.buysse.link/api/categories" `
+		"http://localbudget-api.buysse.link/api/categories" `
 		-Method "POST" `
 		-Headers $headers `
 		-Body (ConvertTo-Json $request)
