@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Select from "react-select";
 import { IExpense } from "~/models";
 import { budgetService } from "~/services";
@@ -5,24 +6,32 @@ import styles from "./ExpenseSelect.module.css";
 
 export interface IExpenseSelectProps {
 	expenses: IExpense[];
-	expenseName: string;
-	onChange(expenseName: string): void;
+	expenseId: number | null;
+	onChange(newValue: number | null): void;
 }
 
 export function ExpenseSelect({
 	expenses,
-	expenseName,
+	expenseId,
 	onChange,
 }: IExpenseSelectProps) {
-	const options = expenses.map((expense) => ({
-		value: expense,
-		label: `${expense.name} - ${budgetService.format(expense.amount)}`,
-	}));
+	const options = useMemo(
+		() => [
+			{ value: "", label: "Select expense..." },
+			...expenses.map((expense) => ({
+				value: expense.id.toString(),
+				label: `${expense.name} - ${budgetService.format(expense.amount)}`,
+			})),
+		],
+		[expenses],
+	);
 	const selectedOption =
-		options.find((option) => option.value.name === expenseName) ?? null;
+		options.find(
+			(option) => option.value === (expenseId?.toString() ?? ""),
+		) ?? null;
 
-	const handleChange = (option: { value: IExpense } | null) => {
-		onChange(option?.value.name ?? "");
+	const handleChange = (option: { value: string } | null) => {
+		onChange(option === null ? null : +option.value);
 	};
 
 	return (

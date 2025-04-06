@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Select from "react-select";
 import { IIncome } from "~/models";
 import { budgetService } from "~/services";
@@ -5,24 +6,32 @@ import styles from "./IncomeSelect.module.css";
 
 export interface IIncomeSelectProps {
 	incomes: IIncome[];
-	incomeName: string;
-	onChange(incomeName: string): void;
+	incomeId: number | null;
+	onChange(newValue: number | null): void;
 }
 
 export function IncomeSelect({
 	incomes,
-	incomeName,
+	incomeId,
 	onChange,
 }: IIncomeSelectProps) {
-	const options = incomes.map((income) => ({
-		value: income,
-		label: `${income.name} - ${budgetService.format(income.amount)}`,
-	}));
+	const options = useMemo(
+		() => [
+			{ value: "", label: "Select income..." },
+			...incomes.map((income) => ({
+				value: income.id.toString(),
+				label: `${income.name} - ${budgetService.format(income.amount)}`,
+			})),
+		],
+		[incomes],
+	);
 	const selectedOption =
-		options.find((option) => option.value.name === incomeName) ?? null;
+		options.find(
+			(option) => option.value === (incomeId?.toString() ?? ""),
+		) ?? null;
 
-	const handleChange = (option: { value: IIncome } | null) => {
-		onChange(option?.value.name ?? "");
+	const handleChange = (option: { value: string } | null) => {
+		onChange(option === null ? null : +option.value);
 	};
 
 	return (

@@ -20,14 +20,8 @@ export default function UploadsContainer() {
 	const mergingTransactionSuccess = useAppSelector(
 		(state) => state.budget.mergingTransactionSuccess,
 	);
-	const weeklyTransactions = useAppSelector(
-		(state) => state.transactions.weeks,
-	);
+	const isLoading = useAppSelector((state) => state.transactions.isLoading);
 	const logs = useAppSelector((state) => state.budget.logs);
-
-	const isLoading = Object.keys(weeklyTransactions).some(
-		(weekOf) => weeklyTransactions[weekOf].isLoading,
-	);
 
 	return (
 		<Uploads
