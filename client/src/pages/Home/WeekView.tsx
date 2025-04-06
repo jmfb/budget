@@ -1,26 +1,19 @@
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import { Button } from "~/components";
 import { dateService } from "~/services";
-import { IWeekState } from "~/redux";
 import { clsx } from "clsx";
 import styles from "./WeekView.module.css";
 
 export interface IWeekViewProps {
 	weekOf: string;
-	weeklyTransactions: Record<string, IWeekState>;
 	setWeekOf(value: string): void;
 }
 
-export function WeekView({
-	weekOf,
-	weeklyTransactions,
-	setWeekOf,
-}: IWeekViewProps) {
+export function WeekView({ weekOf, setWeekOf }: IWeekViewProps) {
 	const endOfWeek = dateService.getEndOfWeek(weekOf);
 	const daysOfWeek = dateService.getDaysOfWeek(weekOf);
 	const isCurrentWeek = weekOf === dateService.getStartOfCurrentWeek();
 	const previousWeek = dateService.addDays(weekOf, -7);
-	const isFirstWeek = !weeklyTransactions[previousWeek];
 
 	const handlePreviousClicked = () => {
 		setWeekOf(previousWeek);
@@ -34,7 +27,6 @@ export function WeekView({
 			<Button
 				variant="default"
 				onClick={handlePreviousClicked}
-				isDisabled={isFirstWeek}
 				className={styles.previous}
 			>
 				<MdNavigateBefore className={styles.icon} />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Home } from "~/pages";
 import {
 	useActions,
@@ -10,6 +10,7 @@ import { dateService } from "~/services";
 
 export default function HomeContainer() {
 	const { setOnlyShowNewItems } = useActions(budgetSlice);
+	const isLoading = useAppSelector((state) => state.transactions.isLoading);
 	const onlyShowNewItems = useAppSelector(
 		(state) => state.budget.onlyShowNewItems,
 	);
@@ -18,11 +19,22 @@ export default function HomeContainer() {
 	const pendingItems = useAppSelector(
 		(state) => state.pendingItems.pendingItems,
 	);
-	const weeklyTransactions = useAppSelector(
-		(state) => state.transactions.weeks,
+	const transactions = useAppSelector(
+		(state) => state.transactions.transactions,
 	);
 	const expenseTransactions = useAppSelector(getExpenseTransactions);
 	const [weekOf, setWeekOf] = useState(dateService.getStartOfCurrentWeek());
+
+	const nextWeekOf = dateService.addDays(weekOf, 7);
+
+	const week = useMemo(
+		() =>
+			transactions.filter(
+				(transaction) =>
+					transaction.date >= weekOf && transaction.date < nextWeekOf,
+			),
+		[transactions, weekOf],
+	);
 
 	return (
 		<Home
@@ -30,7 +42,8 @@ export default function HomeContainer() {
 			incomes={incomes}
 			expenses={expenses}
 			pendingItems={pendingItems}
-			weeklyTransactions={weeklyTransactions}
+			isLoading={isLoading}
+			week={week}
 			expenseTransactions={expenseTransactions}
 			weekOf={weekOf}
 			setWeekOf={setWeekOf}

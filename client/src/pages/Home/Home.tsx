@@ -3,7 +3,6 @@ import { WeekView } from "./WeekView";
 import { BudgetView } from "./BudgetView";
 import { Transactions } from "./Transactions";
 import { IIncome, IExpense, ITransaction, IPendingItem } from "~/models";
-import { IWeekState } from "~/redux";
 import { dateService } from "~/services";
 import { clsx } from "clsx";
 import styles from "./Home.module.css";
@@ -13,7 +12,8 @@ export interface IHomeProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
 	pendingItems: IPendingItem[];
-	weeklyTransactions: Record<string, IWeekState>;
+	isLoading: boolean;
+	week: ITransaction[];
 	expenseTransactions: Record<string, ITransaction[]>;
 	weekOf: string;
 	setWeekOf(value: string): void;
@@ -25,25 +25,20 @@ export function Home({
 	incomes,
 	expenses,
 	pendingItems,
-	weeklyTransactions,
+	isLoading,
+	week,
 	expenseTransactions,
 	weekOf,
 	setWeekOf,
 	setOnlyShowNewItems,
 }: IHomeProps) {
-	const week = weeklyTransactions[weekOf];
-	const isLoadingWeek = week === undefined || week.isLoading;
 	const includePendingItems = weekOf > dateService.getStartOfLastWeek();
 
 	return (
 		<>
 			<div className={clsx("responsive", styles.fixedTop)}>
-				<WeekView
-					weekOf={weekOf}
-					weeklyTransactions={weeklyTransactions}
-					setWeekOf={setWeekOf}
-				/>
-				{isLoadingWeek ? (
+				<WeekView weekOf={weekOf} setWeekOf={setWeekOf} />
+				{isLoading ? (
 					<PageLoading message="Loading transactions..." />
 				) : (
 					<BudgetView
@@ -51,11 +46,11 @@ export function Home({
 						expenses={expenses}
 						expenseTransactions={expenseTransactions}
 						pendingItems={includePendingItems ? pendingItems : []}
-						transactions={week.transactions}
+						transactions={week}
 					/>
 				)}
 			</div>
-			{!isLoadingWeek && (
+			{!isLoading && (
 				<div className={styles.scrollingBottom}>
 					<Transactions
 						onlyShowNewItems={onlyShowNewItems}
@@ -65,7 +60,7 @@ export function Home({
 						includePendingItems={includePendingItems}
 						setOnlyShowNewItems={setOnlyShowNewItems}
 						variant="home"
-						transactions={week.transactions}
+						transactions={week}
 					/>
 				</div>
 			)}
