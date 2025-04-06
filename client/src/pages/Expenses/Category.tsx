@@ -7,18 +7,12 @@ import styles from "./Category.module.css";
 export interface ICategoryProps {
 	category: string;
 	expenses: IExpense[];
-	isSavingExpense: boolean;
-	deleteExpense(expense: IExpense): void;
-	clearExpenseSave(): void;
 	onEditExpense(expense: IExpense): void;
 }
 
 export function Category({
 	category,
 	expenses,
-	isSavingExpense,
-	deleteExpense,
-	clearExpenseSave,
 	onEditExpense,
 }: ICategoryProps) {
 	const createEditClickedHandler = (expense: IExpense) => () => {
@@ -41,9 +35,6 @@ export function Category({
 					<Expense
 						key={expense.name}
 						expense={expense}
-						isSavingExpense={isSavingExpense}
-						deleteExpense={deleteExpense}
-						clearExpenseSave={clearExpenseSave}
 						onEdit={createEditClickedHandler(expense)}
 					/>
 				))}

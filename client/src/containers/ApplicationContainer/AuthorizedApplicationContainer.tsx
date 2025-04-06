@@ -8,6 +8,7 @@ import {
 	pendingItemsSlice,
 	transactionsSlice,
 } from "~/redux";
+import { dateService } from "~/services";
 import { clsx } from "clsx";
 import styles from "./AuthorizedApplicationContainer.module.css";
 
@@ -34,16 +35,19 @@ const AsyncAboutContainer = lazy(() => import("~/containers/AboutContainer"));
 const AsyncSearchContainer = lazy(() => import("~/containers/SearchContainer"));
 
 export function AuthorizedApplicationContainer() {
-	const { refreshExpenses } = useActions(expensesSlice);
-	const { refreshIncomes } = useActions(incomesSlice);
-	const { refreshPendingItems } = useActions(pendingItemsSlice);
-	const { refreshTransactions } = useActions(transactionsSlice);
+	const { getExpenses } = useActions(expensesSlice);
+	const { getIncomes } = useActions(incomesSlice);
+	const { getPendingItems } = useActions(pendingItemsSlice);
+	const { getCurrentWeek, getRestOfCurrentYear } =
+		useActions(transactionsSlice);
 
 	useEffect(() => {
-		refreshExpenses();
-		refreshIncomes();
-		refreshPendingItems();
-		refreshTransactions();
+		const year = dateService.getCurrentYear();
+		getExpenses(year);
+		getIncomes(year);
+		getPendingItems();
+		getCurrentWeek();
+		getRestOfCurrentYear();
 	}, []);
 
 	return (
@@ -70,7 +74,7 @@ export function AuthorizedApplicationContainer() {
 							element={<AsyncUploadsContainer />}
 						/>
 						<Route
-							path="/yearly-expenses/:expense"
+							path="/yearly-expenses/:expenseId"
 							element={<AsyncYearlyExpensesContainer />}
 						/>
 						<Route

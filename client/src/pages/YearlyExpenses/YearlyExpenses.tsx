@@ -8,6 +8,7 @@ import styles from "./YearlyExpenses.module.css";
 
 export interface IYearlyExpensesProps {
 	expense: IExpense;
+	categoryName: string;
 	yearlyExpenses: ITransaction[];
 	isSavingExpense: boolean;
 	savingExpenseSuccess: boolean;
@@ -16,6 +17,7 @@ export interface IYearlyExpensesProps {
 
 export function YearlyExpenses({
 	expense,
+	categoryName,
 	yearlyExpenses,
 	isSavingExpense,
 	savingExpenseSuccess,
@@ -70,7 +72,7 @@ export function YearlyExpenses({
 			<h2 className={styles.heading}>
 				{expense.name} - {budgetService.format(expense.amount)}
 				<Pill type="info" className={styles.category}>
-					{expense.category}
+					{categoryName}
 				</Pill>
 				<Button
 					variant="default"

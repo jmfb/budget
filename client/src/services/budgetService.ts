@@ -7,6 +7,7 @@ import {
 	IPendingItem,
 	TransactionSource,
 	ICreateTransactionRequest,
+	ICategory,
 } from "~/models";
 import * as dateService from "./dateService";
 
@@ -54,7 +55,7 @@ export function getMonthlyExpense(expense: IExpense) {
 
 export function getTotalPendingSpend(pendingItems: IPendingItem[]) {
 	return pendingItems
-		.filter((item) => !item.expenseName && !item.incomeName)
+		.filter((item) => item.expenseId === null && item.incomeId === null)
 		.reduce((total, item) => total + item.amount, 0);
 }
 
@@ -74,13 +75,13 @@ export function getTotal(transactions: ITransaction[]) {
 }
 
 export function getExpenseTotal(
-	expenseTransactions: Record<string, ITransaction[]>,
+	expenseTransactions: Record<number, ITransaction[]>,
 	transaction: ITransaction,
 ) {
-	if (!transaction.expenseName) {
+	if (transaction.expenseId === null) {
 		return 0;
 	}
-	const transactions = expenseTransactions[transaction.expenseName];
+	const transactions = expenseTransactions[transaction.expenseId];
 	if (!transactions) {
 		return 0;
 	}
@@ -94,16 +95,12 @@ export function getExpenseTotal(
 
 export function getTransactionAmount(
 	transaction: ITransaction,
-	incomes: IIncome[],
-	expenses: IExpense[],
-	expenseTransactions: Record<string, ITransaction[]>,
+	incomeById: Record<number, IIncome>,
+	expenseById: Record<number, IExpense>,
+	expenseTransactions: Record<number, ITransaction[]>,
 ) {
-	const income = incomes.find(
-		(income) => income.name === transaction.incomeName,
-	);
-	const expense = expenses.find(
-		(expense) => expense.name === transaction.expenseName,
-	);
+	const income = incomeById[transaction.incomeId ?? 0];
+	const expense = expenseById[transaction.expenseId ?? 0];
 	const expenseTotal = getExpenseTotal(expenseTransactions, transaction);
 	const expenseTotalWithAmount = expenseTotal + transaction.amount;
 
@@ -125,9 +122,9 @@ export function getTransactionAmount(
 export function getTotalSpend(
 	transactions: ITransaction[],
 	pendingItems: IPendingItem[],
-	incomes: IIncome[],
-	expenses: IExpense[],
-	expenseTransactions: Record<string, ITransaction[]>,
+	incomeById: Record<number, IIncome>,
+	expenseById: Record<number, IExpense>,
+	expenseTransactions: Record<number, ITransaction[]>,
 ) {
 	if (!transactions) {
 		return 0;
@@ -137,8 +134,8 @@ export function getTotalSpend(
 	for (const transaction of transactions) {
 		const amount = getTransactionAmount(
 			transaction,
-			incomes,
-			expenses,
+			incomeById,
+			expenseById,
 			expenseTransactions,
 		);
 		if (amount > 0) {
@@ -150,15 +147,15 @@ export function getTotalSpend(
 
 export function getExtraIncome(
 	transactions: ITransaction[],
-	incomes: IIncome[],
-	expenses: IExpense[],
+	incomeById: Record<number, IIncome>,
+	expenseById: Record<number, IExpense>,
 ) {
 	if (!transactions) {
 		return 0;
 	}
 	return transactions
 		.map((transaction) =>
-			getTransactionAmount(transaction, incomes, expenses, {}),
+			getTransactionAmount(transaction, incomeById, expenseById, {}),
 		)
 		.filter((amount) => amount < 0)
 		.reduce((total, amount) => total - amount, 0);
@@ -168,7 +165,7 @@ export function getDiscrepancy(
 	transaction: ITransaction,
 	incomeById: Record<number, IIncome>,
 	expenseById: Record<number, IExpense>,
-	expenseTransactions: Record<string, ITransaction[]>,
+	expenseTransactions: Record<number, ITransaction[]>,
 ) {
 	const income = incomeById[transaction.incomeId ?? 0];
 	if (income) {
@@ -306,12 +303,15 @@ export function isSameTransaction(
 export function matchesTransaction(
 	searchQuery: string,
 	transaction: ITransaction,
+	categoryById: Record<number, ICategory>,
+	incomeById: Record<number, IIncome>,
+	expenseById: Record<number, IExpense>,
 ) {
 	const strings = [
-		transaction.category,
+		categoryById[transaction.categoryId ?? 0]?.name ?? "",
 		transaction.note,
-		transaction.incomeName,
-		transaction.expenseName,
+		incomeById[transaction.incomeId ?? 0]?.name ?? "",
+		expenseById[transaction.expenseId ?? 0]?.name ?? "",
 		transaction.description,
 	];
 	const numbers = [transaction.amount];

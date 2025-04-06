@@ -12,7 +12,7 @@ import {
 import { IExpense } from "~/models";
 
 export interface IExpenseEditorProps {
-	existingExpense: IExpense;
+	existingExpense: IExpense | null;
 	isSavingExpense: boolean;
 	mustRemainYearlyExpense?: boolean;
 	onSave(expense: IExpense): void;

@@ -1,18 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getAuthenticationUrl, authenticate } from "./auth.actions";
 import { getAllText, parseCsv, mergeTransaction } from "./budget.actions";
+import { getCategories } from "./categories.actions";
+import { getExpenses } from "./expenses.actions";
+import { getIncomes } from "./incomes.actions";
 import {
-	refreshExpenses,
-	saveExpense,
-	deleteExpense,
-} from "./expenses.actions";
-import { refreshIncomes, saveIncome, deleteIncome } from "./incomes.actions";
-import {
-	getTransactions,
-	refreshTransactions,
-	saveTransaction,
-	deleteTransaction,
-	downloadTransactions,
+	getPreviousYear,
+	getRestOfCurrentYear,
+	getCurrentWeek,
 } from "./transactions.actions";
 import { IErrorReport } from "~/models";
 
@@ -86,67 +81,37 @@ const slice = createSlice({
 					action.error.message,
 				);
 			})
-
-			.addCase(refreshExpenses.rejected, (state, action) => {
+			.addCase(getCategories.rejected, (state, action) => {
 				setErrorState(
 					state,
-					"Refreshing expenses",
+					"Getting categories",
 					action.error.message,
 				);
 			})
-			.addCase(saveExpense.rejected, (state, action) => {
-				setErrorState(state, "Saving expense", action.error.message);
+			.addCase(getExpenses.rejected, (state, action) => {
+				setErrorState(state, "Getting expenses", action.error.message);
 			})
-			.addCase(deleteExpense.rejected, (state, action) => {
-				setErrorState(state, "Deleting expense", action.error.message);
+			.addCase(getIncomes.rejected, (state, action) => {
+				setErrorState(state, "Getting incomes", action.error.message);
 			})
-
-			.addCase(refreshIncomes.rejected, (state, action) => {
+			.addCase(getPreviousYear.rejected, (state, action) => {
 				setErrorState(
 					state,
-					"Refreshing incomes",
+					"Getting previous year transactions",
 					action.error.message,
 				);
 			})
-			.addCase(saveIncome.rejected, (state, action) => {
-				setErrorState(state, "Saving income", action.error.message);
-			})
-			.addCase(deleteIncome.rejected, (state, action) => {
-				setErrorState(state, "Deleting income", action.error.message);
-			})
-
-			.addCase(getTransactions.rejected, (state, action) => {
+			.addCase(getRestOfCurrentYear.rejected, (state, action) => {
 				setErrorState(
 					state,
-					"Getting transactions",
+					"Getting rest of current year",
 					action.error.message,
 				);
 			})
-			.addCase(refreshTransactions.rejected, (state, action) => {
+			.addCase(getCurrentWeek.rejected, (state, action) => {
 				setErrorState(
 					state,
-					"Refreshing transactions",
-					action.error.message,
-				);
-			})
-			.addCase(saveTransaction.rejected, (state, action) => {
-				setErrorState(
-					state,
-					"Saving transaction",
-					action.error.message,
-				);
-			})
-			.addCase(deleteTransaction.rejected, (state, action) => {
-				setErrorState(
-					state,
-					"Deleting transaction",
-					action.error.message,
-				);
-			})
-			.addCase(downloadTransactions.rejected, (state, action) => {
-				setErrorState(
-					state,
-					"Downloading transactions",
+					"Getting current week of transactions",
 					action.error.message,
 				);
 			}),

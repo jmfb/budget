@@ -1,19 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { ITransaction } from "~/models";
 import { IState } from "./IState";
+import { dateService } from "~/services";
 
-const getWeeks = (state: IState) => state.transactions.weeks;
-
-const getAllTransactions = createSelector(getWeeks, (weeks) =>
-	Object.entries(weeks).flatMap(([, week]) => week.transactions),
-);
+const getAllTransactions = (state: IState) => state.transactions.transactions;
 
 const getCurrentYearTransactions = createSelector(
 	getAllTransactions,
 	(transactions) =>
 		transactions.filter(
 			(transaction) =>
-				transaction.date >= `${new Date().getFullYear()}-01-01`,
+				transaction.date >= `${dateService.getCurrentYear()}-01-01`,
 		),
 );
 
