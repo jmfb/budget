@@ -11,7 +11,7 @@ returns table (
 language plpgsql security definer
 as $$ begin return query
 
-insert into budget.pending_items (
+insert into budget.pending_items as inserted (
 	name,
 	amount,
 	category_id,
@@ -25,6 +25,6 @@ insert into budget.pending_items (
 	p_income_id
 )
 returning
-	id;
+	inserted.id;
 
 end $$;

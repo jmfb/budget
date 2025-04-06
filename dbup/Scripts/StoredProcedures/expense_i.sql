@@ -12,7 +12,7 @@ returns table (
 language plpgsql security definer
 as $$ begin return query
 
-insert into budget.expenses (
+insert into budget.expenses as inserted (
 	year,
 	name,
 	amount,
@@ -28,6 +28,6 @@ insert into budget.expenses (
 	p_is_distributed
 )
 returning
-	id;
+	inserted.id;
 
 end $$;

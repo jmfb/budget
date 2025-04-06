@@ -16,7 +16,7 @@ returns table (
 language plpgsql security definer
 as $$ begin return query
 
-insert into budget.transactions (
+insert into budget.transactions as inserted (
 	"date",
 	source_id,
 	raw_text,
@@ -40,6 +40,6 @@ insert into budget.transactions (
 	p_income_id
 )
 returning
-	id;
+	inserted.id;
 
 end $$;

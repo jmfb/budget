@@ -10,7 +10,7 @@ returns table (
 language plpgsql security definer
 as $$ begin return query
 
-insert into budget.incomes (
+insert into budget.incomes as inserted (
 	year,
 	name,
 	amount,
@@ -22,6 +22,6 @@ insert into budget.incomes (
 	p_weeks_interval
 )
 returning
-	id;
+	inserted.id;
 
 end $$;

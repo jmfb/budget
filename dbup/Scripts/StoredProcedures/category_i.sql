@@ -7,12 +7,12 @@ returns table (
 language plpgsql security definer
 as $$ begin return query
 
-insert into budget.categories (
+insert into budget.categories as inserted (
 	name
 ) values (
 	p_name
 )
 returning
-	id;
+	inserted.id;
 
 end $$;
