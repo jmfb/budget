@@ -42,6 +42,7 @@ export function TransactionEditor({
 
 	const handleSaveClicked = () => {
 		const { id, ...rest } = transaction;
+		void id;
 		onSave({
 			...rest,
 			categoryId,
