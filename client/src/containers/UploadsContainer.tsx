@@ -1,34 +1,27 @@
-import React from 'react';
-import { Uploads } from '~/pages';
-import { useActions, useAppSelector, budgetSlice } from '~/redux';
+import { Uploads } from "~/pages";
+import { useActions, useAppSelector, budgetSlice } from "~/redux";
 
 export default function UploadsContainer() {
 	const { getAllText, parseCsv, mergeTransaction, clearUpload, clearLogs } =
 		useActions(budgetSlice);
-	const isReadingFile = useAppSelector(state => state.budget.isReadingFile);
+	const isReadingFile = useAppSelector((state) => state.budget.isReadingFile);
 	const readingFileSuccess = useAppSelector(
-		state => state.budget.readingFileSuccess
+		(state) => state.budget.readingFileSuccess,
 	);
-	const fileText = useAppSelector(state => state.budget.fileText);
-	const isParsingCsv = useAppSelector(state => state.budget.isParsingCsv);
+	const fileText = useAppSelector((state) => state.budget.fileText);
+	const isParsingCsv = useAppSelector((state) => state.budget.isParsingCsv);
 	const parsingCsvSuccess = useAppSelector(
-		state => state.budget.parsingCsvSuccess
+		(state) => state.budget.parsingCsvSuccess,
 	);
-	const csvRecords = useAppSelector(state => state.budget.csvRecords);
+	const csvRecords = useAppSelector((state) => state.budget.csvRecords);
 	const isMergingTransaction = useAppSelector(
-		state => state.budget.isMergingTransaction
+		(state) => state.budget.isMergingTransaction,
 	);
 	const mergingTransactionSuccess = useAppSelector(
-		state => state.budget.mergingTransactionSuccess
+		(state) => state.budget.mergingTransactionSuccess,
 	);
-	const weeklyTransactions = useAppSelector(
-		state => state.transactions.weeks
-	);
-	const logs = useAppSelector(state => state.budget.logs);
-
-	const isLoading = Object.keys(weeklyTransactions).some(
-		weekOf => weeklyTransactions[weekOf].isLoading
-	);
+	const isLoading = useAppSelector((state) => state.transactions.isLoading);
+	const logs = useAppSelector((state) => state.budget.logs);
 
 	return (
 		<Uploads

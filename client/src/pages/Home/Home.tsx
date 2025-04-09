@@ -1,20 +1,26 @@
-import React from 'react';
-import { PageLoading } from '~/components';
-import { WeekView } from './WeekView';
-import { BudgetView } from './BudgetView';
-import { Transactions } from './Transactions';
-import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
-import { IWeekState } from '~/redux';
-import { dateService } from '~/services';
-import cx from 'classnames';
-import styles from './Home.module.css';
+import { PageLoading } from "~/components";
+import { WeekView } from "./WeekView";
+import { BudgetView } from "./BudgetView";
+import { Transactions } from "./Transactions";
+import {
+	IIncome,
+	IExpense,
+	ITransaction,
+	IPendingItem,
+	ICategory,
+} from "~/models";
+import { dateService } from "~/services";
+import { clsx } from "clsx";
+import styles from "./Home.module.css";
 
 export interface IHomeProps {
 	onlyShowNewItems: boolean;
-	incomes: IIncome[];
-	expenses: IExpense[];
+	categoryById: Record<number, ICategory>;
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
 	pendingItems: IPendingItem[];
-	weeklyTransactions: Record<string, IWeekState>;
+	isLoading: boolean;
+	week: ITransaction[];
 	expenseTransactions: Record<string, ITransaction[]>;
 	weekOf: string;
 	setWeekOf(value: string): void;
@@ -23,50 +29,47 @@ export interface IHomeProps {
 
 export function Home({
 	onlyShowNewItems,
-	incomes,
-	expenses,
+	categoryById,
+	incomeById,
+	expenseById,
 	pendingItems,
-	weeklyTransactions,
+	isLoading,
+	week,
 	expenseTransactions,
 	weekOf,
 	setWeekOf,
-	setOnlyShowNewItems
+	setOnlyShowNewItems,
 }: IHomeProps) {
-	const week = weeklyTransactions[weekOf];
-	const isLoadingWeek = week === undefined || week.isLoading;
 	const includePendingItems = weekOf > dateService.getStartOfLastWeek();
 
 	return (
 		<>
-			<div className={cx('responsive', styles.fixedTop)}>
-				<WeekView
-					weekOf={weekOf}
-					weeklyTransactions={weeklyTransactions}
-					setWeekOf={setWeekOf}
-				/>
-				{isLoadingWeek ? (
-					<PageLoading message='Loading transactions...' />
+			<div className={clsx("responsive", styles.fixedTop)}>
+				<WeekView weekOf={weekOf} setWeekOf={setWeekOf} />
+				{isLoading ? (
+					<PageLoading message="Loading transactions..." />
 				) : (
 					<BudgetView
-						incomes={incomes}
-						expenses={expenses}
+						incomeById={incomeById}
+						expenseById={expenseById}
 						expenseTransactions={expenseTransactions}
 						pendingItems={includePendingItems ? pendingItems : []}
-						transactions={week.transactions}
+						transactions={week}
 					/>
 				)}
 			</div>
-			{!isLoadingWeek && (
+			{!isLoading && (
 				<div className={styles.scrollingBottom}>
 					<Transactions
 						onlyShowNewItems={onlyShowNewItems}
-						incomes={incomes}
-						expenses={expenses}
+						categoryById={categoryById}
+						incomeById={incomeById}
+						expenseById={expenseById}
 						expenseTransactions={expenseTransactions}
 						includePendingItems={includePendingItems}
 						setOnlyShowNewItems={setOnlyShowNewItems}
-						variant='home'
-						transactions={week.transactions}
+						variant="home"
+						transactions={week}
 					/>
 				</div>
 			)}

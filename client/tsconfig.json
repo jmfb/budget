@@ -1,23 +1,26 @@
 {
 	"compilerOptions": {
-		"allowUnreachableCode": false,
 		"alwaysStrict": true,
 		"baseUrl": ".",
 		"esModuleInterop": true,
-		"importHelpers": true,
-		"jsx": "preserve",
-		"lib": ["dom", "es6", "dom.iterable", "scripthost", "esnext"],
-		"module": "commonjs",
-		"moduleResolution": "node",
+		"jsx": "react-jsx",
+		"strict": true,
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"module": "esnext",
+		"moduleResolution": "bundler",
 		"noErrorTruncation": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"paths": {
 			"~/*": ["./src/*"]
 		},
-		"sourceMap": true,
-		"strictNullChecks": false,
-		"target": "es6"
-	}
+		"target": "esnext",
+		"skipLibCheck": true,
+		"noEmit": true,
+		"types": ["node", "vite/client"]
+	},
+	"include": ["./src/**/*"],
+	"references": [{ "path": "./tsconfig.node.json" }]
 }

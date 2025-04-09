@@ -1,29 +1,18 @@
-variable "token_secret" {
+variable "release_version" {
   type = string
+}
+
+variable "token_secret" {
+  type      = string
+  sensitive = true
 }
 
 variable "auth_client_secret" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
-variable "account_id" {
-  default = "862438233085"
-}
-
-variable "region" {
-  default = "us-east-1"
-}
-
-variable "name" {
-  default = "budget"
-}
-
-variable "dns" {
-  default = "budget.buysse.link"
-}
-
-variable "tags" {
-  default = {
-    application = "budget"
-  }
+variable "database_password" {
+  type      = string
+  sensitive = true
 }

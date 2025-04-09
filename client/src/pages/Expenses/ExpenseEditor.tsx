@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import {
 	Modal,
 	Button,
@@ -7,15 +7,15 @@ import {
 	CurrencyInput,
 	NumberInput,
 	Checkbox,
-	CategorySelect
-} from '~/components';
-import { IExpense } from '~/models';
+	CategorySelect,
+} from "~/components";
+import { IExpense, IUpdateExpenseRequest } from "~/models";
 
 export interface IExpenseEditorProps {
-	existingExpense: IExpense;
+	existingExpense: IExpense | null;
 	isSavingExpense: boolean;
 	mustRemainYearlyExpense?: boolean;
-	onSave(expense: IExpense): void;
+	onSave(expense: IUpdateExpenseRequest): void;
 	onCancel(): void;
 }
 
@@ -24,16 +24,18 @@ export function ExpenseEditor({
 	isSavingExpense,
 	mustRemainYearlyExpense,
 	onSave,
-	onCancel
+	onCancel,
 }: IExpenseEditorProps) {
-	const [name, setName] = useState(existingExpense?.name ?? '');
+	const [name, setName] = useState(existingExpense?.name ?? "");
 	const [amount, setAmount] = useState(existingExpense?.amount ?? 0);
 	const [monthsInterval, setMonthsInterval] = useState(
-		existingExpense?.monthsInterval ?? 1
+		existingExpense?.monthsInterval ?? 1,
 	);
-	const [category, setCategory] = useState(existingExpense?.category ?? '');
+	const [categoryId, setCategoryId] = useState(
+		existingExpense?.categoryId ?? null,
+	);
 	const [isDistributed, setIsDistributed] = useState(
-		existingExpense?.isDistributed ?? false
+		existingExpense?.isDistributed ?? false,
 	);
 
 	const handleIsDistributedChanged = (value: boolean) => {
@@ -44,47 +46,49 @@ export function ExpenseEditor({
 	};
 
 	const handleSaveClicked = () => {
-		onSave({ name, amount, monthsInterval, category, isDistributed });
+		onSave({
+			name,
+			amount,
+			monthsInterval,
+			categoryId: categoryId ?? 0,
+			isDistributed,
+		});
 	};
 
 	const isValidName = !!name;
 	const isValidAmount = amount > 0;
 	const isValidInterval = !isDistributed || monthsInterval === 12;
-	const isValidCategory = !!category;
+	const isValidCategory = categoryId !== null;
 	const isValid =
 		isValidName && isValidAmount && isValidInterval && isValidCategory;
 
 	return (
 		<Modal
 			onClose={onCancel}
-			title={existingExpense ? name : 'New Expense'}
+			title={existingExpense ? name : "New Expense"}
 			buttons={
 				<Buttons>
 					<Button
-						variant='default'
+						variant="default"
 						onClick={onCancel}
-						isDisabled={isSavingExpense}>
+						isDisabled={isSavingExpense}
+					>
 						Cancel
 					</Button>
 					<Button
-						variant='primary'
+						variant="primary"
 						onClick={handleSaveClicked}
 						isDisabled={!isValid || isSavingExpense}
-						isProcessing={isSavingExpense}>
+						isProcessing={isSavingExpense}
+					>
 						Save
 					</Button>
 				</Buttons>
-			}>
-			{!existingExpense && (
-				<Input
-					name='Name'
-					autoFocus
-					value={name}
-					onChange={setName}
-				/>
-			)}
+			}
+		>
+			<Input name="Name" autoFocus value={name} onChange={setName} />
 			<CurrencyInput
-				name='Amount'
+				name="Amount"
 				autoFocus={!!existingExpense}
 				value={amount}
 				onChange={setAmount}
@@ -92,23 +96,20 @@ export function ExpenseEditor({
 			{!mustRemainYearlyExpense && (
 				<>
 					<Checkbox
-						name='Is Distributed Over Entire Year?'
+						name="Is Distributed Over Entire Year?"
 						value={isDistributed}
 						onChange={handleIsDistributedChanged}
 					/>
 					{!isDistributed && (
 						<NumberInput
-							name='Months Interval'
+							name="Months Interval"
 							value={monthsInterval}
 							onChange={setMonthsInterval}
 						/>
 					)}
 				</>
 			)}
-			<CategorySelect
-				category={category}
-				onChange={setCategory}
-			/>
+			<CategorySelect categoryId={categoryId} onChange={setCategoryId} />
 		</Modal>
 	);
 }

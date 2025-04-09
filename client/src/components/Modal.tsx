@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
-import ReactModal from 'react-modal';
-import styles from './Modal.module.css';
+import { ReactNode } from "react";
+import ReactModal from "react-modal";
+import styles from "./Modal.module.css";
 
 export interface IModalProps {
 	title: ReactNode;
@@ -15,7 +15,7 @@ export function Modal({
 	children,
 	deleteButton,
 	buttons,
-	onClose
+	onClose,
 }: IModalProps) {
 	return (
 		<ReactModal
@@ -23,7 +23,8 @@ export function Modal({
 			ariaHideApp={false}
 			onRequestClose={onClose}
 			className={styles.root}
-			overlayClassName={styles.overlay}>
+			overlayClassName={styles.overlay}
+		>
 			{title && <div className={styles.title}>{title}</div>}
 			<div className={styles.body}>{children}</div>
 			<div className={styles.buttons}>

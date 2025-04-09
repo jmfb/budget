@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
-import { Switch } from '~/components';
-import { PendingItems } from './PendingItems';
-import { Transaction } from './Transaction';
-import { TransactionEditorContainer } from './TransactionEditorContainer';
-import { ITransaction, IIncome, IExpense } from '~/models';
-import styles from './Transactions.module.css';
+import { useState } from "react";
+import { Switch } from "~/components";
+import { PendingItems } from "./PendingItems";
+import { Transaction } from "./Transaction";
+import { TransactionEditorContainer } from "./TransactionEditorContainer";
+import { ITransaction, IIncome, IExpense, ICategory } from "~/models";
+import styles from "./Transactions.module.css";
 
 export interface ITransactionsProps {
-	variant: 'home' | 'search';
+	variant: "home" | "search";
 	onlyShowNewItems: boolean;
 	transactions: ITransaction[];
-	incomes: IIncome[];
-	expenses: IExpense[];
-	expenseTransactions: Record<string, ITransaction[]>;
+	categoryById: Record<number, ICategory>;
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
+	expenseTransactions: Record<number, ITransaction[]>;
 	includePendingItems: boolean;
 	setOnlyShowNewItems(value: boolean): void;
 }
@@ -21,23 +22,24 @@ export function Transactions({
 	variant,
 	onlyShowNewItems,
 	transactions,
-	incomes,
-	expenses,
+	categoryById,
+	incomeById,
+	expenseById,
 	expenseTransactions,
 	includePendingItems,
-	setOnlyShowNewItems
+	setOnlyShowNewItems,
 }: ITransactionsProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingTransaction, setExistingTransaction] =
-		useState<ITransaction>(null);
+		useState<ITransaction | null>(null);
 
 	const transactionsByDate = transactions
 		.filter(
-			transaction =>
+			(transaction) =>
 				!onlyShowNewItems ||
-				(!transaction.expenseName &&
-					!transaction.incomeName &&
-					!transaction.category)
+				(transaction.expenseId === null &&
+					transaction.incomeId === null &&
+					transaction.categoryId === null),
 		)
 		.reduce(
 			(map, transaction) => {
@@ -49,7 +51,7 @@ export function Transactions({
 				}
 				return map;
 			},
-			{} as Record<string, ITransaction[]>
+			{} as Record<string, ITransaction[]>,
 		);
 
 	const createEditClickedHandler = (transaction: ITransaction) => () => {
@@ -65,32 +67,34 @@ export function Transactions({
 	return (
 		<div>
 			{includePendingItems && <PendingItems />}
-			{variant === 'home' && (
+			{variant === "home" && (
 				<div className={styles.onlyShowNewItems}>
 					<Switch
 						checked={onlyShowNewItems}
-						onChange={setOnlyShowNewItems}>
+						onChange={setOnlyShowNewItems}
+					>
 						Only show new items
 					</Switch>
 				</div>
 			)}
 			{Object.keys(transactionsByDate)
 				.sort((a, b) => -a.localeCompare(b))
-				.map(date => (
+				.map((date) => (
 					<div key={date}>
 						<div className={styles.date}>{date}</div>
 						{transactionsByDate[date]
 							.sort((a, b) => a.id - b.id)
 							.sort((a, b) => a.amount - b.amount)
-							.map(transaction => (
+							.map((transaction) => (
 								<Transaction
 									key={transaction.id}
 									transaction={transaction}
-									incomes={incomes}
-									expenses={expenses}
+									categoryById={categoryById}
+									incomeById={incomeById}
+									expenseById={expenseById}
 									expenseTransactions={expenseTransactions}
 									onEdit={createEditClickedHandler(
-										transaction
+										transaction,
 									)}
 								/>
 							))}
@@ -98,7 +102,7 @@ export function Transactions({
 				))}
 			{showEditor && (
 				<TransactionEditorContainer
-					transaction={existingTransaction}
+					transaction={existingTransaction!}
 					onClose={handleCloseEditor}
 				/>
 			)}

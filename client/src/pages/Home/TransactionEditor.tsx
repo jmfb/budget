@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, Buttons, Input, CategorySelect } from '~/components';
-import { IncomeSelect } from './IncomeSelect';
-import { ExpenseSelect } from './ExpenseSelect';
-import { ConfirmDelete } from './ConfirmDelete';
-import { ITransaction, IIncome, IExpense } from '~/models';
-import { budgetService } from '~/services';
+import { useState } from "react";
+import { Modal, Button, Buttons, Input, CategorySelect } from "~/components";
+import { IncomeSelect } from "./IncomeSelect";
+import { ExpenseSelect } from "./ExpenseSelect";
+import { ConfirmDelete } from "./ConfirmDelete";
+import {
+	ITransaction,
+	IIncome,
+	IExpense,
+	IUpdateTransactionRequest,
+} from "~/models";
+import { budgetService } from "~/services";
 
 export interface ITransactionEditorProps {
 	transaction: ITransaction;
 	incomes: IIncome[];
 	expenses: IExpense[];
-	isSavingTransaction: boolean;
-	savingTransactionSuccess: boolean;
-	deleteTransaction(transaction: ITransaction): void;
-	clearTransactionSave(): void;
-	onSave(updatedTransaction: ITransaction): void;
+	isSaving: boolean;
+	isDeleting: boolean;
+	onSave(request: IUpdateTransactionRequest): void;
+	onDelete(): void;
 	onCancel(): void;
 }
 
@@ -22,75 +26,60 @@ export function TransactionEditor({
 	transaction,
 	incomes,
 	expenses,
-	isSavingTransaction,
-	savingTransactionSuccess,
-	deleteTransaction,
-	clearTransactionSave,
+	isSaving,
+	isDeleting,
 	onSave,
-	onCancel
+	onDelete,
+	onCancel,
 }: ITransactionEditorProps) {
-	const [category, setCategory] = useState(transaction.category ?? '');
-	const [note, setNote] = useState(transaction.note ?? '');
-	const [expenseName, setExpenseName] = useState(
-		transaction.expenseName ?? ''
-	);
-	const [incomeName, setIncomeName] = useState(transaction.incomeName ?? '');
+	const [categoryId, setCategoryId] = useState(transaction.categoryId);
+	const [note, setNote] = useState(transaction.note ?? "");
+	const [expenseId, setExpenseId] = useState(transaction.expenseId);
+	const [incomeId, setIncomeId] = useState(transaction.incomeId);
 	const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-	const [isDeleting, setIsDeleting] = useState(false);
 	const [isAddingExpense, setIsAddingExpense] = useState(false);
 	const [isAddingIncome, setIsAddingIncome] = useState(false);
 
 	const handleSaveClicked = () => {
+		const { id, ...rest } = transaction;
+		void id;
 		onSave({
-			...transaction,
-			category,
+			...rest,
+			categoryId,
 			note,
-			expenseName,
-			incomeName
+			expenseId,
+			incomeId,
 		});
 	};
 
 	const handleDeleteClicked = () => {
 		setIsConfirmingDelete(true);
 	};
-
 	const handleDeleteConfirmationCanceled = () => {
 		setIsConfirmingDelete(false);
 	};
-
 	const handleDeleteConfirmationConfirmed = () => {
-		setIsDeleting(true);
-		deleteTransaction(transaction);
+		setIsConfirmingDelete(false);
+		onDelete();
 	};
 
-	const handleExpenseNameChanged = (newExpenseName: string) => {
-		setExpenseName(newExpenseName);
+	const handleExpenseIdChanged = (newExpenseId: number | null) => {
+		setExpenseId(newExpenseId);
 		setIsAddingExpense(false);
 	};
-
-	const handleIncomeNameChanged = (newIncomeName: string) => {
-		setIncomeName(newIncomeName);
+	const handleIncomeIdChanged = (newIncomeId: number | null) => {
+		setIncomeId(newIncomeId);
 		setIsAddingIncome(false);
 	};
 
 	const handleAddExpenseClicked = () => setIsAddingExpense(true);
 	const handleAddIncomeClicked = () => setIsAddingIncome(true);
 
-	useEffect(() => {
-		if (isDeleting && !isSavingTransaction) {
-			setIsDeleting(false);
-			if (savingTransactionSuccess) {
-				onCancel();
-			}
-			clearTransactionSave();
-		}
-	}, [isDeleting, isSavingTransaction, savingTransactionSuccess]);
-
 	const { amount, description, date } = transaction;
 
-	const isModificationInProgress = isSavingTransaction || isDeleting;
-	const showIncomeSelect = !!incomeName || isAddingIncome;
-	const showExpenseSelect = !!expenseName || isAddingExpense;
+	const isModificationInProgress = isSaving || isDeleting;
+	const showIncomeSelect = incomeId !== null || isAddingIncome;
+	const showExpenseSelect = expenseId !== null || isAddingExpense;
 
 	return (
 		<Modal
@@ -98,53 +87,49 @@ export function TransactionEditor({
 			title={description}
 			deleteButton={
 				<Button
-					variant='danger'
+					variant="danger"
 					onClick={handleDeleteClicked}
 					isDisabled={isModificationInProgress}
-					isProcessing={isDeleting}>
+					isProcessing={isDeleting}
+				>
 					Delete
 				</Button>
 			}
 			buttons={
 				<Buttons>
 					<Button
-						variant='default'
+						variant="default"
 						onClick={onCancel}
-						isDisabled={isModificationInProgress}>
+						isDisabled={isModificationInProgress}
+					>
 						Cancel
 					</Button>
 					<Button
-						variant='primary'
+						variant="primary"
 						onClick={handleSaveClicked}
 						isDisabled={isModificationInProgress}
-						isProcessing={isSavingTransaction}>
+						isProcessing={isSaving}
+					>
 						Save
 					</Button>
 				</Buttons>
-			}>
+			}
+		>
 			<div>
 				{budgetService.format(amount)} on {date}
 			</div>
 			<CategorySelect
-				category={category}
+				categoryId={categoryId}
 				autoFocus
-				onChange={setCategory}
+				onChange={setCategoryId}
 			/>
-			<Input
-				name='Note'
-				value={note}
-				onChange={setNote}
-			/>
+			<Input name="Note" value={note} onChange={setNote} />
 			{!showExpenseSelect && !showIncomeSelect && (
 				<Buttons>
-					<Button
-						variant='default'
-						onClick={handleAddExpenseClicked}>
+					<Button variant="default" onClick={handleAddExpenseClicked}>
 						Expense
 					</Button>
-					<Button
-						variant='default'
-						onClick={handleAddIncomeClicked}>
+					<Button variant="default" onClick={handleAddIncomeClicked}>
 						Income
 					</Button>
 				</Buttons>
@@ -152,15 +137,15 @@ export function TransactionEditor({
 			{showIncomeSelect && (
 				<IncomeSelect
 					incomes={incomes}
-					incomeName={incomeName}
-					onChange={handleIncomeNameChanged}
+					incomeId={incomeId}
+					onChange={handleIncomeIdChanged}
 				/>
 			)}
 			{showExpenseSelect && (
 				<ExpenseSelect
 					expenses={expenses}
-					expenseName={expenseName}
-					onChange={handleExpenseNameChanged}
+					expenseId={expenseId}
+					onChange={handleExpenseIdChanged}
 				/>
 			)}
 			{isConfirmingDelete && (

@@ -1,6 +1,5 @@
-import React from 'react';
-import cx from 'classnames';
-import styles from './Card.module.css';
+import { clsx } from "clsx";
+import styles from "./Card.module.css";
 
 export interface ICardProps {
 	className?: string;
@@ -8,5 +7,5 @@ export interface ICardProps {
 }
 
 export function Card({ className, children }: ICardProps) {
-	return <div className={cx(styles.root, className)}>{children}</div>;
+	return <div className={clsx(styles.root, className)}>{children}</div>;
 }

@@ -1,90 +1,61 @@
-import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
-import { ITransaction } from '~/models';
-import { IState } from './IState';
-import * as hub from './transactions.hub';
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { transactionsHub } from "~/api";
+import { ICreateTransactionRequest, IUpdateTransactionRequest } from "~/models";
+import { IAsyncActionOptions } from "./IAsyncActionOptions";
+import { transactionsSlice } from "./transactions.slice";
 
-export const getTransactions = createAsyncThunk(
-	'transactions/getTransactions',
-	async (weekOf: string, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		return await hub.getTransactions(accessToken, weekOf);
-	}
-);
-
-interface ILoadWeekResult {
-	weekOf: string;
-	wasSuccessful: boolean;
-}
-
-async function loadWeek(
-	weekOf: string,
-	dispatch: ThunkDispatch<unknown, unknown, AnyAction>
+export async function createTransaction(
+	request: ICreateTransactionRequest,
+	{ getState, dispatch }: IAsyncActionOptions,
 ) {
-	try {
-		await dispatch(getTransactions(weekOf));
-		return { weekOf, wasSuccessful: true };
-	} catch (error) {
-		return { weekOf, wasSuccessful: false };
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(transactionsSlice.actions, dispatch);
+	const transactionId = await transactionsHub.createTransaction(
+		accessToken,
+		request,
+	);
+	const transaction = await transactionsHub.getTransaction(
+		accessToken,
+		transactionId,
+	);
+	if (transaction === null) {
+		throw new Error(
+			`Transaction ${transactionId} was not found after create`,
+		);
 	}
+	actions.createTransaction(transaction);
 }
 
-export const refreshTransactions = createAsyncThunk(
-	'transactions/refreshTransactions',
-	async (weekVersions: Record<string, number>, { getState, dispatch }) => {
-		const {
-			transactions: { weeks }
-		} = getState() as IState;
-		const weeksToGet = Object.entries(weekVersions)
-			.filter(([weekOf, version]) => weeks[weekOf]?.version !== version)
-			.map(([weekOf]) => weekOf)
-			.reverse();
-
-		const maxConcurrent = 10;
-		const initialWeeks = weeksToGet.slice(0, maxConcurrent);
-		const pendingWeeks = weeksToGet.slice(maxConcurrent);
-		const currentRequests = new Map<string, Promise<ILoadWeekResult>>(
-			initialWeeks.map(weekOf => [weekOf, loadWeek(weekOf, dispatch)])
+export async function updateTransaction(
+	parameters: { transactionId: number; request: IUpdateTransactionRequest },
+	{ getState, dispatch }: IAsyncActionOptions,
+) {
+	const { transactionId, request } = parameters;
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(transactionsSlice.actions, dispatch);
+	await transactionsHub.updateTransaction(
+		accessToken,
+		transactionId,
+		request,
+	);
+	const transaction = await transactionsHub.getTransaction(
+		accessToken,
+		transactionId,
+	);
+	if (transaction === null) {
+		throw new Error(
+			`Transaction ${transactionId} was not found after update`,
 		);
-		for (const weekOf of pendingWeeks) {
-			const result = await Promise.any(currentRequests.values());
-			currentRequests.delete(result.weekOf);
-			if (!result.wasSuccessful) {
-				break;
-			}
-			currentRequests.set(weekOf, loadWeek(weekOf, dispatch));
-		}
-		await Promise.all(currentRequests.values());
 	}
-);
+	actions.updateTransaction(transaction);
+}
 
-export const saveTransaction = createAsyncThunk(
-	'transactions/saveTransaction',
-	async (transaction: ITransaction, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		return await hub.putTransaction(accessToken, transaction);
-	}
-);
-
-export const deleteTransaction = createAsyncThunk(
-	'transactions/deleteTransaction',
-	async ({ date, id }: ITransaction, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		return await hub.deleteTransaction(accessToken, date, id);
-	}
-);
-
-export const downloadTransactions = createAsyncThunk(
-	'transactions/downloadTransactions',
-	async (request, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		return await hub.downloadTransactions(accessToken);
-	}
-);
+export async function deleteTransaction(
+	transactionId: number,
+	{ getState, dispatch }: IAsyncActionOptions,
+) {
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(transactionsSlice.actions, dispatch);
+	await transactionsHub.deleteTransaction(accessToken, transactionId);
+	actions.deleteTransaction(transactionId);
+}

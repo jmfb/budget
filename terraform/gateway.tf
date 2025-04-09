@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "gateway" {
-  name               = var.name
-  description        = "Budget ASP.NET Core API Gateway"
+  name               = local.name
+  description        = "Budget ASP.NET Core API Gateway V2"
   binary_media_types = ["*/*"]
 }
 
@@ -17,7 +17,7 @@ resource "aws_api_gateway_integration" "root" {
   http_method             = aws_api_gateway_method.root.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.lambda.arn}/invocations"
+  uri                     = "arn:aws:apigateway:${local.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.lambda.arn}/invocations"
 }
 
 resource "aws_api_gateway_method_response" "root" {
@@ -54,7 +54,7 @@ resource "aws_api_gateway_integration" "proxy" {
   http_method             = aws_api_gateway_method.proxy.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.lambda.arn}/invocations"
+  uri                     = "arn:aws:apigateway:${local.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.lambda.arn}/invocations"
 }
 
 resource "aws_api_gateway_method_response" "proxy" {
@@ -101,5 +101,5 @@ resource "aws_api_gateway_base_path_mapping" "gateway" {
   depends_on  = [aws_api_gateway_deployment.prod]
   api_id      = aws_api_gateway_rest_api.gateway.id
   stage_name  = aws_api_gateway_stage.prod.stage_name
-  domain_name = aws_route53_record.dns.name
+  domain_name = aws_route53_record.api_dns.name
 }

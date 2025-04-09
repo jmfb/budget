@@ -1,40 +1,37 @@
-import React from 'react';
-import { Pill } from '~/components';
-import { ITransaction, IIncome, IExpense } from '~/models';
-import { budgetService } from '~/services';
-import styles from './Transaction.module.css';
+import { Pill } from "~/components";
+import { ITransaction, IIncome, IExpense, ICategory } from "~/models";
+import { budgetService } from "~/services";
+import styles from "./Transaction.module.css";
 
 export interface ITransactionProps {
 	transaction: ITransaction;
-	incomes: IIncome[];
-	expenses: IExpense[];
+	categoryById: Record<number, ICategory>;
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
 	expenseTransactions: Record<string, ITransaction[]>;
 	onEdit(): void;
 }
 
 export function Transaction({
 	transaction,
-	incomes,
-	expenses,
+	categoryById,
+	incomeById,
+	expenseById,
 	expenseTransactions,
-	onEdit
+	onEdit,
 }: ITransactionProps) {
-	const { amount, description, category, note, expenseName, incomeName } =
+	const { amount, description, categoryId, note, expenseId, incomeId } =
 		transaction;
 	const discrepancy = budgetService.getDiscrepancy(
 		transaction,
-		incomes,
-		expenses,
-		expenseTransactions
+		incomeById,
+		expenseById,
+		expenseTransactions,
 	);
 	return (
-		<div
-			className={styles.root}
-			onClick={onEdit}>
+		<div className={styles.root} onClick={onEdit}>
 			<div className={styles.row}>
-				<span className={styles.amount}>
-					{budgetService.format(amount)}
-				</span>
+				<span>{budgetService.format(amount)}</span>
 				{discrepancy < 0 && (
 					<span className={styles.negativeDiscrepancy}>
 						+{budgetService.format(-discrepancy)}
@@ -46,32 +43,28 @@ export function Transaction({
 					</span>
 				)}
 				{note && <span className={styles.note}>{note}</span>}
-				{!incomeName && !expenseName && !category && (
-					<Pill
-						className={styles.pill}
-						type='new'>
-						New!
+				{incomeId === null &&
+					expenseId === null &&
+					categoryId === null && (
+						<Pill className={styles.pill} type="new">
+							New!
+						</Pill>
+					)}
+				{incomeId === null &&
+					expenseId === null &&
+					categoryId !== null && (
+						<Pill className={styles.pill} type="info">
+							{categoryById[categoryId].name}
+						</Pill>
+					)}
+				{incomeId !== null && (
+					<Pill className={styles.pill} type="success">
+						{incomeById[incomeId].name}
 					</Pill>
 				)}
-				{!incomeName && !expenseName && category && (
-					<Pill
-						className={styles.pill}
-						type='info'>
-						{category}
-					</Pill>
-				)}
-				{incomeName && (
-					<Pill
-						className={styles.pill}
-						type='success'>
-						{incomeName}
-					</Pill>
-				)}
-				{expenseName && (
-					<Pill
-						className={styles.pill}
-						type='danger'>
-						{expenseName}
+				{expenseId !== null && (
+					<Pill className={styles.pill} type="danger">
+						{expenseById[expenseId].name}
 					</Pill>
 				)}
 			</div>

@@ -1,40 +1,35 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getAuthenticationUrl, authenticate } from './auth.actions';
-import { getAllText, parseCsv, mergeTransaction } from './budget.actions';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getAuthenticationUrl, authenticate } from "./auth.thunks";
+import { getAllText, parseCsv, mergeTransaction } from "./budget.thunks";
+import { getCategories } from "./categories.thunks";
+import { getExpenses } from "./expenses.thunks";
+import { getIncomes } from "./incomes.thunks";
 import {
-	refreshExpenses,
-	saveExpense,
-	deleteExpense
-} from './expenses.actions';
-import { refreshIncomes, saveIncome, deleteIncome } from './incomes.actions';
-import {
-	getTransactions,
-	refreshTransactions,
-	saveTransaction,
-	deleteTransaction,
-	downloadTransactions
-} from './transactions.actions';
-import { IErrorReport } from '~/models';
+	getPreviousYear,
+	getRestOfCurrentYear,
+	getCurrentWeek,
+} from "./transactions.thunks";
+import { IErrorReport } from "~/models";
 
 export interface IErrorState {
 	showError: boolean;
-	action?: string;
-	context?: string;
-	message?: string;
+	action: string | undefined;
+	context: string | undefined;
+	message: string | undefined;
 }
 
 const initialState: IErrorState = {
 	showError: false,
 	action: undefined,
 	context: undefined,
-	message: undefined
+	message: undefined,
 };
 
 function setErrorState(
 	state: IErrorState,
 	name: string,
-	message: string,
-	context?: any
+	message: string | undefined,
+	context?: any,
 ) {
 	state.showError = true;
 	state.action = name;
@@ -43,7 +38,7 @@ function setErrorState(
 }
 
 const slice = createSlice({
-	name: 'error',
+	name: "error",
 	initialState,
 	reducers: {
 		dismissError(state) {
@@ -55,106 +50,76 @@ const slice = createSlice({
 			state.action = errorAction;
 			state.context = context;
 			state.message = message;
-		}
+		},
 	},
-	extraReducers: builder =>
+	extraReducers: (builder) =>
 		builder
 			.addCase(getAuthenticationUrl.rejected, (state, action) => {
 				setErrorState(
 					state,
-					'Getting authentication URL',
-					action.error.message
+					"Getting authentication URL",
+					action.error.message,
 				);
 			})
 			.addCase(authenticate.rejected, (state, action) => {
-				setErrorState(state, 'Authenticating', action.error.message);
+				setErrorState(state, "Authenticating", action.error.message);
 			})
 			.addCase(getAllText.rejected, (state, action) => {
-				setErrorState(state, 'Reading file', action.error.message);
+				setErrorState(state, "Reading file", action.error.message);
 			})
 			.addCase(parseCsv.rejected, (state, action) => {
 				setErrorState(
 					state,
-					'Parsing csv records',
-					action.error.message
+					"Parsing csv records",
+					action.error.message,
 				);
 			})
 			.addCase(mergeTransaction.rejected, (state, action) => {
 				setErrorState(
 					state,
-					'Merging transaction',
-					action.error.message
+					"Merging transaction",
+					action.error.message,
 				);
 			})
-
-			.addCase(refreshExpenses.rejected, (state, action) => {
+			.addCase(getCategories.rejected, (state, action) => {
 				setErrorState(
 					state,
-					'Refreshing expenses',
-					action.error.message
+					"Getting categories",
+					action.error.message,
 				);
 			})
-			.addCase(saveExpense.rejected, (state, action) => {
-				setErrorState(state, 'Saving expense', action.error.message);
+			.addCase(getExpenses.rejected, (state, action) => {
+				setErrorState(state, "Getting expenses", action.error.message);
 			})
-			.addCase(deleteExpense.rejected, (state, action) => {
-				setErrorState(state, 'Deleting expense', action.error.message);
+			.addCase(getIncomes.rejected, (state, action) => {
+				setErrorState(state, "Getting incomes", action.error.message);
 			})
-
-			.addCase(refreshIncomes.rejected, (state, action) => {
+			.addCase(getPreviousYear.rejected, (state, action) => {
 				setErrorState(
 					state,
-					'Refreshing incomes',
-					action.error.message
+					"Getting previous year transactions",
+					action.error.message,
 				);
 			})
-			.addCase(saveIncome.rejected, (state, action) => {
-				setErrorState(state, 'Saving income', action.error.message);
-			})
-			.addCase(deleteIncome.rejected, (state, action) => {
-				setErrorState(state, 'Deleting income', action.error.message);
-			})
-
-			.addCase(getTransactions.rejected, (state, action) => {
+			.addCase(getRestOfCurrentYear.rejected, (state, action) => {
 				setErrorState(
 					state,
-					'Getting transactions',
-					action.error.message
+					"Getting rest of current year",
+					action.error.message,
 				);
 			})
-			.addCase(refreshTransactions.rejected, (state, action) => {
+			.addCase(getCurrentWeek.rejected, (state, action) => {
 				setErrorState(
 					state,
-					'Refreshing transactions',
-					action.error.message
+					"Getting current week of transactions",
+					action.error.message,
 				);
-			})
-			.addCase(saveTransaction.rejected, (state, action) => {
-				setErrorState(
-					state,
-					'Saving transaction',
-					action.error.message
-				);
-			})
-			.addCase(deleteTransaction.rejected, (state, action) => {
-				setErrorState(
-					state,
-					'Deleting transaction',
-					action.error.message
-				);
-			})
-			.addCase(downloadTransactions.rejected, (state, action) => {
-				setErrorState(
-					state,
-					'Downloading transactions',
-					action.error.message
-				);
-			})
+			}),
 });
 
 export const errorSlice = {
 	...slice,
 	actions: {
-		...slice.actions
-	}
+		...slice.actions,
+	},
 };

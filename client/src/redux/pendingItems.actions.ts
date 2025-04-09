@@ -1,48 +1,61 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IPendingItem } from '~/models';
-import { IState } from './IState';
-import * as hub from './pendingItems.hub';
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { pendingItemsHub } from "~/api";
+import { ICreatePendingItemRequest, IUpdatePendingItemRequest } from "~/models";
+import { pendingItemsSlice } from "./pendingItems.slice";
+import { IAsyncActionOptions } from "./IAsyncActionOptions";
 
-export const refreshPendingItems = createAsyncThunk(
-	'pendingItems/refreshPendingItems',
-	async (version: number, { getState }) => {
-		const {
-			auth: { accessToken },
-			pendingItems: { version: storeVersion }
-		} = getState() as IState;
-		const newVersion = version ?? (await hub.getVersion(accessToken));
-		return newVersion === storeVersion
-			? null
-			: await hub.getPendingItems(accessToken);
+export async function createPendingItem(
+	request: ICreatePendingItemRequest,
+	{ getState, dispatch }: IAsyncActionOptions,
+) {
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(pendingItemsSlice.actions, dispatch);
+	const pendingItemId = await pendingItemsHub.createPendingItem(
+		accessToken,
+		request,
+	);
+	const pendingItem = await pendingItemsHub.getPendingItem(
+		accessToken,
+		pendingItemId,
+	);
+	if (pendingItem === null) {
+		throw new Error(
+			`Pending item ${pendingItemId} was not found after create`,
+		);
 	}
-);
+	actions.createPendingItem(pendingItem);
+}
 
-export const savePendingItem = createAsyncThunk(
-	'pendingItems/savePendingItem',
-	async (pendingItem: IPendingItem, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		return await hub.putPendingItem(accessToken, pendingItem);
+export async function updatePendingItem(
+	parameters: { pendingItemId: number; request: IUpdatePendingItemRequest },
+	{ getState, dispatch }: IAsyncActionOptions,
+) {
+	const { pendingItemId, request } = parameters;
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(pendingItemsSlice.actions, dispatch);
+	await pendingItemsHub.updatePendingItem(
+		accessToken,
+		pendingItemId,
+		request,
+	);
+	const pendingItem = await pendingItemsHub.getPendingItem(
+		accessToken,
+		pendingItemId,
+	);
+	if (pendingItem === null) {
+		throw new Error(
+			`Pending item ${pendingItemId} was not found after update`,
+		);
 	}
-);
+	actions.updatePendingItem(pendingItem);
+}
 
-export const deletePendingItem = createAsyncThunk(
-	'pendingItems/deletePendingItem',
-	async ({ id }: IPendingItem, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		return await hub.deletePendingItem(accessToken, id);
-	}
-);
-
-export const downloadPendingItems = createAsyncThunk(
-	'pendingItems/downloadPendingItems',
-	async (request, { getState }) => {
-		const {
-			auth: { accessToken }
-		} = getState() as IState;
-		return await hub.downloadPendingItems(accessToken);
-	}
-);
+export async function deletePendingItem(
+	pendingItemId: number,
+	{ getState, dispatch }: IAsyncActionOptions,
+) {
+	const { accessToken } = getState().auth;
+	const actions = bindActionCreators(pendingItemsSlice.actions, dispatch);
+	await pendingItemsHub.deletePendingItem(accessToken, pendingItemId);
+	actions.deletePendingItem(pendingItemId);
+}

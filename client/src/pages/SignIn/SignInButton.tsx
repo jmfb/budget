@@ -1,10 +1,9 @@
-import React from 'react';
-import cx from 'classnames';
-import styles from './SignInButton.module.css';
+import { clsx } from "clsx";
+import styles from "./SignInButton.module.css";
 
 export interface ISignInButtonProps {
 	isDisabled: boolean;
-	type: 'dark' | 'light';
+	type: "dark" | "light";
 	className?: string;
 	onClick(): void;
 }
@@ -13,7 +12,7 @@ export function SignInButton({
 	isDisabled,
 	type,
 	className,
-	onClick
+	onClick,
 }: ISignInButtonProps) {
 	const handleClicked = () => {
 		if (!isDisabled) {
@@ -23,11 +22,11 @@ export function SignInButton({
 
 	return (
 		<div
-			className={cx(
+			className={clsx(
 				styles.root,
 				styles[type],
 				isDisabled && styles.disabled,
-				className
+				className,
 			)}
 			onClick={handleClicked}
 		/>
