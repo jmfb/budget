@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "lambda" {
 }
 
 resource "aws_iam_role" "lambda" {
-  name               = var.name
+  name               = local.name
   assume_role_policy = data.aws_iam_policy_document.lambda.json
 }
 
@@ -21,38 +21,58 @@ resource "aws_iam_role_policy_attachment" "basic_execution" {
 
 data "aws_iam_policy_document" "policy" {
   statement {
-    effect    = "Allow"
-    actions   = ["kms:Decrypt"]
-    resources = [aws_kms_key.lambda.arn]
-  }
-
-  statement {
     effect = "Allow"
-    actions = [
-      "dynamodb:DescribeTable",
-      "dynamodb:Query",
-      "dynamodb:Scan",
-      "dynamodb:PutItem",
-      "dynamodb:GetItem",
-      "dynamodb:UpdateItem",
-      "dynamodb:DeleteItem"
-    ]
-    resources = [
-      aws_dynamodb_table.incomes.arn,
-      aws_dynamodb_table.expenses.arn,
-      aws_dynamodb_table.transactions.arn,
-      aws_dynamodb_table.pending_items.arn,
-      aws_dynamodb_table.data_versions.arn
-    ]
+    actions = ["secretsmanager:GetResourcePolicy",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+    "secretsmanager:ListSecretVersionIds"]
+    resources = [aws_secretsmanager_secret.token_secret.arn,
+      aws_secretsmanager_secret.auth_client_secret.arn,
+    aws_secretsmanager_secret.database_password.arn]
   }
 }
 
 resource "aws_iam_policy" "policy" {
-  name   = var.name
+  name   = local.name
   policy = data.aws_iam_policy_document.policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "policy" {
   role       = aws_iam_role.lambda.name
   policy_arn = aws_iam_policy.policy.arn
+}
+
+resource "aws_cloudfront_origin_access_identity" "cdn" {
+  comment = "Identity for ${local.bucket_name} cloudfront distribution"
+}
+
+data "aws_iam_policy_document" "cloudfront_cdn" {
+  policy_id = "PolicyForCloudFrontPrivateContent"
+  version   = "2012-10-17"
+  statement {
+    sid    = "ObjectReadOnly"
+    effect = "Allow"
+    principals {
+      identifiers = [aws_cloudfront_origin_access_identity.cdn.iam_arn]
+      type        = "AWS"
+    }
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.cdn.arn}/*"]
+  }
+  statement {
+    sid    = "BucketReadOnly"
+    effect = "Allow"
+    principals {
+      identifiers = [aws_cloudfront_origin_access_identity.cdn.iam_arn]
+      type        = "AWS"
+    }
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.cdn.arn]
+  }
+}
+
+resource "aws_s3_bucket_policy" "cloudfront_cdn" {
+  bucket     = aws_s3_bucket.cdn.id
+  policy     = data.aws_iam_policy_document.cloudfront_cdn.json
+  depends_on = [aws_s3_bucket_public_access_block.cdn]
 }

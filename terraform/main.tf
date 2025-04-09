@@ -1,21 +1,8 @@
-terraform {
-  required_version = "1.3.1"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "4.33.0"
-    }
-  }
-
-  backend "s3" {
-    bucket         = "jmfb-terraform"
-    key            = "budget"
-    region         = "us-east-1"
-    dynamodb_table = "tfstate-lock"
-  }
-}
-
-provider "aws" {
-  region = "us-east-1"
+locals {
+  account_id = "862438233085"
+  region     = "us-east-1"
+  name       = "budget2"
+  api_dns    = "budget-api.buysse.link"
+  ui_dns     = "budget-new.buysse.link"
+  tags       = { application = "budget2" }
 }

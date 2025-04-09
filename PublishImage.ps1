@@ -1,9 +1,3 @@
-param(
-	[Parameter(Mandatory=$false)]
-	[Switch]
-	$buildClient
-)
-
 $ErrorActionPreference = "Stop"
 
 try {
