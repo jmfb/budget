@@ -57,12 +57,20 @@ resource "aws_acm_certificate" "ui_cdn" {
   domain_name       = local.ui_dns
   validation_method = "DNS"
   tags              = merge(local.tags, { Name = local.name })
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_acm_certificate_validation" "ui_cdn" {
   certificate_arn         = aws_acm_certificate.ui_cdn.arn
   validation_record_fqdns = [for dvo in aws_acm_certificate.ui_cdn.domain_validation_options : dvo.resource_record_name]
   depends_on              = [aws_route53_record.ui_acm]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route53_record" "ui_acm" {
