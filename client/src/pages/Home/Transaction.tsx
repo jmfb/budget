@@ -31,9 +31,7 @@ export function Transaction({
 	return (
 		<div className={styles.root} onClick={onEdit}>
 			<div className={styles.row}>
-				<span className={styles.amount}>
-					{budgetService.format(amount)}
-				</span>
+				<span>{budgetService.format(amount)}</span>
 				{discrepancy < 0 && (
 					<span className={styles.negativeDiscrepancy}>
 						+{budgetService.format(-discrepancy)}

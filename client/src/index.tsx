@@ -6,7 +6,7 @@ import { PageLoading } from "~/components";
 import { ErrorBoundaryContainer } from "~/containers/ErrorBoundary";
 import { createStore } from "~/redux";
 import "@csstools/normalize.css";
-import "./index.module.css";
+import "./index.css";
 
 function start() {
 	const AsyncSignInContainer = lazy(

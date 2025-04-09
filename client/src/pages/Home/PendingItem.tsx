@@ -22,9 +22,7 @@ export function PendingItem({
 	return (
 		<div className={styles.root} onClick={onEdit}>
 			<div className={styles.row}>
-				<span className={styles.amount}>
-					{budgetService.format(amount)}
-				</span>
+				<span>{budgetService.format(amount)}</span>
 				<span className={styles.name}>{name}</span>
 				{incomeId === null &&
 					expenseId === null &&

@@ -33,3 +33,13 @@ resource "terraform_data" "s3_ui_assets" {
     command = "aws s3 cp ../client/build/ s3://${aws_s3_bucket.cdn.bucket}/ --recursive"
   }
 }
+
+resource "terraform_data" "s3_invalidate_distribution" {
+  triggers_replace = [var.release_version]
+
+  provisioner "local-exec" {
+    command = "aws cloudfront create-invalidation --distribution-id ${aws_cloudfront_distribution.cdn.id} --path /*"
+  }
+
+  depends_on = [terraform_data.s3_ui_assets]
+}
