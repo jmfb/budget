@@ -6,12 +6,12 @@ insert_final_newline = true
 indent_style = tab
 indent_size = tab
 tab_width = 4
-charaset = utf-8
+charset = utf-8
 trim_trailing_whitespace = true
 max_line_length = 80
 
 [*.{tf,yml}]
-index_style = space
+indent_style = space
 tab_width = 2
 
 [yarn.lock]

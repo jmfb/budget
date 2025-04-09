@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { TransactionEditor } from './TransactionEditor';
-import { ITransaction } from '~/models';
-import { useActions, useAppSelector, transactionsSlice } from '~/redux';
+import { useEffect } from "react";
+import { TransactionEditor } from "./TransactionEditor";
+import { ITransaction, IUpdateTransactionRequest } from "~/models";
+import { useAppSelector, transactionsActions } from "~/redux";
+import { useAsyncState } from "~/hooks";
 
 export interface ITransactionEditorContainerProps {
 	transaction: ITransaction;
@@ -10,37 +11,42 @@ export interface ITransactionEditorContainerProps {
 
 export function TransactionEditorContainer({
 	transaction,
-	onClose
+	onClose,
 }: ITransactionEditorContainerProps) {
+	const incomes = useAppSelector((state) => state.incomes.incomes);
+	const expenses = useAppSelector((state) => state.expenses.expenses);
+
 	const {
-		saveTransaction,
-		deleteTransaction,
-		clearSave: clearTransactionSave
-	} = useActions(transactionsSlice);
-
-	const incomes = useAppSelector(state => state.incomes.incomes);
-	const expenses = useAppSelector(state => state.expenses.expenses);
-	const isSavingTransaction = useAppSelector(
-		state => state.transactions.isSaving
-	);
-	const savingTransactionSuccess = useAppSelector(
-		state => state.transactions.wasSuccessful
-	);
-
-	const [isSaving, setIsSaving] = useState(false);
+		isLoading: isUpdating,
+		wasSuccessful: updateSuccessful,
+		clear: clearUpdate,
+		invoke: updateTransaction,
+	} = useAsyncState(transactionsActions.updateTransaction);
+	const {
+		isLoading: isDeleting,
+		wasSuccessful: deleteSuccessful,
+		clear: clearDelete,
+		invoke: deleteTransaction,
+	} = useAsyncState(transactionsActions.deleteTransaction);
 
 	useEffect(() => {
-		if (!isSavingTransaction && isSaving) {
-			setIsSaving(false);
-			if (savingTransactionSuccess) {
-				onClose();
-			}
+		if (updateSuccessful || deleteSuccessful) {
+			onClose();
 		}
-	}, [isSaving, isSavingTransaction, savingTransactionSuccess]);
+	}, [updateSuccessful, deleteSuccessful]);
 
-	const handleSaveClicked = (updatedTransaction: ITransaction) => {
-		setIsSaving(true);
-		saveTransaction(updatedTransaction);
+	const clearSave = () => {
+		clearUpdate();
+		clearDelete();
+	};
+
+	const handleSaveClicked = (request: IUpdateTransactionRequest) => {
+		clearSave();
+		updateTransaction({ transactionId: transaction.id, request });
+	};
+	const handleDeleteClicked = () => {
+		clearSave();
+		deleteTransaction(transaction.id);
 	};
 
 	return (
@@ -48,11 +54,10 @@ export function TransactionEditorContainer({
 			transaction={transaction}
 			incomes={incomes}
 			expenses={expenses}
-			isSavingTransaction={isSavingTransaction}
-			savingTransactionSuccess={savingTransactionSuccess}
-			deleteTransaction={deleteTransaction}
-			clearTransactionSave={clearTransactionSave}
+			isSaving={isUpdating}
+			isDeleting={isDeleting}
 			onSave={handleSaveClicked}
+			onDelete={handleDeleteClicked}
 			onCancel={onClose}
 		/>
 	);

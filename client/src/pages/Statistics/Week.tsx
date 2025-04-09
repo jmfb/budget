@@ -1,6 +1,5 @@
-import React from 'react';
-import { budgetService } from '~/services';
-import styles from './Week.module.css';
+import { budgetService } from "~/services";
+import styles from "./Week.module.css";
 
 export interface IWeekProps {
 	remainingBudget: number;
@@ -11,7 +10,7 @@ export interface IWeekProps {
 export function Week({
 	remainingBudget,
 	maxUnderBudget,
-	maxOverBudget
+	maxOverBudget,
 }: IWeekProps) {
 	const range = Math.max(-maxOverBudget, maxUnderBudget, 1);
 	const overage = -remainingBudget;

@@ -1,31 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { PageLoading, Button } from '~/components';
-import { Category } from './Category';
-import { ExpenseEditor } from './ExpenseEditor';
-import { budgetService } from '~/services';
-import { IExpense } from '~/models';
-import styles from './Expenses.module.css';
+import { useEffect, useState } from "react";
+import { PageLoading, Button } from "~/components";
+import { Category } from "./Category";
+import { ExpenseEditor } from "./ExpenseEditor";
+import { budgetService, dateService } from "~/services";
+import { ICategory, IExpense, IUpdateExpenseRequest } from "~/models";
+import styles from "./Expenses.module.css";
+import { useAsyncState } from "~/hooks";
+import { expensesActions } from "~/redux";
 
 export interface IExpensesProps {
 	expenses: IExpense[];
-	isSavingExpense: boolean;
-	savingExpenseSuccess: boolean;
-	saveExpense(expense: IExpense): void;
-	deleteExpense(expense: IExpense): void;
-	clearExpenseSave(): void;
+	categoryById: Record<number, ICategory>;
 }
 
-export function Expenses({
-	expenses,
-	isSavingExpense,
-	savingExpenseSuccess,
-	saveExpense,
-	deleteExpense,
-	clearExpenseSave
-}: IExpensesProps) {
+export function Expenses({ expenses, categoryById }: IExpensesProps) {
 	const [showEditor, setShowEditor] = useState(false);
-	const [existingExpense, setExistingExpense] = useState<IExpense>(null);
-	const [isSaving, setIsSaving] = useState(false);
+	const [existingExpense, setExistingExpense] = useState<IExpense | null>(
+		null,
+	);
+
+	const {
+		isLoading: isUpdating,
+		wasSuccessful: updateSuccessful,
+		clear: clearUpdate,
+		invoke: updateExpense,
+	} = useAsyncState(expensesActions.updateExpense);
+
+	const {
+		isLoading: isCreating,
+		wasSuccessful: createSuccessful,
+		clear: clearCreate,
+		invoke: createExpense,
+	} = useAsyncState(expensesActions.createExpense);
 
 	const handleAddClicked = () => {
 		setShowEditor(true);
@@ -36,9 +42,14 @@ export function Expenses({
 		setExistingExpense(expense);
 	};
 
-	const handleSaveClicked = (expense: IExpense) => {
-		setIsSaving(true);
-		saveExpense(expense);
+	const handleSaveClicked = (request: IUpdateExpenseRequest) => {
+		clearUpdate();
+		clearCreate();
+		if (existingExpense) {
+			updateExpense({ expenseId: existingExpense.id, request });
+		} else {
+			createExpense({ ...request, year: dateService.getCurrentYear() });
+		}
 	};
 
 	const closeEditor = () => {
@@ -47,29 +58,29 @@ export function Expenses({
 	};
 
 	useEffect(() => {
-		if (!isSavingExpense && isSaving) {
-			setIsSaving(false);
-			if (savingExpenseSuccess) {
-				closeEditor();
-			}
+		if (updateSuccessful || createSuccessful) {
+			clearUpdate();
+			clearCreate();
+			closeEditor();
 		}
-	}, [isSavingExpense, isSaving, savingExpenseSuccess]);
+	}, [updateSuccessful, createSuccessful]);
 
 	if (expenses === null) {
-		return <PageLoading message='Loading expenses' />;
+		return <PageLoading message="Loading expenses" />;
 	}
 
 	const expensesByCategory = expenses.reduce(
 		(map, expense) => {
-			const grouping = map[expense.category];
-			if (grouping === undefined) {
-				map[expense.category] = [expense];
+			const categoryName = categoryById[expense.categoryId]?.name ?? "";
+			const grouping = map[categoryName];
+			if (!grouping) {
+				map[categoryName] = [expense];
 			} else {
 				grouping.push(expense);
 			}
 			return map;
 		},
-		{} as Record<string, IExpense[]>
+		{} as Record<string, IExpense[]>,
 	);
 
 	const weeklyExpenses = budgetService.getWeeklyExpenses(expenses);
@@ -81,22 +92,20 @@ export function Expenses({
 					{budgetService.format(weeklyExpenses)} every week
 				</h3>
 				<Button
-					variant='primary'
+					variant="primary"
 					className={styles.addButton}
-					onClick={handleAddClicked}>
+					onClick={handleAddClicked}
+				>
 					Add
 				</Button>
 			</div>
 			<div>
 				{Object.keys(expensesByCategory)
 					.sort((a, b) => a.localeCompare(b))
-					.map(category => (
+					.map((category) => (
 						<Category
 							key={category}
 							category={category}
-							isSavingExpense={isSavingExpense}
-							deleteExpense={deleteExpense}
-							clearExpenseSave={clearExpenseSave}
 							expenses={expensesByCategory[category]}
 							onEditExpense={handleEditExpense}
 						/>
@@ -105,7 +114,7 @@ export function Expenses({
 			{showEditor && (
 				<ExpenseEditor
 					existingExpense={existingExpense}
-					isSavingExpense={isSavingExpense}
+					isSavingExpense={isCreating || isUpdating}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
 				/>

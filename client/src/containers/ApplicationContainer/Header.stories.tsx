@@ -1,20 +1,19 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { Header } from './Header';
-import '~/index.module.css';
+import { Meta, StoryObj } from "@storybook/react";
+import { BrowserRouter } from "react-router-dom";
+import { Header } from "./Header";
 
-export default {
-	title: 'Containers/Application/Header',
-	component: Header
-};
+const meta = {
+	component: Header,
+	render() {
+		return (
+			<BrowserRouter>
+				<Header />
+			</BrowserRouter>
+		);
+	},
+} satisfies Meta<typeof Header>;
 
-function Template() {
-	return (
-		<BrowserRouter>
-			<Header />
-		</BrowserRouter>
-	);
-}
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {};
+export const standard: Story = {};

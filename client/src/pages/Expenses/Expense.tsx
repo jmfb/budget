@@ -1,44 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '~/components';
-import { IExpense } from '~/models';
-import { budgetService } from '~/services';
-import styles from './Expense.module.css';
+import { useAsyncState } from "~/hooks";
+import { Button } from "~/components";
+import { IExpense } from "~/models";
+import { budgetService } from "~/services";
+import { expensesActions } from "~/redux";
+import styles from "./Expense.module.css";
 
 export interface IExpenseProps {
 	expense: IExpense;
-	isSavingExpense: boolean;
-	deleteExpense(expense: IExpense): void;
-	clearExpenseSave(): void;
 	onEdit(): void;
 }
 
-export function Expense({
-	expense,
-	isSavingExpense,
-	deleteExpense,
-	clearExpenseSave,
-	onEdit
-}: IExpenseProps) {
-	const [isDeleting, setIsDeleting] = useState(false);
+export function Expense({ expense, onEdit }: IExpenseProps) {
 	const { name, amount, monthsInterval, isDistributed } = expense;
 	const interval = isDistributed
 		? monthsInterval === 1
-			? 'over a month'
+			? "over a month"
 			: `over ${monthsInterval} months`
 		: monthsInterval === 1
-		? 'every month'
-		: `every ${monthsInterval} months`;
+			? "every month"
+			: `every ${monthsInterval} months`;
 
-	useEffect(() => {
-		if (!isSavingExpense && isDeleting) {
-			setIsDeleting(false);
-			clearExpenseSave();
-		}
-	}, [isSavingExpense, isDeleting]);
+	const { isLoading: isDeleting, invoke: deleteExpense } = useAsyncState(
+		expensesActions.deleteExpense,
+	);
 
 	const handleDeleteClicked = () => {
-		setIsDeleting(true);
-		deleteExpense(expense);
+		deleteExpense(expense.id);
 	};
 
 	return (
@@ -47,16 +34,18 @@ export function Expense({
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
 			<Button
-				variant='default'
+				variant="default"
 				className={styles.editButton}
-				onClick={onEdit}>
+				onClick={onEdit}
+			>
 				Edit
 			</Button>
 			<Button
-				variant='danger'
+				variant="danger"
 				onClick={handleDeleteClicked}
 				isProcessing={isDeleting}
-				isDisabled={isSavingExpense}>
+				isDisabled={isDeleting}
+			>
 				Delete
 			</Button>
 		</div>

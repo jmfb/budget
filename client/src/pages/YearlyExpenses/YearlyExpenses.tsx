@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { PageLoading, Pill, Button } from '~/components';
-import { ExpenseEditor } from '~/pages/Expenses/ExpenseEditor';
-import { ExpenseTransaction } from './ExpenseTransaction';
-import { IExpense, ITransaction } from '~/models';
-import { budgetService } from '~/services';
-import styles from './YearlyExpenses.module.css';
+import { useState, useEffect } from "react";
+import { PageLoading, Pill, Button } from "~/components";
+import { ExpenseEditor } from "~/pages/Expenses/ExpenseEditor";
+import { ExpenseTransaction } from "./ExpenseTransaction";
+import { IExpense, ITransaction } from "~/models";
+import { budgetService } from "~/services";
+import styles from "./YearlyExpenses.module.css";
 
 export interface IYearlyExpensesProps {
 	expense: IExpense;
+	categoryName: string;
 	yearlyExpenses: ITransaction[];
 	isSavingExpense: boolean;
 	savingExpenseSuccess: boolean;
@@ -16,14 +17,15 @@ export interface IYearlyExpensesProps {
 
 export function YearlyExpenses({
 	expense,
+	categoryName,
 	yearlyExpenses,
 	isSavingExpense,
 	savingExpenseSuccess,
-	saveExpense
+	saveExpense,
 }: IYearlyExpensesProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
-	const [editingExpense, setEditingExpense] = useState<IExpense>(null);
+	const [editingExpense, setEditingExpense] = useState<IExpense | null>(null);
 
 	useEffect(() => {
 		if (!isSavingExpense && isSaving) {
@@ -35,12 +37,12 @@ export function YearlyExpenses({
 	}, [isSavingExpense, isSaving, savingExpenseSuccess]);
 
 	if (!expense) {
-		return <PageLoading message='Loading expenses...' />;
+		return <PageLoading message="Loading expenses..." />;
 	}
 
 	const total = yearlyExpenses.reduce(
 		(total, transaction) => total + transaction.amount,
-		0
+		0,
 	);
 	const remaining = expense.amount - total;
 
@@ -61,7 +63,7 @@ export function YearlyExpenses({
 		setIsEditing(true);
 		setEditingExpense({
 			...expense,
-			amount: total
+			amount: total,
 		});
 	};
 
@@ -69,15 +71,14 @@ export function YearlyExpenses({
 		<div>
 			<h2 className={styles.heading}>
 				{expense.name} - {budgetService.format(expense.amount)}
-				<Pill
-					type='info'
-					className={styles.category}>
-					{expense.category}
+				<Pill type="info" className={styles.category}>
+					{categoryName}
 				</Pill>
 				<Button
-					variant='default'
+					variant="default"
 					className={styles.edit}
-					onClick={handleEditClicked}>
+					onClick={handleEditClicked}
+				>
 					Edit
 				</Button>
 			</h2>
@@ -93,9 +94,10 @@ export function YearlyExpenses({
 					</span>
 					<span>remaining in the budget.</span>
 					<Button
-						variant='default'
+						variant="default"
 						className={styles.resize}
-						onClick={handleResizeBudgetClicked}>
+						onClick={handleResizeBudgetClicked}
+					>
 						Shrink Budget
 					</Button>
 				</div>
@@ -107,9 +109,10 @@ export function YearlyExpenses({
 					</span>
 					<span>over budget.</span>
 					<Button
-						variant='default'
+						variant="default"
 						className={styles.resize}
-						onClick={handleResizeBudgetClicked}>
+						onClick={handleResizeBudgetClicked}
+					>
 						Grow Budget
 					</Button>
 				</div>
@@ -117,9 +120,9 @@ export function YearlyExpenses({
 			{[...yearlyExpenses]
 				.sort(
 					(a, b) =>
-						a.date.localeCompare(b.date) || a.amount - b.amount
+						a.date.localeCompare(b.date) || a.amount - b.amount,
 				)
-				.map(transaction => (
+				.map((transaction) => (
 					<ExpenseTransaction
 						key={transaction.id}
 						transaction={transaction}
@@ -128,7 +131,7 @@ export function YearlyExpenses({
 			{isEditing && (
 				<ExpenseEditor
 					isSavingExpense={isSavingExpense}
-					existingExpense={editingExpense}
+					existingExpense={editingExpense!}
 					onSave={handleEditSaved}
 					onCancel={handleEditCanceled}
 					mustRemainYearlyExpense

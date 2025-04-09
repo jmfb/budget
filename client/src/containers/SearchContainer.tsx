@@ -1,35 +1,48 @@
-import React, { useState } from 'react';
-import { Search } from '~/pages';
-import { useAppSelector, getExpenseTransactions } from '~/redux';
-import { budgetService } from '~/services';
+import { useState, useMemo } from "react";
+import { Search } from "~/pages";
+import { useAppSelector, getExpenseTransactions } from "~/redux";
+import { budgetService } from "~/services";
 
 export default function SearchContainer() {
-	const weeks = useAppSelector(state => state.transactions.weeks);
-	const incomes = useAppSelector(state => state.incomes.incomes);
-	const expenses = useAppSelector(state => state.expenses.expenses);
+	const allTransactions = useAppSelector(
+		(state) => state.transactions.transactions,
+	);
+	const isLoading = useAppSelector((state) => state.transactions.isLoading);
+	const categoryById = useAppSelector(
+		(state) => state.categories.categoryById,
+	);
+	const incomeById = useAppSelector((state) => state.incomes.incomeById);
+	const expenseById = useAppSelector((state) => state.expenses.expenseById);
 	const expenseTransactions = useAppSelector(getExpenseTransactions);
 
-	const [searchQuery, setSearchQuery] = useState('');
+	const [searchQuery, setSearchQuery] = useState("");
 
-	const weekStates = Object.values(weeks);
-	const isLoading = weekStates.some(value => value.isLoading);
+	const matchingTransactions = useMemo(
+		() =>
+			!searchQuery
+				? []
+				: allTransactions.filter((transaction) =>
+						budgetService.matchesTransaction(
+							searchQuery,
+							transaction,
+							categoryById,
+							incomeById,
+							expenseById,
+						),
+					),
 
-	const transactions = !searchQuery
-		? []
-		: weekStates.flatMap(state =>
-				state.transactions.filter(transaction =>
-					budgetService.matchesTransaction(searchQuery, transaction)
-				)
-		  );
+		[searchQuery, allTransactions, categoryById, incomeById, expenseById],
+	);
 
 	return (
 		<Search
 			searchQuery={searchQuery}
 			isLoading={isLoading}
-			incomes={incomes}
-			expenses={expenses}
+			categoryById={categoryById}
+			incomeById={incomeById}
+			expenseById={expenseById}
 			expenseTransactions={expenseTransactions}
-			transactions={transactions}
+			transactions={matchingTransactions}
 			onUpdateSearch={setSearchQuery}
 		/>
 	);

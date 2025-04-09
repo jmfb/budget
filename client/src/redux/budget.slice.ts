@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
 	getAllText,
 	parseCsv,
 	mergeTransaction,
-	matchedTransaction
-} from './budget.actions';
-import { ITransaction } from '~/models';
+	matchedTransaction,
+} from "./budget.thunks";
+import { ITransaction } from "~/models";
 
 export interface IBudgetState {
 	onlyShowNewItems: boolean;
@@ -27,16 +27,16 @@ const initialState: IBudgetState = {
 	mergingTransactionSuccess: false,
 	isReadingFile: false,
 	readingFileSuccess: false,
-	fileText: null,
+	fileText: "",
 	isParsingCsv: false,
 	parsingCsvSuccess: false,
 	csvRecords: [],
-	logs: '',
-	matchedTransactions: []
+	logs: "",
+	matchedTransactions: [],
 };
 
 const slice = createSlice({
-	name: 'budget',
+	name: "budget",
 	initialState,
 	reducers: {
 		setOnlyShowNewItems(state, action: PayloadAction<boolean>) {
@@ -45,7 +45,7 @@ const slice = createSlice({
 		clearUpload(state) {
 			state.isReadingFile = false;
 			state.readingFileSuccess = false;
-			state.fileText = null;
+			state.fileText = "";
 			state.isParsingCsv = false;
 			state.parsingCsvSuccess = false;
 			state.csvRecords = [];
@@ -54,27 +54,27 @@ const slice = createSlice({
 			state.matchedTransactions = [];
 		},
 		clearLogs(state) {
-			state.logs = '';
-		}
+			state.logs = "";
+		},
 	},
-	extraReducers: builder =>
+	extraReducers: (builder) =>
 		builder
-			.addCase(getAllText.pending, state => {
+			.addCase(getAllText.pending, (state) => {
 				state.isReadingFile = true;
 				state.readingFileSuccess = false;
-				state.fileText = null;
+				state.fileText = "";
 			})
 			.addCase(getAllText.fulfilled, (state, action) => {
 				state.isReadingFile = false;
 				state.readingFileSuccess = true;
 				state.fileText = action.payload;
 			})
-			.addCase(getAllText.rejected, state => {
+			.addCase(getAllText.rejected, (state) => {
 				state.isReadingFile = false;
 				state.readingFileSuccess = false;
 			})
 
-			.addCase(parseCsv.pending, state => {
+			.addCase(parseCsv.pending, (state) => {
 				state.isParsingCsv = true;
 				state.parsingCsvSuccess = false;
 				state.csvRecords = [];
@@ -84,27 +84,27 @@ const slice = createSlice({
 				state.parsingCsvSuccess = true;
 				state.csvRecords = action.payload;
 			})
-			.addCase(parseCsv.rejected, state => {
+			.addCase(parseCsv.rejected, (state) => {
 				state.isParsingCsv = false;
 				state.parsingCsvSuccess = false;
 			})
 
-			.addCase(mergeTransaction.pending, state => {
+			.addCase(mergeTransaction.pending, (state) => {
 				state.isMergingTransaction = true;
 				state.mergingTransactionSuccess = false;
 			})
 			.addCase(mergeTransaction.fulfilled, (state, action) => {
 				state.isMergingTransaction = false;
 				state.mergingTransactionSuccess = true;
-				state.logs += action.payload + '\n';
+				state.logs += action.payload + "\n";
 			})
-			.addCase(mergeTransaction.rejected, state => {
+			.addCase(mergeTransaction.rejected, (state) => {
 				state.isMergingTransaction = false;
 				state.mergingTransactionSuccess = false;
 			})
 			.addCase(matchedTransaction, (state, action) => {
 				state.matchedTransactions.push(action.payload);
-			})
+			}),
 });
 
 export const budgetSlice = {
@@ -113,6 +113,6 @@ export const budgetSlice = {
 		...slice.actions,
 		getAllText,
 		parseCsv,
-		mergeTransaction
-	}
+		mergeTransaction,
+	},
 };
