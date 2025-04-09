@@ -1,5 +1,14 @@
 .git
 .terraform*
 tfplan
+node_modules/
+dist/
 obj/
 bin/
+
+client/.yarn/*
+!client/.yarn/patches
+!client/.yarn/plugins
+!client/.yarn/releases
+!client/.yarn/sdks
+!client/.yarn/versions

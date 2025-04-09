@@ -4,150 +4,84 @@ export interface IErrorReport {
 	message: string;
 }
 
+export interface IIndexModel {
+	bundleVersion: string;
+	expensesVersion: number;
+	incomesVersion: number;
+	pendingItemsVersion: number;
+	weekVersions: Record<string, number>;
+}
+
 export interface ISignedInModel {
 	accessToken: string;
 	email: string;
 }
 
-export interface ICategory {
-	id: number;
-	name: string;
-}
-
-export interface ICreateCategoryRequest {
-	name: string;
-}
-
-export interface IUpdateCategoryRequest {
-	name: string;
-}
-
-export interface IRetireCategoryRequest {
-	retireId: number;
-	replacementId: number;
+export interface IHeartbeatModel {
+	bundleVersion: string;
 }
 
 export interface IIncome {
-	id: number;
-	year: number;
 	name: string;
 	amount: number;
 	weeksInterval: number;
 }
 
-export interface ICreateIncomeRequest {
-	year: number;
-	name: string;
-	amount: number;
-	weeksInterval: number;
-}
-
-export interface IUpdateIncomeRequest {
-	name: string;
-	amount: number;
-	weeksInterval: number;
+export interface IGetIncomesResponse {
+	version: number;
+	incomes: IIncome[];
 }
 
 export interface IExpense {
-	id: number;
-	year: number;
 	name: string;
 	amount: number;
-	categoryId: number;
+	category: string;
 	monthsInterval: number;
 	isDistributed: boolean;
 }
 
-export interface ICreateExpenseRequest {
-	year: number;
-	name: string;
-	amount: number;
-	categoryId: number;
-	monthsInterval: number;
-	isDistributed: boolean;
-}
-
-export interface IUpdateExpenseRequest {
-	name: string;
-	amount: number;
-	categoryId: number;
-	monthsInterval: number;
-	isDistributed: boolean;
+export interface IGetExpensesResponse {
+	version: number;
+	expenses: IExpense[];
 }
 
 export enum TransactionSource {
 	Bank = 0,
-	CapitalOne = 1,
+	CapitalOne = 1
 }
 
 export interface ITransaction {
-	id: number;
 	date: string;
-	sourceId: TransactionSource;
+	id: number;
+	source: TransactionSource;
 	rawText: string;
 	amount: number;
 	originalCategory: string;
-	categoryId: number | null;
 	description: string;
+	category: string;
 	note: string;
-	expenseId: number | null;
-	incomeId: number | null;
+	expenseName: string;
+	incomeName: string;
 }
 
 export interface IGetTransactionsResponse {
+	version: number;
+	weekOf: string;
 	transactions: ITransaction[];
-	nextPageKey: string | null;
-}
-
-export interface ICreateTransactionRequest {
-	date: string;
-	sourceId: TransactionSource;
-	rawText: string;
-	amount: number;
-	originalCategory: string;
-	categoryId: number | null;
-	description: string;
-	note: string;
-	expenseId: number | null;
-	incomeId: number | null;
-}
-
-export interface IUpdateTransactionRequest {
-	date: string;
-	sourceId: TransactionSource;
-	rawText: string;
-	amount: number;
-	originalCategory: string;
-	categoryId: number | null;
-	description: string;
-	note: string;
-	expenseId: number | null;
-	incomeId: number | null;
 }
 
 export interface IPendingItem {
 	id: number;
 	name: string;
 	amount: number;
-	categoryId: number | null;
-	expenseId: number | null;
-	incomeId: number | null;
+	category: string;
+	expenseName: string;
+	incomeName: string;
 }
 
-export interface ICreatePendingItemRequest {
-	name: string;
-	amount: number;
-	categoryId: number | null;
-	expenseId: number | null;
-	incomeId: number | null;
-}
-
-export interface IUpdatePendingItemRequest {
-	name: string;
-	amount: number;
-	categoryId: number | null;
-	expenseId: number | null;
-	incomeId: number | null;
+export interface IGetPendingItemsResponse {
+	version: number;
+	pendingItems: IPendingItem[];
 }
 
 export interface IDayOfWeek {

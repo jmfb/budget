@@ -1,44 +1,48 @@
-import { bindActionCreators } from "@reduxjs/toolkit";
-import { expensesHub } from "~/api";
-import { ICreateExpenseRequest, IUpdateExpenseRequest } from "~/models";
-import { IAsyncActionOptions } from "./IAsyncActionOptions";
-import { expensesSlice } from "./expenses.slice";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { IExpense } from '~/models';
+import { IState } from './IState';
+import * as hub from './expenses.hub';
 
-export async function createExpense(
-	request: ICreateExpenseRequest,
-	{ getState, dispatch }: IAsyncActionOptions,
-) {
-	const { accessToken } = getState().auth;
-	const actions = bindActionCreators(expensesSlice.actions, dispatch);
-	const expenseId = await expensesHub.createExpense(accessToken, request);
-	const expense = await expensesHub.getExpense(accessToken, expenseId);
-	if (expense === null) {
-		throw new Error(`Expense ${expenseId} was not found after create`);
+export const refreshExpenses = createAsyncThunk(
+	'expenses/refreshExpenses',
+	async (version: number, { getState }) => {
+		const {
+			auth: { accessToken },
+			expenses: { version: storeVersion }
+		} = getState() as IState;
+		const newVersion = version ?? (await hub.getVersion(accessToken));
+		return newVersion === storeVersion
+			? null
+			: await hub.getExpenses(accessToken);
 	}
-	actions.createExpense(expense);
-}
+);
 
-export async function updateExpense(
-	parameters: { expenseId: number; request: IUpdateExpenseRequest },
-	{ getState, dispatch }: IAsyncActionOptions,
-) {
-	const { expenseId, request } = parameters;
-	const { accessToken } = getState().auth;
-	const actions = bindActionCreators(expensesSlice.actions, dispatch);
-	await expensesHub.updateExpense(accessToken, expenseId, request);
-	const expense = await expensesHub.getExpense(accessToken, expenseId);
-	if (expense === null) {
-		throw new Error(`Expense ${expenseId} was not found after update`);
+export const saveExpense = createAsyncThunk(
+	'expenses/saveExpense',
+	async (expense: IExpense, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.putExpense(accessToken, expense);
 	}
-	actions.updateExpense(expense);
-}
+);
 
-export async function deleteExpense(
-	expenseId: number,
-	{ getState, dispatch }: IAsyncActionOptions,
-) {
-	const { accessToken } = getState().auth;
-	const actions = bindActionCreators(expensesSlice.actions, dispatch);
-	await expensesHub.deleteExpense(accessToken, expenseId);
-	actions.deleteExpense(expenseId);
-}
+export const deleteExpense = createAsyncThunk(
+	'expenses/deleteExpense',
+	async ({ name }: IExpense, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.deleteExpense(accessToken, name);
+	}
+);
+
+export const downloadExpenses = createAsyncThunk(
+	'expenses/downloadExpenses',
+	async (request, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.downloadExpenses(accessToken);
+	}
+);

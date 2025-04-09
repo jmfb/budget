@@ -1,19 +1,26 @@
-import { Card } from "~/components";
-import { Expense } from "./Expense";
-import { IExpense } from "~/models";
-import { budgetService } from "~/services";
-import styles from "./Category.module.css";
+import React from 'react';
+import { Card } from '~/components';
+import { Expense } from './Expense';
+import { IExpense } from '~/models';
+import { budgetService } from '~/services';
+import styles from './Category.module.css';
 
 export interface ICategoryProps {
 	category: string;
 	expenses: IExpense[];
+	isSavingExpense: boolean;
+	deleteExpense(expense: IExpense): void;
+	clearExpenseSave(): void;
 	onEditExpense(expense: IExpense): void;
 }
 
 export function Category({
 	category,
 	expenses,
-	onEditExpense,
+	isSavingExpense,
+	deleteExpense,
+	clearExpenseSave,
+	onEditExpense
 }: ICategoryProps) {
 	const createEditClickedHandler = (expense: IExpense) => () => {
 		onEditExpense(expense);
@@ -31,10 +38,13 @@ export function Category({
 			</div>
 			{[...expenses]
 				.sort((a, b) => a.name.localeCompare(b.name))
-				.map((expense) => (
+				.map(expense => (
 					<Expense
 						key={expense.name}
 						expense={expense}
+						isSavingExpense={isSavingExpense}
+						deleteExpense={deleteExpense}
+						clearExpenseSave={clearExpenseSave}
 						onEdit={createEditClickedHandler(expense)}
 					/>
 				))}

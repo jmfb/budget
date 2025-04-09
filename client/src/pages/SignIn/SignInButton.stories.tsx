@@ -1,26 +1,34 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { SignInButton } from "./SignInButton";
-import { fn } from "@storybook/test";
+import React from 'react';
+import { SignInButton, ISignInButtonProps } from './SignInButton';
+import '~/index.module.css';
 
-const meta = {
-	component: SignInButton,
-	args: {
-		isDisabled: false,
-		onClick: fn(),
-	},
-} satisfies Meta<typeof SignInButton>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const light: Story = { args: { type: "light" } };
-
-export const lightDisabled: Story = {
-	args: { type: "light", isDisabled: true },
+export default {
+	title: 'Pages/SignIn/SignInButton',
+	component: SignInButton
 };
 
-export const dark: Story = { args: { type: "dark" } };
+function Template(props: ISignInButtonProps) {
+	return <SignInButton {...props} />;
+}
 
-export const darkDisabled: Story = {
-	args: { type: "light", isDisabled: true },
+export const Light = Template.bind({});
+Light.args = {
+	style: 'light'
+};
+
+export const LightDisabled = Template.bind({});
+LightDisabled.args = {
+	style: 'light',
+	isDisabled: true
+};
+
+export const Dark = Template.bind({});
+Dark.args = {
+	style: 'dark'
+};
+
+export const DarkDisabled = Template.bind({});
+DarkDisabled.args = {
+	style: 'light',
+	isDisabled: true
 };

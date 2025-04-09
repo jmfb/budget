@@ -1,1 +1,1 @@
-export { default } from "./ApplicationContainer";
+export { default } from './ApplicationContainer';

@@ -16,6 +16,9 @@
 	flex-direction: row;
 }
 
+.amount {
+}
+
 .name {
 	margin-left: 1rem;
 	font-style: italic;

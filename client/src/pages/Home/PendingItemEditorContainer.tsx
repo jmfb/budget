@@ -1,76 +1,66 @@
-import { useEffect } from "react";
-import { useAsyncState } from "~/hooks";
-import { PendingItemEditor } from "./PendingItemEditor";
-import { IPendingItem, IUpdatePendingItemRequest } from "~/models";
-import { useAppSelector, pendingItemsActions } from "~/redux";
+import React, { useState, useEffect } from 'react';
+import { PendingItemEditor } from './PendingItemEditor';
+import { IPendingItem } from '~/models';
+import { useActions, useAppSelector, pendingItemsSlice } from '~/redux';
 
 export interface IPendingItemEditorContainerProps {
-	existingPendingItem: IPendingItem | null;
+	existingPendingItem: IPendingItem;
 	onClose(): void;
 }
 
 export function PendingItemEditorContainer({
 	existingPendingItem,
-	onClose,
+	onClose
 }: IPendingItemEditorContainerProps) {
-	const incomes = useAppSelector((state) => state.incomes.incomes);
-	const expenses = useAppSelector((state) => state.expenses.expenses);
+	const {
+		savePendingItem,
+		deletePendingItem,
+		clearSave: clearPendingItemSave
+	} = useActions(pendingItemsSlice);
 
-	const {
-		isLoading: isCreating,
-		wasSuccessful: createSuccessful,
-		clear: clearCreate,
-		invoke: createPendingItem,
-	} = useAsyncState(pendingItemsActions.createPendingItem);
-	const {
-		isLoading: isUpdating,
-		wasSuccessful: updateSuccessful,
-		clear: clearUpdate,
-		invoke: updatePendingItem,
-	} = useAsyncState(pendingItemsActions.updatePendingItem);
-	const {
-		isLoading: isDeleting,
-		wasSuccessful: deleteSuccessful,
-		clear: clearDelete,
-		invoke: deletePendingItem,
-	} = useAsyncState(pendingItemsActions.deletePendingItem);
+	const incomes = useAppSelector(state => state.incomes.incomes);
+	const expenses = useAppSelector(state => state.expenses.expenses);
+	const pendingItems = useAppSelector(
+		state => state.pendingItems.pendingItems
+	);
+	const isSavingPendingItem = useAppSelector(
+		state => state.pendingItems.isSaving
+	);
+	const savingPendingItemSuccess = useAppSelector(
+		state => state.pendingItems.wasSuccessful
+	);
+
+	const [isSaving, setIsSaving] = useState(false);
 
 	useEffect(() => {
-		if (createSuccessful || updateSuccessful || deleteSuccessful) {
-			onClose();
+		if (isSaving && !isSavingPendingItem) {
+			setIsSaving(false);
+			if (savingPendingItemSuccess) {
+				onClose();
+			}
+			clearPendingItemSave();
 		}
-	}, [createSuccessful, updateSuccessful, deleteSuccessful]);
+	}, [isSaving, isSavingPendingItem, savingPendingItemSuccess]);
 
-	const clearSave = () => {
-		clearCreate();
-		clearUpdate();
-		clearDelete();
+	const handleSaveClicked = (updatedPendingItem: IPendingItem) => {
+		setIsSaving(true);
+		savePendingItem(updatedPendingItem);
 	};
 
-	const handleSaveClicked = (request: IUpdatePendingItemRequest) => {
-		clearSave();
-		if (existingPendingItem) {
-			updatePendingItem({
-				pendingItemId: existingPendingItem.id,
-				request,
-			});
-		} else {
-			createPendingItem({ ...request });
-		}
-	};
-	const handleDeleteClicked = () => {
-		deletePendingItem(existingPendingItem!.id);
-	};
+	const nextPendingItemId =
+		Math.max(0, ...pendingItems.map(item => item.id)) + 1;
 
 	return (
 		<PendingItemEditor
 			incomes={incomes}
 			expenses={expenses}
+			nextPendingItemId={nextPendingItemId}
 			existingPendingItem={existingPendingItem}
-			isSaving={isCreating || isUpdating}
-			isDeleting={isDeleting}
+			isSavingPendingItem={isSavingPendingItem}
+			savingPendingItemSuccess={savingPendingItemSuccess}
+			deletePendingItem={deletePendingItem}
+			clearPendingItemSave={clearPendingItemSave}
 			onSave={handleSaveClicked}
-			onDelete={handleDeleteClicked}
 			onCancel={onClose}
 		/>
 	);

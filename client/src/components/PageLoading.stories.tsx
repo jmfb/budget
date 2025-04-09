@@ -1,15 +1,19 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { PageLoading } from "./PageLoading";
+import React from 'react';
+import { PageLoading, IPageLoadingProps } from './PageLoading';
+import '~/index.module.css';
 
-const meta = {
-	component: PageLoading,
-} satisfies Meta<typeof PageLoading>;
+export default {
+	title: 'Components/PageLoading',
+	component: PageLoading
+};
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+function Template(props: IPageLoadingProps) {
+	return <PageLoading {...props} />;
+}
 
-export const standard: Story = {};
+export const Default = Template.bind({});
 
-export const withMessage: Story = {
-	args: { message: "This is a loading message" },
+export const WithMessage = Template.bind({});
+WithMessage.args = {
+	message: 'This is a loading message'
 };

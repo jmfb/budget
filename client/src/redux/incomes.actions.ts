@@ -1,44 +1,48 @@
-import { bindActionCreators } from "@reduxjs/toolkit";
-import { incomesHub } from "~/api";
-import { ICreateIncomeRequest, IUpdateIncomeRequest } from "~/models";
-import { IAsyncActionOptions } from "./IAsyncActionOptions";
-import { incomesSlice } from "./incomes.slice";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { IIncome } from '~/models';
+import { IState } from './IState';
+import * as hub from './incomes.hub';
 
-export async function createIncome(
-	request: ICreateIncomeRequest,
-	{ getState, dispatch }: IAsyncActionOptions,
-) {
-	const { accessToken } = getState().auth;
-	const actions = bindActionCreators(incomesSlice.actions, dispatch);
-	const incomeId = await incomesHub.createIncome(accessToken, request);
-	const income = await incomesHub.getIncome(accessToken, incomeId);
-	if (income === null) {
-		throw new Error(`Income ${incomeId} was not found after create`);
+export const refreshIncomes = createAsyncThunk(
+	'incomes/refreshIncomes',
+	async (version: number, { getState }) => {
+		const {
+			auth: { accessToken },
+			incomes: { version: storeVersion }
+		} = getState() as IState;
+		const newVersion = version ?? (await hub.getVersion(accessToken));
+		return newVersion === storeVersion
+			? null
+			: await hub.getIncomes(accessToken);
 	}
-	actions.createIncome(income);
-}
+);
 
-export async function updateIncome(
-	parameters: { incomeId: number; request: IUpdateIncomeRequest },
-	{ getState, dispatch }: IAsyncActionOptions,
-) {
-	const { incomeId, request } = parameters;
-	const { accessToken } = getState().auth;
-	const actions = bindActionCreators(incomesSlice.actions, dispatch);
-	await incomesHub.updateIncome(accessToken, incomeId, request);
-	const income = await incomesHub.getIncome(accessToken, incomeId);
-	if (income === null) {
-		throw new Error(`Income ${incomeId} was not found after update`);
+export const saveIncome = createAsyncThunk(
+	'incomes/saveIncome',
+	async (income: IIncome, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.putIncome(accessToken, income);
 	}
-	actions.updateIncome(income);
-}
+);
 
-export async function deleteIncome(
-	incomeId: number,
-	{ getState, dispatch }: IAsyncActionOptions,
-) {
-	const { accessToken } = getState().auth;
-	const actions = bindActionCreators(incomesSlice.actions, dispatch);
-	await incomesHub.deleteIncome(accessToken, incomeId);
-	actions.deleteIncome(incomeId);
-}
+export const deleteIncome = createAsyncThunk(
+	'incomes/deleteIncome',
+	async ({ name }: IIncome, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.deleteIncome(accessToken, name);
+	}
+);
+
+export const downloadIncomes = createAsyncThunk(
+	'incomes/downloadIncomes',
+	async (request, { getState }) => {
+		const {
+			auth: { accessToken }
+		} = getState() as IState;
+		return await hub.downloadIncomes(accessToken);
+	}
+);

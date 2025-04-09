@@ -1,99 +1,171 @@
-import { lazy, useEffect } from "react";
-import { Navigate, Routes, Route } from "react-router-dom";
-import { Header } from "./Header";
+import React, { lazy, useEffect } from 'react';
+import { Navigate, Routes, Route } from 'react-router-dom';
+import { Header } from './Header';
+import { NewerVersionPrompt } from './NewerVersionPrompt';
+import { IIndexModel } from '~/models';
 import {
 	useActions,
+	useAppSelector,
+	diagnosticsSlice,
 	expensesSlice,
 	incomesSlice,
 	pendingItemsSlice,
-	transactionsSlice,
-	categoriesSlice,
-} from "~/redux";
-import { dateService } from "~/services";
-import { clsx } from "clsx";
-import styles from "./AuthorizedApplicationContainer.module.css";
+	transactionsSlice
+} from '~/redux';
+import { useInterval } from '~/hooks';
+import cx from 'classnames';
+import styles from './AuthorizedApplicationContainer.module.css';
 
-const AsyncHomeContainer = lazy(() => import("~/containers/HomeContainer"));
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncHomeContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'HomeContainer' */ '~/containers/HomeContainer'
+		)
+);
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncStatisticsContainer = lazy(
-	() => import("~/containers/StatisticsContainer"),
+	() =>
+		import(
+			/* webpackChunkName: 'StatisticsContainer' */ '~/containers/StatisticsContainer'
+		)
 );
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncIncomesContainer = lazy(
-	() => import("~/containers/IncomesContainer"),
+	() =>
+		import(
+			/* webpackChunkName: 'IncomesContainer' */ '~/containers/IncomesContainer'
+		)
 );
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncExpensesContainer = lazy(
-	() => import("~/containers/ExpensesContainer"),
+	() =>
+		import(
+			/* webpackChunkName: 'ExpensesContainer' */ '~/containers/ExpensesContainer'
+		)
 );
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncUploadsContainer = lazy(
-	() => import("~/containers/UploadsContainer"),
+	() =>
+		import(
+			/* webpackChunkName: 'UploadsContainer' */ '~/containers/UploadsContainer'
+		)
 );
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncYearlyExpensesContainer = lazy(
-	() => import("~/containers/YearlyExpensesContainer"),
+	() =>
+		import(
+			/* webpackChunkName: 'YearlyExpensesContainer' */ '~/containers/YearlyExpensesContainer'
+		)
 );
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const AsyncSignOutContainer = lazy(
-	() => import("~/containers/SignOutContainer"),
+	() =>
+		import(
+			/* webpackChunkName: 'SignOutContainer' */ '~/containers/SignOutContainer'
+		)
 );
-const AsyncAboutContainer = lazy(() => import("~/containers/AboutContainer"));
-const AsyncSearchContainer = lazy(() => import("~/containers/SearchContainer"));
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncAboutContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'AboutContainer' */ '~/containers/AboutContainer'
+		)
+);
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const AsyncSearchContainer = lazy(
+	() =>
+		import(
+			/* webpackChunkName: 'SearchContainer' */ '~/containers/SearchContainer'
+		)
+);
 
-export function AuthorizedApplicationContainer() {
-	const { getCategories } = useActions(categoriesSlice);
-	const { getExpenses } = useActions(expensesSlice);
-	const { getIncomes } = useActions(incomesSlice);
-	const { getPendingItems } = useActions(pendingItemsSlice);
-	const { getCurrentWeek, getRestOfCurrentYear } =
-		useActions(transactionsSlice);
+export interface IAuthorizedApplicationContainerProps {
+	indexModel: IIndexModel;
+}
+
+export function AuthorizedApplicationContainer({
+	indexModel
+}: IAuthorizedApplicationContainerProps) {
+	const { heartbeat } = useActions(diagnosticsSlice);
+	const { refreshExpenses } = useActions(expensesSlice);
+	const { refreshIncomes } = useActions(incomesSlice);
+	const { refreshPendingItems } = useActions(pendingItemsSlice);
+	const { refreshTransactions } = useActions(transactionsSlice);
+	const bundleVersion = useAppSelector(
+		state => state.diagnostics.bundleVersion
+	);
+	const serverBundleVersion = useAppSelector(
+		state => state.diagnostics.serverBundleVersion
+	);
 
 	useEffect(() => {
-		const year = dateService.getCurrentYear();
-		getCategories();
-		getExpenses(year);
-		getIncomes(year);
-		getPendingItems();
-		getCurrentWeek();
-		getRestOfCurrentYear();
+		refreshExpenses(indexModel.expensesVersion);
+		refreshIncomes(indexModel.incomesVersion);
+		refreshPendingItems(indexModel.pendingItemsVersion);
+		refreshTransactions(indexModel.weekVersions);
 	}, []);
+
+	useInterval(() => {
+		heartbeat();
+	}, 60_000);
+
+	const handleRefreshClicked = () => {
+		window.location.reload();
+	};
 
 	return (
 		<>
 			<Header />
-			<main className={clsx("responsive", styles.main)}>
+			<main className={cx('responsive', styles.main)}>
 				<section>
 					<Routes>
-						<Route path="/" element={<AsyncHomeContainer />} />
 						<Route
-							path="/statistics"
+							path='/'
+							element={<AsyncHomeContainer />}
+						/>
+						<Route
+							path='/statistics'
 							element={<AsyncStatisticsContainer />}
 						/>
 						<Route
-							path="/incomes"
+							path='/incomes'
 							element={<AsyncIncomesContainer />}
 						/>
 						<Route
-							path="/expenses"
+							path='/expenses'
 							element={<AsyncExpensesContainer />}
 						/>
 						<Route
-							path="/uploads"
+							path='/uploads'
 							element={<AsyncUploadsContainer />}
 						/>
 						<Route
-							path="/yearly-expenses/:expenseId"
+							path='/yearly-expenses/:expense'
 							element={<AsyncYearlyExpensesContainer />}
 						/>
 						<Route
-							path="/sign-out"
+							path='/sign-out'
 							element={<AsyncSignOutContainer />}
 						/>
 						<Route
-							path="/about"
+							path='/about'
 							element={<AsyncAboutContainer />}
 						/>
 						<Route
-							path="/search"
+							path='/search'
 							element={<AsyncSearchContainer />}
 						/>
-						<Route path="*" element={<Navigate to="/" />} />
+						<Route
+							path='*'
+							element={<Navigate to='/' />}
+						/>
 					</Routes>
+					<NewerVersionPrompt
+						bundleVersion={bundleVersion}
+						serverBundleVersion={serverBundleVersion}
+						onClickRefresh={handleRefreshClicked}
+					/>
 				</section>
 			</main>
 		</>

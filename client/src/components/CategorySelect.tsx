@@ -1,33 +1,47 @@
-import { useMemo } from "react";
-import { useAppSelector } from "~/redux";
-import Creatable from "react-select/creatable";
-import styles from "./CategorySelect.module.css";
+import React from 'react';
+import Creatable from 'react-select/creatable';
+import styles from './CategorySelect.module.css';
 
 export interface ICategorySelectProps {
-	categoryId: number | null;
+	category: string;
 	autoFocus?: boolean;
-	onChange(newValue: number | null): void;
+	onChange(category: string): void;
 }
 
 export function CategorySelect({
-	categoryId,
+	category,
 	autoFocus,
-	onChange,
+	onChange
 }: ICategorySelectProps) {
-	const categories = useAppSelector((state) => state.categories.categories);
-	const options = useMemo(
-		() => [
-			{ value: "", label: "Select category..." },
-			...categories.map((category) => ({
-				value: category.id.toString(),
-				label: category.name,
-			})),
-		],
-		[categories],
-	);
+	const options = [
+		// Well-Known Recurring Expenses
+		'Car',
+		'Holidays',
+		'Home',
+		'Internet',
+		'Karate',
+		// Well-Known Incomes
+		'Direct Supply',
+		// Common Expense Categories
+		'Merchandise',
+		'Dining',
+		'Groceries',
+		'Liquor',
+		'Entertainment',
+		'Pets',
+		'Taxes',
+		'Cash'
+	]
+		.sort((a, b) => a.localeCompare(b))
+		.map(categoryName => ({ value: categoryName, label: categoryName }));
+	let selectedOption = options.find(option => option.value === category);
+	if (!selectedOption && category) {
+		selectedOption = { value: category, label: category };
+		options.push(selectedOption);
+	}
 
-	const handleChange = (option: { value: string } | null) => {
-		onChange(option === null ? null : +option.value);
+	const handleChange = (option: { value: string }) => {
+		onChange(option?.value ?? '');
 	};
 
 	return (
@@ -35,12 +49,10 @@ export function CategorySelect({
 			Category
 			<Creatable
 				isClearable
-				placeholder="Select category..."
+				placeholder='Select category...'
 				options={options}
 				autoFocus={autoFocus}
-				value={options.find(
-					(option) => option.value === (categoryId?.toString() ?? ""),
-				)}
+				value={selectedOption}
 				onChange={handleChange}
 			/>
 		</label>

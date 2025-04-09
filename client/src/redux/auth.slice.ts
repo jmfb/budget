@@ -1,36 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 import {
 	readLocalStorage,
 	getAuthenticationUrl,
-	authenticate,
-} from "./auth.thunks";
+	authenticate
+} from './auth.actions';
 
 export interface IAuthState {
-	email: string | null | undefined;
-	accessToken: string;
+	email?: string;
+	accessToken?: string;
 	redirectToSignIn: boolean;
 	isSigningIn: boolean;
-	url: string | undefined;
+	url?: string;
 }
 
 const initialState: IAuthState = {
 	email: undefined,
-	accessToken: "",
+	accessToken: undefined,
 	redirectToSignIn: false,
 	isSigningIn: false,
-	url: undefined,
+	url: undefined
 };
 
 const slice = createSlice({
-	name: "auth",
+	name: 'auth',
 	initialState,
 	reducers: {
 		signOut(state) {
 			Object.assign(state, initialState);
 			localStorage.clear();
-		},
+		}
 	},
-	extraReducers: (builder) =>
+	extraReducers: builder =>
 		builder
 			.addCase(readLocalStorage.fulfilled, (state, action) => {
 				const { email, accessToken } = action.payload;
@@ -38,22 +38,22 @@ const slice = createSlice({
 				state.accessToken = accessToken;
 				state.redirectToSignIn = false;
 			})
-			.addCase(readLocalStorage.rejected, (state) => {
+			.addCase(readLocalStorage.rejected, state => {
 				state.redirectToSignIn = true;
 			})
 
-			.addCase(getAuthenticationUrl.pending, (state) => {
+			.addCase(getAuthenticationUrl.pending, state => {
 				state.isSigningIn = true;
 			})
 			.addCase(getAuthenticationUrl.fulfilled, (state, action) => {
 				state.isSigningIn = false;
 				state.url = action.payload;
 			})
-			.addCase(getAuthenticationUrl.rejected, (state) => {
+			.addCase(getAuthenticationUrl.rejected, state => {
 				state.isSigningIn = false;
 			})
 
-			.addCase(authenticate.pending, (state) => {
+			.addCase(authenticate.pending, state => {
 				state.isSigningIn = false;
 				state.redirectToSignIn = false;
 				state.url = undefined;
@@ -62,7 +62,7 @@ const slice = createSlice({
 				const { email, accessToken } = action.payload;
 				state.email = email;
 				state.accessToken = accessToken;
-			}),
+			})
 });
 
 export const authSlice = {
@@ -71,6 +71,6 @@ export const authSlice = {
 		...slice.actions,
 		readLocalStorage,
 		getAuthenticationUrl,
-		authenticate,
-	},
+		authenticate
+	}
 };

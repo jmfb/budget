@@ -1,4 +1,5 @@
-import { Modal, Button, Buttons } from "~/components";
+import React from 'react';
+import { Modal, Button, Buttons } from '~/components';
 
 export interface IConfirmDeleteProps {
 	onConfirmDelete(): void;
@@ -7,23 +8,26 @@ export interface IConfirmDeleteProps {
 
 export function ConfirmDelete({
 	onConfirmDelete,
-	onCancel,
+	onCancel
 }: IConfirmDeleteProps) {
 	return (
 		<Modal
 			onClose={onCancel}
-			title="Confirm Delete"
+			title='Confirm Delete'
 			buttons={
 				<Buttons>
-					<Button variant="default" onClick={onCancel}>
+					<Button
+						variant='default'
+						onClick={onCancel}>
 						Cancel
 					</Button>
-					<Button variant="danger" onClick={onConfirmDelete}>
+					<Button
+						variant='danger'
+						onClick={onConfirmDelete}>
 						Delete
 					</Button>
 				</Buttons>
-			}
-		>
+			}>
 			<div>Are you sure you want to delete this transaction?</div>
 			<div>This action cannot be undone.</div>
 		</Modal>

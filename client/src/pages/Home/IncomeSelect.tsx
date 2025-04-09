@@ -1,37 +1,29 @@
-import { useMemo } from "react";
-import Select from "react-select";
-import { IIncome } from "~/models";
-import { budgetService } from "~/services";
-import styles from "./IncomeSelect.module.css";
+import React from 'react';
+import Select from 'react-select';
+import { IIncome } from '~/models';
+import { budgetService } from '~/services';
+import styles from './IncomeSelect.module.css';
 
 export interface IIncomeSelectProps {
 	incomes: IIncome[];
-	incomeId: number | null;
-	onChange(newValue: number | null): void;
+	incomeName: string;
+	onChange(incomeName: string): void;
 }
 
 export function IncomeSelect({
 	incomes,
-	incomeId,
-	onChange,
+	incomeName,
+	onChange
 }: IIncomeSelectProps) {
-	const options = useMemo(
-		() => [
-			{ value: "", label: "Select income..." },
-			...incomes.map((income) => ({
-				value: income.id.toString(),
-				label: `${income.name} - ${budgetService.format(income.amount)}`,
-			})),
-		],
-		[incomes],
-	);
+	const options = incomes.map(income => ({
+		value: income,
+		label: `${income.name} - ${budgetService.format(income.amount)}`
+	}));
 	const selectedOption =
-		options.find(
-			(option) => option.value === (incomeId?.toString() ?? ""),
-		) ?? null;
+		options.find(option => option.value.name === incomeName) ?? null;
 
-	const handleChange = (option: { value: string } | null) => {
-		onChange(option === null ? null : +option.value);
+	const handleChange = (option: { value: IIncome }) => {
+		onChange(option?.value.name ?? '');
 	};
 
 	return (
@@ -39,7 +31,7 @@ export function IncomeSelect({
 			Income
 			<Select
 				isClearable
-				placeholder="Select income..."
+				placeholder='Select income...'
 				options={options}
 				value={selectedOption}
 				onChange={handleChange}

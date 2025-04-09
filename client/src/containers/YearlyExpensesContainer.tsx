@@ -1,55 +1,46 @@
-import { useParams } from "react-router-dom";
-import { useAsyncState } from "~/hooks";
-import { IExpense } from "~/models";
-import { YearlyExpenses } from "~/pages";
-import { useAppSelector, expensesActions } from "~/redux";
-import { dateService } from "~/services";
+import React from 'react';
+import { useParams } from 'react-router';
+import { YearlyExpenses } from '~/pages';
+import { useActions, useAppSelector, expensesSlice } from '~/redux';
+import { dateService } from '~/services';
 
 type YearlyExpensesParams = {
-	expenseId: string;
+	expense: string;
 };
 
 export default function YearlyExpensesContainer() {
-	const expenseId = +(useParams<YearlyExpensesParams>().expenseId ?? "");
+	const { saveExpense } = useActions(expensesSlice);
+	const { expense: expenseName } = useParams<YearlyExpensesParams>();
 
-	const categoryById = useAppSelector(
-		(state) => state.categories.categoryById,
+	const expense = useAppSelector(state =>
+		state.expenses.expenses.find(expense => expense.name === expenseName)
 	);
-	const expense = useAppSelector(
-		(state) => state.expenses.expenseById[expenseId],
+	const weeklyTransactions = useAppSelector(
+		state => state.transactions.weeks
 	);
-	const transactions = useAppSelector(
-		(state) => state.transactions.transactions,
+	const isSavingExpense = useAppSelector(state => state.expenses.isSaving);
+	const savingExpenseSuccess = useAppSelector(
+		state => state.expenses.wasSuccessful
 	);
-
-	const {
-		isLoading: isSavingExpense,
-		wasSuccessful: savingExpenseSuccess,
-		invoke: saveExpense,
-	} = useAsyncState(expensesActions.updateExpense);
 
 	const year = dateService.getCurrentYear();
 	const startOfYear = `${year}-01-01`;
-	const yearlyExpenses = transactions.filter(
-		(transaction) =>
-			transaction.expenseId === expenseId &&
-			transaction.date >= startOfYear,
+	const yearlyExpenses = Object.entries(weeklyTransactions).flatMap(
+		([weekOf, week]) =>
+			week.transactions.filter(
+				transaction =>
+					transaction.expenseName === expenseName &&
+					transaction.date >= startOfYear
+			)
 	);
-
-	const handleSaveExpense = (newValue: IExpense) => {
-		const { id: expenseId, year, ...request } = newValue;
-		void year;
-		saveExpense({ expenseId, request });
-	};
 
 	return (
 		<YearlyExpenses
-			expense={expense!}
-			categoryName={categoryById[expense?.categoryId ?? 0]?.name}
+			expense={expense}
 			yearlyExpenses={yearlyExpenses}
 			isSavingExpense={isSavingExpense}
 			savingExpenseSuccess={savingExpenseSuccess}
-			saveExpense={handleSaveExpense}
+			saveExpense={saveExpense}
 		/>
 	);
 }

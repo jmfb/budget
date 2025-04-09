@@ -1,73 +1,79 @@
-import { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import {
 	Modal,
 	Button,
 	Buttons,
 	Input,
 	CurrencyInput,
-	CategorySelect,
-} from "~/components";
-import { IncomeSelect } from "./IncomeSelect";
-import { ExpenseSelect } from "./ExpenseSelect";
-import {
-	IPendingItem,
-	IIncome,
-	IExpense,
-	IUpdatePendingItemRequest,
-} from "~/models";
+	CategorySelect
+} from '~/components';
+import { IncomeSelect } from './IncomeSelect';
+import { ExpenseSelect } from './ExpenseSelect';
+import { IPendingItem, IIncome, IExpense } from '~/models';
 
 export interface IPendingItemEditorProps {
 	incomes: IIncome[];
 	expenses: IExpense[];
-	existingPendingItem: IPendingItem | null;
-	isSaving: boolean;
-	isDeleting: boolean;
-	onSave(request: IUpdatePendingItemRequest): void;
-	onDelete(): void;
+	nextPendingItemId: number;
+	existingPendingItem: IPendingItem;
+	isSavingPendingItem: boolean;
+	savingPendingItemSuccess: boolean;
+	deletePendingItem(pendingItem: IPendingItem): void;
+	clearPendingItemSave(): void;
+	onSave(pendingItem: IPendingItem): void;
 	onCancel(): void;
 }
 
 export function PendingItemEditor({
 	incomes,
 	expenses,
+	nextPendingItemId,
 	existingPendingItem,
-	isSaving,
-	isDeleting,
+	isSavingPendingItem,
+	savingPendingItemSuccess,
+	deletePendingItem,
+	clearPendingItemSave,
 	onSave,
-	onDelete,
-	onCancel,
+	onCancel
 }: IPendingItemEditorProps) {
-	const [name, setName] = useState(existingPendingItem?.name ?? "");
+	const [name, setName] = useState(existingPendingItem?.name ?? '');
 	const [amount, setAmount] = useState(existingPendingItem?.amount ?? 0);
-	const [categoryId, setCategoryId] = useState(
-		existingPendingItem?.categoryId ?? null,
+	const [category, setCategory] = useState(
+		existingPendingItem?.category ?? ''
 	);
-	const [expenseId, setExpenseId] = useState(
-		existingPendingItem?.expenseId ?? null,
+	const [expenseName, setExpenseName] = useState(
+		existingPendingItem?.expenseName ?? ''
 	);
-	const [incomeId, setIncomeId] = useState(
-		existingPendingItem?.incomeId ?? null,
+	const [incomeName, setIncomeName] = useState(
+		existingPendingItem?.incomeName ?? ''
 	);
+	const [isDeleting, setIsDeleting] = useState(false);
 	const [isAddingExpense, setIsAddingExpense] = useState(false);
 	const [isAddingIncome, setIsAddingIncome] = useState(false);
 	const [isAddingCategory, setIsAddingCategory] = useState(false);
 
 	const handleSaveClicked = () => {
-		onSave({ name: name.trim(), amount, categoryId, expenseId, incomeId });
+		const id = existingPendingItem?.id ?? nextPendingItemId;
+		onSave({ id, name, amount, category, expenseName, incomeName });
 	};
 
-	const handleCategoryIdChanged = (newCategoryId: number | null) => {
-		setCategoryId(newCategoryId);
+	const handleDeleteClicked = () => {
+		setIsDeleting(true);
+		deletePendingItem(existingPendingItem);
+	};
+
+	const handleCategoryChanged = (newCategory: string) => {
+		setCategory(newCategory);
 		setIsAddingCategory(false);
 	};
 
-	const handleExpenseIdChanged = (newExpenseId: number | null) => {
-		setExpenseId(newExpenseId);
+	const handleExpenseNameChanged = (newExpenseName: string) => {
+		setExpenseName(newExpenseName);
 		setIsAddingExpense(false);
 	};
 
-	const handleIncomeIdChanged = (newIncomeId: number | null) => {
-		setIncomeId(newIncomeId);
+	const handleIncomeNameChanged = (newIncomeName: string) => {
+		setIncomeName(newIncomeName);
 		setIsAddingIncome(false);
 	};
 
@@ -75,27 +81,36 @@ export function PendingItemEditor({
 	const handleAddIncomeClicked = () => setIsAddingIncome(true);
 	const handleAddCategoryClicked = () => setIsAddingCategory(true);
 
-	const isModificationInProgress = isSaving || isDeleting;
-	const showIncomeSelect = incomeId !== null || isAddingIncome;
-	const showExpenseSelect = expenseId !== null || isAddingExpense;
-	const showCategorySelect = categoryId !== null || isAddingCategory;
+	useEffect(() => {
+		if (isDeleting && !isSavingPendingItem) {
+			setIsDeleting(false);
+			if (savingPendingItemSuccess) {
+				onCancel();
+			}
+			clearPendingItemSave();
+		}
+	}, [isDeleting, isSavingPendingItem, savingPendingItemSuccess]);
+
+	const isModificationInProgress = isSavingPendingItem || isDeleting;
+	const showIncomeSelect = !!incomeName || isAddingIncome;
+	const showExpenseSelect = !!expenseName || isAddingExpense;
+	const showCategorySelect = !!category || isAddingCategory;
 
 	return (
 		<Modal
 			onClose={onCancel}
 			title={
 				existingPendingItem
-					? "Edit Pending Transaction"
-					: "New Pending Transaction"
+					? 'Edit Pending Transaction'
+					: 'New Pending Transaction'
 			}
 			deleteButton={
 				existingPendingItem && (
 					<Button
-						variant="danger"
-						onClick={onDelete}
+						variant='danger'
+						onClick={handleDeleteClicked}
 						isDisabled={isModificationInProgress}
-						isProcessing={isDeleting}
-					>
+						isProcessing={isDeleting}>
 						Delete
 					</Button>
 				)
@@ -103,59 +118,68 @@ export function PendingItemEditor({
 			buttons={
 				<Buttons>
 					<Button
-						variant="default"
+						variant='default'
 						onClick={onCancel}
-						isDisabled={isModificationInProgress}
-					>
+						isDisabled={isModificationInProgress}>
 						Cancel
 					</Button>
 					<Button
-						variant="primary"
+						variant='primary'
 						onClick={handleSaveClicked}
 						isDisabled={isModificationInProgress}
-						isProcessing={isSaving}
-					>
+						isProcessing={isSavingPendingItem}>
 						Save
 					</Button>
 				</Buttons>
-			}
-		>
-			<Input name="Name" autoFocus value={name} onChange={setName} />
-			<CurrencyInput name="Amount" value={amount} onChange={setAmount} />
+			}>
+			<Input
+				name='Name'
+				autoFocus
+				value={name}
+				onChange={setName}
+			/>
+			<CurrencyInput
+				name='Amount'
+				value={amount}
+				onChange={setAmount}
+			/>
 			{!showExpenseSelect && !showIncomeSelect && !showCategorySelect && (
 				<Buttons>
-					<Button variant="default" onClick={handleAddExpenseClicked}>
+					<Button
+						variant='default'
+						onClick={handleAddExpenseClicked}>
 						Expense
 					</Button>
-					<Button variant="default" onClick={handleAddIncomeClicked}>
+					<Button
+						variant='default'
+						onClick={handleAddIncomeClicked}>
 						Income
 					</Button>
 					<Button
-						variant="default"
-						onClick={handleAddCategoryClicked}
-					>
+						variant='default'
+						onClick={handleAddCategoryClicked}>
 						Category
 					</Button>
 				</Buttons>
 			)}
 			{showCategorySelect && (
 				<CategorySelect
-					categoryId={categoryId}
-					onChange={handleCategoryIdChanged}
+					category={category}
+					onChange={handleCategoryChanged}
 				/>
 			)}
 			{showIncomeSelect && (
 				<IncomeSelect
 					incomes={incomes}
-					incomeId={incomeId}
-					onChange={handleIncomeIdChanged}
+					incomeName={incomeName}
+					onChange={handleIncomeNameChanged}
 				/>
 			)}
 			{showExpenseSelect && (
 				<ExpenseSelect
 					expenses={expenses}
-					expenseId={expenseId}
-					onChange={handleExpenseIdChanged}
+					expenseName={expenseName}
+					onChange={handleExpenseNameChanged}
 				/>
 			)}
 		</Modal>

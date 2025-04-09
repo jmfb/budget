@@ -1,26 +1,39 @@
-import { useAsyncState } from "~/hooks";
-import { Button } from "~/components";
-import { IIncome } from "~/models";
-import { budgetService } from "~/services";
-import { incomesActions } from "~/redux";
-import styles from "./Income.module.css";
+import React, { useState, useEffect } from 'react';
+import { Button } from '~/components';
+import { IIncome } from '~/models';
+import { budgetService } from '~/services';
+import styles from './Income.module.css';
 
 export interface IIncomeProps {
 	income: IIncome;
+	isSavingIncome: boolean;
+	deleteIncome(income: IIncome): void;
+	clearIncomeSave(): void;
 	onEdit(): void;
 }
 
-export function Income({ income, onEdit }: IIncomeProps) {
+export function Income({
+	income,
+	isSavingIncome,
+	deleteIncome,
+	clearIncomeSave,
+	onEdit
+}: IIncomeProps) {
+	const [isDeleting, setIsDeleting] = useState(false);
 	const { name, amount, weeksInterval } = income;
 	const interval =
-		weeksInterval === 1 ? "every week" : `every ${weeksInterval} weeks`;
+		weeksInterval === 1 ? 'every week' : `every ${weeksInterval} weeks`;
 
-	const { isLoading: isDeleting, invoke: deleteIncome } = useAsyncState(
-		incomesActions.deleteIncome,
-	);
+	useEffect(() => {
+		if (!isSavingIncome && isDeleting) {
+			setIsDeleting(false);
+			clearIncomeSave();
+		}
+	}, [isSavingIncome, isDeleting]);
 
 	const handleDeleteClicked = () => {
-		deleteIncome(income.id);
+		setIsDeleting(true);
+		deleteIncome(income);
 	};
 
 	return (
@@ -29,18 +42,16 @@ export function Income({ income, onEdit }: IIncomeProps) {
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
 			<Button
-				variant="default"
+				variant='default'
 				className={styles.editButton}
-				onClick={onEdit}
-			>
+				onClick={onEdit}>
 				Edit
 			</Button>
 			<Button
-				variant="danger"
+				variant='danger'
 				onClick={handleDeleteClicked}
 				isProcessing={isDeleting}
-				isDisabled={isDeleting}
-			>
+				isDisabled={isSavingIncome}>
 				Delete
 			</Button>
 		</div>

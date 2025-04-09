@@ -1,37 +1,35 @@
-import { budgetService } from "~/services";
-import { IIncome, IExpense, ITransaction, IPendingItem } from "~/models";
-import styles from "./BudgetView.module.css";
+import React from 'react';
+import { budgetService } from '~/services';
+import { IIncome, IExpense, ITransaction, IPendingItem } from '~/models';
+import styles from './BudgetView.module.css';
 
 export interface IBudgetViewProps {
-	incomeById: Record<number, IIncome>;
-	expenseById: Record<number, IExpense>;
+	incomes: IIncome[];
+	expenses: IExpense[];
 	transactions: ITransaction[];
 	pendingItems: IPendingItem[];
 	expenseTransactions: Record<string, ITransaction[]>;
 }
 
 export function BudgetView({
-	incomeById,
-	expenseById,
+	incomes,
+	expenses,
 	transactions,
 	pendingItems,
-	expenseTransactions,
+	expenseTransactions
 }: IBudgetViewProps) {
-	const weeklyBudget = budgetService.getWeeklyBudget(
-		Object.values(incomeById),
-		Object.values(expenseById),
-	);
+	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
 	const totalSpend = budgetService.getTotalSpend(
 		transactions,
 		pendingItems,
-		incomeById,
-		expenseById,
-		expenseTransactions,
+		incomes,
+		expenses,
+		expenseTransactions
 	);
 	const extraIncome = budgetService.getExtraIncome(
 		transactions,
-		incomeById,
-		expenseById,
+		incomes,
+		expenses
 	);
 	const remainingBudget = weeklyBudget - totalSpend;
 	return (

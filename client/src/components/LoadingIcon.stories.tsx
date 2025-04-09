@@ -1,11 +1,14 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { LoadingIcon } from "./LoadingIcon";
+import React from 'react';
+import { LoadingIcon } from './LoadingIcon';
+import '~/index.module.css';
 
-const meta = {
-	component: LoadingIcon,
-} satisfies Meta<typeof LoadingIcon>;
+export default {
+	title: 'Components/LoadingIcon',
+	component: LoadingIcon
+};
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+function Template() {
+	return <LoadingIcon />;
+}
 
-export const standard: Story = {};
+export const Default = Template.bind({});

@@ -1,79 +1,116 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IExpense, IRetireCategoryRequest } from "~/models";
-import { getExpenses } from "./expenses.thunks";
+import { createSlice } from '@reduxjs/toolkit';
+import { IExpense } from '~/models';
+import {
+	refreshExpenses,
+	saveExpense,
+	deleteExpense,
+	downloadExpenses
+} from './expenses.actions';
 
 export interface IExpensesState {
-	isLoading: boolean;
+	version: number;
 	expenses: IExpense[];
-	expenseById: Record<number, IExpense>;
+	isLoading: boolean;
+	isSaving: boolean;
+	wasSuccessful: boolean;
+	isDownloading: boolean;
 }
 
 const initialState: IExpensesState = {
-	isLoading: true,
-	expenses: [],
-	expenseById: {},
+	version: JSON.parse(localStorage.getItem('expenses-version')) ?? null,
+	expenses: JSON.parse(localStorage.getItem('expenses')) ?? [],
+	isLoading: false,
+	isSaving: false,
+	wasSuccessful: false,
+	isDownloading: false
 };
 
+function updateLocalStorage(state: IExpensesState) {
+	localStorage.setItem('expenses-version', JSON.stringify(state.version));
+	localStorage.setItem('expenses', JSON.stringify(state.expenses));
+}
+
 const slice = createSlice({
-	name: "expenses",
+	name: 'expenses',
 	initialState,
 	reducers: {
-		createExpense(state, action: PayloadAction<IExpense>) {
-			const expense = action.payload;
-			state.expenses.push(expense);
-			state.expenseById[expense.id] = expense;
-		},
-		updateExpense(state, action: PayloadAction<IExpense>) {
-			const expense = action.payload;
-			const index = state.expenses.findIndex(
-				(other) => other.id === expense.id,
-			);
-			state.expenses[index] = expense;
-			state.expenseById[expense.id] = expense;
-		},
-		deleteExpense(state, action: PayloadAction<number>) {
-			const id = action.payload;
-			state.expenses = state.expenses.filter(
-				(expense) => expense.id !== id,
-			);
-			delete state.expenseById[id];
-		},
-		retireCategory(state, action: PayloadAction<IRetireCategoryRequest>) {
-			const { retireId, replacementId } = action.payload;
-			for (const expense of state.expenses) {
-				if (expense.categoryId === retireId) {
-					expense.categoryId = replacementId;
-				}
-			}
-		},
+		clearSave(state) {
+			state.isSaving = false;
+			state.wasSuccessful = false;
+		}
 	},
-	extraReducers: (builder) =>
+	extraReducers: builder =>
 		builder
-			.addCase(getExpenses.pending, (state) => {
+			.addCase(refreshExpenses.pending, state => {
 				state.isLoading = true;
-				state.expenses = [];
-				state.expenseById = {};
 			})
-			.addCase(getExpenses.fulfilled, (state, action) => {
+			.addCase(refreshExpenses.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.expenses = action.payload;
-				state.expenseById = state.expenses.reduce(
-					(map, expense) => {
-						map[expense.id] = expense;
-						return map;
-					},
-					{} as Record<number, IExpense>,
+				if (action.payload) {
+					state.version = action.payload.version;
+					state.expenses = action.payload.expenses;
+					updateLocalStorage(state);
+				}
+			})
+			.addCase(refreshExpenses.rejected, state => {
+				state.isLoading = false;
+			})
+			.addCase(saveExpense.pending, state => {
+				state.isSaving = true;
+			})
+			.addCase(saveExpense.fulfilled, (state, action) => {
+				state.isSaving = false;
+				state.wasSuccessful = true;
+				const updatedExpense = action.meta.arg;
+				const index = state.expenses.findIndex(
+					expense => expense.name === updatedExpense.name
 				);
+				if (index === -1) {
+					state.expenses.push(updatedExpense);
+				} else {
+					state.expenses[index] = updatedExpense;
+				}
+				state.version = action.payload;
+				updateLocalStorage(state);
 			})
-			.addCase(getExpenses.rejected, (state) => {
-				state.isLoading = false;
-			}),
+			.addCase(saveExpense.rejected, state => {
+				state.isSaving = false;
+			})
+			.addCase(deleteExpense.pending, state => {
+				state.isSaving = true;
+			})
+			.addCase(deleteExpense.fulfilled, (state, action) => {
+				state.isSaving = false;
+				state.wasSuccessful = true;
+				const deletedExpense = action.meta.arg;
+				state.expenses = state.expenses.filter(
+					expense => expense.name !== deletedExpense.name
+				);
+				state.version = action.payload;
+				updateLocalStorage(state);
+			})
+			.addCase(deleteExpense.rejected, state => {
+				state.isSaving = false;
+			})
+
+			.addCase(downloadExpenses.pending, state => {
+				state.isDownloading = true;
+			})
+			.addCase(downloadExpenses.fulfilled, state => {
+				state.isDownloading = false;
+			})
+			.addCase(downloadExpenses.rejected, state => {
+				state.isDownloading = false;
+			})
 });
 
 export const expensesSlice = {
 	...slice,
 	actions: {
 		...slice.actions,
-		getExpenses,
-	},
+		refreshExpenses,
+		saveExpense,
+		deleteExpense,
+		downloadExpenses
+	}
 };

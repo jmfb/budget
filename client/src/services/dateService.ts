@@ -1,13 +1,8 @@
-import { IDayOfWeek } from "~/models";
+import { IDayOfWeek } from '~/models';
 
 export function getCurrentYear() {
 	const today = new Date();
 	return today.getFullYear();
-}
-
-export function getYear(date: string) {
-	const parsedDate = parse(date);
-	return parsedDate.getFullYear();
 }
 
 export function getStartOfWeek(date: string) {
@@ -63,18 +58,18 @@ export function getAllWeeksOfCurrentYear() {
 	return result;
 }
 
-const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 export function getDaysOfWeek(weekOf: string): IDayOfWeek[] {
 	const today = getToday();
-	return [0, 1, 2, 3, 4, 5, 6].map((index) => {
+	return [0, 1, 2, 3, 4, 5, 6].map(index => {
 		const date = addDays(weekOf, index);
 		return {
 			day: parse(date).getDate(),
 			weekday: weekdays[index],
 			isPast: date < today,
 			isToday: date === today,
-			isFuture: date > today,
+			isFuture: date > today
 		};
 	});
 }
@@ -82,11 +77,11 @@ export function getDaysOfWeek(weekOf: string): IDayOfWeek[] {
 export function getToday() {
 	const today = new Date();
 	const englishFormat = new Intl.DateTimeFormat(undefined, {
-		year: "numeric",
-		month: "2-digit",
-		day: "2-digit",
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit'
 	}).format(today);
-	const parts = englishFormat.split("/");
+	const parts = englishFormat.split('/');
 	return `${parts[2]}-${parts[0]}-${parts[1]}`;
 }
 
@@ -99,7 +94,7 @@ export function toString(date: Date) {
 }
 
 export function format(date: string) {
-	return new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(
-		parse(date),
+	return new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(
+		parse(date)
 	);
 }

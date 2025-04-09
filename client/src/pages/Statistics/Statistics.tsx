@@ -1,60 +1,62 @@
-import { PageLoading } from "~/components";
-import { Week } from "./Week";
-import { ExpenseBudget } from "./ExpenseBudget";
-import { IIncome, IExpense, IPendingItem, ITransaction } from "~/models";
-import { budgetService } from "~/services";
-import { clsx } from "clsx";
-import styles from "./Statistics.module.css";
+import React from 'react';
+import { PageLoading } from '~/components';
+import { Week } from './Week';
+import { ExpenseBudget } from './ExpenseBudget';
+import { IIncome, IExpense, IPendingItem, ITransaction } from '~/models';
+import { budgetService } from '~/services';
+import { IWeekState } from '~/redux';
+import cx from 'classnames';
+import styles from './Statistics.module.css';
 
 export interface IStatisticsProps {
-	incomeById: Record<number, IIncome>;
-	expenseById: Record<number, IExpense>;
+	incomes: IIncome[];
+	expenses: IExpense[];
 	pendingItems: IPendingItem[];
-	isLoading: boolean;
-	weeks: ITransaction[][];
-	allWeeksInYear: ITransaction[][];
-	expenseTransactions: Record<number, ITransaction[]>;
+	weeks: IWeekState[];
+	allWeeksInYear: IWeekState[];
+	expenseTransactions: Record<string, ITransaction[]>;
 }
 
 export function Statistics({
-	incomeById,
-	expenseById,
+	incomes,
+	expenses,
 	pendingItems,
-	isLoading,
 	weeks,
 	allWeeksInYear,
-	expenseTransactions,
+	expenseTransactions
 }: IStatisticsProps) {
+	const isLoading =
+		!incomes ||
+		!expenses ||
+		weeks.some(week => week === undefined || week.isLoading) ||
+		allWeeksInYear.some(week => week === undefined || week.isLoading);
 	if (isLoading) {
-		return <PageLoading message="Loading transactions" />;
+		return <PageLoading message='Loading transactions' />;
 	}
 
-	const weeklyBudget = budgetService.getWeeklyBudget(
-		Object.values(incomeById),
-		Object.values(expenseById),
-	);
+	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
 	const totalSpends = weeks.map((week, index) =>
 		budgetService.getTotalSpend(
-			week,
+			week.transactions,
 			index === 0 ? pendingItems : [],
-			incomeById,
-			expenseById,
-			expenseTransactions,
-		),
+			incomes,
+			expenses,
+			expenseTransactions
+		)
 	);
-	const extraIncomes = weeks.map((week) =>
-		budgetService.getExtraIncome(week, incomeById, expenseById),
+	const extraIncomes = weeks.map(week =>
+		budgetService.getExtraIncome(week.transactions, incomes, expenses)
 	);
 	const totalExtraIncome = extraIncomes.reduce(
 		(total, extraIncome) => total + extraIncome,
-		0,
+		0
 	);
 	const remainingBudgets = totalSpends.map(
-		(totalSpend) => weeklyBudget - totalSpend,
+		totalSpend => weeklyBudget - totalSpend
 	);
 	const totalRemainingBudget = remainingBudgets.reduce(
 		(total, remainingBudget) => total + remainingBudget,
-		0,
+		0
 	);
 	const maxUnderBudget = Math.max(0, ...remainingBudgets);
 	const maxOverBudget = Math.min(0, ...remainingBudgets);
@@ -64,13 +66,13 @@ export function Statistics({
 		(week, index) =>
 			weeklyBudget -
 			budgetService.getTotalSpend(
-				week,
+				week.transactions,
 				index === 0 ? pendingItems : [],
-				incomeById,
-				expenseById,
-				expenseTransactions,
+				incomes,
+				expenses,
+				expenseTransactions
 			) +
-			budgetService.getExtraIncome(week, incomeById, expenseById),
+			budgetService.getExtraIncome(week.transactions, incomes, expenses)
 	);
 	const yearTotal = weekTotals.reduce((sum, amount) => sum + amount, 0);
 
@@ -130,7 +132,7 @@ export function Statistics({
 					{netResult >= 0 && (
 						<div className={styles.row}>
 							Net Gain
-							<span className={clsx(styles.net, styles.gain)}>
+							<span className={cx(styles.net, styles.gain)}>
 								{budgetService.format(netResult)}
 							</span>
 						</div>
@@ -138,22 +140,21 @@ export function Statistics({
 					{netResult < 0 && (
 						<div className={styles.row}>
 							Net Loss
-							<span className={clsx(styles.net, styles.loss)}>
+							<span className={cx(styles.net, styles.loss)}>
 								{budgetService.format(-netResult)}
 							</span>
 						</div>
 					)}
 				</>
 			)}
-			{Object.values(expenseById)
-				.filter((expense) => expense.isDistributed)
-				.sort((a, b) => a.name.localeCompare(b.name))
-				.map((expense) => (
+			{expenses
+				.filter(expense => expense.isDistributed)
+				.map(expense => (
 					<ExpenseBudget
-						key={expense.id}
+						key={expense.name}
 						expense={expense}
 						total={budgetService.getTotal(
-							expenseTransactions[expense.id],
+							expenseTransactions[expense.name]
 						)}
 					/>
 				))}

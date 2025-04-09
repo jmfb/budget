@@ -1,27 +1,22 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { MdAdd, MdSearch } from "react-icons/md";
-import { Button } from "~/components";
-import { PendingItem } from "./PendingItem";
-import { PendingItemEditorContainer } from "./PendingItemEditorContainer";
-import { IPendingItem } from "~/models";
-import { budgetService } from "~/services";
-import { useAppSelector } from "~/redux";
-import styles from "./PendingItems.module.css";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { MdAdd, MdSearch } from 'react-icons/md';
+import { Button } from '~/components';
+import { PendingItem } from './PendingItem';
+import { PendingItemEditorContainer } from './PendingItemEditorContainer';
+import { IPendingItem } from '~/models';
+import { budgetService } from '~/services';
+import { useAppSelector } from '~/redux';
+import styles from './PendingItems.module.css';
 
 export function PendingItems() {
 	const pendingItems = useAppSelector(
-		(state) => state.pendingItems.pendingItems,
+		state => state.pendingItems.pendingItems
 	);
-	const categoryById = useAppSelector(
-		(state) => state.categories.categoryById,
-	);
-	const incomeById = useAppSelector((state) => state.incomes.incomeById);
-	const expenseById = useAppSelector((state) => state.expenses.expenseById);
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [existingPendingItem, setExistingPendingItem] =
-		useState<IPendingItem | null>(null);
+		useState<IPendingItem>(null);
 
 	const createEditClickedHandler = (pendingItem: IPendingItem) => () => {
 		setIsEditing(true);
@@ -50,22 +45,21 @@ export function PendingItems() {
 					</span>
 				)}
 				<div className={styles.buttons}>
-					<Link to="/search">
+					<Link to='/search'>
 						<MdSearch className={styles.search} />
 					</Link>
-					<Button variant="primary" onClick={handleAddPendingItem}>
+					<Button
+						variant='primary'
+						onClick={handleAddPendingItem}>
 						<MdAdd className={styles.addIcon} />
 					</Button>
 				</div>
 			</div>
 			{[...pendingItems]
 				.sort((a, b) => a.amount - b.amount)
-				.map((pendingItem) => (
+				.map(pendingItem => (
 					<PendingItem
 						key={pendingItem.id}
-						categoryById={categoryById}
-						incomeById={incomeById}
-						expenseById={expenseById}
 						pendingItem={pendingItem}
 						onEdit={createEditClickedHandler(pendingItem)}
 					/>

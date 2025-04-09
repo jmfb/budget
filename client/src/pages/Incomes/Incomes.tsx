@@ -1,34 +1,31 @@
-import { useEffect, useState } from "react";
-import { PageLoading, Button } from "~/components";
-import { Income } from "./Income";
-import { IncomeEditor } from "./IncomeEditor";
-import { budgetService, dateService } from "~/services";
-import { IIncome, IUpdateIncomeRequest } from "~/models";
-import styles from "./Incomes.module.css";
-import { useAsyncState } from "~/hooks";
-import { incomesActions } from "~/redux";
+import React, { useEffect, useState } from 'react';
+import { PageLoading, Button } from '~/components';
+import { Income } from './Income';
+import { IncomeEditor } from './IncomeEditor';
+import { budgetService } from '~/services';
+import { IIncome } from '~/models';
+import styles from './Incomes.module.css';
 
 export interface IIncomesProps {
 	incomes: IIncome[];
+	isSavingIncome: boolean;
+	savingIncomeSuccess: boolean;
+	saveIncome(income: IIncome): void;
+	deleteIncome(income: IIncome): void;
+	clearIncomeSave(): void;
 }
 
-export function Incomes({ incomes }: IIncomesProps) {
+export function Incomes({
+	incomes,
+	isSavingIncome,
+	savingIncomeSuccess,
+	saveIncome,
+	deleteIncome,
+	clearIncomeSave
+}: IIncomesProps) {
 	const [showEditor, setShowEditor] = useState(false);
-	const [existingIncome, setExistingIncome] = useState<IIncome | null>(null);
-
-	const {
-		isLoading: isUpdating,
-		wasSuccessful: updateSuccessful,
-		clear: clearUpdate,
-		invoke: updateIncome,
-	} = useAsyncState(incomesActions.updateIncome);
-
-	const {
-		isLoading: isCreating,
-		wasSuccessful: createSuccessful,
-		clear: clearCreate,
-		invoke: createIncome,
-	} = useAsyncState(incomesActions.createIncome);
+	const [existingIncome, setExistingIncome] = useState<IIncome>(null);
+	const [isSaving, setIsSaving] = useState(false);
 
 	const handleAddClicked = () => {
 		setShowEditor(true);
@@ -39,14 +36,9 @@ export function Incomes({ incomes }: IIncomesProps) {
 		setExistingIncome(income);
 	};
 
-	const handleSaveClicked = (request: IUpdateIncomeRequest) => {
-		clearUpdate();
-		clearCreate();
-		if (existingIncome) {
-			updateIncome({ incomeId: existingIncome.id, request });
-		} else {
-			createIncome({ ...request, year: dateService.getCurrentYear() });
-		}
+	const handleSaveClicked = (income: IIncome) => {
+		setIsSaving(true);
+		saveIncome(income);
 	};
 
 	const closeEditor = () => {
@@ -55,15 +47,16 @@ export function Incomes({ incomes }: IIncomesProps) {
 	};
 
 	useEffect(() => {
-		if (updateSuccessful || createSuccessful) {
-			clearUpdate();
-			clearCreate();
-			closeEditor();
+		if (!isSavingIncome && isSaving) {
+			setIsSaving(false);
+			if (savingIncomeSuccess) {
+				closeEditor();
+			}
 		}
-	}, [updateSuccessful, createSuccessful]);
+	}, [isSavingIncome, isSaving, savingIncomeSuccess]);
 
 	if (incomes === null) {
-		return <PageLoading message="Loading incomes" />;
+		return <PageLoading message='Loading incomes' />;
 	}
 
 	const weeklyIncomes = budgetService.getWeeklyIncomes(incomes);
@@ -75,26 +68,28 @@ export function Incomes({ incomes }: IIncomesProps) {
 					{budgetService.format(weeklyIncomes)} every week
 				</h3>
 				<Button
-					variant="primary"
+					variant='primary'
 					className={styles.addButton}
-					onClick={handleAddClicked}
-				>
+					onClick={handleAddClicked}>
 					Add
 				</Button>
 			</div>
 			<div>
-				{incomes.map((income) => (
+				{incomes.map(income => (
 					<Income
 						key={income.name}
 						income={income}
+						isSavingIncome={isSavingIncome}
+						deleteIncome={deleteIncome}
+						clearIncomeSave={clearIncomeSave}
 						onEdit={createEditClickedHandler(income)}
 					/>
 				))}
 			</div>
 			{showEditor && (
 				<IncomeEditor
-					existingIncome={existingIncome!}
-					isSavingIncome={isCreating || isUpdating}
+					existingIncome={existingIncome}
+					isSavingIncome={isSavingIncome}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
 				/>

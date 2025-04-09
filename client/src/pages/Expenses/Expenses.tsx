@@ -1,37 +1,31 @@
-import { useEffect, useState } from "react";
-import { PageLoading, Button } from "~/components";
-import { Category } from "./Category";
-import { ExpenseEditor } from "./ExpenseEditor";
-import { budgetService, dateService } from "~/services";
-import { ICategory, IExpense, IUpdateExpenseRequest } from "~/models";
-import styles from "./Expenses.module.css";
-import { useAsyncState } from "~/hooks";
-import { expensesActions } from "~/redux";
+import React, { useEffect, useState } from 'react';
+import { PageLoading, Button } from '~/components';
+import { Category } from './Category';
+import { ExpenseEditor } from './ExpenseEditor';
+import { budgetService } from '~/services';
+import { IExpense } from '~/models';
+import styles from './Expenses.module.css';
 
 export interface IExpensesProps {
 	expenses: IExpense[];
-	categoryById: Record<number, ICategory>;
+	isSavingExpense: boolean;
+	savingExpenseSuccess: boolean;
+	saveExpense(expense: IExpense): void;
+	deleteExpense(expense: IExpense): void;
+	clearExpenseSave(): void;
 }
 
-export function Expenses({ expenses, categoryById }: IExpensesProps) {
+export function Expenses({
+	expenses,
+	isSavingExpense,
+	savingExpenseSuccess,
+	saveExpense,
+	deleteExpense,
+	clearExpenseSave
+}: IExpensesProps) {
 	const [showEditor, setShowEditor] = useState(false);
-	const [existingExpense, setExistingExpense] = useState<IExpense | null>(
-		null,
-	);
-
-	const {
-		isLoading: isUpdating,
-		wasSuccessful: updateSuccessful,
-		clear: clearUpdate,
-		invoke: updateExpense,
-	} = useAsyncState(expensesActions.updateExpense);
-
-	const {
-		isLoading: isCreating,
-		wasSuccessful: createSuccessful,
-		clear: clearCreate,
-		invoke: createExpense,
-	} = useAsyncState(expensesActions.createExpense);
+	const [existingExpense, setExistingExpense] = useState<IExpense>(null);
+	const [isSaving, setIsSaving] = useState(false);
 
 	const handleAddClicked = () => {
 		setShowEditor(true);
@@ -42,14 +36,9 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 		setExistingExpense(expense);
 	};
 
-	const handleSaveClicked = (request: IUpdateExpenseRequest) => {
-		clearUpdate();
-		clearCreate();
-		if (existingExpense) {
-			updateExpense({ expenseId: existingExpense.id, request });
-		} else {
-			createExpense({ ...request, year: dateService.getCurrentYear() });
-		}
+	const handleSaveClicked = (expense: IExpense) => {
+		setIsSaving(true);
+		saveExpense(expense);
 	};
 
 	const closeEditor = () => {
@@ -58,29 +47,29 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 	};
 
 	useEffect(() => {
-		if (updateSuccessful || createSuccessful) {
-			clearUpdate();
-			clearCreate();
-			closeEditor();
+		if (!isSavingExpense && isSaving) {
+			setIsSaving(false);
+			if (savingExpenseSuccess) {
+				closeEditor();
+			}
 		}
-	}, [updateSuccessful, createSuccessful]);
+	}, [isSavingExpense, isSaving, savingExpenseSuccess]);
 
 	if (expenses === null) {
-		return <PageLoading message="Loading expenses" />;
+		return <PageLoading message='Loading expenses' />;
 	}
 
 	const expensesByCategory = expenses.reduce(
 		(map, expense) => {
-			const categoryName = categoryById[expense.categoryId]?.name ?? "";
-			const grouping = map[categoryName];
-			if (!grouping) {
-				map[categoryName] = [expense];
+			const grouping = map[expense.category];
+			if (grouping === undefined) {
+				map[expense.category] = [expense];
 			} else {
 				grouping.push(expense);
 			}
 			return map;
 		},
-		{} as Record<string, IExpense[]>,
+		{} as Record<string, IExpense[]>
 	);
 
 	const weeklyExpenses = budgetService.getWeeklyExpenses(expenses);
@@ -92,20 +81,22 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 					{budgetService.format(weeklyExpenses)} every week
 				</h3>
 				<Button
-					variant="primary"
+					variant='primary'
 					className={styles.addButton}
-					onClick={handleAddClicked}
-				>
+					onClick={handleAddClicked}>
 					Add
 				</Button>
 			</div>
 			<div>
 				{Object.keys(expensesByCategory)
 					.sort((a, b) => a.localeCompare(b))
-					.map((category) => (
+					.map(category => (
 						<Category
 							key={category}
 							category={category}
+							isSavingExpense={isSavingExpense}
+							deleteExpense={deleteExpense}
+							clearExpenseSave={clearExpenseSave}
 							expenses={expensesByCategory[category]}
 							onEditExpense={handleEditExpense}
 						/>
@@ -114,7 +105,7 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 			{showEditor && (
 				<ExpenseEditor
 					existingExpense={existingExpense}
-					isSavingExpense={isCreating || isUpdating}
+					isSavingExpense={isSavingExpense}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
 				/>

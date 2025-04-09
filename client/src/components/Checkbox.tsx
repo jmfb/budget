@@ -1,4 +1,5 @@
-import styles from "./Checkbox.module.css";
+import React from 'react';
+import styles from './Checkbox.module.css';
 
 export interface ICheckboxProps {
 	name: string;
@@ -15,7 +16,7 @@ export function Checkbox({ name, value, onChange }: ICheckboxProps) {
 		<label className={styles.label}>
 			<input
 				className={styles.input}
-				type="checkbox"
+				type='checkbox'
 				checked={value}
 				onChange={handleChanged}
 			/>
