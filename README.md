@@ -6,10 +6,9 @@ Cooperative app for tracking weekly expenses against a budget.
 
 * Download [terraform 1.3.1](https://releases.hashicorp.com/terraform/1.3.1/terraform_1.3.1_windows_amd64.zip) and alias to terraform_1.3.1
 * `choco install awscli` (min version 2.1.29)
-* `choco install dotnet` (min version 6.0.8)
-* `choco install dotnet-sdk` (min version 6.0.400)
-* `choco install nodejs` (min version 16.0.0)
-* `npm install -g yarn` (using modern version)
+* `choco install dotnet` (min version 9)
+* `choco install dotnet-sdk` (min version 9)
+* `choco install nvs`
 * [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
 
 ## AWS Bootstrapping
@@ -21,7 +20,7 @@ Cooperative app for tracking weekly expenses against a budget.
 * Create an S3 Bucket `jmfb-terraform` with versioning enabled.
 * Create a DynamoDB table `tfstate-lock` with primary key `LockID` of type string.
 * Register the `buysse.link` domain in Route 53.
-* Create `budget` ECR repository
+* Create `budget2` ECR repository
 
 ## Google OAuth Setup
 
@@ -58,33 +57,6 @@ Start your server watcher:
 ```PowerShell
 cd server
 & dotnet watch run
-```
-
-Start your local dynamo db:
-```PowerShell
-. .\StartDynamoDb.ps1 -pull
-```
-
-Deploy tables and data to dynamo:
-```PowerShell
-. .\CreateTables.ps1
-. .\CreateData.ps1 -userId "TODO: your Google id here"
-```
-
-Run your storybook watcher:
-```PowerShell
-cd client
-& yarn run storybook
-```
-
-## Deployment
-
-```PowerShell
-. .\Release.ps1
-... (review terraform plan) ...
-> apply
-... (review images to delete) ...
-> delete
 ```
 
 ## Maintenance
