@@ -10,6 +10,7 @@ locals {
 resource "aws_lambda_function" "lambda" {
   package_type  = "Image"
   image_uri     = "${local.account_id}.dkr.ecr.us-east-1.amazonaws.com/${local.name}:${local.image_version}"
+  architectures = ["x86_64"]
   function_name = local.name
   description   = "Weekly Budget Tracking V2"
   role          = aws_iam_role.lambda.arn

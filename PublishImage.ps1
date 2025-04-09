@@ -17,7 +17,14 @@ try {
 
 	$image = "budget2"
 	Write-Host "[$(Get-Date)] Building docker image $image..."
-	exec { & docker build --build-arg version=$version -t $image . }
+	exec {
+		& docker buildx build `
+			--platform linux/amd64 `
+			--provenance=false `
+			--build-arg version=$version `
+			-t $image `
+			.
+	}
 
 	Write-Host "[$(Get-Date)] Tagging docker image with version $version..."
 	exec { & docker tag ${image}:latest $repository/${image}:$version }
