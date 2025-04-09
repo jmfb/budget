@@ -3,6 +3,6 @@ locals {
   region     = "us-east-1"
   name       = "budget2"
   api_dns    = "budget-api.buysse.link"
-  ui_dns     = "budget-new.buysse.link"
+  ui_dns     = "budget.buysse.link"
   tags       = { application = "budget2" }
 }
