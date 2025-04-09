@@ -33,7 +33,8 @@ body {
 
 :global(.responsive) > * {
 	width: 100%;
-	margin: 0 auto;
+	margin-left: auto;
+	margin-right: auto;
 	padding: 0;
 }
 

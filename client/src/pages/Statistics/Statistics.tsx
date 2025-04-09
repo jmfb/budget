@@ -7,18 +7,18 @@ import { clsx } from "clsx";
 import styles from "./Statistics.module.css";
 
 export interface IStatisticsProps {
-	incomes: IIncome[];
-	expenses: IExpense[];
+	incomeById: Record<number, IIncome>;
+	expenseById: Record<number, IExpense>;
 	pendingItems: IPendingItem[];
 	isLoading: boolean;
 	weeks: ITransaction[][];
 	allWeeksInYear: ITransaction[][];
-	expenseTransactions: Record<string, ITransaction[]>;
+	expenseTransactions: Record<number, ITransaction[]>;
 }
 
 export function Statistics({
-	incomes,
-	expenses,
+	incomeById,
+	expenseById,
 	pendingItems,
 	isLoading,
 	weeks,
@@ -29,18 +29,21 @@ export function Statistics({
 		return <PageLoading message="Loading transactions" />;
 	}
 
-	const weeklyBudget = budgetService.getWeeklyBudget(incomes, expenses);
+	const weeklyBudget = budgetService.getWeeklyBudget(
+		Object.values(incomeById),
+		Object.values(expenseById),
+	);
 	const totalSpends = weeks.map((week, index) =>
 		budgetService.getTotalSpend(
 			week,
 			index === 0 ? pendingItems : [],
-			incomes,
-			expenses,
+			incomeById,
+			expenseById,
 			expenseTransactions,
 		),
 	);
 	const extraIncomes = weeks.map((week) =>
-		budgetService.getExtraIncome(week, incomes, expenses),
+		budgetService.getExtraIncome(week, incomeById, expenseById),
 	);
 	const totalExtraIncome = extraIncomes.reduce(
 		(total, extraIncome) => total + extraIncome,
@@ -63,11 +66,11 @@ export function Statistics({
 			budgetService.getTotalSpend(
 				week,
 				index === 0 ? pendingItems : [],
-				incomes,
-				expenses,
+				incomeById,
+				expenseById,
 				expenseTransactions,
 			) +
-			budgetService.getExtraIncome(week, incomes, expenses),
+			budgetService.getExtraIncome(week, incomeById, expenseById),
 	);
 	const yearTotal = weekTotals.reduce((sum, amount) => sum + amount, 0);
 
@@ -142,14 +145,15 @@ export function Statistics({
 					)}
 				</>
 			)}
-			{expenses
+			{Object.values(expenseById)
 				.filter((expense) => expense.isDistributed)
+				.sort((a, b) => a.name.localeCompare(b.name))
 				.map((expense) => (
 					<ExpenseBudget
-						key={expense.name}
+						key={expense.id}
 						expense={expense}
 						total={budgetService.getTotal(
-							expenseTransactions[expense.name],
+							expenseTransactions[expense.id],
 						)}
 					/>
 				))}

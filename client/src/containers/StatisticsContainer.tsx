@@ -10,8 +10,8 @@ export default function StatisticsContainer() {
 	const transactions = useAppSelector(
 		(state) => state.transactions.transactions,
 	);
-	const incomes = useAppSelector((state) => state.incomes.incomes);
-	const expenses = useAppSelector((state) => state.expenses.expenses);
+	const incomeById = useAppSelector((state) => state.incomes.incomeById);
+	const expenseById = useAppSelector((state) => state.expenses.expenseById);
 	const pendingItems = useAppSelector(
 		(state) => state.pendingItems.pendingItems,
 	);
@@ -48,8 +48,8 @@ export default function StatisticsContainer() {
 
 	return (
 		<Statistics
-			incomes={incomes}
-			expenses={expenses}
+			incomeById={incomeById}
+			expenseById={expenseById}
 			pendingItems={pendingItems}
 			isLoading={isLoading}
 			weeks={weeks}
