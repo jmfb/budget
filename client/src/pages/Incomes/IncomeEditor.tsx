@@ -28,19 +28,24 @@ export function IncomeEditor({
 		existingIncome?.weeksInterval ?? 1,
 	);
 
+	const handleCancelClicked = () => {
+		if (!isSavingIncome) {
+			onCancel();
+		}
+	};
 	const handleSaveClicked = () => {
 		onSave({ name, amount, weeksInterval });
 	};
 
 	return (
 		<Modal
-			onClose={onCancel}
-			title={existingIncome ? name : "New Income"}
+			onClose={handleCancelClicked}
+			title={existingIncome ? "Edit Income" : "New Income"}
 			buttons={
 				<Buttons>
 					<Button
 						variant="default"
-						onClick={onCancel}
+						onClick={handleCancelClicked}
 						isDisabled={isSavingIncome}
 					>
 						Cancel
@@ -56,16 +61,24 @@ export function IncomeEditor({
 				</Buttons>
 			}
 		>
-			<Input name="Name" autoFocus value={name} onChange={setName} />
+			<Input
+				name="Name"
+				autoFocus={!existingIncome}
+				isDisabled={isSavingIncome}
+				value={name}
+				onChange={setName}
+			/>
 			<CurrencyInput
 				name="Amount"
 				autoFocus={!!existingIncome}
+				isDisabled={isSavingIncome}
 				value={amount}
 				onChange={setAmount}
 			/>
 			<NumberInput
 				name="Weeks Interval"
 				value={weeksInterval}
+				isDisabled={isSavingIncome}
 				onChange={setWeeksInterval}
 			/>
 		</Modal>

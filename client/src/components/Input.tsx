@@ -6,6 +6,7 @@ export interface IInputProps {
 	type?: "text" | "number";
 	placeholder?: string;
 	autoFocus?: boolean;
+	isDisabled?: boolean;
 	onChange(value: string): void;
 	onBlur?(): void;
 }
@@ -16,6 +17,7 @@ export function Input({
 	type,
 	placeholder,
 	autoFocus,
+	isDisabled,
 	onChange,
 	onBlur,
 }: IInputProps) {
@@ -33,6 +35,7 @@ export function Input({
 				onBlur={onBlur}
 				className={styles.input}
 				type={type ?? "text"}
+				disabled={isDisabled}
 				onChange={handleChanged}
 			/>
 		</label>

@@ -6,6 +6,7 @@ export interface ICurrencyInputProps {
 	name: string;
 	value: number;
 	autoFocus?: boolean;
+	isDisabled?: boolean;
 	onChange(value: number): void;
 }
 
@@ -23,6 +24,7 @@ export function CurrencyInput({
 	name,
 	value,
 	autoFocus,
+	isDisabled,
 	onChange,
 }: ICurrencyInputProps) {
 	const [textValue, setTextValue] = useState(
@@ -47,6 +49,7 @@ export function CurrencyInput({
 			autoFocus={autoFocus}
 			value={textValue}
 			placeholder="0.00"
+			isDisabled={isDisabled}
 			onChange={handleTextChanged}
 			onBlur={handleBlurred}
 		/>

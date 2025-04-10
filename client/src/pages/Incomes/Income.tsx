@@ -13,7 +13,11 @@ export interface IIncomeProps {
 export function Income({ income, onEdit }: IIncomeProps) {
 	const { name, amount, weeksInterval } = income;
 	const interval =
-		weeksInterval === 1 ? "every week" : `every ${weeksInterval} weeks`;
+		weeksInterval === 1
+			? "every week"
+			: weeksInterval === 52
+				? "every year"
+				: `every ${weeksInterval} weeks`;
 
 	const { isLoading: isDeleting, invoke: deleteIncome } = useAsyncState(
 		incomesActions.deleteIncome,

@@ -4,6 +4,7 @@ import { Input } from "./Input";
 export interface INumberInputProps {
 	name: string;
 	value: number;
+	isDisabled?: boolean;
 	onChange(value: number): void;
 }
 
@@ -16,7 +17,12 @@ function parse(value: string) {
 	return Number.isNaN(result) ? 0 : result;
 }
 
-export function NumberInput({ name, value, onChange }: INumberInputProps) {
+export function NumberInput({
+	name,
+	value,
+	isDisabled,
+	onChange,
+}: INumberInputProps) {
 	const [textValue, setTextValue] = useState(toString(value));
 
 	const handleTextChanged = (newTextValue: string) => {
@@ -36,6 +42,7 @@ export function NumberInput({ name, value, onChange }: INumberInputProps) {
 			name={name}
 			type="number"
 			value={textValue}
+			isDisabled={isDisabled}
 			onChange={handleTextChanged}
 			onBlur={handleBlurred}
 		/>
