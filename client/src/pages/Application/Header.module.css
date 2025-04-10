@@ -26,6 +26,10 @@
 		border-bottom-color var(--timing-reactive) linear;
 }
 
+.links a:visited {
+	color: #bbb;
+}
+
 .links a.active {
 	border-bottom-color: var(--color-primary);
 }
