@@ -2,6 +2,7 @@ export * from "./IState";
 export * from "./IStore";
 export * from "./IDispatch";
 export * from "./IAsyncActionOptions";
+export * from "./rootReducer";
 export * from "./store";
 export * from "./useAppSelector";
 export * from "./useActions";

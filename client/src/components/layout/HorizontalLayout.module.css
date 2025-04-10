@@ -1,0 +1,61 @@
+.root {
+	display: flex;
+	flex-direction: row;
+}
+
+.root.gap-none {
+	gap: 0;
+}
+
+.root.gap-narrow {
+	gap: 0.25rem;
+}
+
+.root.gap-small {
+	gap: 0.5rem;
+}
+
+.root.gap-default {
+	gap: 1rem;
+}
+
+.root.gap-wide {
+	gap: 10rem;
+}
+
+.vertical-top {
+	align-items: flex-start;
+}
+
+.vertical-center {
+	align-items: center;
+}
+
+.vertical-bottom {
+	align-items: flex-end;
+}
+
+.horizontal-left {
+	justify-content: flex-start;
+}
+
+.horizontal-center {
+	justify-content: center;
+}
+
+.horizontal-right {
+	justify-content: flex-end;
+}
+
+.horizontal-justified {
+	justify-content: space-between;
+}
+
+.full-width > * {
+	flex: 1 1 0;
+	min-width: 0;
+}
+
+.wrap {
+	flex-wrap: wrap;
+}

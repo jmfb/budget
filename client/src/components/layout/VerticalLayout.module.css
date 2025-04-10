@@ -1,0 +1,48 @@
+.root {
+	display: flex;
+	flex-direction: column;
+}
+
+.root.gap-none {
+	gap: 0;
+}
+
+.root.gap-narrow {
+	gap: 0.25rem;
+}
+
+.root.gap-small {
+	gap: 0.5rem;
+}
+
+.root.gap-default {
+	gap: 1rem;
+}
+
+.root.gap-wide {
+	gap: 10rem;
+}
+
+.vertical-top {
+	justify-content: flex-start;
+}
+
+.vertical-center {
+	justify-content: center;
+}
+
+.vertical-bottom {
+	justify-content: flex-end;
+}
+
+.horizontal-left {
+	align-items: flex-start;
+}
+
+.horizontal-center {
+	align-items: center;
+}
+
+.horizontal-right {
+	align-items: flex-end;
+}

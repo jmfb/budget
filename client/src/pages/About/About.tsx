@@ -1,17 +1,28 @@
 import { Link } from "react-router-dom";
-import { MdExitToApp } from "react-icons/md";
-import styles from "./About.module.css";
+import { MdExitToApp, MdFavorite } from "react-icons/md";
+import { HorizontalLayout, VerticalLayout } from "~/components";
 
 export function About() {
 	return (
-		<div>
-			<h1 className={styles.heading}>
-				Jake and Sarah's Budget App
-				<Link to="/sign-out" className={styles["sign-out"]}>
-					Sign Out
-					<MdExitToApp className={styles.exit} />
+		<VerticalLayout>
+			<HorizontalLayout
+				horizontalAlign="justified"
+				verticalAlign="center"
+				width="100%"
+			>
+				<strong>Jake and Sarah's Budget App</strong>
+				<Link to="/sign-out">
+					<HorizontalLayout gap="narrow" verticalAlign="center">
+						<span>Sign Out</span>
+						<MdExitToApp />
+					</HorizontalLayout>
 				</Link>
-			</h1>
-		</div>
+			</HorizontalLayout>
+			<div>Version 2</div>
+			<HorizontalLayout verticalAlign="center" gap="small">
+				<span>For the wife I love</span>
+				<MdFavorite />
+			</HorizontalLayout>
+		</VerticalLayout>
 	);
 }
