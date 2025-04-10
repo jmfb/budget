@@ -1,1 +1,1 @@
-export * from "./Uploads";
+export * from "./UploadsContainer";

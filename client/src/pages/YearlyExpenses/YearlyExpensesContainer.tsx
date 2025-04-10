@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useAsyncState } from "~/hooks";
 import { IExpense } from "~/models";
-import { YearlyExpenses } from "~/pages";
+import { YearlyExpenses } from "./YearlyExpenses";
 import { useAppSelector, expensesActions } from "~/redux";
 import { dateService } from "~/services";
 
@@ -9,7 +9,7 @@ type YearlyExpensesParams = {
 	expenseId: string;
 };
 
-export default function YearlyExpensesContainer() {
+export function YearlyExpensesContainer() {
 	const expenseId = +(useParams<YearlyExpensesParams>().expenseId ?? "");
 
 	const categoryById = useAppSelector(

@@ -1,1 +1,1 @@
-export * from "./YearlyExpenses";
+export * from "./YearlyExpensesContainer";

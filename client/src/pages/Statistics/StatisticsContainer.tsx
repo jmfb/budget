@@ -1,10 +1,10 @@
-import { Statistics } from "~/pages";
+import { Statistics } from "./Statistics";
 import { dateService } from "~/services";
 import { useAppSelector, getExpenseTransactions } from "~/redux";
 import { useMemo } from "react";
 import { ITransaction } from "~/models";
 
-export default function StatisticsContainer() {
+export function StatisticsContainer() {
 	const isLoading = useAppSelector((state) => state.transactions.isLoading);
 	const expenseTransactions = useAppSelector(getExpenseTransactions);
 	const transactions = useAppSelector(

@@ -3,7 +3,7 @@ import { Navigate, useSearchParams } from "react-router-dom";
 import { PageLoading } from "~/components";
 import { useActions, useAppSelector, authSlice } from "~/redux";
 
-export default function AuthenticationContainer() {
+export function AuthenticateContainer() {
 	const { authenticate } = useActions(authSlice);
 	const email = useAppSelector((state) => state.auth.email);
 	const [searchParams] = useSearchParams();

@@ -1,1 +1,1 @@
-export * from "./Statistics";
+export * from "./StatisticsContainer";

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Home } from "~/pages";
+import { Home } from "./Home";
 import {
 	useActions,
 	useAppSelector,
@@ -8,7 +8,7 @@ import {
 } from "~/redux";
 import { dateService } from "~/services";
 
-export default function HomeContainer() {
+export function HomeContainer() {
 	const { setOnlyShowNewItems } = useActions(budgetSlice);
 
 	const isLoadingTransactions = useAppSelector(

@@ -1,7 +1,7 @@
-import { Incomes } from "~/pages";
+import { Incomes } from "./Incomes";
 import { useAppSelector } from "~/redux";
 
-export default function IncomesContainer() {
+export function IncomesContainer() {
 	const incomes = useAppSelector((state) => state.incomes.incomes);
 
 	return <Incomes incomes={incomes} />;

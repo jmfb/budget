@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { SignIn } from "~/pages";
+import { SignIn } from "./SignIn";
 import { useActions, useAppSelector, authSlice } from "~/redux";
 
-export default function SignInContainer() {
+export function SignInContainer() {
 	const { signOut, getAuthenticationUrl } = useActions(authSlice);
 	const isSigningIn = useAppSelector((state) => state.auth.isSigningIn);
 	const url = useAppSelector((state) => state.auth.url);

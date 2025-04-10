@@ -1,24 +1,19 @@
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PageLoading } from "~/components";
-import { ErrorBoundaryContainer } from "~/containers/ErrorBoundary";
+import {
+	ErrorBoundaryContainer,
+	SignInContainer,
+	AuthenticateContainer,
+	ApplicationContainer,
+} from "~/pages";
 import { createStore } from "~/redux";
 import "@csstools/normalize.css";
 import "./index.css";
 
 function start() {
-	const AsyncSignInContainer = lazy(
-		() => import("~/containers/SignInContainer"),
-	);
-	const AsyncAuthenticateContainer = lazy(
-		() => import("~/containers/AuthenticateContainer"),
-	);
-	const AsyncApplicationContainer = lazy(
-		() => import("~/containers/ApplicationContainer"),
-	);
-
 	const store = createStore();
 	const rootContainer = document.getElementById("root");
 	if (!rootContainer) {
@@ -32,15 +27,15 @@ function start() {
 						<Routes>
 							<Route
 								path="/sign-in"
-								element={<AsyncSignInContainer />}
+								element={<SignInContainer />}
 							/>
 							<Route
 								path="/authenticate"
-								element={<AsyncAuthenticateContainer />}
+								element={<AuthenticateContainer />}
 							/>
 							<Route
 								path="*"
-								element={<AsyncApplicationContainer />}
+								element={<ApplicationContainer />}
 							/>
 						</Routes>
 					</Suspense>

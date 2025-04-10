@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { AuthorizedApplicationContainer } from "./AuthorizedApplicationContainer";
 import { useActions, useAppSelector, authSlice } from "~/redux";
 
-export default function ApplicationContainer() {
+export function ApplicationContainer() {
 	const { readLocalStorage } = useActions(authSlice);
 	const redirectToSignIn = useAppSelector(
 		(state) => state.auth.redirectToSignIn,

@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
-import { Search } from "~/pages";
+import { Search } from "./Search";
 import { useAppSelector, getExpenseTransactions } from "~/redux";
 import { budgetService } from "~/services";
 
-export default function SearchContainer() {
+export function SearchContainer() {
 	const allTransactions = useAppSelector(
 		(state) => state.transactions.transactions,
 	);

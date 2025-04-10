@@ -1,30 +1,30 @@
 import { ReactNode, PureComponent, ErrorInfo } from "react";
 import { connect } from "react-redux";
-import { ErrorView } from "~/pages";
+import { ErrorView } from "./ErrorView";
 import { IErrorReport } from "~/models";
 import { IState, errorSlice } from "~/redux";
 
-interface IErrorBoundaryOwnProps {
+export interface IErrorBoundaryOwnProps {
 	children?: ReactNode;
 }
 
-interface IErrorBoundaryStateProps {
+export interface IErrorBoundaryStateProps {
 	showError: boolean;
 	action?: string;
 	context?: string;
 	message?: string;
 }
 
-interface IErrorBoundaryDispatchProps {
+export interface IErrorBoundaryDispatchProps {
 	dismissError(): void;
 	reportError(errorReport: IErrorReport): void;
 }
 
-type IErrorBoundaryProps = IErrorBoundaryOwnProps &
+export type IErrorBoundaryProps = IErrorBoundaryOwnProps &
 	IErrorBoundaryStateProps &
 	IErrorBoundaryDispatchProps;
 
-interface IErrorBoundaryState {
+export interface IErrorBoundaryState {
 	hasBoundaryError: boolean;
 }
 
@@ -44,7 +44,7 @@ const mapDispatchToProps: IErrorBoundaryDispatchProps = {
 	...errorSlice.actions,
 };
 
-class ErrorBoundary extends PureComponent<
+export class ErrorBoundary extends PureComponent<
 	IErrorBoundaryProps,
 	IErrorBoundaryState
 > {

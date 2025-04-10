@@ -1,7 +1,7 @@
-import { Expenses } from "~/pages";
+import { Expenses } from "./Expenses";
 import { useAppSelector } from "~/redux";
 
-export default function ExpensesContainer() {
+export function ExpensesContainer() {
 	const expenses = useAppSelector((state) => state.expenses.expenses);
 	const categoryById = useAppSelector(
 		(state) => state.categories.categoryById,

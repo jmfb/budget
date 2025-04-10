@@ -1,7 +1,7 @@
-import { Uploads } from "~/pages";
+import { Uploads } from "./Uploads";
 import { useActions, useAppSelector, budgetSlice } from "~/redux";
 
-export default function UploadsContainer() {
+export function UploadsContainer() {
 	const { getAllText, parseCsv, mergeTransaction, clearUpload, clearLogs } =
 		useActions(budgetSlice);
 	const isReadingFile = useAppSelector((state) => state.budget.isReadingFile);
