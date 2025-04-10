@@ -25,6 +25,13 @@ export default defineConfig({
 						"redux",
 						"redux-thunk",
 					],
+					addons: [
+						"react-icons",
+						"react-modal",
+						"react-select",
+						"react-switch",
+					],
+					utility: ["clsx", "csv-parse", "file-saver"],
 				},
 			},
 		},
