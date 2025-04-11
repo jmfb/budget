@@ -1,9 +1,8 @@
 import { useAsyncState } from "~/hooks";
-import { Button } from "~/components";
+import { Button, HorizontalLayout } from "~/components";
 import { IIncome } from "~/models";
 import { budgetService } from "~/services";
 import { incomesActions } from "~/redux";
-import styles from "./Income.module.css";
 
 export interface IIncomeProps {
 	income: IIncome;
@@ -28,25 +27,23 @@ export function Income({ income, onEdit }: IIncomeProps) {
 	};
 
 	return (
-		<div className={styles.root}>
-			<span className={styles.text}>
+		<HorizontalLayout verticalAlign="center" horizontalAlign="justified">
+			<span>
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
-			<Button
-				variant="default"
-				className={styles.editButton}
-				onClick={onEdit}
-			>
-				Edit
-			</Button>
-			<Button
-				variant="danger"
-				onClick={handleDeleteClicked}
-				isProcessing={isDeleting}
-				isDisabled={isDeleting}
-			>
-				Delete
-			</Button>
-		</div>
+			<HorizontalLayout>
+				<Button variant="default" onClick={onEdit}>
+					Edit
+				</Button>
+				<Button
+					variant="danger"
+					onClick={handleDeleteClicked}
+					isProcessing={isDeleting}
+					isDisabled={isDeleting}
+				>
+					Delete
+				</Button>
+			</HorizontalLayout>
+		</HorizontalLayout>
 	);
 }

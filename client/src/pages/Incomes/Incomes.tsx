@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { PageLoading, Button } from "~/components";
+import {
+	PageLoading,
+	Button,
+	VerticalLayout,
+	HorizontalLayout,
+} from "~/components";
 import { Income } from "./Income";
 import { IncomeEditor } from "./IncomeEditor";
 import { budgetService, dateService } from "~/services";
 import { IIncome, IUpdateIncomeRequest } from "~/models";
-import styles from "./Incomes.module.css";
 import { useAsyncState } from "~/hooks";
 import { incomesActions } from "~/redux";
 
@@ -69,22 +73,23 @@ export function Incomes({ incomes }: IIncomesProps) {
 
 	const weeklyIncomes = budgetService.getWeeklyIncomes(incomes);
 	return (
-		<div>
-			<div className={styles.header}>
-				<h2 className={styles.heading}>Incomes</h2>
-				{weeklyIncomes > 0 && (
-					<h3 className={styles.heading}>
-						{budgetService.format(weeklyIncomes)} every week
-					</h3>
-				)}
-				<Button
-					variant="primary"
-					className={styles.addButton}
-					onClick={handleAddClicked}
-				>
+		<VerticalLayout>
+			<HorizontalLayout
+				verticalAlign="center"
+				horizontalAlign="justified"
+			>
+				<HorizontalLayout verticalAlign="center">
+					<h2>Incomes</h2>
+					{weeklyIncomes > 0 && (
+						<h3>
+							{budgetService.format(weeklyIncomes)} every week
+						</h3>
+					)}
+				</HorizontalLayout>
+				<Button variant="primary" onClick={handleAddClicked}>
 					Add
 				</Button>
-			</div>
+			</HorizontalLayout>
 			{incomes.map((income) => (
 				<Income
 					key={income.name}
@@ -93,14 +98,16 @@ export function Incomes({ incomes }: IIncomesProps) {
 				/>
 			))}
 			{incomes.length === 0 && (
-				<Button
-					variant="default"
-					isProcessing={isImporting}
-					isDisabled={isImporting}
-					onClick={importPreviousYearIncomes}
-				>
-					Import incomes from {new Date().getFullYear() - 1}
-				</Button>
+				<HorizontalLayout>
+					<Button
+						variant="default"
+						isProcessing={isImporting}
+						isDisabled={isImporting}
+						onClick={importPreviousYearIncomes}
+					>
+						Import incomes from {new Date().getFullYear() - 1}
+					</Button>
+				</HorizontalLayout>
 			)}
 			{showEditor && (
 				<IncomeEditor
@@ -110,6 +117,6 @@ export function Incomes({ incomes }: IIncomesProps) {
 					onCancel={closeEditor}
 				/>
 			)}
-		</div>
+		</VerticalLayout>
 	);
 }

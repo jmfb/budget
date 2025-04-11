@@ -40,6 +40,9 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 		invoke: createExpense,
 	} = useAsyncState(expensesActions.createExpense);
 
+	const { isLoading: isImporting, invoke: importPreviousYearExpenses } =
+		useAsyncState(expensesActions.importPreviousYearExpenses);
+
 	const handleAddClicked = () => {
 		setShowEditor(true);
 		setDefaultCategoryId(null);
@@ -122,6 +125,18 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 					onEditExpense={handleEditExpense}
 				/>
 			))}
+			{expenses.length === 0 && (
+				<HorizontalLayout>
+					<Button
+						variant="default"
+						isProcessing={isImporting}
+						isDisabled={isImporting}
+						onClick={importPreviousYearExpenses}
+					>
+						Import expenses from {new Date().getFullYear() - 1}
+					</Button>
+				</HorizontalLayout>
+			)}
 			{showEditor && (
 				<ExpenseEditor
 					existingExpense={existingExpense}

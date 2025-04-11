@@ -46,3 +46,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const standard: Story = {};
+
+export const empty: Story = { args: { expenses: [] } };
