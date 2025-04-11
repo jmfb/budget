@@ -30,6 +30,7 @@ export default defineConfig({
 						"react-modal",
 						"react-select",
 						"react-switch",
+						"react-tabs",
 					],
 					utility: ["clsx", "csv-parse", "file-saver"],
 				},

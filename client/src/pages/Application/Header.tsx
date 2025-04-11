@@ -24,20 +24,12 @@ export function Header() {
 						Stats
 					</NavLink>
 					<NavLink
-						to="/incomes"
+						to="/configure"
 						className={(props) =>
 							props.isActive ? styles.active : ""
 						}
 					>
-						Income
-					</NavLink>
-					<NavLink
-						to="/expenses"
-						className={(props) =>
-							props.isActive ? styles.active : ""
-						}
-					>
-						Expense
+						Configure
 					</NavLink>
 					<NavLink
 						to="/uploads"

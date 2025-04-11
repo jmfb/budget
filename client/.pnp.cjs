@@ -66,6 +66,7 @@ const RAW_RUNTIME_STATE =
           ["react-router-dom", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:7.5.0"],\
           ["react-select", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:5.10.1"],\
           ["react-switch", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:7.1.0"],\
+          ["react-tabs", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:6.1.0"],\
           ["redux", "npm:5.0.1"],\
           ["redux-thunk", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:3.1.0"],\
           ["storybook", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:8.6.12"],\
@@ -3366,6 +3367,7 @@ const RAW_RUNTIME_STATE =
           ["react-router-dom", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:7.5.0"],\
           ["react-select", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:5.10.1"],\
           ["react-switch", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:7.1.0"],\
+          ["react-tabs", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:6.1.0"],\
           ["redux", "npm:5.0.1"],\
           ["redux-thunk", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:3.1.0"],\
           ["storybook", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:8.6.12"],\
@@ -6497,6 +6499,30 @@ const RAW_RUNTIME_STATE =
           "@types/react-dom",\
           "@types/react",\
           "react-dom",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["react-tabs", [\
+      ["npm:6.1.0", {\
+        "packageLocation": "./.yarn/cache/react-tabs-npm-6.1.0-ef7e8a6c3e-3e01f478e1.zip/node_modules/react-tabs/",\
+        "packageDependencies": [\
+          ["react-tabs", "npm:6.1.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:6.1.0", {\
+        "packageLocation": "./.yarn/__virtual__/react-tabs-virtual-d1440b09b2/0/cache/react-tabs-npm-6.1.0-ef7e8a6c3e-3e01f478e1.zip/node_modules/react-tabs/",\
+        "packageDependencies": [\
+          ["@types/react", "npm:19.1.0"],\
+          ["clsx", "npm:2.1.1"],\
+          ["prop-types", "npm:15.8.1"],\
+          ["react", "npm:19.1.0"],\
+          ["react-tabs", "virtual:3b18eee81630f7d9dfe8ae12ead3a7e9ea055844c66ef688f2ac104c6069faaa94b7724b55fb509a79088044c68bf01dc9143d31e02b978dde3a84ff99781ea1#npm:6.1.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/react",\
           "react"\
         ],\
         "linkType": "HARD"\

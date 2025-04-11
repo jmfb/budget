@@ -4,8 +4,7 @@ import { Header } from "./Header";
 import {
 	HomeContainer,
 	StatisticsContainer,
-	IncomesContainer,
-	ExpensesContainer,
+	Configure,
 	UploadsContainer,
 	YearlyExpensesContainer,
 	SignOutContainer,
@@ -53,11 +52,7 @@ export function AuthorizedApplicationContainer() {
 							path="/statistics"
 							element={<StatisticsContainer />}
 						/>
-						<Route path="/incomes" element={<IncomesContainer />} />
-						<Route
-							path="/expenses"
-							element={<ExpensesContainer />}
-						/>
+						<Route path="/configure" element={<Configure />} />
 						<Route path="/uploads" element={<UploadsContainer />} />
 						<Route
 							path="/yearly-expenses/:expenseId"
