@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
 	Modal,
 	Button,
-	Buttons,
 	Input,
 	CurrencyInput,
 	NumberInput,
@@ -71,7 +70,7 @@ export function ExpenseEditor({
 			onClose={handleCancelClicked}
 			title={existingExpense ? "Edit Expense" : "New Expense"}
 			buttons={
-				<Buttons>
+				<>
 					<Button
 						variant="default"
 						onClick={handleCancelClicked}
@@ -87,7 +86,7 @@ export function ExpenseEditor({
 					>
 						Save
 					</Button>
-				</Buttons>
+				</>
 			}
 		>
 			<Input

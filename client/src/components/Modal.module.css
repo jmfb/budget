@@ -43,20 +43,10 @@
 	margin-top: 0.5rem;
 }
 
-.buttons {
-	display: flex;
-	flex-direction: row;
+.footer {
 	background-color: #e5e0e0;
 	padding: 1rem;
 	margin-top: 1rem;
 	border-bottom-left-radius: 8px;
 	border-bottom-right-radius: 8px;
-}
-
-.deleteButton {
-	margin-right: 5rem;
-}
-
-.primaryButtons {
-	margin-left: auto;
 }

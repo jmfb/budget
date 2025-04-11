@@ -12,5 +12,4 @@ export * from "./NumberInput";
 export * from "./FileInput";
 export * from "./Checkbox";
 export * from "./CategorySelect";
-export * from "./Buttons";
 export * from "./Switch";

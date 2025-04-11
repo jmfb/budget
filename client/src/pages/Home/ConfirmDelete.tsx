@@ -1,4 +1,4 @@
-import { Modal, Button, Buttons } from "~/components";
+import { Modal, Button } from "~/components";
 
 export interface IConfirmDeleteProps {
 	onConfirmDelete(): void;
@@ -14,14 +14,14 @@ export function ConfirmDelete({
 			onClose={onCancel}
 			title="Confirm Delete"
 			buttons={
-				<Buttons>
+				<>
 					<Button variant="default" onClick={onCancel}>
 						Cancel
 					</Button>
 					<Button variant="danger" onClick={onConfirmDelete}>
 						Delete
 					</Button>
-				</Buttons>
+				</>
 			}
 		>
 			<div>Are you sure you want to delete this transaction?</div>

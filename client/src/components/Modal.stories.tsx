@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Modal } from "./Modal";
-import { Button, HorizontalLayout } from "~/components";
+import { Button } from "~/components";
 import { fn } from "@storybook/test";
 
 const meta = {
@@ -15,10 +15,10 @@ const meta = {
 			</div>
 		),
 		buttons: (
-			<HorizontalLayout>
+			<>
 				<Button variant="default">Cancel</Button>
 				<Button variant="primary">Save</Button>
-			</HorizontalLayout>
+			</>
 		),
 		onClose: fn(),
 	},

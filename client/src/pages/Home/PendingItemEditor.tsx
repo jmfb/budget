@@ -2,10 +2,10 @@ import { useState } from "react";
 import {
 	Modal,
 	Button,
-	Buttons,
 	Input,
 	CurrencyInput,
 	CategorySelect,
+	HorizontalLayout,
 } from "~/components";
 import { IncomeSelect } from "./IncomeSelect";
 import { ExpenseSelect } from "./ExpenseSelect";
@@ -101,7 +101,7 @@ export function PendingItemEditor({
 				)
 			}
 			buttons={
-				<Buttons>
+				<>
 					<Button
 						variant="default"
 						onClick={onCancel}
@@ -117,13 +117,13 @@ export function PendingItemEditor({
 					>
 						Save
 					</Button>
-				</Buttons>
+				</>
 			}
 		>
 			<Input name="Name" autoFocus value={name} onChange={setName} />
 			<CurrencyInput name="Amount" value={amount} onChange={setAmount} />
 			{!showExpenseSelect && !showIncomeSelect && !showCategorySelect && (
-				<Buttons>
+				<HorizontalLayout>
 					<Button variant="default" onClick={handleAddExpenseClicked}>
 						Expense
 					</Button>
@@ -136,7 +136,7 @@ export function PendingItemEditor({
 					>
 						Category
 					</Button>
-				</Buttons>
+				</HorizontalLayout>
 			)}
 			{showCategorySelect && (
 				<CategorySelect

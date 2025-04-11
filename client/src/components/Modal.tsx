@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import ReactModal from "react-modal";
+import { HorizontalLayout } from "~/components";
 import styles from "./Modal.module.css";
 
 export interface IModalProps {
@@ -27,12 +28,13 @@ export function Modal({
 		>
 			{title && <div className={styles.title}>{title}</div>}
 			<div className={styles.body}>{children}</div>
-			<div className={styles.buttons}>
-				{deleteButton && (
-					<div className={styles.deleteButton}>{deleteButton}</div>
-				)}
-				<div className={styles.primaryButtons}>{buttons}</div>
-			</div>
+			<HorizontalLayout
+				className={styles["footer"]}
+				horizontalAlign={deleteButton ? "justified" : "right"}
+			>
+				{deleteButton}
+				<HorizontalLayout>{buttons}</HorizontalLayout>
+			</HorizontalLayout>
 		</ReactModal>
 	);
 }

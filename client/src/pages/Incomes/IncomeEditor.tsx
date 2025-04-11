@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-	Modal,
-	Button,
-	Buttons,
-	Input,
-	CurrencyInput,
-	NumberInput,
-} from "~/components";
+import { Modal, Button, Input, CurrencyInput, NumberInput } from "~/components";
 import { IIncome, IUpdateIncomeRequest } from "~/models";
 
 export interface IIncomeEditorProps {
@@ -42,7 +35,7 @@ export function IncomeEditor({
 			onClose={handleCancelClicked}
 			title={existingIncome ? "Edit Income" : "New Income"}
 			buttons={
-				<Buttons>
+				<>
 					<Button
 						variant="default"
 						onClick={handleCancelClicked}
@@ -58,7 +51,7 @@ export function IncomeEditor({
 					>
 						Save
 					</Button>
-				</Buttons>
+				</>
 			}
 		>
 			<Input

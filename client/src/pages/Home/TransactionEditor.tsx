@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Modal, Button, Buttons, Input, CategorySelect } from "~/components";
+import {
+	Modal,
+	Button,
+	Input,
+	CategorySelect,
+	HorizontalLayout,
+} from "~/components";
 import { IncomeSelect } from "./IncomeSelect";
 import { ExpenseSelect } from "./ExpenseSelect";
 import { ConfirmDelete } from "./ConfirmDelete";
@@ -96,7 +102,7 @@ export function TransactionEditor({
 				</Button>
 			}
 			buttons={
-				<Buttons>
+				<>
 					<Button
 						variant="default"
 						onClick={onCancel}
@@ -112,7 +118,7 @@ export function TransactionEditor({
 					>
 						Save
 					</Button>
-				</Buttons>
+				</>
 			}
 		>
 			<div>
@@ -125,14 +131,14 @@ export function TransactionEditor({
 			/>
 			<Input name="Note" value={note} onChange={setNote} />
 			{!showExpenseSelect && !showIncomeSelect && (
-				<Buttons>
+				<HorizontalLayout>
 					<Button variant="default" onClick={handleAddExpenseClicked}>
 						Expense
 					</Button>
 					<Button variant="default" onClick={handleAddIncomeClicked}>
 						Income
 					</Button>
-				</Buttons>
+				</HorizontalLayout>
 			)}
 			{showIncomeSelect && (
 				<IncomeSelect
