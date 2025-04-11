@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Switch } from "~/components";
+import { Switch, VerticalLayout } from "~/components";
 import { PendingItems } from "./PendingItems";
 import { Transaction } from "./Transaction";
 import { TransactionEditorContainer } from "./TransactionEditorContainer";
@@ -65,7 +65,7 @@ export function Transactions({
 	};
 
 	return (
-		<div>
+		<VerticalLayout gap="small">
 			{includePendingItems && <PendingItems />}
 			{variant === "home" && (
 				<div className={styles.onlyShowNewItems}>
@@ -106,6 +106,6 @@ export function Transactions({
 					onClose={handleCloseEditor}
 				/>
 			)}
-		</div>
+		</VerticalLayout>
 	);
 }

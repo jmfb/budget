@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdAdd, MdSearch } from "react-icons/md";
-import { Button } from "~/components";
+import { Button, HorizontalLayout, VerticalLayout } from "~/components";
 import { PendingItem } from "./PendingItem";
 import { PendingItemEditorContainer } from "./PendingItemEditorContainer";
 import { IPendingItem } from "~/models";
@@ -41,23 +41,26 @@ export function PendingItems() {
 	const totalAmount = budgetService.getTotalPendingSpend(pendingItems);
 
 	return (
-		<div>
-			<div className={styles.header}>
-				<h3>Pending Transactions</h3>
-				{pendingItems.length !== 0 && (
-					<span className={styles.amount}>
-						{budgetService.format(totalAmount)}
-					</span>
-				)}
-				<div className={styles.buttons}>
+		<VerticalLayout gap="small">
+			<HorizontalLayout
+				verticalAlign="center"
+				horizontalAlign="justified"
+			>
+				<HorizontalLayout verticalAlign="center">
+					<h3>Pending Transactions</h3>
+					{pendingItems.length !== 0 && (
+						<span>{budgetService.format(totalAmount)}</span>
+					)}
+				</HorizontalLayout>
+				<HorizontalLayout verticalAlign="center">
 					<Link to="/search">
 						<MdSearch className={styles.search} />
 					</Link>
 					<Button variant="primary" onClick={handleAddPendingItem}>
 						<MdAdd className={styles.addIcon} />
 					</Button>
-				</div>
-			</div>
+				</HorizontalLayout>
+			</HorizontalLayout>
 			{[...pendingItems]
 				.sort((a, b) => a.amount - b.amount)
 				.map((pendingItem) => (
@@ -81,6 +84,6 @@ export function PendingItems() {
 					onClose={handleCloseEditor}
 				/>
 			)}
-		</div>
+		</VerticalLayout>
 	);
 }

@@ -12,6 +12,7 @@ import { IExpense, IUpdateExpenseRequest } from "~/models";
 
 export interface IExpenseEditorProps {
 	existingExpense: IExpense | null;
+	defaultCategoryId?: number | null;
 	isSavingExpense: boolean;
 	mustRemainYearlyExpense?: boolean;
 	onSave(expense: IUpdateExpenseRequest): void;
@@ -20,6 +21,7 @@ export interface IExpenseEditorProps {
 
 export function ExpenseEditor({
 	existingExpense,
+	defaultCategoryId,
 	isSavingExpense,
 	mustRemainYearlyExpense,
 	onSave,
@@ -31,7 +33,7 @@ export function ExpenseEditor({
 		existingExpense?.monthsInterval ?? 1,
 	);
 	const [categoryId, setCategoryId] = useState(
-		existingExpense?.categoryId ?? null,
+		existingExpense?.categoryId ?? defaultCategoryId ?? null,
 	);
 	const [isDistributed, setIsDistributed] = useState(
 		existingExpense?.isDistributed ?? false,

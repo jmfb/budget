@@ -26,6 +26,10 @@ type Story = StoryObj<typeof meta>;
 
 export const newExpense: Story = {};
 
+export const newExpenseWithDefaultCategory: Story = {
+	args: { defaultCategoryId: 2 },
+};
+
 export const existing: Story = {
 	args: {
 		existingExpense: {

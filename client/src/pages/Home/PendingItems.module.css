@@ -4,10 +4,6 @@
 	align-items: center;
 }
 
-.amount {
-	margin-left: 1rem;
-}
-
 .buttons {
 	margin-left: auto;
 	display: flex;

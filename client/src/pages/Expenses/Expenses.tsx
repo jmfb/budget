@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import { PageLoading, Button } from "~/components";
+import {
+	PageLoading,
+	Button,
+	VerticalLayout,
+	HorizontalLayout,
+} from "~/components";
 import { Category } from "./Category";
 import { ExpenseEditor } from "./ExpenseEditor";
 import { budgetService, dateService } from "~/services";
 import { ICategory, IExpense, IUpdateExpenseRequest } from "~/models";
-import styles from "./Expenses.module.css";
 import { useAsyncState } from "~/hooks";
 import { expensesActions } from "~/redux";
 
@@ -16,6 +20,9 @@ export interface IExpensesProps {
 export function Expenses({ expenses, categoryById }: IExpensesProps) {
 	const [showEditor, setShowEditor] = useState(false);
 	const [existingExpense, setExistingExpense] = useState<IExpense | null>(
+		null,
+	);
+	const [defaultCategoryId, setDefaultCategoryId] = useState<number | null>(
 		null,
 	);
 
@@ -35,8 +42,12 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 
 	const handleAddClicked = () => {
 		setShowEditor(true);
+		setDefaultCategoryId(null);
 	};
-
+	const createAddCategoryExpenseHandler = (categoryId: number) => () => {
+		setShowEditor(true);
+		setDefaultCategoryId(categoryId);
+	};
 	const handleEditExpense = (expense: IExpense) => {
 		setShowEditor(true);
 		setExistingExpense(expense);
@@ -55,6 +66,7 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 	const closeEditor = () => {
 		setShowEditor(false);
 		setExistingExpense(null);
+		setDefaultCategoryId(null);
 	};
 
 	useEffect(() => {
@@ -69,56 +81,56 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 		return <PageLoading message="Loading expenses" />;
 	}
 
-	const expensesByCategory = expenses.reduce(
+	const expensesByCategoryId = expenses.reduce(
 		(map, expense) => {
-			const categoryName = categoryById[expense.categoryId]?.name ?? "";
-			const grouping = map[categoryName];
-			if (!grouping) {
-				map[categoryName] = [expense];
+			if (map[expense.categoryId]) {
+				map[expense.categoryId].push(expense);
 			} else {
-				grouping.push(expense);
+				map[expense.categoryId] = [expense];
 			}
 			return map;
 		},
-		{} as Record<string, IExpense[]>,
+		{} as Record<number, IExpense[]>,
 	);
+	const sortedCategoryIds = Object.keys(expensesByCategoryId)
+		.map(Number)
+		.sort((a, b) =>
+			categoryById[a].name.localeCompare(categoryById[b].name),
+		);
 
 	const weeklyExpenses = budgetService.getWeeklyExpenses(expenses);
 	return (
-		<div>
-			<div className={styles.header}>
-				<h2 className={styles.heading}>Expenses</h2>
-				<h3 className={styles.heading}>
-					{budgetService.format(weeklyExpenses)} every week
-				</h3>
-				<Button
-					variant="primary"
-					className={styles.addButton}
-					onClick={handleAddClicked}
-				>
+		<VerticalLayout>
+			<HorizontalLayout
+				verticalAlign="center"
+				horizontalAlign="justified"
+			>
+				<HorizontalLayout verticalAlign="center">
+					<h2>Expenses</h2>
+					<h3>{budgetService.format(weeklyExpenses)} every week</h3>
+				</HorizontalLayout>
+				<Button variant="primary" onClick={handleAddClicked}>
 					Add
 				</Button>
-			</div>
-			<div>
-				{Object.keys(expensesByCategory)
-					.sort((a, b) => a.localeCompare(b))
-					.map((category) => (
-						<Category
-							key={category}
-							category={category}
-							expenses={expensesByCategory[category]}
-							onEditExpense={handleEditExpense}
-						/>
-					))}
-			</div>
+			</HorizontalLayout>
+			{sortedCategoryIds.map((categoryId) => (
+				<Category
+					key={categoryId}
+					category={categoryById[categoryId].name}
+					expenses={expensesByCategoryId[categoryId]}
+					onAddExpense={createAddCategoryExpenseHandler(categoryId)}
+					onEditExpense={handleEditExpense}
+				/>
+			))}
 			{showEditor && (
 				<ExpenseEditor
 					existingExpense={existingExpense}
+					defaultCategoryId={defaultCategoryId}
 					isSavingExpense={isCreating || isUpdating}
 					onSave={handleSaveClicked}
 					onCancel={closeEditor}
 				/>
 			)}
-		</div>
+		</VerticalLayout>
 	);
 }
