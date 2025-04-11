@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
-import { LoadingIcon } from "./LoadingIcon";
+import { LoadingIcon } from "~/components";
 import { clsx } from "clsx";
 import styles from "./Button.module.css";
 

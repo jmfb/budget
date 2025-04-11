@@ -1,4 +1,4 @@
-import { LoadingIcon } from "./LoadingIcon";
+import { LoadingIcon } from "~/components";
 import { ButtonVariant } from "./Button";
 import { clsx } from "clsx";
 import styles from "./FileInput.module.css";

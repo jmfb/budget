@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Card } from "./Card";
-import { Button } from "./Button";
+import { Button } from "~/components";
 
 const meta = {
 	component: Card,
