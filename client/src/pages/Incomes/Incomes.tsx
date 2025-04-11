@@ -30,15 +30,16 @@ export function Incomes({ incomes }: IIncomesProps) {
 		invoke: createIncome,
 	} = useAsyncState(incomesActions.createIncome);
 
+	const { isLoading: isImporting, invoke: importPreviousYearIncomes } =
+		useAsyncState(incomesActions.importPreviousYearIncomes);
+
 	const handleAddClicked = () => {
 		setShowEditor(true);
 	};
-
 	const createEditClickedHandler = (income: IIncome) => () => {
 		setShowEditor(true);
 		setExistingIncome(income);
 	};
-
 	const handleSaveClicked = (request: IUpdateIncomeRequest) => {
 		clearUpdate();
 		clearCreate();
@@ -71,9 +72,11 @@ export function Incomes({ incomes }: IIncomesProps) {
 		<div>
 			<div className={styles.header}>
 				<h2 className={styles.heading}>Incomes</h2>
-				<h3 className={styles.heading}>
-					{budgetService.format(weeklyIncomes)} every week
-				</h3>
+				{weeklyIncomes > 0 && (
+					<h3 className={styles.heading}>
+						{budgetService.format(weeklyIncomes)} every week
+					</h3>
+				)}
 				<Button
 					variant="primary"
 					className={styles.addButton}
@@ -82,15 +85,23 @@ export function Incomes({ incomes }: IIncomesProps) {
 					Add
 				</Button>
 			</div>
-			<div>
-				{incomes.map((income) => (
-					<Income
-						key={income.name}
-						income={income}
-						onEdit={createEditClickedHandler(income)}
-					/>
-				))}
-			</div>
+			{incomes.map((income) => (
+				<Income
+					key={income.name}
+					income={income}
+					onEdit={createEditClickedHandler(income)}
+				/>
+			))}
+			{incomes.length === 0 && (
+				<Button
+					variant="default"
+					isProcessing={isImporting}
+					isDisabled={isImporting}
+					onClick={importPreviousYearIncomes}
+				>
+					Import incomes from {new Date().getFullYear() - 1}
+				</Button>
+			)}
 			{showEditor && (
 				<IncomeEditor
 					existingIncome={existingIncome!}
