@@ -44,7 +44,6 @@ export function ExpenseEditor({
 		}
 		setIsDistributed(value);
 	};
-
 	const handleSaveClicked = () => {
 		onSave({
 			name,
@@ -53,6 +52,11 @@ export function ExpenseEditor({
 			categoryId: categoryId ?? 0,
 			isDistributed,
 		});
+	};
+	const handleCancelClicked = () => {
+		if (!isSavingExpense) {
+			onCancel();
+		}
 	};
 
 	const isValidName = !!name;
@@ -64,13 +68,13 @@ export function ExpenseEditor({
 
 	return (
 		<Modal
-			onClose={onCancel}
-			title={existingExpense ? name : "New Expense"}
+			onClose={handleCancelClicked}
+			title={existingExpense ? "Edit Expense" : "New Expense"}
 			buttons={
 				<Buttons>
 					<Button
 						variant="default"
-						onClick={onCancel}
+						onClick={handleCancelClicked}
 						isDisabled={isSavingExpense}
 					>
 						Cancel
@@ -86,11 +90,18 @@ export function ExpenseEditor({
 				</Buttons>
 			}
 		>
-			<Input name="Name" autoFocus value={name} onChange={setName} />
+			<Input
+				name="Name"
+				autoFocus={!existingExpense}
+				value={name}
+				isDisabled={isSavingExpense}
+				onChange={setName}
+			/>
 			<CurrencyInput
 				name="Amount"
 				autoFocus={!!existingExpense}
 				value={amount}
+				isDisabled={isSavingExpense}
 				onChange={setAmount}
 			/>
 			{!mustRemainYearlyExpense && (
@@ -98,18 +109,24 @@ export function ExpenseEditor({
 					<Checkbox
 						name="Is Distributed Over Entire Year?"
 						value={isDistributed}
+						isDisabled={isSavingExpense}
 						onChange={handleIsDistributedChanged}
 					/>
 					{!isDistributed && (
 						<NumberInput
 							name="Months Interval"
 							value={monthsInterval}
+							isDisabled={isSavingExpense}
 							onChange={setMonthsInterval}
 						/>
 					)}
 				</>
 			)}
-			<CategorySelect categoryId={categoryId} onChange={setCategoryId} />
+			<CategorySelect
+				categoryId={categoryId}
+				isDisabled={isSavingExpense}
+				onChange={setCategoryId}
+			/>
 		</Modal>
 	);
 }

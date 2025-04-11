@@ -9,4 +9,39 @@
 
 .button {
 	display: inline-table;
+	position: relative;
+}
+
+.button.disabled {
+	cursor: not-allowed;
+}
+
+.button.disabled:hover,
+.button.disabled:focus,
+.button.disabled:active {
+	box-shadow: none;
+}
+
+.button.disabled:hover,
+.button.disabled:focus {
+	background-color: #bbb;
+}
+
+.button .icon-container {
+	position: absolute;
+	display: flex;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.processing {
+	opacity: 0;
+}
+
+.button :global(.loading-icon) {
+	margin: auto !important;
+	width: 1rem;
+	height: 1rem;
 }

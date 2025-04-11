@@ -42,11 +42,17 @@ export function FileInput({
 					buttonStyles.button,
 					buttonStyles[variant ?? "default"],
 					styles.button,
-					isProcessing && buttonStyles.processing,
+					isDisabled && styles.disabled,
 				)}
 			>
-				{children}
-				{isProcessing && <LoadingIcon />}
+				<span className={clsx(isProcessing && styles.processing)}>
+					{children}
+				</span>
+				{isProcessing && (
+					<span className={styles["icon-container"]}>
+						<LoadingIcon />
+					</span>
+				)}
 			</div>
 		</label>
 	);
