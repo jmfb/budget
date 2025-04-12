@@ -5,6 +5,7 @@ import { Category } from "./Category";
 import { useAsyncState, useTriggerEffect } from "~/hooks";
 import { categoriesActions, useAppSelector } from "~/redux";
 import { ICategory, IUpdateCategoryRequest } from "~/models";
+import styles from "./Categories.module.css";
 
 export function Categories() {
 	const [isEditing, setIsEditing] = useState(false);
@@ -76,13 +77,15 @@ export function Categories() {
 					Add
 				</Button>
 			</HorizontalLayout>
-			{categories.map((category) => (
-				<Category
-					key={category.id}
-					category={category}
-					onEdit={createEditHandler(category)}
-				/>
-			))}
+			<div className={styles["categories-grid"]}>
+				{categories.map((category) => (
+					<Category
+						key={category.id}
+						category={category}
+						onClick={createEditHandler(category)}
+					/>
+				))}
+			</div>
 			{isEditing && (
 				<CategoryModal
 					existingCategory={selectedCategory}

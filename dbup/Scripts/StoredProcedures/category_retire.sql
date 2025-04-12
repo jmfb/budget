@@ -26,6 +26,6 @@ where
 
 delete from budget.categories as categories_delete
 where
-	categories_delete.id = p_id;
+	categories_delete.id = p_retire_id;
 
 end $$;

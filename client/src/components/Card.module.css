@@ -4,3 +4,12 @@
 	box-shadow: var(--box-shadow);
 	padding: 1rem;
 }
+
+.clickable {
+	cursor: pointer;
+}
+
+.clickable:hover {
+	box-shadow: var(--box-shadow-active);
+	background-color: lightblue;
+}

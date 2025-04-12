@@ -5,6 +5,7 @@ import Creatable from "react-select/creatable";
 import styles from "./CategorySelect.module.css";
 
 export interface ICategorySelectProps {
+	name?: string;
 	categoryId: number | null;
 	autoFocus?: boolean;
 	isDisabled?: boolean;
@@ -12,6 +13,7 @@ export interface ICategorySelectProps {
 }
 
 export function CategorySelect({
+	name,
 	categoryId,
 	autoFocus,
 	isDisabled,
@@ -63,7 +65,7 @@ export function CategorySelect({
 
 	return (
 		<label className={styles.label}>
-			Category
+			{name ?? "Category"}
 			<Creatable
 				isClearable={categoryId !== null}
 				placeholder="Select category..."

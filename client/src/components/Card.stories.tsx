@@ -21,3 +21,5 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const standard: Story = {};
+
+export const clickable: Story = { args: { onClick: () => undefined } };
