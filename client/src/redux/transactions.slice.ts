@@ -56,12 +56,14 @@ const slice = createSlice({
 			.addCase(getPreviousYear.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.transactions.push(...action.payload);
+				state.years.push(action.meta.arg);
 			})
 			.addCase(getPreviousYear.rejected, (state) => {
 				state.isLoading = false;
 			})
 			.addCase(getRestOfCurrentYear.fulfilled, (state, action) => {
 				state.transactions.push(...action.payload);
+				state.years.push(new Date().getFullYear());
 			})
 			.addCase(getCurrentWeek.fulfilled, (state, action) => {
 				state.isLoading = false;
