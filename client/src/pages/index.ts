@@ -1,6 +1,7 @@
 export * from "./About";
 export * from "./Application";
 export * from "./Authenticate";
+export * from "./Categories";
 export * from "./Configure";
 export * from "./Error";
 export * from "./Expenses";

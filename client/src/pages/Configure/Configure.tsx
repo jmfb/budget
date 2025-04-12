@@ -1,7 +1,6 @@
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 import { VerticalLayout } from "~/components";
-import { ExpensesContainer } from "~/pages";
-import { IncomesContainer } from "~/pages";
+import { ExpensesContainer, IncomesContainer, Categories } from "~/pages";
 
 export function Configure() {
 	return (
@@ -19,7 +18,7 @@ export function Configure() {
 					<IncomesContainer />
 				</TabPanel>
 				<TabPanel>
-					<div>TODO: Categories</div>
+					<Categories />
 				</TabPanel>
 			</Tabs>
 		</VerticalLayout>
