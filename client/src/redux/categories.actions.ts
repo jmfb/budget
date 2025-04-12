@@ -7,6 +7,8 @@ import {
 } from "~/models";
 import { IAsyncActionOptions } from "./IAsyncActionOptions";
 import { categoriesSlice } from "./categories.slice";
+import { expensesSlice } from "./expenses.slice";
+import { transactionsSlice } from "./transactions.slice";
 
 export async function createCategory(
 	request: ICreateCategoryRequest,
@@ -56,4 +58,6 @@ export async function retireCategory(
 	const actions = bindActionCreators(categoriesSlice.actions, dispatch);
 	await categoriesHub.retireCategory(accessToken, request);
 	actions.deleteCategory(request.retireId);
+	dispatch(expensesSlice.actions.retireCategory(request));
+	dispatch(transactionsSlice.actions.retireCategory(request));
 }
