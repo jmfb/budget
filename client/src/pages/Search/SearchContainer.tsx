@@ -30,7 +30,6 @@ export function SearchContainer() {
 							expenseById,
 						),
 					),
-
 		[searchQuery, allTransactions, categoryById, incomeById, expenseById],
 	);
 

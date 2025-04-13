@@ -1,7 +1,6 @@
-import { Input, PageLoading } from "~/components";
+import { Input, NoResults, PageLoading, VerticalLayout } from "~/components";
 import { Transactions } from "~/pages/Home/Transactions";
 import { ICategory, IExpense, IIncome, ITransaction } from "~/models";
-import styles from "./Search.module.css";
 
 export interface ISearchProps {
 	searchQuery: string;
@@ -29,7 +28,7 @@ export function Search({
 	}
 
 	return (
-		<div className={styles.root}>
+		<VerticalLayout>
 			<Input
 				name=""
 				autoFocus
@@ -38,9 +37,7 @@ export function Search({
 				onChange={onUpdateSearch}
 			/>
 			{!!searchQuery && transactions.length === 0 && (
-				<div className={styles["no-results"]}>
-					No transactions matched your search.
-				</div>
+				<NoResults>No transactions matched your search.</NoResults>
 			)}
 			<Transactions
 				transactions={transactions}
@@ -53,6 +50,6 @@ export function Search({
 				setOnlyShowNewItems={() => undefined}
 				includePendingItems={false}
 			/>
-		</div>
+		</VerticalLayout>
 	);
 }
