@@ -12,12 +12,15 @@ type YearlyExpensesParams = {
 export function YearlyExpensesContainer() {
 	const expenseId = +(useParams<YearlyExpensesParams>().expenseId ?? "");
 
-	const categoryById = useAppSelector(
-		(state) => state.categories.categoryById,
+	const expense =
+		useAppSelector((state) => state.expenses.expenseById[expenseId]) ??
+		null;
+	const categoryId = expense?.categoryId ?? 0;
+	const category = useAppSelector(
+		(state) => state.categories.categoryById[categoryId],
 	);
-	const expense = useAppSelector(
-		(state) => state.expenses.expenseById[expenseId],
-	);
+	const categoryName = category?.name ?? "";
+
 	const transactions = useAppSelector(
 		(state) => state.transactions.transactions,
 	);
@@ -44,8 +47,8 @@ export function YearlyExpensesContainer() {
 
 	return (
 		<YearlyExpenses
-			expense={expense!}
-			categoryName={categoryById[expense?.categoryId ?? 0]?.name}
+			expense={expense}
+			categoryName={categoryName}
 			yearlyExpenses={yearlyExpenses}
 			isSavingExpense={isSavingExpense}
 			savingExpenseSuccess={savingExpenseSuccess}

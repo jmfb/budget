@@ -7,7 +7,7 @@ import { budgetService } from "~/services";
 import styles from "./YearlyExpenses.module.css";
 
 export interface IYearlyExpensesProps {
-	expense: IExpense;
+	expense: IExpense | null;
 	categoryName: string;
 	yearlyExpenses: ITransaction[];
 	isSavingExpense: boolean;
