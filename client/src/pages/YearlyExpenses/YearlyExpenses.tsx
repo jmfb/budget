@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { PageLoading, Pill, Button } from "~/components";
 import { ExpenseEditor } from "~/pages/Expenses/ExpenseEditor";
 import { ExpenseTransaction } from "./ExpenseTransaction";
-import { IExpense, ITransaction } from "~/models";
+import { IExpense, ITransaction, IUpdateExpenseRequest } from "~/models";
 import { budgetService } from "~/services";
 import styles from "./YearlyExpenses.module.css";
 
@@ -12,7 +12,7 @@ export interface IYearlyExpensesProps {
 	yearlyExpenses: ITransaction[];
 	isSavingExpense: boolean;
 	savingExpenseSuccess: boolean;
-	saveExpense(expense: IExpense): void;
+	onSave(request: IUpdateExpenseRequest): void;
 }
 
 export function YearlyExpenses({
@@ -21,7 +21,7 @@ export function YearlyExpenses({
 	yearlyExpenses,
 	isSavingExpense,
 	savingExpenseSuccess,
-	saveExpense,
+	onSave,
 }: IYearlyExpensesProps) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
@@ -54,10 +54,10 @@ export function YearlyExpenses({
 		setIsEditing(false);
 		setEditingExpense(null);
 	};
-	const handleEditSaved = (newExpense: IExpense) => {
+	const handleEditSaved = (request: IUpdateExpenseRequest) => {
 		setIsSaving(true);
 		setEditingExpense(null);
-		saveExpense(newExpense);
+		onSave(request);
 	};
 	const handleResizeBudgetClicked = () => {
 		setIsEditing(true);
@@ -131,10 +131,10 @@ export function YearlyExpenses({
 			{isEditing && (
 				<ExpenseEditor
 					isSavingExpense={isSavingExpense}
-					existingExpense={editingExpense!}
+					existingExpense={editingExpense}
+					mustRemainYearlyExpense
 					onSave={handleEditSaved}
 					onCancel={handleEditCanceled}
-					mustRemainYearlyExpense
 				/>
 			)}
 		</div>

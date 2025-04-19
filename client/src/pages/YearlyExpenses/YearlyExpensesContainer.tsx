@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useAsyncState } from "~/hooks";
-import { IExpense } from "~/models";
+import { IUpdateExpenseRequest } from "~/models";
 import { YearlyExpenses } from "./YearlyExpenses";
 import { useAppSelector, expensesActions } from "~/redux";
 import { dateService } from "~/services";
@@ -39,9 +39,7 @@ export function YearlyExpensesContainer() {
 			transaction.date >= startOfYear,
 	);
 
-	const handleSaveExpense = (newValue: IExpense) => {
-		const { id: expenseId, year, ...request } = newValue;
-		void year;
+	const handleSave = (request: IUpdateExpenseRequest) => {
 		saveExpense({ expenseId, request });
 	};
 
@@ -52,7 +50,7 @@ export function YearlyExpensesContainer() {
 			yearlyExpenses={yearlyExpenses}
 			isSavingExpense={isSavingExpense}
 			savingExpenseSuccess={savingExpenseSuccess}
-			saveExpense={handleSaveExpense}
+			onSave={handleSave}
 		/>
 	);
 }

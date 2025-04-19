@@ -15,7 +15,7 @@ const meta = {
 		yearlyExpenses: [],
 		isSavingExpense: false,
 		savingExpenseSuccess: false,
-		saveExpense: fn(),
+		onSave: fn(),
 	},
 	decorators: [makeStoreDecorator()],
 } satisfies Meta<typeof YearlyExpenses>;
