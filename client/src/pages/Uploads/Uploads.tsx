@@ -16,7 +16,11 @@ export interface IUploadsProps {
 	logs: string;
 	isLoading: boolean;
 	getAllText(file: File): void;
-	parseCsv(fileText: string): void;
+	parseCsv(request: {
+		fileText: string;
+		skipFirstRow: boolean;
+		skipLastRow: boolean;
+	}): void;
 	mergeTransaction(transaction: ITransaction): void;
 	clearUpload(): void;
 	clearLogs(): void;
@@ -82,7 +86,11 @@ export function Uploads({
 
 	useEffect(() => {
 		if (isMerging && !isReadingFile && readingFileSuccess) {
-			parseCsv(fileText);
+			parseCsv({
+				fileText,
+				skipFirstRow: isMergingBank,
+				skipLastRow: isMergingBank,
+			});
 		}
 	}, [isMerging, isReadingFile, readingFileSuccess]);
 

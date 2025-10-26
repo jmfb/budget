@@ -37,15 +37,20 @@ export const getAllText = createAsyncThunk(
 
 export const parseCsv = createAsyncThunk(
 	"budget/parseCsv",
-	async (fileText: string) => {
-		const parser = parse();
+	async (request: {
+		fileText: string;
+		skipFirstRow: boolean;
+		skipLastRow: boolean;
+	}) => {
+		const { fileText, skipFirstRow, skipLastRow } = request;
+		const parser = parse({ from_line: skipFirstRow ? 2 : 1 });
 		parser.write(fileText);
 		parser.end();
 		const results = [] as string[][];
 		for await (const record of parser) {
 			results.push(record);
 		}
-		return results.slice(1);
+		return skipLastRow ? results.slice(1, -1) : results.slice(1);
 	},
 );
 
