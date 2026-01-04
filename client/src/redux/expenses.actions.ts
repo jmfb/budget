@@ -50,7 +50,7 @@ export async function importPreviousYearExpenses(
 ) {
 	const { accessToken } = getState().auth;
 	const actions = bindActionCreators(expensesSlice.actions, dispatch);
-	const currentYear = new Date().getFullYear() - 1;
+	const currentYear = new Date().getFullYear();
 	const previousYear = currentYear - 1;
 	const expenses = await expensesHub.getExpenses(accessToken, previousYear);
 	const newExpenses = await promiseService.parallelMap(

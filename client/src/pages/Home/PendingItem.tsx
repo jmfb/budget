@@ -40,12 +40,13 @@ export function PendingItem({
 					)}
 				{incomeId !== null && (
 					<Pill className={styles.pill} type="success">
-						{incomeById[incomeId].name}
+						{incomeById[incomeId]?.name ?? `Invalid #${incomeId}`}
 					</Pill>
 				)}
 				{expenseId !== null && (
 					<Pill className={styles.pill} type="danger">
-						{expenseById[expenseId].name}
+						{expenseById[expenseId]?.name ??
+							`Invalid #${expenseId}`}
 					</Pill>
 				)}
 			</div>

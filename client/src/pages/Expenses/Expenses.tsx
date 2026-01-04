@@ -98,7 +98,9 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 	const sortedCategoryIds = Object.keys(expensesByCategoryId)
 		.map(Number)
 		.sort((a, b) =>
-			categoryById[a].name.localeCompare(categoryById[b].name),
+			(categoryById[a]?.name ?? "").localeCompare(
+				categoryById[b]?.name ?? "",
+			),
 		);
 
 	const weeklyExpenses = budgetService.getWeeklyExpenses(expenses);
@@ -119,7 +121,7 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 			{sortedCategoryIds.map((categoryId) => (
 				<Category
 					key={categoryId}
-					category={categoryById[categoryId].name}
+					category={categoryById[categoryId]?.name ?? ""}
 					expenses={expensesByCategoryId[categoryId]}
 					onAddExpense={createAddCategoryExpenseHandler(categoryId)}
 					onEditExpense={handleEditExpense}

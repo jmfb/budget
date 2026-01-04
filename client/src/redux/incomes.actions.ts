@@ -50,7 +50,7 @@ export async function importPreviousYearIncomes(
 ) {
 	const { accessToken } = getState().auth;
 	const actions = bindActionCreators(incomesSlice.actions, dispatch);
-	const currentYear = new Date().getFullYear() - 1;
+	const currentYear = new Date().getFullYear();
 	const previousYear = currentYear - 1;
 	const incomes = await incomesHub.getIncomes(accessToken, previousYear);
 	const newIncomes = await promiseService.parallelMap(
