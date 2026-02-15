@@ -1,5 +1,4 @@
-import { LoadingIcon } from "./LoadingIcon";
-import styles from "./PageLoading.module.css";
+import { Grid, Backdrop, CircularProgress, Typography } from "@mui/material";
 
 export interface IPageLoadingProps {
 	message?: string;
@@ -7,11 +6,11 @@ export interface IPageLoadingProps {
 
 export function PageLoading({ message }: IPageLoadingProps) {
 	return (
-		<>
-			{message && <div className={styles.message}>{message}</div>}
-			<div className={styles.loading}>
-				<LoadingIcon />
-			</div>
-		</>
+		<Backdrop open>
+			<Grid container direction="column" spacing={2} alignItems="center">
+				{message && <Typography variant="h5">{message}</Typography>}
+				<CircularProgress />
+			</Grid>
+		</Backdrop>
 	);
 }

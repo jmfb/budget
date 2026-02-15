@@ -1,4 +1,4 @@
-import { Button } from "~/components";
+import { Button } from "@mui/material";
 import { clsx } from "clsx";
 import styles from "./ErrorView.module.css";
 
@@ -27,7 +27,8 @@ export function ErrorView({
 					</div>
 					<div className={styles.actions}>
 						<Button
-							variant="primary"
+							variant="contained"
+							color="primary"
 							className={styles.action}
 							onClick={onClickDismiss}
 						>
