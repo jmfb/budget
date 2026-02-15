@@ -1,6 +1,14 @@
-import { useState } from "react";
-import { Modal, Input, CurrencyInput, NumberInput } from "~/components";
-import { Button } from "@mui/material";
+import { ChangeEvent, useState } from "react";
+import { CurrencyInput, NumberInput } from "~/components";
+import {
+	Grid,
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	TextField,
+} from "@mui/material";
 import { IIncome, IUpdateIncomeRequest } from "~/models";
 
 export interface IIncomeEditorProps {
@@ -22,6 +30,9 @@ export function IncomeEditor({
 		existingIncome?.weeksInterval ?? 1,
 	);
 
+	const handleNameChanged = (event: ChangeEvent<HTMLInputElement>) => {
+		setName(event.currentTarget.value);
+	};
 	const handleCancelClicked = () => {
 		if (!isSavingIncome) {
 			onCancel();
@@ -32,51 +43,59 @@ export function IncomeEditor({
 	};
 
 	return (
-		<Modal
-			onClose={handleCancelClicked}
-			title={existingIncome ? "Edit Income" : "New Income"}
-			buttons={
-				<>
-					<Button
-						variant="outlined"
-						color="primary"
-						onClick={handleCancelClicked}
+		<Dialog open onClose={handleCancelClicked}>
+			<DialogTitle>
+				{existingIncome ? "Edit Income" : "New Income"}
+			</DialogTitle>
+			<DialogContent>
+				<Grid
+					container
+					direction="column"
+					spacing={2}
+					marginTop="0.5rem"
+				>
+					<TextField
+						label="Name"
+						variant="standard"
+						autoFocus={!existingIncome}
 						disabled={isSavingIncome}
-					>
-						Cancel
-					</Button>
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={handleSaveClicked}
-						disabled={isSavingIncome}
-						loading={isSavingIncome}
-					>
-						Save
-					</Button>
-				</>
-			}
-		>
-			<Input
-				name="Name"
-				autoFocus={!existingIncome}
-				isDisabled={isSavingIncome}
-				value={name}
-				onChange={setName}
-			/>
-			<CurrencyInput
-				name="Amount"
-				autoFocus={!!existingIncome}
-				isDisabled={isSavingIncome}
-				value={amount}
-				onChange={setAmount}
-			/>
-			<NumberInput
-				name="Weeks Interval"
-				value={weeksInterval}
-				isDisabled={isSavingIncome}
-				onChange={setWeeksInterval}
-			/>
-		</Modal>
+						value={name}
+						onChange={handleNameChanged}
+					/>
+					<CurrencyInput
+						name="Amount"
+						autoFocus={!!existingIncome}
+						isDisabled={isSavingIncome}
+						value={amount}
+						onChange={setAmount}
+					/>
+					<NumberInput
+						name="Weeks Interval"
+						value={weeksInterval}
+						isDisabled={isSavingIncome}
+						onChange={setWeeksInterval}
+					/>
+				</Grid>
+			</DialogContent>
+			<DialogActions>
+				<Button
+					variant="outlined"
+					color="primary"
+					onClick={handleCancelClicked}
+					disabled={isSavingIncome}
+				>
+					Cancel
+				</Button>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleSaveClicked}
+					disabled={isSavingIncome}
+					loading={isSavingIncome}
+				>
+					Save
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 }

@@ -104,6 +104,7 @@ export function CategorySelect({
 			renderInput={(params) => (
 				<TextField
 					{...params}
+					variant="standard"
 					label={name ?? "Category"}
 					placeholder="Select category..."
 					autoFocus={autoFocus}
