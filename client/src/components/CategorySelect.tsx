@@ -1,8 +1,20 @@
 import { useMemo } from "react";
 import { useAsyncState, useTriggerEffect } from "~/hooks";
 import { useAppSelector, categoriesActions } from "~/redux";
-import Creatable from "react-select/creatable";
-import styles from "./CategorySelect.module.css";
+import {
+	Autocomplete,
+	CircularProgress,
+	TextField,
+	createFilterOptions,
+} from "@mui/material";
+
+interface CategoryOption {
+	value: string;
+	label: string;
+	inputValue?: string;
+}
+
+const filter = createFilterOptions<CategoryOption>();
 
 export interface ICategorySelectProps {
 	name?: string;
@@ -20,14 +32,12 @@ export function CategorySelect({
 	onChange,
 }: ICategorySelectProps) {
 	const categories = useAppSelector((state) => state.categories.categories);
-	const options = useMemo(
-		() => [
-			{ value: "", label: "Select category..." },
-			...categories.map((category) => ({
+	const options = useMemo<CategoryOption[]>(
+		() =>
+			categories.map((category) => ({
 				value: category.id.toString(),
 				label: category.name,
 			})),
-		],
 		[categories],
 	);
 
@@ -52,30 +62,66 @@ export function CategorySelect({
 		) ?? null;
 
 	const handleChange = (
-		option: { value: string; __isNew__?: boolean } | null,
+		_event: React.SyntheticEvent,
+		option: CategoryOption | null,
 	) => {
 		if (option === null) {
 			onChange(null);
-		} else if (option.__isNew__) {
-			createCategory({ name: option.value });
+		} else if (option.inputValue) {
+			createCategory({ name: option.inputValue });
 		} else {
 			onChange(+option.value);
 		}
 	};
 
 	return (
-		<label className={styles.label}>
-			{name ?? "Category"}
-			<Creatable
-				isClearable={categoryId !== null}
-				placeholder="Select category..."
-				options={options}
-				autoFocus={autoFocus}
-				isDisabled={isDisabled}
-				isLoading={isCreating}
-				value={selectedOption}
-				onChange={handleChange}
-			/>
-		</label>
+		<Autocomplete
+			value={selectedOption}
+			onChange={handleChange}
+			filterOptions={(opts, params) => {
+				const filtered = filter(opts, params);
+				const { inputValue } = params;
+				const isExisting = opts.some(
+					(option) => inputValue === option.label,
+				);
+				if (inputValue !== "" && !isExisting) {
+					filtered.push({
+						value: "",
+						label: `Add "${inputValue}"`,
+						inputValue,
+					});
+				}
+				return filtered;
+			}}
+			options={options}
+			getOptionLabel={(option) => option.label}
+			isOptionEqualToValue={(option, val) => option.value === val.value}
+			disabled={isDisabled}
+			loading={isCreating}
+			clearOnBlur
+			handleHomeEndKeys
+			selectOnFocus
+			renderInput={(params) => (
+				<TextField
+					{...params}
+					label={name ?? "Category"}
+					placeholder="Select category..."
+					autoFocus={autoFocus}
+					slotProps={{
+						input: {
+							...params.InputProps,
+							endAdornment: (
+								<>
+									{isCreating ? (
+										<CircularProgress size={20} />
+									) : null}
+									{params.InputProps.endAdornment}
+								</>
+							),
+						},
+					}}
+				/>
+			)}
+		/>
 	);
 }

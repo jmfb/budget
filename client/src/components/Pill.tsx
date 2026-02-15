@@ -1,5 +1,4 @@
-import { clsx } from "clsx";
-import styles from "./Pill.module.css";
+import { Chip } from "@mui/material";
 
 export interface IPillProps {
 	type: "info" | "danger" | "success" | "new";
@@ -9,8 +8,20 @@ export interface IPillProps {
 
 export function Pill({ type, className, children }: IPillProps) {
 	return (
-		<div className={clsx(styles.root, styles[type], className)}>
-			{children}
-		</div>
+		<Chip
+			className={className}
+			variant="filled"
+			size="small"
+			color={
+				type === "info"
+					? "warning"
+					: type === "danger"
+						? "error"
+						: type === "success"
+							? "success"
+							: "primary"
+			}
+			label={children}
+		/>
 	);
 }
