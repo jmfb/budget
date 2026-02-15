@@ -142,7 +142,6 @@ export function Uploads({
 				<div className={styles.uploadButtons}>
 					<div className={styles.bankButton}>
 						<FileInput
-							variant="default"
 							accept="*.csv"
 							onClick={handleUploadBank}
 						>
@@ -151,7 +150,6 @@ export function Uploads({
 					</div>
 					<div className={styles.capitalOneButton}>
 						<FileInput
-							variant="default"
 							accept="*.csv"
 							onClick={handleUploadCapitalOne}
 						>

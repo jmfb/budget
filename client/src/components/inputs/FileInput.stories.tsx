@@ -16,8 +16,6 @@ type Story = StoryObj<typeof meta>;
 
 export const standard: Story = {};
 
-export const primary: Story = { args: { variant: "primary" } };
-
 export const disabled: Story = { args: { isDisabled: true } };
 
 export const processing: Story = {

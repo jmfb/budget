@@ -1,12 +1,8 @@
-import { LoadingIcon } from "~/components";
-import { ButtonVariant } from "./Button";
-import { clsx } from "clsx";
-import styles from "./FileInput.module.css";
-import buttonStyles from "./Button.module.css";
+import { useRef } from "react";
+import { Button as MuiButton, CircularProgress } from "@mui/material";
 
 export interface IFileInputProps {
 	accept: string;
-	variant?: ButtonVariant;
 	children?: React.ReactNode;
 	isDisabled?: boolean;
 	isProcessing?: boolean;
@@ -15,45 +11,37 @@ export interface IFileInputProps {
 
 export function FileInput({
 	accept,
-	variant,
 	children,
 	isDisabled,
 	isProcessing,
 	onClick,
 }: IFileInputProps) {
+	const inputRef = useRef<HTMLInputElement>(null);
+
 	const handleInputChanged = (event: React.FormEvent<HTMLInputElement>) => {
 		const { files } = event.currentTarget;
-		if (files) {
+		if (files && files.length > 0) {
 			onClick(files[0]);
 		}
+		// Reset so the same file can be selected again
+		event.currentTarget.value = "";
 	};
 
 	return (
-		<label>
+		<MuiButton
+			variant="outlined"
+			component="label"
+			disabled={isDisabled || isProcessing}
+			startIcon={isProcessing ? <CircularProgress size={20} /> : undefined}
+		>
+			{children}
 			<input
+				ref={inputRef}
 				accept={accept}
-				className={styles.input}
 				type="file"
-				disabled={isDisabled}
+				hidden
 				onChange={handleInputChanged}
 			/>
-			<div
-				className={clsx(
-					buttonStyles.button,
-					buttonStyles[variant ?? "default"],
-					styles.button,
-					isDisabled && styles.disabled,
-				)}
-			>
-				<span className={clsx(isProcessing && styles.processing)}>
-					{children}
-				</span>
-				{isProcessing && (
-					<span className={styles["icon-container"]}>
-						<LoadingIcon />
-					</span>
-				)}
-			</div>
-		</label>
+		</MuiButton>
 	);
 }
