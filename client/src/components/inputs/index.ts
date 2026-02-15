@@ -1,4 +1,3 @@
-export * from "./Button";
 export * from "./Checkbox";
 export * from "./CurrencyInput";
 export * from "./FileInput";

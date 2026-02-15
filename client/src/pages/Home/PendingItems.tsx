@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdAdd, MdSearch } from "react-icons/md";
-import { Button, HorizontalLayout, VerticalLayout } from "~/components";
+import { HorizontalLayout, VerticalLayout } from "~/components";
+import { Button } from "@mui/material";
 import { PendingItem } from "./PendingItem";
 import { PendingItemEditorContainer } from "./PendingItemEditorContainer";
 import { IPendingItem } from "~/models";
@@ -56,7 +57,7 @@ export function PendingItems() {
 					<Link to="/search">
 						<MdSearch className={styles.search} />
 					</Link>
-					<Button variant="primary" onClick={handleAddPendingItem}>
+					<Button variant="contained" color="primary" onClick={handleAddPendingItem}>
 						<MdAdd className={styles.addIcon} />
 					</Button>
 				</HorizontalLayout>

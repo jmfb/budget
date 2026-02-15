@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { FileInput, PageLoading, Button } from "~/components";
+import { FileInput, PageLoading } from "~/components";
+import { Button } from "@mui/material";
 import { budgetService } from "~/services";
 import { ITransaction } from "~/models";
 import styles from "./Uploads.module.css";
@@ -164,11 +165,12 @@ export function Uploads({
 				<>
 					<div className={styles.mergeRow}>
 						<Button
-							variant="primary"
-							isDisabled={
+							variant="contained"
+							color="primary"
+							disabled={
 								isLoading || !parsingCsvSuccess || isUploading
 							}
-							isProcessing={isUploading}
+							loading={isUploading}
 							onClick={handleMergeClicked}
 						>
 							Merge Transactions
@@ -196,9 +198,10 @@ export function Uploads({
 					<div className={styles.logsHeader}>
 						<h3>Logs</h3>
 						<Button
-							variant="primary"
+							variant="contained"
+							color="primary"
 							onClick={handleClearClicked}
-							isDisabled={isUploading}
+							disabled={isUploading}
 							className={styles.clearButton}
 						>
 							Clear

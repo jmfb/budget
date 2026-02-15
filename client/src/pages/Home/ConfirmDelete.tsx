@@ -1,4 +1,5 @@
-import { Modal, Button } from "~/components";
+import { Modal } from "~/components";
+import { Button } from "@mui/material";
 
 export interface IConfirmDeleteProps {
 	onConfirmDelete(): void;
@@ -15,10 +16,10 @@ export function ConfirmDelete({
 			title="Confirm Delete"
 			buttons={
 				<>
-					<Button variant="default" onClick={onCancel}>
+					<Button variant="outlined" color="primary" onClick={onCancel}>
 						Cancel
 					</Button>
-					<Button variant="danger" onClick={onConfirmDelete}>
+					<Button variant="contained" color="error" onClick={onConfirmDelete}>
 						Delete
 					</Button>
 				</>

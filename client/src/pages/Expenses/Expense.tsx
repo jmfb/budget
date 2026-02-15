@@ -1,5 +1,6 @@
 import { useAsyncState } from "~/hooks";
-import { Button, HorizontalLayout } from "~/components";
+import { HorizontalLayout } from "~/components";
+import { Button } from "@mui/material";
 import { IExpense } from "~/models";
 import { budgetService } from "~/services";
 import { expensesActions } from "~/redux";
@@ -33,14 +34,15 @@ export function Expense({ expense, onEdit }: IExpenseProps) {
 				{name} - {budgetService.format(amount)} {interval}
 			</span>
 			<HorizontalLayout>
-				<Button variant="default" onClick={onEdit}>
+				<Button variant="outlined" color="primary" onClick={onEdit}>
 					Edit
 				</Button>
 				<Button
-					variant="danger"
+					variant="contained"
+					color="error"
 					onClick={handleDeleteClicked}
-					isProcessing={isDeleting}
-					isDisabled={isDeleting}
+					loading={isDeleting}
+					disabled={isDeleting}
 				>
 					Delete
 				</Button>

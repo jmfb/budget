@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Card } from "./Card";
-import { Button } from "~/components";
+import { Button } from "@mui/material";
 
 const meta = {
 	component: Card,
@@ -9,7 +9,7 @@ const meta = {
 			<Card {...props}>
 				<h2>Example</h2>
 				<div>This is a card</div>
-				<Button variant="primary" onClick={() => console.log("click")}>
+				<Button variant="contained" color="primary" onClick={() => console.log("click")}>
 					OK
 				</Button>
 			</Card>

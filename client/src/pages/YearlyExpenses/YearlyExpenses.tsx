@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { PageLoading, Pill, Button } from "~/components";
+import { PageLoading, Pill } from "~/components";
+import { Button } from "@mui/material";
 import { ExpenseEditor } from "~/pages/Expenses/ExpenseEditor";
 import { ExpenseTransaction } from "./ExpenseTransaction";
 import { IExpense, ITransaction, IUpdateExpenseRequest } from "~/models";
@@ -75,7 +76,8 @@ export function YearlyExpenses({
 					{categoryName}
 				</Pill>
 				<Button
-					variant="default"
+					variant="outlined"
+					color="primary"
 					className={styles.edit}
 					onClick={handleEditClicked}
 				>
@@ -94,7 +96,8 @@ export function YearlyExpenses({
 					</span>
 					<span>remaining in the budget.</span>
 					<Button
-						variant="default"
+						variant="outlined"
+						color="primary"
 						className={styles.resize}
 						onClick={handleResizeBudgetClicked}
 					>
@@ -109,7 +112,8 @@ export function YearlyExpenses({
 					</span>
 					<span>over budget.</span>
 					<Button
-						variant="default"
+						variant="outlined"
+						color="primary"
 						className={styles.resize}
 						onClick={handleResizeBudgetClicked}
 					>

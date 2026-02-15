@@ -1,12 +1,12 @@
 import { useState } from "react";
 import {
 	Modal,
-	Button,
 	Input,
 	CurrencyInput,
 	CategorySelect,
 	HorizontalLayout,
 } from "~/components";
+import { Button } from "@mui/material";
 import { IncomeSelect } from "./IncomeSelect";
 import { ExpenseSelect } from "./ExpenseSelect";
 import {
@@ -91,10 +91,11 @@ export function PendingItemEditor({
 			deleteButton={
 				existingPendingItem && (
 					<Button
-						variant="danger"
+						variant="contained"
+						color="error"
 						onClick={onDelete}
-						isDisabled={isModificationInProgress}
-						isProcessing={isDeleting}
+						disabled={isModificationInProgress}
+						loading={isDeleting}
 					>
 						Delete
 					</Button>
@@ -103,17 +104,19 @@ export function PendingItemEditor({
 			buttons={
 				<>
 					<Button
-						variant="default"
+						variant="outlined"
+						color="primary"
 						onClick={onCancel}
-						isDisabled={isModificationInProgress}
+						disabled={isModificationInProgress}
 					>
 						Cancel
 					</Button>
 					<Button
-						variant="primary"
+						variant="contained"
+						color="primary"
 						onClick={handleSaveClicked}
-						isDisabled={isModificationInProgress}
-						isProcessing={isSaving}
+						disabled={isModificationInProgress}
+						loading={isSaving}
 					>
 						Save
 					</Button>
@@ -124,14 +127,15 @@ export function PendingItemEditor({
 			<CurrencyInput name="Amount" value={amount} onChange={setAmount} />
 			{!showExpenseSelect && !showIncomeSelect && !showCategorySelect && (
 				<HorizontalLayout>
-					<Button variant="default" onClick={handleAddExpenseClicked}>
+					<Button variant="outlined" color="primary" onClick={handleAddExpenseClicked}>
 						Expense
 					</Button>
-					<Button variant="default" onClick={handleAddIncomeClicked}>
+					<Button variant="outlined" color="primary" onClick={handleAddIncomeClicked}>
 						Income
 					</Button>
 					<Button
-						variant="default"
+						variant="outlined"
+						color="primary"
 						onClick={handleAddCategoryClicked}
 					>
 						Category

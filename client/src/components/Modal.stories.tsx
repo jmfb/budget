@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Modal } from "./Modal";
-import { Button } from "~/components";
+import { Button } from "@mui/material";
 import { fn } from "@storybook/test";
 
 const meta = {
@@ -16,8 +16,8 @@ const meta = {
 		),
 		buttons: (
 			<>
-				<Button variant="default">Cancel</Button>
-				<Button variant="primary">Save</Button>
+				<Button variant="outlined" color="primary">Cancel</Button>
+				<Button variant="contained" color="primary">Save</Button>
 			</>
 		),
 		onClose: fn(),
@@ -30,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 export const standard: Story = {};
 
 export const withDelete: Story = {
-	args: { deleteButton: <Button variant="danger">Delete</Button> },
+	args: { deleteButton: <Button variant="contained" color="error">Delete</Button> },
 };
 
 export const noTitle: Story = { args: { title: null } };

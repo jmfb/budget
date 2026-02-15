@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import {
 	PageLoading,
-	Button,
 	VerticalLayout,
 	HorizontalLayout,
 } from "~/components";
+import { Button } from "@mui/material";
 import { Income } from "./Income";
 import { IncomeEditor } from "./IncomeEditor";
 import { budgetService, dateService } from "~/services";
@@ -86,7 +86,7 @@ export function Incomes({ incomes }: IIncomesProps) {
 						</h3>
 					)}
 				</HorizontalLayout>
-				<Button variant="primary" onClick={handleAddClicked}>
+				<Button variant="contained" color="primary" onClick={handleAddClicked}>
 					Add
 				</Button>
 			</HorizontalLayout>
@@ -100,9 +100,10 @@ export function Incomes({ incomes }: IIncomesProps) {
 			{incomes.length === 0 && (
 				<HorizontalLayout>
 					<Button
-						variant="default"
-						isProcessing={isImporting}
-						isDisabled={isImporting}
+						variant="outlined"
+						color="primary"
+						loading={isImporting}
+						disabled={isImporting}
 						onClick={importPreviousYearIncomes}
 					>
 						Import incomes from {new Date().getFullYear() - 1}

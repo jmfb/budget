@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Modal, Button, Input, CurrencyInput, NumberInput } from "~/components";
+import { Modal, Input, CurrencyInput, NumberInput } from "~/components";
+import { Button } from "@mui/material";
 import { IIncome, IUpdateIncomeRequest } from "~/models";
 
 export interface IIncomeEditorProps {
@@ -37,17 +38,19 @@ export function IncomeEditor({
 			buttons={
 				<>
 					<Button
-						variant="default"
+						variant="outlined"
+						color="primary"
 						onClick={handleCancelClicked}
-						isDisabled={isSavingIncome}
+						disabled={isSavingIncome}
 					>
 						Cancel
 					</Button>
 					<Button
-						variant="primary"
+						variant="contained"
+						color="primary"
 						onClick={handleSaveClicked}
-						isDisabled={isSavingIncome}
-						isProcessing={isSavingIncome}
+						disabled={isSavingIncome}
+						loading={isSavingIncome}
 					>
 						Save
 					</Button>

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import {
 	Modal,
-	Button,
 	Input,
 	CurrencyInput,
 	NumberInput,
 	Checkbox,
 	CategorySelect,
 } from "~/components";
+import { Button } from "@mui/material";
 import { IExpense, IUpdateExpenseRequest } from "~/models";
 
 export interface IExpenseEditorProps {
@@ -74,17 +74,19 @@ export function ExpenseEditor({
 			buttons={
 				<>
 					<Button
-						variant="default"
+						variant="outlined"
+						color="primary"
 						onClick={handleCancelClicked}
-						isDisabled={isSavingExpense}
+						disabled={isSavingExpense}
 					>
 						Cancel
 					</Button>
 					<Button
-						variant="primary"
+						variant="contained"
+						color="primary"
 						onClick={handleSaveClicked}
-						isDisabled={!isValid || isSavingExpense}
-						isProcessing={isSavingExpense}
+						disabled={!isValid || isSavingExpense}
+						loading={isSavingExpense}
 					>
 						Save
 					</Button>

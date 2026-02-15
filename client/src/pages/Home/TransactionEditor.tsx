@@ -1,11 +1,11 @@
 import { useState } from "react";
 import {
 	Modal,
-	Button,
 	Input,
 	CategorySelect,
 	HorizontalLayout,
 } from "~/components";
+import { Button } from "@mui/material";
 import { IncomeSelect } from "./IncomeSelect";
 import { ExpenseSelect } from "./ExpenseSelect";
 import { ConfirmDelete } from "./ConfirmDelete";
@@ -93,10 +93,11 @@ export function TransactionEditor({
 			title={description}
 			deleteButton={
 				<Button
-					variant="danger"
+					variant="contained"
+					color="error"
 					onClick={handleDeleteClicked}
-					isDisabled={isModificationInProgress}
-					isProcessing={isDeleting}
+					disabled={isModificationInProgress}
+					loading={isDeleting}
 				>
 					Delete
 				</Button>
@@ -104,17 +105,19 @@ export function TransactionEditor({
 			buttons={
 				<>
 					<Button
-						variant="default"
+						variant="outlined"
+						color="primary"
 						onClick={onCancel}
-						isDisabled={isModificationInProgress}
+						disabled={isModificationInProgress}
 					>
 						Cancel
 					</Button>
 					<Button
-						variant="primary"
+						variant="contained"
+						color="primary"
 						onClick={handleSaveClicked}
-						isDisabled={isModificationInProgress}
-						isProcessing={isSaving}
+						disabled={isModificationInProgress}
+						loading={isSaving}
 					>
 						Save
 					</Button>
@@ -132,10 +135,10 @@ export function TransactionEditor({
 			<Input name="Note" value={note} onChange={setNote} />
 			{!showExpenseSelect && !showIncomeSelect && (
 				<HorizontalLayout>
-					<Button variant="default" onClick={handleAddExpenseClicked}>
+					<Button variant="outlined" color="primary" onClick={handleAddExpenseClicked}>
 						Expense
 					</Button>
-					<Button variant="default" onClick={handleAddIncomeClicked}>
+					<Button variant="outlined" color="primary" onClick={handleAddIncomeClicked}>
 						Income
 					</Button>
 				</HorizontalLayout>

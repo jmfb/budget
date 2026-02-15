@@ -1,4 +1,5 @@
-import { Card, Button, HorizontalLayout, VerticalLayout } from "~/components";
+import { Card, HorizontalLayout, VerticalLayout } from "~/components";
+import { Button } from "@mui/material";
 import { Expense } from "./Expense";
 import { IExpense } from "~/models";
 import { budgetService } from "~/services";
@@ -35,7 +36,7 @@ export function Category({
 							{budgetService.format(weeklyExpenses)} every week
 						</h4>
 					</HorizontalLayout>
-					<Button variant="primary" onClick={onAddExpense}>
+					<Button variant="contained" color="primary" onClick={onAddExpense}>
 						Add
 					</Button>
 				</HorizontalLayout>

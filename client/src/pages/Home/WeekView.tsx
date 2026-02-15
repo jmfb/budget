@@ -1,5 +1,5 @@
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
-import { Button } from "~/components";
+import { Button } from "@mui/material";
 import { dateService } from "~/services";
 import { clsx } from "clsx";
 import styles from "./WeekView.module.css";
@@ -25,7 +25,8 @@ export function WeekView({ weekOf, setWeekOf }: IWeekViewProps) {
 	return (
 		<div className={styles.root}>
 			<Button
-				variant="default"
+				variant="outlined"
+				color="primary"
 				onClick={handlePreviousClicked}
 				className={styles.previous}
 			>
@@ -68,9 +69,10 @@ export function WeekView({ weekOf, setWeekOf }: IWeekViewProps) {
 				</div>
 			</span>
 			<Button
-				variant="default"
+				variant="outlined"
+				color="primary"
 				onClick={handleNextClicked}
-				isDisabled={isCurrentWeek}
+				disabled={isCurrentWeek}
 				className={styles.next}
 			>
 				<MdNavigateNext className={styles.icon} />
