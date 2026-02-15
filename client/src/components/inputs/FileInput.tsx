@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { Button as MuiButton, CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 export interface IFileInputProps {
 	accept: string;
@@ -16,8 +15,6 @@ export function FileInput({
 	isProcessing,
 	onClick,
 }: IFileInputProps) {
-	const inputRef = useRef<HTMLInputElement>(null);
-
 	const handleInputChanged = (event: React.FormEvent<HTMLInputElement>) => {
 		const { files } = event.currentTarget;
 		if (files && files.length > 0) {
@@ -28,20 +25,21 @@ export function FileInput({
 	};
 
 	return (
-		<MuiButton
+		<Button
 			variant="outlined"
 			component="label"
 			disabled={isDisabled || isProcessing}
-			startIcon={isProcessing ? <CircularProgress size={20} /> : undefined}
+			startIcon={
+				isProcessing ? <CircularProgress size={20} /> : undefined
+			}
 		>
 			{children}
 			<input
-				ref={inputRef}
 				accept={accept}
 				type="file"
 				hidden
 				onChange={handleInputChanged}
 			/>
-		</MuiButton>
+		</Button>
 	);
 }
