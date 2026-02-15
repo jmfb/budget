@@ -48,7 +48,7 @@ export async function updateIncome(
 }
 
 export async function deleteIncome(accessToken: string, id: number) {
-	return await get<number>({
+	return await send({
 		baseUrl,
 		accessToken,
 		endpoint: `/api/incomes/${id}`,

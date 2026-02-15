@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { CurrencyInput, NumberInput } from "~/components";
+import { CurrencyInput, NumberField } from "~/components";
 import {
 	Grid,
 	Button,
@@ -29,7 +29,7 @@ export function IncomeEditor({
 	const [amountString, setAmountString] = useState(
 		existingIncome?.amount.toString() ?? "",
 	);
-	const [weeksInterval, setWeeksInterval] = useState(
+	const [weeksInterval, setWeeksInterval] = useState<number | null>(
 		existingIncome?.weeksInterval ?? 1,
 	);
 
@@ -44,7 +44,11 @@ export function IncomeEditor({
 		}
 	};
 	const handleSaveClicked = () => {
-		onSave({ name, amount: parsedAmount ?? 0, weeksInterval });
+		onSave({
+			name,
+			amount: parsedAmount ?? 0,
+			weeksInterval: weeksInterval ?? 1,
+		});
 	};
 
 	return (
@@ -74,11 +78,12 @@ export function IncomeEditor({
 						value={amountString}
 						onChange={setAmountString}
 					/>
-					<NumberInput
-						name="Weeks Interval"
+					<NumberField
+						label="Weeks Interval"
 						value={weeksInterval}
-						isDisabled={isSavingIncome}
-						onChange={setWeeksInterval}
+						size="small"
+						disabled={isSavingIncome}
+						onValueChange={setWeeksInterval}
 					/>
 				</Grid>
 			</DialogContent>

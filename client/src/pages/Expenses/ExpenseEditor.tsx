@@ -3,7 +3,7 @@ import {
 	Modal,
 	Input,
 	CurrencyInput,
-	NumberInput,
+	NumberField,
 	CategorySelect,
 } from "~/components";
 import { Button, FormControlLabel, Checkbox } from "@mui/material";
@@ -31,7 +31,7 @@ export function ExpenseEditor({
 	const [amountString, setAmountString] = useState(
 		existingExpense?.amount.toString() ?? "",
 	);
-	const [monthsInterval, setMonthsInterval] = useState(
+	const [monthsInterval, setMonthsInterval] = useState<number | null>(
 		existingExpense?.monthsInterval ?? 1,
 	);
 	const [categoryId, setCategoryId] = useState(
@@ -44,7 +44,8 @@ export function ExpenseEditor({
 	const isValidName = !!name;
 	const parsedAmount = budgetService.parseCurrency(amountString);
 	const isValidAmount = parsedAmount !== null && parsedAmount > 0;
-	const isValidInterval = !isDistributed || monthsInterval === 12;
+	const isValidInterval =
+		!isDistributed || (monthsInterval !== null && monthsInterval === 12);
 	const isValidCategory = categoryId !== null;
 	const isValid =
 		isValidName && isValidAmount && isValidInterval && isValidCategory;
@@ -62,7 +63,7 @@ export function ExpenseEditor({
 		onSave({
 			name,
 			amount: parsedAmount ?? 0,
-			monthsInterval,
+			monthsInterval: monthsInterval ?? 1,
 			categoryId: categoryId ?? 0,
 			isDistributed,
 		});
@@ -126,11 +127,12 @@ export function ExpenseEditor({
 						}
 					/>
 					{!isDistributed && (
-						<NumberInput
-							name="Months Interval"
+						<NumberField
+							label="Months Interval"
 							value={monthsInterval}
-							isDisabled={isSavingExpense}
-							onChange={setMonthsInterval}
+							size="small"
+							disabled={isSavingExpense}
+							onValueChange={setMonthsInterval}
 						/>
 					)}
 				</>

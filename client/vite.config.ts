@@ -29,6 +29,7 @@ export default defineConfig({
 						"@mui/material",
 						"@mui/lab",
 						"@mui/icons-material",
+						"@base-ui/react",
 						"@emotion/react",
 						"@emotion/styled",
 						"@fontsource/roboto",
