@@ -875,6 +875,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/lab@npm:^7.0.1-beta.22":
+  version: 7.0.1-beta.22
+  resolution: "@mui/lab@npm:7.0.1-beta.22"
+  dependencies:
+    "@babel/runtime": "npm:^7.28.6"
+    "@mui/system": "npm:^7.3.8"
+    "@mui/types": "npm:^7.4.11"
+    "@mui/utils": "npm:^7.3.8"
+    clsx: "npm:^2.1.1"
+    prop-types: "npm:^15.8.1"
+  peerDependencies:
+    "@emotion/react": ^11.5.0
+    "@emotion/styled": ^11.3.0
+    "@mui/material": ^7.3.8
+    "@mui/material-pigment-css": ^7.3.8
+    "@types/react": ^17.0.0 || ^18.0.0 || ^19.0.0
+    react: ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/react":
+      optional: true
+    "@emotion/styled":
+      optional: true
+    "@mui/material-pigment-css":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 10c0/82f67add04482feed568fb9ee5f9d6ed162aa393d65d739e7364140f4e2b4ce859c9f3668b417d8c2cb6bdb80976009b658a606861ecfa857cc61217a3d45f7c
+  languageName: node
+  linkType: hard
+
 "@mui/material@npm:^7.3.8":
   version: 7.3.8
   resolution: "@mui/material@npm:7.3.8"
@@ -2496,6 +2527,7 @@ __metadata:
     "@eslint/js": "npm:^9.24.0"
     "@fontsource/roboto": "npm:^5.2.9"
     "@mui/icons-material": "npm:^7.3.8"
+    "@mui/lab": "npm:^7.0.1-beta.22"
     "@mui/material": "npm:^7.3.8"
     "@reduxjs/toolkit": "npm:^2.6.1"
     "@storybook/addon-actions": "npm:^8.6.12"
