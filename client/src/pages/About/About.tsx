@@ -1,28 +1,37 @@
-import { Link } from "react-router-dom";
-import { MdExitToApp, MdFavorite } from "react-icons/md";
-import { HorizontalLayout, VerticalLayout } from "~/components";
+import { Link as RouterLink } from "react-router-dom";
+import { Grid, Typography, Link } from "@mui/material";
+import { ExitToApp, Favorite } from "@mui/icons-material";
 
 export function About() {
 	return (
-		<VerticalLayout>
-			<HorizontalLayout
-				horizontalAlign="justified"
-				verticalAlign="center"
+		<Grid container direction="column" spacing={2}>
+			<Grid
+				container
+				direction="row"
+				justifyContent="space-between"
+				alignItems="center"
 				width="100%"
 			>
-				<strong>Jake and Sarah's Budget App</strong>
-				<Link to="/sign-out">
-					<HorizontalLayout gap="narrow" verticalAlign="center">
+				<Typography variant="h5">
+					Jake and Sarah's Budget App
+				</Typography>
+				<Link component={RouterLink} to="/sign-out">
+					<Grid
+						container
+						direction="row"
+						spacing={0.5}
+						alignItems="center"
+					>
 						<span>Sign Out</span>
-						<MdExitToApp />
-					</HorizontalLayout>
+						<ExitToApp />
+					</Grid>
 				</Link>
-			</HorizontalLayout>
-			<div>Version 2</div>
-			<HorizontalLayout verticalAlign="center" gap="small">
+			</Grid>
+			<Typography variant="body1">Version 2</Typography>
+			<Grid container direction="row" alignItems="center" spacing={1}>
 				<span>For the wife I love</span>
-				<MdFavorite />
-			</HorizontalLayout>
-		</VerticalLayout>
+				<Favorite color="error" />
+			</Grid>
+		</Grid>
 	);
 }
