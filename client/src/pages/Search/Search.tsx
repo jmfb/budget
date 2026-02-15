@@ -1,6 +1,8 @@
-import { Input, NoResults, PageLoading, VerticalLayout } from "~/components";
+import { Grid, TextField } from "@mui/material";
+import { NoResults, PageLoading } from "~/components";
 import { Transactions } from "~/pages/Home/Transactions";
 import { ICategory, IExpense, IIncome, ITransaction } from "~/models";
+import { ChangeEvent } from "react";
 
 export interface ISearchProps {
 	searchQuery: string;
@@ -23,18 +25,23 @@ export function Search({
 	transactions,
 	onUpdateSearch,
 }: ISearchProps) {
+	const handleSearchChanged = (event: ChangeEvent<HTMLInputElement>) => {
+		onUpdateSearch(event.currentTarget.value);
+	};
+
 	if (isLoading) {
 		return <PageLoading />;
 	}
 
 	return (
-		<VerticalLayout>
-			<Input
-				name=""
+		<Grid container direction="column" spacing={2}>
+			<TextField
+				label="Search"
+				variant="standard"
 				autoFocus
 				placeholder="Search for transactions..."
 				value={searchQuery}
-				onChange={onUpdateSearch}
+				onChange={handleSearchChanged}
 			/>
 			{!!searchQuery && transactions.length === 0 && (
 				<NoResults>No transactions matched your search.</NoResults>
@@ -50,6 +57,6 @@ export function Search({
 				setOnlyShowNewItems={() => undefined}
 				includePendingItems={false}
 			/>
-		</VerticalLayout>
+		</Grid>
 	);
 }

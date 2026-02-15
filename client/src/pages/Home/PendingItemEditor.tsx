@@ -104,7 +104,12 @@ export function PendingItemEditor({
 					: "New Pending Transaction"}
 			</DialogTitle>
 			<DialogContent>
-				<Grid container direction="column" spacing={2}>
+				<Grid
+					container
+					direction="column"
+					spacing={2}
+					style={{ minWidth: "20rem" }}
+				>
 					<TextField
 						label="Name"
 						variant="standard"

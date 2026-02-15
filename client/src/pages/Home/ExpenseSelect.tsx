@@ -1,8 +1,12 @@
 import { useMemo } from "react";
-import Select from "react-select";
+import { Autocomplete, TextField } from "@mui/material";
 import { IExpense } from "~/models";
 import { budgetService } from "~/services";
-import styles from "./ExpenseSelect.module.css";
+
+interface ExpenseOption {
+	value: string;
+	label: string;
+}
 
 export interface IExpenseSelectProps {
 	expenses: IExpense[];
@@ -15,35 +19,42 @@ export function ExpenseSelect({
 	expenseId,
 	onChange,
 }: IExpenseSelectProps) {
-	const options = useMemo(
-		() => [
-			{ value: "", label: "Select expense..." },
-			...expenses.map((expense) => ({
+	const options = useMemo<ExpenseOption[]>(
+		() =>
+			expenses.map((expense) => ({
 				value: expense.id.toString(),
 				label: `${expense.name} - ${budgetService.format(expense.amount)}`,
 			})),
-		],
 		[expenses],
 	);
+
 	const selectedOption =
 		options.find(
 			(option) => option.value === (expenseId?.toString() ?? ""),
 		) ?? null;
 
-	const handleChange = (option: { value: string } | null) => {
+	const handleChange = (
+		_event: React.SyntheticEvent,
+		option: ExpenseOption | null,
+	) => {
 		onChange(option === null ? null : +option.value);
 	};
 
 	return (
-		<label className={styles.label}>
-			Expense
-			<Select
-				isClearable
-				placeholder="Select expense..."
-				options={options}
-				value={selectedOption}
-				onChange={handleChange}
-			/>
-		</label>
+		<Autocomplete
+			value={selectedOption}
+			onChange={handleChange}
+			options={options}
+			getOptionLabel={(option) => option.label}
+			isOptionEqualToValue={(option, val) => option.value === val.value}
+			renderInput={(params) => (
+				<TextField
+					{...params}
+					label="Expense"
+					variant="standard"
+					placeholder="Select expense..."
+				/>
+			)}
+		/>
 	);
 }

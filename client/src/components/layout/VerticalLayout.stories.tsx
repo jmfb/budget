@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { VerticalLayout } from "./VerticalLayout";
-import { Input } from "~/components";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 const meta = {
 	component: VerticalLayout,
@@ -9,13 +8,15 @@ const meta = {
 		children: (
 			<>
 				<h1>Headline</h1>
-				<Input
-					name="Test Input"
-					type="text"
+				<TextField
+					label="Test Input"
+					variant="standard"
 					value="This is an input"
 					onChange={() => undefined}
 				/>
-				<Button variant="contained" color="primary">Click Me</Button>
+				<Button variant="contained" color="primary">
+					Click Me
+				</Button>
 			</>
 		),
 	},

@@ -1,8 +1,12 @@
 import { useMemo } from "react";
-import Select from "react-select";
+import { Autocomplete, TextField } from "@mui/material";
 import { IIncome } from "~/models";
 import { budgetService } from "~/services";
-import styles from "./IncomeSelect.module.css";
+
+interface IncomeOption {
+	value: string;
+	label: string;
+}
 
 export interface IIncomeSelectProps {
 	incomes: IIncome[];
@@ -15,35 +19,42 @@ export function IncomeSelect({
 	incomeId,
 	onChange,
 }: IIncomeSelectProps) {
-	const options = useMemo(
-		() => [
-			{ value: "", label: "Select income..." },
-			...incomes.map((income) => ({
+	const options = useMemo<IncomeOption[]>(
+		() =>
+			incomes.map((income) => ({
 				value: income.id.toString(),
 				label: `${income.name} - ${budgetService.format(income.amount)}`,
 			})),
-		],
 		[incomes],
 	);
+
 	const selectedOption =
 		options.find(
 			(option) => option.value === (incomeId?.toString() ?? ""),
 		) ?? null;
 
-	const handleChange = (option: { value: string } | null) => {
+	const handleChange = (
+		_event: React.SyntheticEvent,
+		option: IncomeOption | null,
+	) => {
 		onChange(option === null ? null : +option.value);
 	};
 
 	return (
-		<label className={styles.label}>
-			Income
-			<Select
-				isClearable
-				placeholder="Select income..."
-				options={options}
-				value={selectedOption}
-				onChange={handleChange}
-			/>
-		</label>
+		<Autocomplete
+			value={selectedOption}
+			onChange={handleChange}
+			options={options}
+			getOptionLabel={(option) => option.label}
+			isOptionEqualToValue={(option, val) => option.value === val.value}
+			renderInput={(params) => (
+				<TextField
+					{...params}
+					label="Income"
+					variant="standard"
+					placeholder="Select income..."
+				/>
+			)}
+		/>
 	);
 }

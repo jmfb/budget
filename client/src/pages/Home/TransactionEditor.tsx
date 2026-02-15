@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { CategorySelect } from "~/components";
 import {
-	Modal,
-	Input,
-	CategorySelect,
-	HorizontalLayout,
-} from "~/components";
-import { Button } from "@mui/material";
+	Grid,
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	TextField,
+} from "@mui/material";
 import { IncomeSelect } from "./IncomeSelect";
 import { ExpenseSelect } from "./ExpenseSelect";
 import { ConfirmDelete } from "./ConfirmDelete";
@@ -69,6 +72,9 @@ export function TransactionEditor({
 		onDelete();
 	};
 
+	const handleNoteChanged = (event: ChangeEvent<HTMLInputElement>) => {
+		setNote(event.currentTarget.value);
+	};
 	const handleExpenseIdChanged = (newExpenseId: number | null) => {
 		setExpenseId(newExpenseId);
 		setIsAddingExpense(false);
@@ -88,81 +94,98 @@ export function TransactionEditor({
 	const showExpenseSelect = expenseId !== null || isAddingExpense;
 
 	return (
-		<Modal
-			onClose={onCancel}
-			title={description}
-			deleteButton={
+		<Dialog open onClose={onCancel}>
+			<DialogTitle>{description}</DialogTitle>
+			<DialogContent>
+				<Grid
+					container
+					direction="column"
+					spacing={2}
+					style={{ minWidth: "20rem" }}
+				>
+					<div>
+						{budgetService.format(amount)} on {date}
+					</div>
+					<CategorySelect
+						categoryId={categoryId}
+						autoFocus
+						onChange={setCategoryId}
+					/>
+					<TextField
+						label="Note"
+						variant="standard"
+						value={note}
+						onChange={handleNoteChanged}
+					/>
+					{!showExpenseSelect && !showIncomeSelect && (
+						<Grid container direction="row" spacing={2}>
+							<Button
+								variant="outlined"
+								color="primary"
+								onClick={handleAddExpenseClicked}
+							>
+								Expense
+							</Button>
+							<Button
+								variant="outlined"
+								color="primary"
+								onClick={handleAddIncomeClicked}
+							>
+								Income
+							</Button>
+						</Grid>
+					)}
+					{showIncomeSelect && (
+						<IncomeSelect
+							incomes={incomes}
+							incomeId={incomeId}
+							onChange={handleIncomeIdChanged}
+						/>
+					)}
+					{showExpenseSelect && (
+						<ExpenseSelect
+							expenses={expenses}
+							expenseId={expenseId}
+							onChange={handleExpenseIdChanged}
+						/>
+					)}
+					{isConfirmingDelete && (
+						<ConfirmDelete
+							onConfirmDelete={handleDeleteConfirmationConfirmed}
+							onCancel={handleDeleteConfirmationCanceled}
+						/>
+					)}
+				</Grid>
+			</DialogContent>
+			<DialogActions>
 				<Button
 					variant="contained"
 					color="error"
+					style={{ marginRight: "auto" }}
 					onClick={handleDeleteClicked}
 					disabled={isModificationInProgress}
 					loading={isDeleting}
 				>
 					Delete
 				</Button>
-			}
-			buttons={
-				<>
-					<Button
-						variant="outlined"
-						color="primary"
-						onClick={onCancel}
-						disabled={isModificationInProgress}
-					>
-						Cancel
-					</Button>
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={handleSaveClicked}
-						disabled={isModificationInProgress}
-						loading={isSaving}
-					>
-						Save
-					</Button>
-				</>
-			}
-		>
-			<div>
-				{budgetService.format(amount)} on {date}
-			</div>
-			<CategorySelect
-				categoryId={categoryId}
-				autoFocus
-				onChange={setCategoryId}
-			/>
-			<Input name="Note" value={note} onChange={setNote} />
-			{!showExpenseSelect && !showIncomeSelect && (
-				<HorizontalLayout>
-					<Button variant="outlined" color="primary" onClick={handleAddExpenseClicked}>
-						Expense
-					</Button>
-					<Button variant="outlined" color="primary" onClick={handleAddIncomeClicked}>
-						Income
-					</Button>
-				</HorizontalLayout>
-			)}
-			{showIncomeSelect && (
-				<IncomeSelect
-					incomes={incomes}
-					incomeId={incomeId}
-					onChange={handleIncomeIdChanged}
-				/>
-			)}
-			{showExpenseSelect && (
-				<ExpenseSelect
-					expenses={expenses}
-					expenseId={expenseId}
-					onChange={handleExpenseIdChanged}
-				/>
-			)}
-			{isConfirmingDelete && (
-				<ConfirmDelete
-					onConfirmDelete={handleDeleteConfirmationConfirmed}
-					onCancel={handleDeleteConfirmationCanceled}
-				/>
-			)}
-		</Modal>
+				<Button
+					variant="outlined"
+					color="primary"
+					onClick={onCancel}
+					disabled={isModificationInProgress}
+				>
+					Cancel
+				</Button>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleSaveClicked}
+					disabled={isModificationInProgress}
+					loading={isSaving}
+				>
+					Save
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 }

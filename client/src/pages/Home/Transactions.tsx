@@ -1,6 +1,5 @@
 import { ChangeEvent, useState } from "react";
 import { Grid, FormControlLabel, Switch } from "@mui/material";
-import { VerticalLayout } from "~/components";
 import { PendingItems } from "./PendingItems";
 import { Transaction } from "./Transaction";
 import { TransactionEditorContainer } from "./TransactionEditorContainer";
@@ -72,7 +71,7 @@ export function Transactions({
 	};
 
 	return (
-		<VerticalLayout gap="small">
+		<Grid container direction="column" spacing={1}>
 			{includePendingItems && <PendingItems />}
 			{variant === "home" && (
 				<Grid
@@ -121,6 +120,6 @@ export function Transactions({
 					onClose={handleCloseEditor}
 				/>
 			)}
-		</VerticalLayout>
+		</Grid>
 	);
 }
