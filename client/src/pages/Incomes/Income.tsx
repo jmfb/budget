@@ -1,6 +1,6 @@
 import { useAsyncState } from "~/hooks";
 import { HorizontalLayout } from "~/components";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { IIncome } from "~/models";
 import { budgetService } from "~/services";
 import { incomesActions } from "~/redux";
@@ -29,9 +29,9 @@ export function Income({ income, onEdit }: IIncomeProps) {
 
 	return (
 		<HorizontalLayout verticalAlign="center" horizontalAlign="justified">
-			<span>
+			<Typography variant="body1">
 				{name} - {budgetService.format(amount)} {interval}
-			</span>
+			</Typography>
 			<HorizontalLayout>
 				<Button variant="outlined" color="primary" onClick={onEdit}>
 					Edit

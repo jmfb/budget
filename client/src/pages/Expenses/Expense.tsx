@@ -1,6 +1,5 @@
 import { useAsyncState } from "~/hooks";
-import { HorizontalLayout } from "~/components";
-import { Button } from "@mui/material";
+import { Grid, Button, Typography } from "@mui/material";
 import { IExpense } from "~/models";
 import { budgetService } from "~/services";
 import { expensesActions } from "~/redux";
@@ -29,11 +28,16 @@ export function Expense({ expense, onEdit }: IExpenseProps) {
 	};
 
 	return (
-		<HorizontalLayout verticalAlign="center" horizontalAlign="justified">
-			<span>
+		<Grid
+			container
+			direction="row"
+			justifyContent="space-between"
+			alignItems="center"
+		>
+			<Typography variant="body1">
 				{name} - {budgetService.format(amount)} {interval}
-			</span>
-			<HorizontalLayout>
+			</Typography>
+			<Grid container direction="row" spacing={2}>
 				<Button variant="outlined" color="primary" onClick={onEdit}>
 					Edit
 				</Button>
@@ -46,7 +50,7 @@ export function Expense({ expense, onEdit }: IExpenseProps) {
 				>
 					Delete
 				</Button>
-			</HorizontalLayout>
-		</HorizontalLayout>
+			</Grid>
+		</Grid>
 	);
 }

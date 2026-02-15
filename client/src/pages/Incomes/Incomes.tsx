@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PageLoading, VerticalLayout, HorizontalLayout } from "~/components";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Income } from "./Income";
 import { IncomeEditor } from "./IncomeEditor";
 import { budgetService, dateService } from "~/services";
@@ -75,11 +75,11 @@ export function Incomes({ incomes }: IIncomesProps) {
 				horizontalAlign="justified"
 			>
 				<HorizontalLayout verticalAlign="center">
-					<h2>Incomes</h2>
+					<Typography variant="h4">Incomes</Typography>
 					{weeklyIncomes > 0 && (
-						<h3>
+						<Typography variant="h5">
 							{budgetService.format(weeklyIncomes)} every week
-						</h3>
+						</Typography>
 					)}
 				</HorizontalLayout>
 				<Button

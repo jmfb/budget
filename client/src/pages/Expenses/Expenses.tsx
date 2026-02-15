@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { PageLoading, VerticalLayout, HorizontalLayout } from "~/components";
-import { Button } from "@mui/material";
+import { PageLoading } from "~/components";
+import { Grid, Box, Button, Typography } from "@mui/material";
 import { Category } from "./Category";
 import { ExpenseEditor } from "./ExpenseEditor";
 import { budgetService, dateService } from "~/services";
@@ -101,15 +101,19 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 
 	const weeklyExpenses = budgetService.getWeeklyExpenses(expenses);
 	return (
-		<VerticalLayout>
-			<HorizontalLayout
-				verticalAlign="center"
-				horizontalAlign="justified"
+		<Grid container direction="column" spacing={2}>
+			<Grid
+				container
+				direction="row"
+				alignItems="center"
+				justifyContent="space-between"
 			>
-				<HorizontalLayout verticalAlign="center">
-					<h2>Expenses</h2>
-					<h3>{budgetService.format(weeklyExpenses)} every week</h3>
-				</HorizontalLayout>
+				<Grid container direction="row" alignItems="center" spacing={2}>
+					<Typography variant="h4">Expenses</Typography>
+					<Typography variant="h5">
+						{budgetService.format(weeklyExpenses)} every week
+					</Typography>
+				</Grid>
 				<Button
 					variant="contained"
 					color="primary"
@@ -117,7 +121,7 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 				>
 					Add
 				</Button>
-			</HorizontalLayout>
+			</Grid>
 			{sortedCategoryIds.map((categoryId) => (
 				<Category
 					key={categoryId}
@@ -128,7 +132,7 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 				/>
 			))}
 			{expenses.length === 0 && (
-				<HorizontalLayout>
+				<Box>
 					<Button
 						variant="outlined"
 						color="primary"
@@ -138,7 +142,7 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 					>
 						Import expenses from {new Date().getFullYear() - 1}
 					</Button>
-				</HorizontalLayout>
+				</Box>
 			)}
 			{showEditor && (
 				<ExpenseEditor
@@ -149,6 +153,6 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 					onCancel={closeEditor}
 				/>
 			)}
-		</VerticalLayout>
+		</Grid>
 	);
 }
