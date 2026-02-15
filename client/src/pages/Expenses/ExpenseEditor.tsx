@@ -1,12 +1,16 @@
 import { useState, type ChangeEvent } from "react";
+import { CurrencyInput, NumberField, CategorySelect } from "~/components";
 import {
-	Modal,
-	Input,
-	CurrencyInput,
-	NumberField,
-	CategorySelect,
-} from "~/components";
-import { Button, FormControlLabel, Checkbox } from "@mui/material";
+	Grid,
+	Button,
+	FormControlLabel,
+	Checkbox,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	TextField,
+} from "@mui/material";
 import { IExpense, IUpdateExpenseRequest } from "~/models";
 import { budgetService } from "~/services";
 
@@ -50,6 +54,9 @@ export function ExpenseEditor({
 	const isValid =
 		isValidName && isValidAmount && isValidInterval && isValidCategory;
 
+	const handleNameChanged = (event: ChangeEvent<HTMLInputElement>) => {
+		setName(event.currentTarget.value);
+	};
 	const handleIsDistributedChanged = (
 		_: ChangeEvent<HTMLInputElement>,
 		value: boolean,
@@ -75,73 +82,76 @@ export function ExpenseEditor({
 	};
 
 	return (
-		<Modal
-			onClose={handleCancelClicked}
-			title={existingExpense ? "Edit Expense" : "New Expense"}
-			buttons={
-				<>
-					<Button
-						variant="outlined"
-						color="primary"
-						onClick={handleCancelClicked}
+		<Dialog open onClose={handleCancelClicked}>
+			<DialogTitle>
+				{existingExpense ? "Edit Expense" : "New Expense"}
+			</DialogTitle>
+			<DialogContent>
+				<Grid container direction="column" spacing={2}>
+					<TextField
+						label="Name"
+						variant="standard"
+						autoFocus={!existingExpense}
+						value={name}
 						disabled={isSavingExpense}
-					>
-						Cancel
-					</Button>
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={handleSaveClicked}
-						disabled={!isValid || isSavingExpense}
-						loading={isSavingExpense}
-					>
-						Save
-					</Button>
-				</>
-			}
-		>
-			<Input
-				name="Name"
-				autoFocus={!existingExpense}
-				value={name}
-				isDisabled={isSavingExpense}
-				onChange={setName}
-			/>
-			<CurrencyInput
-				name="Amount"
-				autoFocus={!!existingExpense}
-				value={amountString}
-				isDisabled={isSavingExpense}
-				onChange={setAmountString}
-			/>
-			{!mustRemainYearlyExpense && (
-				<>
-					<FormControlLabel
-						label="Is Distributed Over Entire Year?"
-						control={
-							<Checkbox
-								value={isDistributed}
-								disabled={isSavingExpense}
-								onChange={handleIsDistributedChanged}
-							/>
-						}
+						onChange={handleNameChanged}
 					/>
-					{!isDistributed && (
-						<NumberField
-							label="Months Interval"
-							value={monthsInterval}
-							size="small"
-							disabled={isSavingExpense}
-							onValueChange={setMonthsInterval}
-						/>
+					<CurrencyInput
+						name="Amount"
+						autoFocus={!!existingExpense}
+						value={amountString}
+						isDisabled={isSavingExpense}
+						onChange={setAmountString}
+					/>
+					{!mustRemainYearlyExpense && (
+						<>
+							<FormControlLabel
+								label="Is Distributed Over Entire Year?"
+								control={
+									<Checkbox
+										checked={isDistributed}
+										disabled={isSavingExpense}
+										onChange={handleIsDistributedChanged}
+									/>
+								}
+							/>
+							{!isDistributed && (
+								<NumberField
+									label="Months Interval"
+									value={monthsInterval}
+									size="small"
+									disabled={isSavingExpense}
+									onValueChange={setMonthsInterval}
+								/>
+							)}
+						</>
 					)}
-				</>
-			)}
-			<CategorySelect
-				categoryId={categoryId}
-				isDisabled={isSavingExpense}
-				onChange={setCategoryId}
-			/>
-		</Modal>
+					<CategorySelect
+						categoryId={categoryId}
+						isDisabled={isSavingExpense}
+						onChange={setCategoryId}
+					/>
+				</Grid>
+			</DialogContent>
+			<DialogActions>
+				<Button
+					variant="outlined"
+					color="primary"
+					onClick={handleCancelClicked}
+					disabled={isSavingExpense}
+				>
+					Cancel
+				</Button>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleSaveClicked}
+					disabled={!isValid || isSavingExpense}
+					loading={isSavingExpense}
+				>
+					Save
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 }
