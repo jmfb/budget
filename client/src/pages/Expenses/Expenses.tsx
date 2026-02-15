@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-	PageLoading,
-	VerticalLayout,
-	HorizontalLayout,
-} from "~/components";
+import { PageLoading, VerticalLayout, HorizontalLayout } from "~/components";
 import { Button } from "@mui/material";
 import { Category } from "./Category";
 import { ExpenseEditor } from "./ExpenseEditor";
@@ -114,7 +110,11 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 					<h2>Expenses</h2>
 					<h3>{budgetService.format(weeklyExpenses)} every week</h3>
 				</HorizontalLayout>
-				<Button variant="contained" color="primary" onClick={handleAddClicked}>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleAddClicked}
+				>
 					Add
 				</Button>
 			</HorizontalLayout>
@@ -134,7 +134,7 @@ export function Expenses({ expenses, categoryById }: IExpensesProps) {
 						color="primary"
 						loading={isImporting}
 						disabled={isImporting}
-						onClick={importPreviousYearExpenses}
+						onClick={() => importPreviousYearExpenses()}
 					>
 						Import expenses from {new Date().getFullYear() - 1}
 					</Button>

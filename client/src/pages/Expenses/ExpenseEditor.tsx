@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import {
 	Modal,
 	Input,
 	CurrencyInput,
 	NumberInput,
-	Checkbox,
 	CategorySelect,
 } from "~/components";
-import { Button } from "@mui/material";
+import { Button, FormControlLabel, Checkbox } from "@mui/material";
 import { IExpense, IUpdateExpenseRequest } from "~/models";
 
 export interface IExpenseEditorProps {
@@ -39,7 +38,10 @@ export function ExpenseEditor({
 		existingExpense?.isDistributed ?? false,
 	);
 
-	const handleIsDistributedChanged = (value: boolean) => {
+	const handleIsDistributedChanged = (
+		_: ChangeEvent<HTMLInputElement>,
+		value: boolean,
+	) => {
 		if (value) {
 			setMonthsInterval(12);
 		}
@@ -109,11 +111,15 @@ export function ExpenseEditor({
 			/>
 			{!mustRemainYearlyExpense && (
 				<>
-					<Checkbox
-						name="Is Distributed Over Entire Year?"
-						value={isDistributed}
-						isDisabled={isSavingExpense}
-						onChange={handleIsDistributedChanged}
+					<FormControlLabel
+						label="Is Distributed Over Entire Year?"
+						control={
+							<Checkbox
+								value={isDistributed}
+								disabled={isSavingExpense}
+								onChange={handleIsDistributedChanged}
+							/>
+						}
 					/>
 					{!isDistributed && (
 						<NumberInput

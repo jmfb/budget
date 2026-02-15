@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-	PageLoading,
-	VerticalLayout,
-	HorizontalLayout,
-} from "~/components";
+import { PageLoading, VerticalLayout, HorizontalLayout } from "~/components";
 import { Button } from "@mui/material";
 import { Income } from "./Income";
 import { IncomeEditor } from "./IncomeEditor";
@@ -86,7 +82,11 @@ export function Incomes({ incomes }: IIncomesProps) {
 						</h3>
 					)}
 				</HorizontalLayout>
-				<Button variant="contained" color="primary" onClick={handleAddClicked}>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleAddClicked}
+				>
 					Add
 				</Button>
 			</HorizontalLayout>
@@ -104,7 +104,7 @@ export function Incomes({ incomes }: IIncomesProps) {
 						color="primary"
 						loading={isImporting}
 						disabled={isImporting}
-						onClick={importPreviousYearIncomes}
+						onClick={() => importPreviousYearIncomes()}
 					>
 						Import incomes from {new Date().getFullYear() - 1}
 					</Button>

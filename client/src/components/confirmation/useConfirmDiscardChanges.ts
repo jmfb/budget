@@ -13,7 +13,7 @@ export function useConfirmDiscardChanges({
 	const confirmation = useConfirmation({
 		header: "Unsaved Changes",
 		message: "You have unsaved changes. Discard and close anyway?",
-		variant: "danger",
+		variant: "error",
 		cancelIcon: Edit,
 		cancelText: "Keep editing",
 		confirmIcon: Delete,
