@@ -47,6 +47,11 @@
 	},
 	"dependencies": {
 		"@csstools/normalize.css": "^12.1.1",
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.1",
+		"@fontsource/roboto": "^5.2.9",
+		"@mui/icons-material": "^7.3.8",
+		"@mui/material": "^7.3.8",
 		"@reduxjs/toolkit": "^2.6.1",
 		"@storybook/addon-actions": "^8.6.12",
 		"@storybook/addon-essentials": "^8.6.12",

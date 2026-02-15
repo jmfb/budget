@@ -25,6 +25,13 @@ export default defineConfig({
 						"redux",
 						"redux-thunk",
 					],
+					mui: [
+						"@mui/material",
+						"@mui/icons-material",
+						"@emotion/react",
+						"@emotion/styled",
+						"@fontsource/roboto",
+					],
 					addons: [
 						"react-icons",
 						"react-modal",

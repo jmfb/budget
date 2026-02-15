@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { MuiProvider } from "./MuiProvider";
 import { PageLoading } from "~/components";
 import {
 	ErrorBoundaryContainer,
@@ -22,26 +23,28 @@ function start() {
 	}
 	const rootElement = (
 		<Provider store={store}>
-			<BrowserRouter>
-				<ErrorBoundaryContainer>
-					<Suspense fallback={<PageLoading />}>
-						<Routes>
-							<Route
-								path="/sign-in"
-								element={<SignInContainer />}
-							/>
-							<Route
-								path="/authenticate"
-								element={<AuthenticateContainer />}
-							/>
-							<Route
-								path="*"
-								element={<ApplicationContainer />}
-							/>
-						</Routes>
-					</Suspense>
-				</ErrorBoundaryContainer>
-			</BrowserRouter>
+			<MuiProvider>
+				<BrowserRouter>
+					<ErrorBoundaryContainer>
+						<Suspense fallback={<PageLoading />}>
+							<Routes>
+								<Route
+									path="/sign-in"
+									element={<SignInContainer />}
+								/>
+								<Route
+									path="/authenticate"
+									element={<AuthenticateContainer />}
+								/>
+								<Route
+									path="*"
+									element={<ApplicationContainer />}
+								/>
+							</Routes>
+						</Suspense>
+					</ErrorBoundaryContainer>
+				</BrowserRouter>
+			</MuiProvider>
 		</Provider>
 	);
 	createRoot(rootContainer).render(rootElement);

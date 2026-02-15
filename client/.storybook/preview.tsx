@@ -1,4 +1,6 @@
+import React from "react";
 import { Preview } from "@storybook/react";
+import { MuiProvider } from "../src/MuiProvider";
 import "@csstools/normalize.css";
 import "react-tabs/style/react-tabs.css";
 import "../src/index.css";
@@ -13,6 +15,13 @@ const preview: Preview = {
 			},
 		},
 	},
+	decorators: [
+		(Story) => (
+			<MuiProvider>
+				<Story />
+			</MuiProvider>
+		),
+	],
 };
 
 export default preview;
