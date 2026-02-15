@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { CurrencyInput, CategorySelect } from "~/components";
 import {
-	Modal,
-	Input,
-	CurrencyInput,
-	CategorySelect,
-	HorizontalLayout,
-} from "~/components";
-import { Button } from "@mui/material";
+	Grid,
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+	TextField,
+} from "@mui/material";
 import { IncomeSelect } from "./IncomeSelect";
 import { ExpenseSelect } from "./ExpenseSelect";
 import {
@@ -67,6 +69,9 @@ export function PendingItemEditor({
 		});
 	};
 
+	const handleNameChanged = (event: ChangeEvent<HTMLInputElement>) => {
+		setName(event.currentTarget.value);
+	};
 	const handleCategoryIdChanged = (newCategoryId: number | null) => {
 		setCategoryId(newCategoryId);
 		setIsAddingCategory(false);
@@ -92,99 +97,106 @@ export function PendingItemEditor({
 	const showCategorySelect = categoryId !== null || isAddingCategory;
 
 	return (
-		<Modal
-			onClose={onCancel}
-			title={
-				existingPendingItem
+		<Dialog open onClose={onCancel}>
+			<DialogTitle>
+				{existingPendingItem
 					? "Edit Pending Transaction"
-					: "New Pending Transaction"
-			}
-			deleteButton={
-				existingPendingItem && (
+					: "New Pending Transaction"}
+			</DialogTitle>
+			<DialogContent>
+				<Grid container direction="column" spacing={2}>
+					<TextField
+						label="Name"
+						variant="standard"
+						autoFocus
+						value={name}
+						onChange={handleNameChanged}
+					/>
+					<CurrencyInput
+						name="Amount"
+						value={amountString}
+						onChange={setAmountString}
+					/>
+					{!showExpenseSelect &&
+						!showIncomeSelect &&
+						!showCategorySelect && (
+							<Grid container direction="row" spacing={2}>
+								<Button
+									variant="outlined"
+									color="primary"
+									onClick={handleAddExpenseClicked}
+								>
+									Expense
+								</Button>
+								<Button
+									variant="outlined"
+									color="primary"
+									onClick={handleAddIncomeClicked}
+								>
+									Income
+								</Button>
+								<Button
+									variant="outlined"
+									color="primary"
+									onClick={handleAddCategoryClicked}
+								>
+									Category
+								</Button>
+							</Grid>
+						)}
+					{showCategorySelect && (
+						<CategorySelect
+							categoryId={categoryId}
+							onChange={handleCategoryIdChanged}
+						/>
+					)}
+					{showIncomeSelect && (
+						<IncomeSelect
+							incomes={incomes}
+							incomeId={incomeId}
+							onChange={handleIncomeIdChanged}
+						/>
+					)}
+					{showExpenseSelect && (
+						<ExpenseSelect
+							expenses={expenses}
+							expenseId={expenseId}
+							onChange={handleExpenseIdChanged}
+						/>
+					)}
+				</Grid>
+			</DialogContent>
+			<DialogActions>
+				{existingPendingItem && (
 					<Button
 						variant="contained"
 						color="error"
+						style={{ marginRight: "auto" }}
 						onClick={onDelete}
 						disabled={isModificationInProgress}
 						loading={isDeleting}
 					>
 						Delete
 					</Button>
-				)
-			}
-			buttons={
-				<>
-					<Button
-						variant="outlined"
-						color="primary"
-						onClick={onCancel}
-						disabled={isModificationInProgress}
-					>
-						Cancel
-					</Button>
-					<Button
-						variant="contained"
-						color="primary"
-						onClick={handleSaveClicked}
-						disabled={isModificationInProgress}
-						loading={isSaving}
-					>
-						Save
-					</Button>
-				</>
-			}
-		>
-			<Input name="Name" autoFocus value={name} onChange={setName} />
-			<CurrencyInput
-				name="Amount"
-				value={amountString}
-				onChange={setAmountString}
-			/>
-			{!showExpenseSelect && !showIncomeSelect && !showCategorySelect && (
-				<HorizontalLayout>
-					<Button
-						variant="outlined"
-						color="primary"
-						onClick={handleAddExpenseClicked}
-					>
-						Expense
-					</Button>
-					<Button
-						variant="outlined"
-						color="primary"
-						onClick={handleAddIncomeClicked}
-					>
-						Income
-					</Button>
-					<Button
-						variant="outlined"
-						color="primary"
-						onClick={handleAddCategoryClicked}
-					>
-						Category
-					</Button>
-				</HorizontalLayout>
-			)}
-			{showCategorySelect && (
-				<CategorySelect
-					categoryId={categoryId}
-					onChange={handleCategoryIdChanged}
-				/>
-			)}
-			{showIncomeSelect && (
-				<IncomeSelect
-					incomes={incomes}
-					incomeId={incomeId}
-					onChange={handleIncomeIdChanged}
-				/>
-			)}
-			{showExpenseSelect && (
-				<ExpenseSelect
-					expenses={expenses}
-					expenseId={expenseId}
-					onChange={handleExpenseIdChanged}
-				/>
-			)}
-		</Modal>
+				)}
+				<Button
+					variant="outlined"
+					color="primary"
+					onClick={onCancel}
+					disabled={isModificationInProgress}
+				>
+					Cancel
+				</Button>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleSaveClicked}
+					disabled={isModificationInProgress}
+					loading={isSaving}
+				>
+					Save
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 }
