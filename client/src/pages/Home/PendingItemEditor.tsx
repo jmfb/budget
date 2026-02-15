@@ -1,5 +1,9 @@
 import { ChangeEvent, useState } from "react";
-import { CurrencyInput, CategorySelect } from "~/components";
+import {
+	CurrencyInput,
+	CategorySelect,
+	useConfirmDiscardChanges,
+} from "~/components";
 import {
 	Grid,
 	Button,
@@ -40,22 +44,32 @@ export function PendingItemEditor({
 	onDelete,
 	onCancel,
 }: IPendingItemEditorProps) {
-	const [name, setName] = useState(existingPendingItem?.name ?? "");
-	const [amountString, setAmountString] = useState(
-		existingPendingItem?.amount.toString() ?? "",
-	);
-	const [categoryId, setCategoryId] = useState(
-		existingPendingItem?.categoryId ?? null,
-	);
-	const [expenseId, setExpenseId] = useState(
-		existingPendingItem?.expenseId ?? null,
-	);
-	const [incomeId, setIncomeId] = useState(
-		existingPendingItem?.incomeId ?? null,
-	);
+	const initialName = existingPendingItem?.name ?? "";
+	const initialAmountString = existingPendingItem?.amount.toString() ?? "";
+	const initialCategoryId = existingPendingItem?.categoryId ?? null;
+	const initialExpenseId = existingPendingItem?.expenseId ?? null;
+	const initialIncomeId = existingPendingItem?.incomeId ?? null;
+
+	const [name, setName] = useState(initialName);
+	const [amountString, setAmountString] = useState(initialAmountString);
+	const [categoryId, setCategoryId] = useState(initialCategoryId);
+	const [expenseId, setExpenseId] = useState(initialExpenseId);
+	const [incomeId, setIncomeId] = useState(initialIncomeId);
 	const [isAddingExpense, setIsAddingExpense] = useState(false);
 	const [isAddingIncome, setIsAddingIncome] = useState(false);
 	const [isAddingCategory, setIsAddingCategory] = useState(false);
+
+	const hasChanges =
+		name !== initialName ||
+		amountString !== initialAmountString ||
+		categoryId !== initialCategoryId ||
+		expenseId !== initialExpenseId ||
+		incomeId !== initialIncomeId;
+
+	const confirmDiscardChanges = useConfirmDiscardChanges({
+		hasChanges,
+		onConfirmed: onCancel,
+	});
 
 	const parsedAmount = budgetService.parseCurrency(amountString);
 
@@ -97,7 +111,7 @@ export function PendingItemEditor({
 	const showCategorySelect = categoryId !== null || isAddingCategory;
 
 	return (
-		<Dialog open onClose={onCancel}>
+		<Dialog open onClose={confirmDiscardChanges.showPrompt}>
 			<DialogTitle>
 				{existingPendingItem
 					? "Edit Pending Transaction"
@@ -170,6 +184,7 @@ export function PendingItemEditor({
 						/>
 					)}
 				</Grid>
+				{confirmDiscardChanges.children}
 			</DialogContent>
 			<DialogActions>
 				{existingPendingItem && (
@@ -187,7 +202,7 @@ export function PendingItemEditor({
 				<Button
 					variant="outlined"
 					color="primary"
-					onClick={onCancel}
+					onClick={confirmDiscardChanges.showPrompt}
 					disabled={isModificationInProgress}
 				>
 					Cancel
