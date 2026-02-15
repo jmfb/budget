@@ -10,6 +10,7 @@ import {
 	TextField,
 } from "@mui/material";
 import { IIncome, IUpdateIncomeRequest } from "~/models";
+import { budgetService } from "~/services";
 
 export interface IIncomeEditorProps {
 	existingIncome: IIncome | null;
@@ -25,10 +26,14 @@ export function IncomeEditor({
 	onCancel,
 }: IIncomeEditorProps) {
 	const [name, setName] = useState(existingIncome?.name ?? "");
-	const [amount, setAmount] = useState(existingIncome?.amount ?? 0);
+	const [amountString, setAmountString] = useState(
+		existingIncome?.amount.toString() ?? "",
+	);
 	const [weeksInterval, setWeeksInterval] = useState(
 		existingIncome?.weeksInterval ?? 1,
 	);
+
+	const parsedAmount = budgetService.parseCurrency(amountString);
 
 	const handleNameChanged = (event: ChangeEvent<HTMLInputElement>) => {
 		setName(event.currentTarget.value);
@@ -39,7 +44,7 @@ export function IncomeEditor({
 		}
 	};
 	const handleSaveClicked = () => {
-		onSave({ name, amount, weeksInterval });
+		onSave({ name, amount: parsedAmount ?? 0, weeksInterval });
 	};
 
 	return (
@@ -66,8 +71,8 @@ export function IncomeEditor({
 						name="Amount"
 						autoFocus={!!existingIncome}
 						isDisabled={isSavingIncome}
-						value={amount}
-						onChange={setAmount}
+						value={amountString}
+						onChange={setAmountString}
 					/>
 					<NumberInput
 						name="Weeks Interval"

@@ -1,23 +1,13 @@
-import { useState } from "react";
-import { Input } from "./Input";
-import { budgetService } from "~/services";
+import { type ChangeEvent } from "react";
+import { TextField } from "@mui/material";
+import { NumericFormat } from "react-number-format";
 
 export interface ICurrencyInputProps {
 	name: string;
-	value: number;
+	value: string;
 	autoFocus?: boolean;
 	isDisabled?: boolean;
-	onChange(value: number): void;
-}
-
-function toString(value: number) {
-	return budgetService.format(value).slice(1);
-}
-
-function parse(value: string) {
-	const cleanValue = (value ?? "").replace(/,/g, "");
-	const result = Number.parseFloat(cleanValue);
-	return Number.isNaN(result) ? 0 : result;
+	onChange(newValue: string): void;
 }
 
 export function CurrencyInput({
@@ -27,31 +17,22 @@ export function CurrencyInput({
 	isDisabled,
 	onChange,
 }: ICurrencyInputProps) {
-	const [textValue, setTextValue] = useState(
-		value === 0 ? "" : toString(value),
-	);
-
-	const handleTextChanged = (newTextValue: string) => {
-		setTextValue(newTextValue);
-		const newValue = parse(newTextValue);
-		if (newValue !== value) {
-			onChange(newValue);
-		}
-	};
-
-	const handleBlurred = () => {
-		setTextValue(toString(value));
+	const handleChanged = (event: ChangeEvent<HTMLInputElement>) => {
+		onChange(event.currentTarget.value);
 	};
 
 	return (
-		<Input
-			name={name}
+		<NumericFormat
+			customInput={TextField}
+			label={name}
+			variant="standard"
+			prefix="$"
+			thousandSeparator
+			valueIsNumericString
 			autoFocus={autoFocus}
-			value={textValue}
-			placeholder="0.00"
-			isDisabled={isDisabled}
-			onChange={handleTextChanged}
-			onBlur={handleBlurred}
+			disabled={isDisabled}
+			value={value}
+			onChange={handleChanged}
 		/>
 	);
 }

@@ -15,6 +15,7 @@ import {
 	IExpense,
 	IUpdatePendingItemRequest,
 } from "~/models";
+import { budgetService } from "~/services";
 
 export interface IPendingItemEditorProps {
 	incomes: IIncome[];
@@ -38,7 +39,9 @@ export function PendingItemEditor({
 	onCancel,
 }: IPendingItemEditorProps) {
 	const [name, setName] = useState(existingPendingItem?.name ?? "");
-	const [amount, setAmount] = useState(existingPendingItem?.amount ?? 0);
+	const [amountString, setAmountString] = useState(
+		existingPendingItem?.amount.toString() ?? "",
+	);
 	const [categoryId, setCategoryId] = useState(
 		existingPendingItem?.categoryId ?? null,
 	);
@@ -52,8 +55,16 @@ export function PendingItemEditor({
 	const [isAddingIncome, setIsAddingIncome] = useState(false);
 	const [isAddingCategory, setIsAddingCategory] = useState(false);
 
+	const parsedAmount = budgetService.parseCurrency(amountString);
+
 	const handleSaveClicked = () => {
-		onSave({ name: name.trim(), amount, categoryId, expenseId, incomeId });
+		onSave({
+			name: name.trim(),
+			amount: parsedAmount ?? 0,
+			categoryId,
+			expenseId,
+			incomeId,
+		});
 	};
 
 	const handleCategoryIdChanged = (newCategoryId: number | null) => {
@@ -124,13 +135,25 @@ export function PendingItemEditor({
 			}
 		>
 			<Input name="Name" autoFocus value={name} onChange={setName} />
-			<CurrencyInput name="Amount" value={amount} onChange={setAmount} />
+			<CurrencyInput
+				name="Amount"
+				value={amountString}
+				onChange={setAmountString}
+			/>
 			{!showExpenseSelect && !showIncomeSelect && !showCategorySelect && (
 				<HorizontalLayout>
-					<Button variant="outlined" color="primary" onClick={handleAddExpenseClicked}>
+					<Button
+						variant="outlined"
+						color="primary"
+						onClick={handleAddExpenseClicked}
+					>
 						Expense
 					</Button>
-					<Button variant="outlined" color="primary" onClick={handleAddIncomeClicked}>
+					<Button
+						variant="outlined"
+						color="primary"
+						onClick={handleAddIncomeClicked}
+					>
 						Income
 					</Button>
 					<Button

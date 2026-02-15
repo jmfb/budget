@@ -11,7 +11,7 @@ const meta = {
 	},
 	args: {
 		name: "Amount",
-		value: 0,
+		value: "",
 		onChange: fn(),
 	},
 } satisfies Meta<typeof CurrencyInput>;
@@ -21,12 +21,12 @@ type Story = StoryObj<typeof meta>;
 
 export const standard: Story = {};
 
-export const withValue: Story = { args: { value: 1234.56 } };
+export const withValue: Story = { args: { value: "1234.56" } };
 
 export const autoFocus: Story = { args: { autoFocus: true } };
 
 export const autoFocusWithValue: Story = {
-	args: { autoFocus: true, value: 50 },
+	args: { autoFocus: true, value: "50" },
 };
 
 export const disabled: Story = { args: { isDisabled: true } };

@@ -8,6 +8,7 @@ import {
 } from "~/components";
 import { Button, FormControlLabel, Checkbox } from "@mui/material";
 import { IExpense, IUpdateExpenseRequest } from "~/models";
+import { budgetService } from "~/services";
 
 export interface IExpenseEditorProps {
 	existingExpense: IExpense | null;
@@ -27,7 +28,9 @@ export function ExpenseEditor({
 	onCancel,
 }: IExpenseEditorProps) {
 	const [name, setName] = useState(existingExpense?.name ?? "");
-	const [amount, setAmount] = useState(existingExpense?.amount ?? 0);
+	const [amountString, setAmountString] = useState(
+		existingExpense?.amount.toString() ?? "",
+	);
 	const [monthsInterval, setMonthsInterval] = useState(
 		existingExpense?.monthsInterval ?? 1,
 	);
@@ -37,6 +40,14 @@ export function ExpenseEditor({
 	const [isDistributed, setIsDistributed] = useState(
 		existingExpense?.isDistributed ?? false,
 	);
+
+	const isValidName = !!name;
+	const parsedAmount = budgetService.parseCurrency(amountString);
+	const isValidAmount = parsedAmount !== null && parsedAmount > 0;
+	const isValidInterval = !isDistributed || monthsInterval === 12;
+	const isValidCategory = categoryId !== null;
+	const isValid =
+		isValidName && isValidAmount && isValidInterval && isValidCategory;
 
 	const handleIsDistributedChanged = (
 		_: ChangeEvent<HTMLInputElement>,
@@ -50,7 +61,7 @@ export function ExpenseEditor({
 	const handleSaveClicked = () => {
 		onSave({
 			name,
-			amount,
+			amount: parsedAmount ?? 0,
 			monthsInterval,
 			categoryId: categoryId ?? 0,
 			isDistributed,
@@ -61,13 +72,6 @@ export function ExpenseEditor({
 			onCancel();
 		}
 	};
-
-	const isValidName = !!name;
-	const isValidAmount = amount > 0;
-	const isValidInterval = !isDistributed || monthsInterval === 12;
-	const isValidCategory = categoryId !== null;
-	const isValid =
-		isValidName && isValidAmount && isValidInterval && isValidCategory;
 
 	return (
 		<Modal
@@ -105,9 +109,9 @@ export function ExpenseEditor({
 			<CurrencyInput
 				name="Amount"
 				autoFocus={!!existingExpense}
-				value={amount}
+				value={amountString}
 				isDisabled={isSavingExpense}
-				onChange={setAmount}
+				onChange={setAmountString}
 			/>
 			{!mustRemainYearlyExpense && (
 				<>

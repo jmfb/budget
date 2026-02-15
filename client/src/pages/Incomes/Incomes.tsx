@@ -92,7 +92,7 @@ export function Incomes({ incomes }: IIncomesProps) {
 			</HorizontalLayout>
 			{incomes.map((income) => (
 				<Income
-					key={income.name}
+					key={income.id}
 					income={income}
 					onEdit={createEditClickedHandler(income)}
 				/>

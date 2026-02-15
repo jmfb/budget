@@ -351,3 +351,8 @@ function matchesNumber(numberSearch: number, value: number) {
 	const upperBound = Math.abs(value) + 1;
 	return numberSearch >= lowerBound && numberSearch <= upperBound;
 }
+
+export function parseCurrency(value: string) {
+	const number = Number.parseFloat(value.replace(/[^0-9.-]+/g, ""));
+	return Number.isNaN(number) ? null : number;
+}
