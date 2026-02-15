@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HorizontalLayout, VerticalLayout } from "~/components";
-import { IconButton } from "@mui/material";
+import { Fab } from "@mui/material";
 import { Add, Search } from "@mui/icons-material";
 import { PendingItem } from "./PendingItem";
 import { PendingItemEditorContainer } from "./PendingItemEditorContainer";
@@ -57,13 +57,9 @@ export function PendingItems() {
 					<Link to="/search">
 						<Search className={styles.search} />
 					</Link>
-					<IconButton
-						size="large"
-						color="primary"
-						onClick={handleAddPendingItem}
-					>
+					<Fab color="primary" onClick={handleAddPendingItem}>
 						<Add />
-					</IconButton>
+					</Fab>
 				</HorizontalLayout>
 			</HorizontalLayout>
 			{[...pendingItems]
