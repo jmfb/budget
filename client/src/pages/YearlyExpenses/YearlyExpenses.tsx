@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { PageLoading, Pill } from "~/components";
-import { Button } from "@mui/material";
+import { PageLoading } from "~/components";
+import { Button, Chip } from "@mui/material";
 import { ExpenseEditor } from "~/pages/Expenses/ExpenseEditor";
 import { ExpenseTransaction } from "./ExpenseTransaction";
 import { IExpense, ITransaction, IUpdateExpenseRequest } from "~/models";
@@ -72,9 +72,7 @@ export function YearlyExpenses({
 		<div>
 			<h2 className={styles.heading}>
 				{expense.name} - {budgetService.format(expense.amount)}
-				<Pill type="info" className={styles.category}>
-					{categoryName}
-				</Pill>
+				<Chip variant="filled" size="small" color="warning" className={styles.category} label={categoryName} />
 				<Button
 					variant="outlined"
 					color="primary"

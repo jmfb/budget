@@ -1,4 +1,4 @@
-import { Pill } from "~/components";
+import { Chip } from "@mui/material";
 import { ICategory, IExpense, IIncome, IPendingItem } from "~/models";
 import { budgetService } from "~/services";
 import styles from "./PendingItem.module.css";
@@ -27,27 +27,18 @@ export function PendingItem({
 				{incomeId === null &&
 					expenseId === null &&
 					categoryId === null && (
-						<Pill className={styles.pill} type="new">
-							New!
-						</Pill>
+						<Chip className={styles.pill} variant="filled" size="small" color="primary" label="New!" />
 					)}
 				{incomeId === null &&
 					expenseId === null &&
 					categoryId !== null && (
-						<Pill className={styles.pill} type="info">
-							{categoryById[categoryId].name}
-						</Pill>
+						<Chip className={styles.pill} variant="filled" size="small" color="warning" label={categoryById[categoryId].name} />
 					)}
 				{incomeId !== null && (
-					<Pill className={styles.pill} type="success">
-						{incomeById[incomeId]?.name ?? `Invalid #${incomeId}`}
-					</Pill>
+					<Chip className={styles.pill} variant="filled" size="small" color="success" label={incomeById[incomeId]?.name ?? `Invalid #${incomeId}`} />
 				)}
 				{expenseId !== null && (
-					<Pill className={styles.pill} type="danger">
-						{expenseById[expenseId]?.name ??
-							`Invalid #${expenseId}`}
-					</Pill>
+					<Chip className={styles.pill} variant="filled" size="small" color="error" label={expenseById[expenseId]?.name ?? `Invalid #${expenseId}`} />
 				)}
 			</div>
 		</div>

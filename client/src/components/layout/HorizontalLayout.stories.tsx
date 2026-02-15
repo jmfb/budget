@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { HorizontalLayout } from "./HorizontalLayout";
-import { Pill } from "~/components";
-import { Button } from "@mui/material";
+import { Button, Chip } from "@mui/material";
 
 const meta = {
 	component: HorizontalLayout,
@@ -9,7 +8,7 @@ const meta = {
 		children: (
 			<>
 				<h1>Headline</h1>
-				<Pill type="success">Status</Pill>
+				<Chip variant="filled" size="small" color="success" label="Status" />
 				<Button variant="contained" color="primary">Click Me</Button>
 			</>
 		),
