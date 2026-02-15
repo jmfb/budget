@@ -34,12 +34,7 @@ export default defineConfig({
 						"@emotion/styled",
 						"@fontsource/roboto",
 					],
-					addons: [
-						"react-icons",
-						"react-modal",
-						"react-select",
-						"react-number-format",
-					],
+					addons: ["react-number-format"],
 					utility: ["clsx", "csv-parse", "file-saver"],
 				},
 			},

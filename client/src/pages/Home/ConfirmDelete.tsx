@@ -1,5 +1,10 @@
-import { Modal } from "~/components";
-import { Button } from "@mui/material";
+import {
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+} from "@mui/material";
 
 export interface IConfirmDeleteProps {
 	onConfirmDelete(): void;
@@ -11,22 +16,24 @@ export function ConfirmDelete({
 	onCancel,
 }: IConfirmDeleteProps) {
 	return (
-		<Modal
-			onClose={onCancel}
-			title="Confirm Delete"
-			buttons={
-				<>
-					<Button variant="outlined" color="primary" onClick={onCancel}>
-						Cancel
-					</Button>
-					<Button variant="contained" color="error" onClick={onConfirmDelete}>
-						Delete
-					</Button>
-				</>
-			}
-		>
-			<div>Are you sure you want to delete this transaction?</div>
-			<div>This action cannot be undone.</div>
-		</Modal>
+		<Dialog open onClose={onCancel}>
+			<DialogTitle>Confirm Delete</DialogTitle>
+			<DialogContent>
+				<div>Are you sure you want to delete this transaction?</div>
+				<div>This action cannot be undone.</div>
+			</DialogContent>
+			<DialogActions>
+				<Button variant="outlined" color="primary" onClick={onCancel}>
+					Cancel
+				</Button>
+				<Button
+					variant="contained"
+					color="error"
+					onClick={onConfirmDelete}
+				>
+					Delete
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 }
