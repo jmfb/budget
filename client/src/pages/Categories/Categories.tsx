@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, HorizontalLayout, VerticalLayout } from "~/components";
+import { Grid, Button, Typography } from "@mui/material";
 import { CategoryModal } from "./CategoryModal";
 import { Category } from "./Category";
 import { useAsyncState, useTriggerEffect } from "~/hooks";
@@ -66,17 +66,23 @@ export function Categories() {
 	};
 
 	return (
-		<VerticalLayout>
-			<HorizontalLayout
-				verticalAlign="center"
-				horizontalAlign="justified"
+		<Grid container direction="column" spacing={2}>
+			<Grid
+				container
+				direction="row"
+				justifyContent="space-between"
+				alignItems="center"
 				width="100%"
 			>
-				<h2>Categories</h2>
-				<Button variant="primary" onClick={handleAddClicked}>
+				<Typography variant="h4">Categories</Typography>
+				<Button
+					variant="contained"
+					color="primary"
+					onClick={handleAddClicked}
+				>
 					Add
 				</Button>
-			</HorizontalLayout>
+			</Grid>
 			<div className={styles["categories-grid"]}>
 				{categories.map((category) => (
 					<Category
@@ -94,6 +100,6 @@ export function Categories() {
 					onCancel={closeModal}
 				/>
 			)}
-		</VerticalLayout>
+		</Grid>
 	);
 }

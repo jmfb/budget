@@ -1,4 +1,4 @@
-import { Card } from "~/components";
+import { Card, CardActionArea, CardContent, Typography } from "@mui/material";
 import { ICategory } from "~/models";
 
 export interface CategoryProps {
@@ -7,5 +7,13 @@ export interface CategoryProps {
 }
 
 export function Category({ category, onClick }: CategoryProps) {
-	return <Card onClick={onClick}>{category.name}</Card>;
+	return (
+		<Card>
+			<CardActionArea onClick={onClick}>
+				<CardContent>
+					<Typography variant="body1">{category.name}</Typography>
+				</CardContent>
+			</CardActionArea>
+		</Card>
+	);
 }

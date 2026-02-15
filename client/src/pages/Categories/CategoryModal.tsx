@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { CategorySelect } from "~/components";
 import {
+	Grid,
+	Box,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
 	Button,
-	CategorySelect,
-	HorizontalLayout,
-	Input,
-	Modal,
-	VerticalLayout,
-} from "~/components";
+	Alert,
+	TextField,
+} from "@mui/material";
 import { useAsyncState, useTriggerEffect } from "~/hooks";
 import { ICategory, IUpdateCategoryRequest } from "~/models";
 import { categoriesActions } from "~/redux";
@@ -67,6 +71,9 @@ export function CategoryModal({
 	const handleDelete = () => {
 		deleteCategory(existingCategory!.id);
 	};
+	const handleNameChanged = (event: ChangeEvent<HTMLInputElement>) => {
+		setName(event.currentTarget.value);
+	};
 	const handleRetire = () => {
 		setIsAboutToRetire(true);
 		setReplacementId(null);
@@ -77,81 +84,88 @@ export function CategoryModal({
 	};
 
 	return (
-		<Modal
-			title={existingCategory ? "Edit Category" : "New Category"}
-			onClose={handleCancel}
-			deleteButton={
-				existingCategory && (
+		<Dialog open onClose={handleCancel}>
+			<DialogTitle>
+				{existingCategory ? "Edit Category" : "New Category"}
+			</DialogTitle>
+			<DialogContent>
+				<Grid container direction="column" spacing={2}>
+					{deleteFailed && (
+						<Alert color="error">
+							Delete failed. Category must be in use.
+						</Alert>
+					)}
+					<TextField
+						variant="standard"
+						label="Name"
+						value={name}
+						disabled={isFetching}
+						onChange={handleNameChanged}
+					/>
+					{isAboutToRetire && (
+						<CategorySelect
+							name="Replacement Category"
+							categoryId={replacementId}
+							isDisabled={isFetching}
+							onChange={setReplacementId}
+						/>
+					)}
+					{isAboutToRetire ? (
+						<Box>
+							<Button
+								variant="outlined"
+								color="secondary"
+								disabled={isFetching}
+								onClick={handleCancelRetire}
+							>
+								Cancel Retirement
+							</Button>
+						</Box>
+					) : existingCategory ? (
+						<Box>
+							<Button
+								variant="outlined"
+								color="secondary"
+								disabled={isFetching}
+								onClick={handleRetire}
+							>
+								Retire
+							</Button>
+						</Box>
+					) : null}
+				</Grid>
+			</DialogContent>
+			<DialogActions>
+				{existingCategory && (
 					<Button
-						variant="danger"
-						isDisabled={isFetching}
-						isProcessing={isDeleting}
+						variant="contained"
+						color="error"
+						style={{ marginRight: "auto" }}
+						disabled={isFetching}
+						loading={isDeleting}
 						onClick={handleDelete}
 					>
 						Delete
 					</Button>
-				)
-			}
-			buttons={
-				<>
-					<Button
-						variant="default"
-						isDisabled={isFetching}
-						onClick={handleCancel}
-					>
-						Cancel
-					</Button>
-					<Button
-						variant="primary"
-						isDisabled={isFetching || !isFormValid}
-						isProcessing={isSaving}
-						onClick={handleSave}
-					>
-						{isAboutToRetire ? "Retire" : "Save"}
-					</Button>
-				</>
-			}
-		>
-			<VerticalLayout>
-				{deleteFailed && (
-					<span>Delete failed. Category must be in use.</span>
 				)}
-				<Input
-					name="Name"
-					value={name}
-					isDisabled={isFetching}
-					onChange={setName}
-				/>
-				{isAboutToRetire && (
-					<CategorySelect
-						name="Replacement Category"
-						categoryId={replacementId}
-						isDisabled={isFetching}
-						onChange={setReplacementId}
-					/>
-				)}
-				{isAboutToRetire ? (
-					<HorizontalLayout>
-						<Button
-							variant="default"
-							isDisabled={isFetching}
-							onClick={handleCancelRetire}
-						>
-							Cancel Retirement
-						</Button>
-					</HorizontalLayout>
-				) : existingCategory ? (
-					<HorizontalLayout>
-						<Button
-							variant="default"
-							isDisabled={isFetching}
-							onClick={handleRetire}
-						>
-							Retire
-						</Button>
-					</HorizontalLayout>
-				) : null}
-			</VerticalLayout>
-		</Modal>
+				<Button
+					variant="outlined"
+					color="primary"
+					disabled={isFetching}
+					onClick={handleCancel}
+				>
+					Cancel
+				</Button>
+				<Button
+					variant="contained"
+					color="primary"
+					disabled={isFetching || !isFormValid}
+					loading={isSaving}
+					onClick={handleSave}
+				>
+					{isAboutToRetire ? "Retire" : "Save"}
+				</Button>
+			</DialogActions>
+		</Dialog>
 	);
 }
