@@ -12,7 +12,6 @@ import {
 } from "~/pages";
 import { createStore } from "~/redux";
 import "@csstools/normalize.css";
-import "react-tabs/style/react-tabs.css";
 import "./index.css";
 
 function start() {

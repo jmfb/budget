@@ -2564,8 +2564,6 @@ __metadata:
     react-redux: "npm:^9.2.0"
     react-router-dom: "npm:^7.5.0"
     react-select: "npm:^5.10.1"
-    react-switch: "npm:^7.1.0"
-    react-tabs: "npm:^6.1.0"
     redux: "npm:^5.0.1"
     redux-thunk: "npm:^3.1.0"
     storybook: "npm:^8.6.12"
@@ -2734,7 +2732,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^2.0.0, clsx@npm:^2.1.1":
+"clsx@npm:^2.1.1":
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
   checksum: 10c0/c4c8eb865f8c82baab07e71bfa8897c73454881c4f99d6bc81585aecd7c441746c1399d08363dc096c550cceaf97bd4ce1e8854e1771e9998d9f94c4fe075839
@@ -4964,7 +4962,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.0, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -5208,30 +5206,6 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10c0/0d10a249b96150bd648f2575d59c848b8fac7f4d368a97ae84e4aaba5bbc1035deba4cdc82e49a43904b79ec50494505809618b0e98022b2d51e7629551912ed
-  languageName: node
-  linkType: hard
-
-"react-switch@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "react-switch@npm:7.1.0"
-  dependencies:
-    prop-types: "npm:^15.7.2"
-  peerDependencies:
-    react: ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    react-dom: ^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/77219f82541c17bcd9507992411d24696bcd96f6086509b29c31504852340deb03688ce88ba190363bca6c883d724e522c791e78932f8703b994b39cb20f62a4
-  languageName: node
-  linkType: hard
-
-"react-tabs@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "react-tabs@npm:6.1.0"
-  dependencies:
-    clsx: "npm:^2.0.0"
-    prop-types: "npm:^15.5.0"
-  peerDependencies:
-    react: ^18.0.0 || ^19.0.0
-  checksum: 10c0/3e01f478e1563d3ae8aaffc3c5e34a09319395a7880c95194f8415e0addc92c0ce1345a1e7f1d4b821b8eb7cbf3a141bb4dcc5ee805b3ec4b185aa203278c6e1
   languageName: node
   linkType: hard
 

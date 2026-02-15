@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Switch, VerticalLayout } from "~/components";
+import { ChangeEvent, useState } from "react";
+import { Grid, FormControlLabel, Switch } from "@mui/material";
+import { VerticalLayout } from "~/components";
 import { PendingItems } from "./PendingItems";
 import { Transaction } from "./Transaction";
 import { TransactionEditorContainer } from "./TransactionEditorContainer";
@@ -54,6 +55,12 @@ export function Transactions({
 			{} as Record<string, ITransaction[]>,
 		);
 
+	const handleOnlyShowNewItemsChanged = (
+		_: ChangeEvent<HTMLInputElement>,
+		newValue: boolean,
+	) => {
+		setOnlyShowNewItems(newValue);
+	};
 	const createEditClickedHandler = (transaction: ITransaction) => () => {
 		setShowEditor(true);
 		setExistingTransaction(transaction);
@@ -68,14 +75,22 @@ export function Transactions({
 		<VerticalLayout gap="small">
 			{includePendingItems && <PendingItems />}
 			{variant === "home" && (
-				<div className={styles.onlyShowNewItems}>
-					<Switch
-						checked={onlyShowNewItems}
-						onChange={setOnlyShowNewItems}
-					>
-						Only show new items
-					</Switch>
-				</div>
+				<Grid
+					container
+					direction="row"
+					justifyContent="flex-end"
+					width="100%"
+				>
+					<FormControlLabel
+						label="Only show new items"
+						control={
+							<Switch
+								checked={onlyShowNewItems}
+								onChange={handleOnlyShowNewItemsChanged}
+							/>
+						}
+					/>
+				</Grid>
 			)}
 			{Object.keys(transactionsByDate)
 				.sort((a, b) => -a.localeCompare(b))
