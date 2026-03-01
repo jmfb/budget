@@ -6,13 +6,20 @@ import {
 } from "~/components";
 import {
 	Grid,
+	AppBar,
+	Toolbar,
+	Typography,
 	Button,
+	IconButton,
 	Dialog,
 	DialogTitle,
 	DialogContent,
 	DialogActions,
 	TextField,
+	useTheme,
+	useMediaQuery,
 } from "@mui/material";
+import { Close, Delete, Save } from "@mui/icons-material";
 import { IncomeSelect } from "./IncomeSelect";
 import { ExpenseSelect } from "./ExpenseSelect";
 import {
@@ -44,6 +51,9 @@ export function PendingItemEditor({
 	onDelete,
 	onCancel,
 }: IPendingItemEditorProps) {
+	const { breakpoints } = useTheme();
+	const fullScreen = useMediaQuery(breakpoints.down("md"));
+
 	const initialName = existingPendingItem?.name ?? "";
 	const initialAmountString = existingPendingItem?.amount.toString() ?? "";
 	const initialCategoryId = existingPendingItem?.categoryId ?? null;
@@ -111,19 +121,63 @@ export function PendingItemEditor({
 	const showCategorySelect = categoryId !== null || isAddingCategory;
 
 	return (
-		<Dialog open onClose={confirmDiscardChanges.showPrompt}>
-			<DialogTitle>
-				{existingPendingItem
-					? "Edit Pending Transaction"
-					: "New Pending Transaction"}
-			</DialogTitle>
+		<Dialog
+			open
+			fullScreen={fullScreen}
+			onClose={confirmDiscardChanges.showPrompt}
+		>
+			{fullScreen && (
+				<AppBar sx={{ position: "relative" }}>
+					<Toolbar>
+						<IconButton
+							edge="start"
+							color="inherit"
+							onClick={confirmDiscardChanges.showPrompt}
+						>
+							<Close />
+						</IconButton>
+						<Typography
+							variant="h6"
+							style={{
+								marginRight: existingPendingItem
+									? "0.5rem"
+									: "auto",
+							}}
+						>
+							{existingPendingItem
+								? "Edit Pending"
+								: "New Pending"}
+						</Typography>
+						{existingPendingItem && (
+							<IconButton
+								color="error"
+								onClick={onDelete}
+								disabled={isModificationInProgress}
+								loading={isDeleting}
+								style={{ marginRight: "auto" }}
+							>
+								<Delete />
+							</IconButton>
+						)}
+						<IconButton
+							onClick={handleSaveClicked}
+							disabled={isModificationInProgress}
+							loading={isSaving}
+						>
+							<Save />
+						</IconButton>
+					</Toolbar>
+				</AppBar>
+			)}
+			{!fullScreen && (
+				<DialogTitle>
+					{existingPendingItem
+						? "Edit Pending Transaction"
+						: "New Pending Transaction"}
+				</DialogTitle>
+			)}
 			<DialogContent>
-				<Grid
-					container
-					direction="column"
-					spacing={2}
-					style={{ minWidth: "20rem" }}
-				>
+				<Grid container direction="column" spacing={2}>
 					<TextField
 						label="Name"
 						variant="standard"
@@ -186,37 +240,39 @@ export function PendingItemEditor({
 				</Grid>
 				{confirmDiscardChanges.children}
 			</DialogContent>
-			<DialogActions>
-				{existingPendingItem && (
+			{!fullScreen && (
+				<DialogActions>
+					{existingPendingItem && (
+						<Button
+							variant="contained"
+							color="error"
+							style={{ marginRight: "auto" }}
+							onClick={onDelete}
+							disabled={isModificationInProgress}
+							loading={isDeleting}
+						>
+							Delete
+						</Button>
+					)}
+					<Button
+						variant="outlined"
+						color="primary"
+						onClick={confirmDiscardChanges.showPrompt}
+						disabled={isModificationInProgress}
+					>
+						Cancel
+					</Button>
 					<Button
 						variant="contained"
-						color="error"
-						style={{ marginRight: "auto" }}
-						onClick={onDelete}
+						color="primary"
+						onClick={handleSaveClicked}
 						disabled={isModificationInProgress}
-						loading={isDeleting}
+						loading={isSaving}
 					>
-						Delete
+						Save
 					</Button>
-				)}
-				<Button
-					variant="outlined"
-					color="primary"
-					onClick={confirmDiscardChanges.showPrompt}
-					disabled={isModificationInProgress}
-				>
-					Cancel
-				</Button>
-				<Button
-					variant="contained"
-					color="primary"
-					onClick={handleSaveClicked}
-					disabled={isModificationInProgress}
-					loading={isSaving}
-				>
-					Save
-				</Button>
-			</DialogActions>
+				</DialogActions>
+			)}
 		</Dialog>
 	);
 }
